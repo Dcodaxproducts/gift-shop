@@ -161,11 +161,10 @@ export function GiftsPage() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-        <DataTable
-          data={giftInventoryItems}
-          pagination={{ ...giftPagination, page, onPageChange: setPage }}
-          headers={
+      <DataTable
+        data={giftInventoryItems}
+        pagination={{ ...giftPagination, page, onPageChange: setPage }}
+        headers={
             <>
               <TableHead>Gift Name</TableHead>
               <TableHead>Category</TableHead>
@@ -223,8 +222,7 @@ export function GiftsPage() {
               </TableCell>
             </>
           )}
-        />
-      </Card>
+      />
     </div>
   );
 }
