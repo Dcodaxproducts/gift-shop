@@ -99,7 +99,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
             <input
               type="search"
               placeholder="Quick find..."
-              className="h-9 w-full rounded-2xl border border-transparent bg-slate-50 pl-9 pr-3 text-xs text-slate-500 outline-none placeholder:text-slate-400 focus:border-primary/20 focus:bg-white focus:ring-4 focus:ring-primary/10"
+              className="h-9 w-full rounded-2xl border border-transparent bg-slate-50 pl-9 pr-3 text-xs text-slate-500 outline-none placeholder:text-slate-400 focus:border-primary/20 focus:bg-white focus:ring-2 focus:ring-primary/10"
             />
           </div>
         </div>
@@ -108,7 +108,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
           <div className="space-y-4">
             {dashboardNavGroups.map((group) => (
               <div key={group.title}>
-                <p className="mb-2 px-2 text-[10px] font-black uppercase tracking-[0.12em] text-slate-300">
+                <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-300">
                   {group.title}
                 </p>
                 <div className="space-y-1">

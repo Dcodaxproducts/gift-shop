@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/constants/site";
 import "./globals.css";
+import { poppins } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: SITE_NAME,
@@ -18,7 +19,7 @@ export default function RootLayout({
       className="h-full scroll-smooth antialiased"
       suppressHydrationWarning
     >
-      <body className="min-h-full">{children}</body>
+      <body className={`min-h-full ${poppins.className}`}>{children}</body>
     </html>
   );
 }
