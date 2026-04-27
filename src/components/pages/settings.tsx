@@ -153,7 +153,7 @@ export function SettingsPage() {
                 Default Currency
               </Label>
               <Select defaultValue={paymentSettings.defaultCurrency}>
-                <SelectTrigger className="h-10 w-full rounded-2xl bg-white text-xs">
+                <SelectTrigger className="h-10 w-full rounded-2xl bg-white border border-slate-200 text-xs">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -202,11 +202,11 @@ export function SettingsPage() {
                 <Switch checked={setting.enabled} />
               </div>
             ))}
-            <div className="space-y-2 pt-1">
-              <Label className="text-[10px] uppercase tracking-wide text-slate-500">
+            <div className="pt-1">
+              <Label className="text-[11px] uppercase tracking-wide text-slate-500!">
                 Server Configuration
               </Label>
-              <Button className="h-10 w-full rounded-2xl bg-secondary text-xs hover:bg-secondary/90">
+              <Button className="h-10 mt-2 w-full rounded-2xl bg-secondary text-xs hover:bg-secondary/90">
                 Configure SMTP Server
               </Button>
             </div>
