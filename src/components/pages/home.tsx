@@ -59,7 +59,7 @@ export function HomePage() {
               </p>
             </div>
             <Select defaultValue="12-months">
-              <SelectTrigger className="w-[132px]">
+              <SelectTrigger className="w-[144px]">
                 <SelectValue placeholder="Select period" />
               </SelectTrigger>
               <SelectContent>
