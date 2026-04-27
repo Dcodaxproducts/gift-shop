@@ -99,7 +99,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
             type="search"
             placeholder="Quick find..."
             leftIcon={<Search className="size-3.5" />}
-            className="h-9 rounded-2xl border-transparent bg-slate-50 pl-9 pr-3 text-xs text-slate-500 placeholder:text-slate-400 focus:border-primary/20 focus:ring-2"
+            className="h-9! text-xs"
           />
         </div>
 

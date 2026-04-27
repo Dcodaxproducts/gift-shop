@@ -24,8 +24,8 @@ export function Input({
         type={type}
         className={cn(
           "flex h-12 w-full rounded-full border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10 disabled:cursor-not-allowed disabled:opacity-50",
-          leftIcon ? "pl-11" : undefined,
-          rightIcon ? "pr-11" : undefined,
+          leftIcon ? "pl-10" : undefined,
+          rightIcon ? "pr-10" : undefined,
           className,
         )}
         {...props}

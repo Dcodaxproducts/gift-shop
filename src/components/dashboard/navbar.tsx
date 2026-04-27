@@ -27,7 +27,7 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
           type="search"
           placeholder="Search analytics, users, or providers..."
           leftIcon={<Search className="size-4" />}
-          className="h-11 rounded-2xl border-transparent bg-slate-50 pr-4 text-sm text-slate-500 placeholder:text-slate-400 focus:border-primary/20 focus:ring-4"
+          className="h-10! text-xs"
         />
       </div>
 
@@ -37,14 +37,14 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
           aria-label="Notifications"
           className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 transition hover:bg-primary/10 hover:text-primary"
         >
-          <Bell className="size-5" />
+          <Bell className="size-5" fill="black" />
         </button>
         <button
           type="button"
           aria-label="Settings"
           className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 transition hover:bg-primary/10 hover:text-primary"
         >
-          <Settings className="size-5" />
+          <Settings className="size-5" fill="black" />
         </button>
 
         <div className="hidden items-center gap-3 pl-4 sm:flex">
@@ -52,7 +52,7 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
             <p className="text-xs font-black text-text-primary">{dashboardUser.name}</p>
             <p className="text-[11px] font-medium text-slate-400">{dashboardUser.role}</p>
           </div>
-          <div className="flex size-10 items-center justify-center rounded-full border-4 border-[#F8C5CC] bg-[#FFD6B8] text-xs font-black text-[#D47750]">
+          <div className="flex size-10 items-center justify-center rounded-full bg-[#FFD6B8] text-xs font-black text-[#D47750]">
             {dashboardUser.avatarInitials}
           </div>
         </div>
