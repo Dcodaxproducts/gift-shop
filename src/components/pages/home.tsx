@@ -15,6 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
 const maxRevenue = Math.max(...monthlyRevenueTrends.map((item) => item.ghostValue));
@@ -133,42 +141,47 @@ export function HomePage() {
             </button>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="grid grid-cols-[1.1fr_1fr_0.75fr] border-b border-border px-5 pb-3 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-              <span>Provider</span>
-              <span>Success Rate</span>
-              <span>Total Volume</span>
-            </div>
-            <div className="divide-y divide-border">
-              {providerPerformance.map((provider) => (
-                <div
-                  key={provider.provider}
-                  className="grid grid-cols-[1.1fr_1fr_0.75fr] items-center gap-4 px-5 py-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-[10px] font-semibold text-primary">
-                      {provider.shortCode}
-                    </span>
-                    <span className="text-xs font-semibold text-slate-700">
-                      {provider.provider}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 flex-1 rounded-full bg-slate-100">
-                      <div
-                        className={cn("h-full rounded-full", progressToneClass[provider.tone])}
-                        style={{ width: `${provider.progress}%` }}
-                      />
-                    </div>
-                    <span className="text-[10px] font-semibold text-slate-600">
-                      {provider.successRate}
-                    </span>
-                  </div>
-                  <span className="text-xs font-semibold text-slate-950">
-                    {provider.volume}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead>Provider</TableHead>
+                  <TableHead>Success Rate</TableHead>
+                  <TableHead>Total Volume</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {providerPerformance.map((provider) => (
+                  <TableRow key={provider.provider}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-[10px] font-semibold text-primary">
+                          {provider.shortCode}
+                        </span>
+                        <span className="text-xs font-semibold text-slate-700">
+                          {provider.provider}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 flex-1 rounded-full bg-slate-100">
+                          <div
+                            className={cn("h-full rounded-full", progressToneClass[provider.tone])}
+                            style={{ width: `${provider.progress}%` }}
+                          />
+                        </div>
+                        <span className="text-[10px] font-semibold text-slate-600">
+                          {provider.successRate}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-xs font-semibold text-slate-950">
+                      {provider.volume}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
 
@@ -182,35 +195,40 @@ export function HomePage() {
             </span>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="grid grid-cols-[0.85fr_1fr_0.75fr] border-b border-border px-5 pb-3 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-              <span>ID & User</span>
-              <span>Reason</span>
-              <span>Status</span>
-            </div>
-            <div className="divide-y divide-border">
-              {recentDisputes.map((dispute) => (
-                <div
-                  key={dispute.id}
-                  className="grid grid-cols-[0.85fr_1fr_0.75fr] items-center gap-4 px-5 py-4"
-                >
-                  <div>
-                    <p className="text-[10px] font-semibold text-primary">{dispute.id}</p>
-                    <p className="mt-1 text-xs font-semibold leading-4 text-slate-700">
-                      {dispute.user}
-                    </p>
-                  </div>
-                  <p className="text-xs leading-5 text-slate-500">{dispute.reason}</p>
-                  <span
-                    className={cn(
-                      "w-fit rounded-full px-3 py-1.5 text-[10px] font-semibold",
-                      disputeToneClass[dispute.tone],
-                    )}
-                  >
-                    {dispute.status}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead>ID & User</TableHead>
+                  <TableHead>Reason</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recentDisputes.map((dispute) => (
+                  <TableRow key={dispute.id}>
+                    <TableCell>
+                      <p className="text-[10px] font-semibold text-primary">{dispute.id}</p>
+                      <p className="mt-1 text-xs font-semibold leading-4 text-slate-700">
+                        {dispute.user}
+                      </p>
+                    </TableCell>
+                    <TableCell className="text-xs leading-5 text-slate-500">
+                      {dispute.reason}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={cn(
+                          "inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold",
+                          disputeToneClass[dispute.tone],
+                        )}
+                      >
+                        {dispute.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </section>
