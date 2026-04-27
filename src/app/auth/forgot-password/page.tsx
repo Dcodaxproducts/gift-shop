@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 export default function ForgotPasswordPage() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-surface px-6 py-10 text-slate-950">
-      <KeyRound className="absolute right-[8%] top-2 hidden size-24 rotate-3 text-primary/10 sm:block" />
-      <div className="absolute bottom-[14%] left-[7%] hidden size-28 rounded-full border-[10px] border-primary/10 sm:block">
+      <KeyRound className="absolute right-[4%] top-2 hidden size-24 rotate-3 text-primary/10 sm:block" />
+      <div className="absolute bottom-[10%] left-[4%] hidden size-28 rounded-full border-10 border-primary/10 sm:block">
         <LockKeyhole className="absolute left-1/2 top-1/2 size-10 -translate-x-1/2 -translate-y-1/2 text-primary/10" />
       </div>
 
