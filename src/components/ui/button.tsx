@@ -6,10 +6,10 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const buttonVariants = {
-  default: "bg-[#2d2118] text-white shadow-sm hover:bg-[#493423]",
-  outline:
-    "border border-[#d9bda4] bg-white text-[#2d2118] hover:bg-[#fff8f2]",
-  ghost: "text-[#6d5543] hover:bg-[#fff8f2] hover:text-[#2d2118]",
+  default:
+    "bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90",
+  outline: "border border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
+  ghost: "text-gray-500 hover:bg-gray-50 hover:text-gray-900",
 };
 
 export function Button({
@@ -22,7 +22,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex h-12 items-center justify-center rounded-full px-5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-50",
         buttonVariants[variant],
         className,
       )}
