@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle2, Eye, Lock, Square } from "lucide-react";
+import { CheckCircle2, Circle, Eye, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -78,7 +78,7 @@ export function ResetPasswordForm() {
                   {rule.complete ? (
                     <CheckCircle2 className="size-4 text-emerald-500" />
                   ) : (
-                    <Square className="size-4 text-slate-300" />
+                    <Circle className="size-4 text-slate-300" />
                   )}
                   <span>{rule.label}</span>
                 </li>
