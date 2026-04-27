@@ -1,29 +1,52 @@
 @import "tailwindcss";
 
 :root {
+  /* Background & surface colors */
   --background: #ffffff;
   --foreground: #222222;
+  --surface: #f6f9fc;
+  --surface-card: #ffffff;
+  --surface-muted: #f1f5f9;
+
+  /* Brand colors */
   --primary: #8429a5;
   --primary-foreground: #ffffff;
-  --primary-soft: #f3e6fa;
   --secondary: #222222;
-  --surface: #f6f9fc;
-  --border-soft: #e5e7eb;
-  --text-muted: #6b7280;
-  --text-subtle: #a5a5a5;
+  --secondary-foreground: #ffffff;
+
+  /* Text colors */
+  --text-primary: #222222;
+  --text-secondary: #a5a5a5;
+  --text-muted: #ababab;
+  --text-inverse: #ffffff;
+
+  /* Border colors */
+  --border: #e5e5e5;
+  --border-muted: #eeeeee;
+
+  /* Status colors */
+  --success: #00a72a;
+  --danger: #e5171b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-card: var(--surface-card);
+  --color-surface-muted: var(--surface-muted);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary-soft: var(--primary-soft);
   --color-secondary: var(--secondary);
-  --color-surface: var(--surface);
-  --color-border-soft: var(--border-soft);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
-  --color-text-subtle: var(--text-subtle);
+  --color-text-inverse: var(--text-inverse);
+  --color-border: var(--border);
+  --color-border-muted: var(--border-muted);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -44,5 +67,6 @@ body {
 }
 
 a {
+  color: inherit;
   text-decoration: none;
 }
