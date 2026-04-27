@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   BadgeCheck,
   BarChart3,
@@ -56,7 +59,17 @@ type DashboardSidebarProps = {
   onClose: () => void;
 };
 
+function isActivePath(pathname: string, href: string) {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
+  const pathname = usePathname();
+
   return (
     <>
       <button
@@ -113,6 +126,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                 <div className="space-y-1">
                   {group.items.map((item) => {
                     const Icon = iconMap[item.icon as keyof typeof iconMap];
+                    const isActive = isActivePath(pathname, item.href);
 
                     return (
                       <Link
@@ -120,20 +134,20 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                         href={item.href}
                         className={cn(
                           "flex h-9 items-center gap-3 rounded-2xl px-3 text-xs font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-text-primary",
-                          item.active && "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary",
+                          isActive && "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary",
                         )}
                       >
                         <Icon
                           className={cn(
                             "size-4 shrink-0 text-secondary",
-                            item.active && "text-primary",
+                            isActive && "text-primary",
                           )}
                           strokeWidth={2.25}
                         />
                         <span
                           className={cn(
                             "min-w-0 flex-1 truncate",
-                            item.active && "text-primary",
+                            isActive && "text-primary",
                           )}
                         >
                           {item.title}

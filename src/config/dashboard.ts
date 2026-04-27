@@ -3,7 +3,6 @@ export type DashboardNavItem = {
   href: string;
   icon: string;
   badge?: string;
-  active?: boolean;
 };
 
 export type DashboardNavGroup = {
@@ -29,7 +28,6 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         title: "Admin Users",
         href: "/admin-users",
         icon: "users-round",
-        active: true,
       },
       {
         title: "Create Admin",
