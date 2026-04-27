@@ -107,7 +107,7 @@ export function GiftsPage() {
         title="Gift Inventory"
         description="Manage and monitor all gift listings across the platform."
         actions={
-          <Button className="h-10 rounded-2xl px-4 text-xs">
+          <Button className="h-10! rounded-xl text-xs">
             + Add New Gift
           </Button>
         }
@@ -165,63 +165,63 @@ export function GiftsPage() {
         data={giftInventoryItems}
         pagination={{ ...giftPagination, page, onPageChange: setPage }}
         headers={
-            <>
-              <TableHead>Gift Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Provider</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </>
-          }
-          row={(item: GiftInventoryItem) => (
-            <>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <span
-                    className={cn(
-                      "flex size-11 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-sm",
-                      imageToneClass[item.imageTone],
-                    )}
-                  >
-                    <Gift className="size-4" />
-                  </span>
-                  <span className="max-w-[130px] text-xs font-semibold leading-4 text-slate-950">
-                    {item.name}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell className="text-xs text-slate-600">{item.category}</TableCell>
-              <TableCell className="text-xs text-slate-400">{item.provider}</TableCell>
-              <TableCell className="text-xs font-semibold text-slate-950">{item.price}</TableCell>
-              <TableCell>
-                <span className="inline-flex items-center gap-1 text-xs text-slate-600">
-                  <Star className="size-3.5 fill-amber-400 text-amber-400" />
-                  {item.rating}
+          <>
+            <TableHead>Gift Name</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Provider</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Rating</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </>
+        }
+        row={(item: GiftInventoryItem) => (
+          <>
+            <TableCell>
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "flex size-11 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-sm",
+                    imageToneClass[item.imageTone],
+                  )}
+                >
+                  <Gift className="size-4" />
                 </span>
-              </TableCell>
-              <TableCell>
-                <StatusBadge status={item.status} />
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center justify-end gap-3">
-                  <button
-                    type="button"
-                    className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-primary"
-                  >
-                    <Edit3 className="size-4" />
-                  </button>
-                  <button
-                    type="button"
-                    className="rounded-lg p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-500"
-                  >
-                    <Trash2 className="size-4" />
-                  </button>
-                </div>
-              </TableCell>
-            </>
-          )}
+                <span className="max-w-[130px] text-xs font-semibold leading-4 text-slate-950">
+                  {item.name}
+                </span>
+              </div>
+            </TableCell>
+            <TableCell className="text-xs text-slate-600">{item.category}</TableCell>
+            <TableCell className="text-xs text-slate-400">{item.provider}</TableCell>
+            <TableCell className="text-xs font-semibold text-slate-950">{item.price}</TableCell>
+            <TableCell>
+              <span className="inline-flex items-center gap-1 text-xs text-slate-600">
+                <Star className="size-3.5 fill-amber-400 text-amber-400" />
+                {item.rating}
+              </span>
+            </TableCell>
+            <TableCell>
+              <StatusBadge status={item.status} />
+            </TableCell>
+            <TableCell>
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-primary"
+                >
+                  <Edit3 className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  className="rounded-lg p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-500"
+                >
+                  <Trash2 className="size-4" />
+                </button>
+              </div>
+            </TableCell>
+          </>
+        )}
       />
     </div>
   );
