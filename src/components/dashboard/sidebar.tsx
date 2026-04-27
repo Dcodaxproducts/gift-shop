@@ -25,6 +25,7 @@ import {
   X,
 } from "lucide-react";
 import { dashboardNavGroups, dashboardUser } from "@/config/dashboard";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
@@ -94,14 +95,12 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
         </div>
 
         <div className="px-4 pb-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-slate-300" />
-            <input
-              type="search"
-              placeholder="Quick find..."
-              className="h-9 w-full rounded-2xl border border-transparent bg-slate-50 pl-9 pr-3 text-xs text-slate-500 outline-none placeholder:text-slate-400 focus:border-primary/20 focus:bg-white focus:ring-2 focus:ring-primary/10"
-            />
-          </div>
+          <Input
+            type="search"
+            placeholder="Quick find..."
+            leftIcon={<Search className="size-3.5" />}
+            className="h-9 rounded-2xl border-transparent bg-slate-50 pl-9 pr-3 text-xs text-slate-500 placeholder:text-slate-400 focus:border-primary/20 focus:ring-2"
+          />
         </div>
 
         <nav className="min-h-0 flex-1 overflow-y-auto px-3 pb-5">

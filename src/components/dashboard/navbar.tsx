@@ -1,5 +1,6 @@
 import { Bell, Menu, Search, Settings } from "lucide-react";
 import { dashboardUser } from "@/config/dashboard";
+import { Input } from "@/components/ui/input";
 
 type DashboardNavbarProps = {
   onToggleSidebar: () => void;
@@ -22,14 +23,12 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
       </h1>
 
       <div className="ml-auto hidden w-full max-w-[365px] lg:block">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-300" />
-          <input
-            type="search"
-            placeholder="Search analytics, users, or providers..."
-            className="h-11 w-full rounded-2xl border border-transparent bg-slate-50 pl-11 pr-4 text-sm text-slate-500 outline-none placeholder:text-slate-400 focus:border-primary/20 focus:bg-white focus:ring-4 focus:ring-primary/10"
-          />
-        </div>
+        <Input
+          type="search"
+          placeholder="Search analytics, users, or providers..."
+          leftIcon={<Search className="size-4" />}
+          className="h-11 rounded-2xl border-transparent bg-slate-50 pr-4 text-sm text-slate-500 placeholder:text-slate-400 focus:border-primary/20 focus:ring-4"
+        />
       </div>
 
       <div className="ml-auto flex items-center gap-3 lg:ml-0">
