@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Globe, Headphones, LayoutGrid } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
 import { LoginForm } from "@/components/auth/login-form";
 import { SITE_NAME } from "@/constants/site";
 
@@ -75,24 +75,6 @@ export default function LoginPage() {
           <div className="flex flex-1 items-center justify-center">
             <LoginForm />
           </div>
-
-          <footer className="flex flex-wrap items-center justify-center gap-5 text-xs font-medium text-slate-500">
-            <Link
-              href="/support"
-              className="inline-flex items-center gap-2 transition hover:text-primary"
-            >
-              <Headphones className="size-4" />
-              Support
-            </Link>
-            <span className="text-slate-300">•</span>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 transition hover:text-primary"
-            >
-              <Globe className="size-4" />
-              English (US)
-            </button>
-          </footer>
         </section>
       </section>
     </main>

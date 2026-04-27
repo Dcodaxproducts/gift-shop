@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye, Lock, Mail, RotateCw } from "lucide-react";
+import { Eye, Globe, Headphones, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   return (
-    <Card className="w-full max-w-[355px]">
+    <Card className="w-full max-w-md">
       <CardHeader className="mb-8">
         <CardTitle className="text-[26px] leading-tight">
           Super Admin Login
@@ -62,13 +62,32 @@ export function LoginForm() {
 
           <Button type="submit" className="w-full gap-2">
             Login to Dashboard
-            <RotateCw className="size-4 animate-spin" />
           </Button>
         </form>
 
-        <p className="mt-9 flex items-center justify-center gap-2 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-300">
-          <Lock className="size-4" /> Secure access for authorized administrators only
-        </p>
+        <div className="mt-8 space-y-8">
+          <p className="flex items-center justify-center gap-2 text-center text-[10px] uppercase tracking-[0.12em] text-slate-400">
+            <Lock className="size-3" /> Secure access for authorized administrators only
+          </p>
+
+          <footer className="flex flex-wrap items-center justify-center gap-5 text-xs font-medium text-slate-500 border-t border-border pt-8">
+            <Link
+              href="/support"
+              className="inline-flex items-center gap-2 transition hover:text-primary"
+            >
+              <Headphones className="size-4" />
+              Support
+            </Link>
+            <span className="text-slate-300">•</span>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 transition hover:text-primary"
+            >
+              <Globe className="size-4" />
+              English (US)
+            </button>
+          </footer>
+        </div>
       </CardContent>
     </Card>
   );
