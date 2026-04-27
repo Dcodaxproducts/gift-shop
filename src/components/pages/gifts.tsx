@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarCheck, CheckCircle2, Edit3, Filter, Gift, Search, Smile, Star, Trash2 } from "lucide-react";
+import { CalendarCheck, CheckCircle2, Edit3, Gift, ListFilter, Search, Smile, Star, Trash2 } from "lucide-react";
 import {
   giftCategoryOptions,
   giftInventoryItems,
@@ -155,7 +155,7 @@ export function GiftsPage() {
               aria-label="Open filters"
               className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-500 transition hover:bg-primary/10 hover:text-primary"
             >
-              <Filter className="size-4" />
+              <ListFilter className="size-4" strokeWidth={3} />
             </button>
           </div>
         </div>
@@ -182,7 +182,7 @@ export function GiftsPage() {
                 <div className="flex items-center gap-3">
                   <span
                     className={cn(
-                      "flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-sm",
+                      "flex size-11 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-sm",
                       imageToneClass[item.imageTone],
                     )}
                   >
