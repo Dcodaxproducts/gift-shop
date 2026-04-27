@@ -5,6 +5,7 @@ import {
   platformSettings,
   securitySettings,
 } from "@/constants/settings";
+import { PageHeader } from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,14 +33,10 @@ function SectionTitle({ icon: Icon, title }: { icon: typeof Shield; title: strin
 export function SettingsPage() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-950">
-          System Settings
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Configure global platform settings and system behavior
-        </p>
-      </div>
+      <PageHeader
+        title="System Settings"
+        description="Configure global platform settings and system behavior"
+      />
 
       <section className="grid gap-5 xl:grid-cols-2">
         <Card className="rounded-2xl border border-border bg-white shadow-sm">
