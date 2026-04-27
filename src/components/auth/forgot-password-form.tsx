@@ -31,7 +31,7 @@ export function ForgotPasswordForm() {
               id="email"
               name="email"
               type="email"
-              defaultValue="admin@fintechgifts.com"
+              placeholder="admin@fintechgifts.com"
               autoComplete="email"
               leftIcon={<Mail className="size-4" />}
               className="h-12 rounded-2xl bg-slate-50 text-slate-400"
