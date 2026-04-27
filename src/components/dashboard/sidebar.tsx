@@ -133,14 +133,14 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                         key={item.href}
                         href={item.href}
                         className={cn(
-                          "flex h-9 items-center gap-3 rounded-2xl px-3 text-xs font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-text-primary",
+                          "flex h-9 items-center gap-3 rounded-2xl px-3 text-xs font-medium text-slate-500 transition hover:bg-slate-50 hover:text-text-primary",
                           isActive && "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary",
                         )}
                       >
                         <Icon
                           className={cn(
-                            "size-4 shrink-0 text-secondary",
-                            isActive && "text-primary",
+                            "size-4 shrink-0",
+                            isActive ? "text-[#6467F2]" : "text-secondary",
                           )}
                           strokeWidth={2.25}
                         />
