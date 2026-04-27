@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/constants/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gift Shop | Thoughtful Gifts Delivered",
-  description:
-    "Shop curated gift boxes, flowers, hampers, and custom surprises for every occasion.",
+  title: `${SITE_NAME} | Thoughtful Gifts Delivered`,
+  description: SITE_DESCRIPTION,
 };
 
 export default function RootLayout({
