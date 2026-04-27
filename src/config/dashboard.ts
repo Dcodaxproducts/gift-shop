@@ -17,7 +17,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       {
         title: "Dashboard Overview",
-        href: "/dashboard",
+        href: "/",
         icon: "layout-dashboard",
       },
     ],
@@ -27,18 +27,18 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       {
         title: "Admin Users",
-        href: "/dashboard/admin-users",
+        href: "/admin-users",
         icon: "users-round",
         active: true,
       },
       {
         title: "Create Admin",
-        href: "/dashboard/create-admin",
+        href: "/create-admin",
         icon: "user-plus",
       },
       {
         title: "Role & Permissions",
-        href: "/dashboard/roles-permissions",
+        href: "/roles-permissions",
         icon: "shield-check",
       },
     ],
@@ -46,21 +46,21 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     title: "Users & Providers",
     items: [
-      { title: "Users List", href: "/dashboard/users", icon: "users" },
-      { title: "User Details", href: "/dashboard/user-details", icon: "id-card" },
+      { title: "Users List", href: "/users", icon: "users" },
+      { title: "User Details", href: "/user-details", icon: "id-card" },
       {
         title: "Create Provider",
-        href: "/dashboard/create-provider",
+        href: "/create-provider",
         icon: "briefcase-business",
       },
       {
         title: "Provider List",
-        href: "/dashboard/providers",
+        href: "/providers",
         icon: "store",
       },
       {
         title: "Provider Approval",
-        href: "/dashboard/provider-approval",
+        href: "/provider-approval",
         icon: "badge-check",
         badge: "12",
       },
@@ -69,8 +69,8 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     title: "Inventory",
     items: [
-      { title: "Gift Listings", href: "/dashboard/gifts", icon: "package" },
-      { title: "Create Gift", href: "/dashboard/create-gift", icon: "circle-plus" },
+      { title: "Gift Listings", href: "/gifts", icon: "package" },
+      { title: "Create Gift", href: "/create-gift", icon: "circle-plus" },
     ],
   },
   {
@@ -78,12 +78,12 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       {
         title: "Transaction Monitoring",
-        href: "/dashboard/transactions",
+        href: "/transactions",
         icon: "chart-line",
       },
       {
         title: "Provider Payouts",
-        href: "/dashboard/payouts",
+        href: "/payouts",
         icon: "credit-card",
       },
     ],
@@ -93,12 +93,12 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       {
         title: "Social Moderation",
-        href: "/dashboard/social-moderation",
+        href: "/social-moderation",
         icon: "rss",
       },
       {
         title: "Reviews Moderation",
-        href: "/dashboard/reviews",
+        href: "/reviews",
         icon: "star",
       },
     ],
@@ -108,27 +108,27 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       {
         title: "Referral Settings",
-        href: "/dashboard/referral-settings",
+        href: "/referral-settings",
         icon: "share-2",
       },
       {
         title: "Subscription Plans",
-        href: "/dashboard/subscriptions",
+        href: "/subscriptions",
         icon: "calendar-days",
       },
       {
         title: "System Settings",
-        href: "/dashboard/settings",
+        href: "/settings",
         icon: "settings",
       },
       {
         title: "Platform Analytics",
-        href: "/dashboard/platform-analytics",
+        href: "/platform-analytics",
         icon: "bar-chart-3",
       },
       {
         title: "System Logs",
-        href: "/dashboard/system-logs",
+        href: "/system-logs",
         icon: "list-todo",
       },
     ],

@@ -1,18 +1,20 @@
+import type { Metadata } from "next";
+import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { SITE_NAME } from "@/constants/site";
+
+export const metadata: Metadata = {
+  title: `Analytics Dashboard | ${SITE_NAME}`,
+  description: "Gifting admin analytics dashboard shell.",
+};
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-6 text-foreground">
-      <section className="max-w-md text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
-          Theme Ready
-        </p>
-        <h1 className="mt-4 text-4xl font-bold tracking-tight text-text-primary">
-          Gifting
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-text-secondary">
-          Color system is configured. Next page design will be added after your
-          approval.
+    <DashboardShell>
+      <section className="min-h-[calc(100vh-121px)] rounded-3xl border border-dashed border-border bg-white/60 p-6">
+        <p className="text-sm font-medium text-slate-400">
+          Dashboard content will be added next.
         </p>
       </section>
-    </main>
+    </DashboardShell>
   );
 }

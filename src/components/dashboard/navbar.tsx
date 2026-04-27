@@ -17,7 +17,7 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
         <Menu className="size-5" />
       </button>
 
-      <h1 className="min-w-fit text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+      <h1 className="min-w-fit text-xl font-semibold tracking-tight text-text-primary sm:text-2xl">
         Analytics Dashboard
       </h1>
 

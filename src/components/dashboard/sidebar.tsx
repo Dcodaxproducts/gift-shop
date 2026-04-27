@@ -75,7 +75,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
         )}
       >
         <div className="flex h-[73px] items-center justify-between px-5">
-          <Link href="/dashboard" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <span className="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/25">
               <Gift className="size-5" />
             </span>
