@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { HomePage } from "@/components/pages/home";
 import { SITE_NAME } from "@/constants/site";
 
 export const metadata: Metadata = {
   title: `Analytics Dashboard | ${SITE_NAME}`,
-  description: "Gifting admin analytics dashboard shell.",
+  description: "Gifting admin analytics dashboard overview.",
 };
 
 export default function Home() {
   return (
     <DashboardShell>
-      <section className="min-h-[calc(100vh-121px)] rounded-3xl border border-dashed border-border bg-white/60 p-6">
-        <p className="text-sm font-medium text-slate-400">
-          Dashboard content will be added next.
-        </p>
-      </section>
+      <HomePage />
     </DashboardShell>
   );
 }
