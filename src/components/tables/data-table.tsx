@@ -36,14 +36,14 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-slate-50/60 py-20">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white py-20 shadow-sm">
         <p className="text-sm font-medium text-slate-400">No data found.</p>
       </div>
     );
   }
 
   return (
-    <div className="flex h-full flex-col justify-between">
+    <div className="flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
       <div className="overflow-x-auto">
         <Table className={cn(tableClassName)}>
           <TableHeader>
