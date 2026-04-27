@@ -13,9 +13,9 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
         type="button"
         aria-label="Toggle sidebar"
         onClick={onToggleSidebar}
-        className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-500 transition hover:bg-primary/10 hover:text-primary lg:hidden"
+        className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-secondary transition hover:bg-primary/10 hover:text-primary lg:hidden"
       >
-        <Menu className="size-5" />
+        <Menu className="size-5" strokeWidth={2.25} />
       </button>
 
       <h1 className="min-w-fit text-xl font-semibold tracking-tight text-text-primary sm:text-2xl">
@@ -35,16 +35,16 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
         <button
           type="button"
           aria-label="Notifications"
-          className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 transition hover:bg-primary/10 hover:text-primary"
+          className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-secondary transition hover:bg-primary/10 hover:text-primary"
         >
-          <Bell className="size-5" fill="black" />
+          <Bell className="size-5" strokeWidth={2.25} />
         </button>
         <button
           type="button"
           aria-label="Settings"
-          className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 transition hover:bg-primary/10 hover:text-primary"
+          className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-secondary transition hover:bg-primary/10 hover:text-primary"
         >
-          <Settings className="size-5" fill="black" />
+          <Settings className="size-5" strokeWidth={2.25} />
         </button>
 
         <div className="hidden items-center gap-3 pl-4 sm:flex">

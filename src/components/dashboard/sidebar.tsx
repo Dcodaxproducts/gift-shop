@@ -88,9 +88,9 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
             type="button"
             aria-label="Close sidebar"
             onClick={onClose}
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 lg:hidden"
+            className="rounded-lg p-2 text-secondary hover:bg-slate-100 lg:hidden"
           >
-            <X className="size-4" />
+            <X className="size-4" strokeWidth={2.25} />
           </button>
         </div>
 
@@ -123,7 +123,13 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                           item.active && "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary",
                         )}
                       >
-                        <Icon className="size-4 shrink-0" />
+                        <Icon
+                          className={cn(
+                            "size-4 shrink-0 text-secondary",
+                            item.active && "text-primary",
+                          )}
+                          strokeWidth={2.25}
+                        />
                         <span className="min-w-0 flex-1 truncate">{item.title}</span>
                         {item.badge ? (
                           <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold text-white">
