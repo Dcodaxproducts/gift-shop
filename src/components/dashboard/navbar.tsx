@@ -18,7 +18,7 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
         <Menu className="size-5" strokeWidth={2.25} />
       </button>
 
-      <h1 className="min-w-fit text-xl font-semibold tracking-tight text-text-primary sm:text-2xl">
+      <h1 className="min-w-fit text-xl font-semibold tracking-tight text-text-primary">
         Analytics Dashboard
       </h1>
 
@@ -49,8 +49,8 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
 
         <div className="hidden items-center gap-3 pl-4 sm:flex">
           <div className="text-right">
-            <p className="text-xs font-black text-text-primary">{dashboardUser.name}</p>
-            <p className="text-[11px] font-medium text-slate-400">{dashboardUser.role}</p>
+            <p className="text-xs font-black text-text-primary truncate">{dashboardUser.name}</p>
+            <p className="text-[11px] font-medium text-slate-400 truncate">{dashboardUser.role}</p>
           </div>
           <div className="flex size-10 items-center justify-center rounded-full bg-[#FFD6B8] text-xs font-black text-[#D47750]">
             {dashboardUser.avatarInitials}
