@@ -2,12 +2,15 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #111827;
-  --primary: #6366f1;
+  --foreground: #222222;
+  --primary: #8429a5;
   --primary-foreground: #ffffff;
-  --primary-soft: #eef0ff;
-  --brand-violet: #8429a5;
-  --brand-pink: #e745c4;
+  --primary-soft: #f3e6fa;
+  --secondary: #222222;
+  --surface: #f6f9fc;
+  --border-soft: #e5e7eb;
+  --text-muted: #6b7280;
+  --text-subtle: #a5a5a5;
 }
 
 @theme inline {
@@ -16,8 +19,11 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
-  --color-brand-violet: var(--brand-violet);
-  --color-brand-pink: var(--brand-pink);
+  --color-secondary: var(--secondary);
+  --color-surface: var(--surface);
+  --color-border-soft: var(--border-soft);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

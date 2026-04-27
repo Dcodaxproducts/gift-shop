@@ -1,3 +1,3 @@
-export const SITE_NAME = "Gift Shop";
+export const SITE_NAME = "Gifting";
 export const SITE_DESCRIPTION =
-  "Shop curated gift boxes, flowers, hampers, and custom surprises for every occasion.";
+  "Access the system management dashboard for transactions, permissions, and platform performance.";
