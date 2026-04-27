@@ -130,7 +130,14 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                           )}
                           strokeWidth={2.25}
                         />
-                        <span className="min-w-0 flex-1 truncate">{item.title}</span>
+                        <span
+                          className={cn(
+                            "min-w-0 flex-1 truncate",
+                            item.active && "text-primary",
+                          )}
+                        >
+                          {item.title}
+                        </span>
                         {item.badge ? (
                           <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold text-white">
                             {item.badge}
