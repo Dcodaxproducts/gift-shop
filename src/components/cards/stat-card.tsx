@@ -17,9 +17,9 @@ export function StatCard({ stat }: StatCardProps) {
   const Icon = statIconMap[stat.icon];
 
   return (
-    <Card className="border border-border shadow-sm">
-      <CardContent className="p-5">
-        <div className="mb-6 flex items-center justify-between">
+    <Card className="rounded-2xl border border-border bg-white shadow-sm">
+      <CardContent className="p-4 sm:p-5">
+        <div className="mb-5 flex items-start justify-between">
           <div className="flex size-9 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <Icon className="size-4" strokeWidth={2.4} />
           </div>
