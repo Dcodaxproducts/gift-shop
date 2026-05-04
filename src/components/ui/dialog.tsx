@@ -11,6 +11,9 @@ type DialogProps = {
   children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  headerClassName?: string;
+  contentClassName?: string;
+  footerClassName?: string;
 };
 
 export function Dialog({
@@ -21,6 +24,9 @@ export function Dialog({
   children,
   footer,
   className,
+  headerClassName,
+  contentClassName,
+  footerClassName,
 }: DialogProps) {
   if (!open) {
     return null;
@@ -44,7 +50,7 @@ export function Dialog({
           className,
         )}
       >
-        <div className="flex items-start justify-between gap-4 border-b border-border px-6 py-5">
+        <div className={cn("flex items-start justify-between gap-4 border-b border-border px-6 py-5", headerClassName)}>
           <div>
             <h2 id="dialog-title" className="text-lg font-black tracking-tight text-text-primary">
               {title}
@@ -64,8 +70,8 @@ export function Dialog({
             <X className="size-4" />
           </button>
         </div>
-        <div className="px-6 py-5">{children}</div>
-        {footer ? <div className="flex justify-end gap-3 border-t border-border px-6 py-4">{footer}</div> : null}
+        <div className={cn("px-6 py-5", contentClassName)}>{children}</div>
+        {footer ? <div className={cn("flex justify-end gap-3 border-t border-border px-6 py-4", footerClassName)}>{footer}</div> : null}
       </section>
     </div>
   );

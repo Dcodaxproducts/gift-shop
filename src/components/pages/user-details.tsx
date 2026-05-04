@@ -28,9 +28,9 @@ const activityToneClass = {
 
 function ProfileField({ label, value }: { label: string; value: string }) {
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">{label}</p>
-      <p className="mt-1 max-w-[150px] break-words text-[11px] font-bold leading-4 text-slate-700">{value}</p>
+      <p className="mt-1 max-w-[132px] break-words text-[11px] font-bold leading-4 text-slate-700">{value}</p>
     </div>
   );
 }
@@ -64,8 +64,8 @@ function TabsBar({ activeTab, onTabChange }: { activeTab: UserDetailTab; onTabCh
 function OverviewTab() {
   return (
     <CardContent className="px-5 pb-5 pt-4">
-        <h2 className="text-xs font-black uppercase tracking-wide text-slate-950">Recent Activity</h2>
-        <div className="mt-4 space-y-4">
+      <h2 className="text-xs font-black uppercase tracking-wide text-slate-950">Recent Activity</h2>
+      <div className="mt-4 space-y-4">
           {recentActivities.map((activity) => (
             <div key={activity.title} className="grid grid-cols-[30px_1fr_auto] items-start gap-3">
               <span className={cn("flex size-6 items-center justify-center rounded-full", activityToneClass[activity.tone])}>
@@ -78,14 +78,14 @@ function OverviewTab() {
               <p className="text-[10px] text-slate-400">{activity.time}</p>
             </div>
           ))}
-        </div>
-        <button
-          type="button"
-          className="mt-5 h-8 w-full rounded-lg bg-slate-50 text-[11px] font-bold text-slate-700 transition hover:bg-slate-100"
-        >
-          View All Activity
-        </button>
-      </CardContent>
+      </div>
+      <button
+        type="button"
+        className="mt-5 h-8 w-full rounded-lg bg-slate-50 text-[11px] font-bold text-slate-700 transition hover:bg-slate-100"
+      >
+        View All Activity
+      </button>
+    </CardContent>
   );
 }
 
@@ -111,23 +111,23 @@ export function UserDetailsPage() {
         </Button>
       </div>
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_150px] 2xl:grid-cols-[minmax(0,1fr)_150px]">
+      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_150px]">
         <div className="space-y-5">
           <Card className="rounded-xl border border-border bg-white p-5 shadow-sm">
-            <div className="grid gap-5 md:grid-cols-[88px_1fr]">
+            <div className="grid gap-5 md:grid-cols-[88px_minmax(0,1fr)]">
               <div className="relative size-[86px]">
                 <span className="flex size-[86px] items-center justify-center overflow-hidden rounded-full border border-[#a9b8e8] bg-[#d9e5df] text-xl font-black text-slate-700">
                   {userProfile.avatarInitials}
                 </span>
                 <span className="absolute bottom-1 right-0 size-3.5 rounded-full border-2 border-white bg-emerald-500" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h2 className="text-lg font-black text-slate-950">{userProfile.name}</h2>
                 <p className="mt-0.5 text-xs text-slate-500">Premium Subscription Plan</p>
-                <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-5 grid grid-cols-2 gap-x-7 gap-y-3 lg:grid-cols-[132px_92px_110px]">
                   <ProfileField label="Email Address" value={userProfile.email} />
                   <ProfileField label="Phone Number" value={userProfile.phone} />
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Account Status</p>
                     <span className="mt-1 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold text-emerald-600">
                       {userProfile.status}
@@ -159,17 +159,17 @@ export function UserDetailsPage() {
               <CardTitle className="text-[12px] font-black text-slate-950">Account Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 px-4 pb-4">
-              <Button variant="outline" className="h-9 w-full rounded-lg px-2 text-[10px]" onClick={() => setIsEditDialogOpen(true)}>
-                <KeyRound className="mr-1.5 size-3" />
-                Reset Password
+              <Button variant="outline" className="h-9 w-full justify-center gap-1.5 rounded-lg px-2 text-[10px] leading-none" onClick={() => setIsEditDialogOpen(true)}>
+                <KeyRound className="size-3 shrink-0" />
+                <span>Reset Password</span>
               </Button>
-              <Button variant="outline" className="h-9 w-full rounded-lg border-rose-200 px-2 text-[10px] text-rose-600 hover:bg-rose-50" onClick={() => setIsSuspendDialogOpen(true)}>
-                <ShieldAlert className="mr-1.5 size-3" />
-                Suspend User
+              <Button variant="outline" className="h-9 w-full justify-center gap-1.5 rounded-lg border-rose-200 px-2 text-[10px] leading-none text-rose-600 hover:bg-rose-50" onClick={() => setIsSuspendDialogOpen(true)}>
+                <ShieldAlert className="size-3 shrink-0" />
+                <span>Suspend User</span>
               </Button>
-              <Button className="h-10 w-full rounded-lg bg-slate-950 px-2 text-[10px] shadow-none hover:bg-slate-800">
-                <Mail className="mr-1.5 size-3" />
-                Send Notification
+              <Button className="h-10 w-full justify-center gap-1.5 rounded-lg bg-slate-950 px-2 text-[10px] leading-none shadow-none hover:bg-slate-800">
+                <Mail className="size-3 shrink-0" />
+                <span className="text-center leading-3">Send Notification</span>
               </Button>
             </CardContent>
           </Card>
