@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CalendarCheck, CheckCircle2, Edit3, Gift, ListFilter, Search, Smile, Star, Trash2 } from "lucide-react";
 import {
   giftCategoryOptions,
@@ -100,6 +101,7 @@ function StatusBadge({ status }: { status: GiftStatus }) {
 
 export function GiftsPage() {
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   return (
     <div className="space-y-5">
@@ -208,6 +210,7 @@ export function GiftsPage() {
               <div className="flex items-center justify-end gap-3">
                 <button
                   type="button"
+                  onClick={() => router.push(`/gifts/${item.id}`)}
                   className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-primary"
                 >
                   <Edit3 className="size-4" />
