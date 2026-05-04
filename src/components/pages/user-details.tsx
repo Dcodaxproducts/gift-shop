@@ -30,7 +30,7 @@ function ProfileField({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
       <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">{label}</p>
-      <p className="mt-1 max-w-[132px] break-words text-[11px] font-bold leading-4 text-slate-700">{value}</p>
+      <p className="mt-1 w-full break-words text-[11px] font-bold leading-4 text-slate-700">{value}</p>
     </div>
   );
 }
@@ -111,7 +111,7 @@ export function UserDetailsPage() {
         </Button>
       </div>
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_150px]">
+      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_230px]">
         <div className="space-y-5">
           <Card className="rounded-xl border border-border bg-white p-5 shadow-sm">
             <div className="grid gap-5 md:grid-cols-[88px_minmax(0,1fr)]">
@@ -124,7 +124,7 @@ export function UserDetailsPage() {
               <div className="min-w-0">
                 <h2 className="text-lg font-black text-slate-950">{userProfile.name}</h2>
                 <p className="mt-0.5 text-xs text-slate-500">Premium Subscription Plan</p>
-                <div className="mt-5 grid grid-cols-2 gap-x-7 gap-y-3 lg:grid-cols-[132px_92px_110px]">
+                <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 lg:grid-cols-3">
                   <ProfileField label="Email Address" value={userProfile.email} />
                   <ProfileField label="Phone Number" value={userProfile.phone} />
                   <div className="min-w-0">
@@ -153,21 +153,21 @@ export function UserDetailsPage() {
           </Card>
         </div>
 
-        <aside className="space-y-5 xl:w-[150px]">
+        <aside className="space-y-5 xl:w-[230px]">
           <Card className="rounded-xl border border-border bg-white shadow-sm">
             <CardHeader className="p-4 pb-3">
               <CardTitle className="text-[12px] font-black text-slate-950">Account Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 px-4 pb-4">
-              <Button variant="outline" className="h-9 w-full justify-center gap-1.5 rounded-lg px-2 text-[10px] leading-none" onClick={() => setIsEditDialogOpen(true)}>
+              <Button variant="outline" className="h-10 w-full justify-center gap-2 rounded-lg px-3 text-[11px] leading-none" onClick={() => setIsEditDialogOpen(true)}>
                 <KeyRound className="size-3 shrink-0" />
                 <span>Reset Password</span>
               </Button>
-              <Button variant="outline" className="h-9 w-full justify-center gap-1.5 rounded-lg border-rose-200 px-2 text-[10px] leading-none text-rose-600 hover:bg-rose-50" onClick={() => setIsSuspendDialogOpen(true)}>
+              <Button variant="outline" className="h-10 w-full justify-center gap-2 rounded-lg border-rose-200 px-3 text-[11px] leading-none text-rose-600 hover:bg-rose-50" onClick={() => setIsSuspendDialogOpen(true)}>
                 <ShieldAlert className="size-3 shrink-0" />
                 <span>Suspend User</span>
               </Button>
-              <Button className="h-10 w-full justify-center gap-1.5 rounded-lg bg-slate-950 px-2 text-[10px] leading-none shadow-none hover:bg-slate-800">
+              <Button className="h-12 w-full justify-center gap-2 rounded-lg bg-slate-950 px-3 text-[11px] leading-none shadow-none hover:bg-slate-800">
                 <Mail className="size-3 shrink-0" />
                 <span className="text-center leading-3">Send Notification</span>
               </Button>
