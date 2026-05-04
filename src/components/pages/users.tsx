@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, ListFilter, Search } from "lucide-react";
+import { Download, Edit2, Eye, ListFilter, Search, X } from "lucide-react";
 import {
   registeredUsers,
   registeredUsersPagination,
@@ -59,11 +59,11 @@ export function UsersPage() {
         description="Search, review, and manage customer accounts across the platform."
         actions={
           <>
-            <Button variant="outline" className="h-10! rounded-xl text-xs">
+            <Button variant="outline">
               <Download className="mr-2 size-3.5" />
               Export
             </Button>
-            <Button className="h-10! rounded-xl text-xs">+ Add User</Button>
+            <Button>+ Add User</Button>
           </>
         }
       />
@@ -144,14 +144,31 @@ export function UsersPage() {
             <TableCell className="text-xs text-slate-500">{item.registeredAt}</TableCell>
             <TableCell className="text-xs font-bold text-slate-950">{item.transactions}</TableCell>
             <TableCell>
-              <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-bold", statusToneClass[item.status])}>
+              <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", statusToneClass[item.status])}>
                 {item.status}
               </span>
             </TableCell>
-            <TableCell>
-              <div className="flex items-center justify-end text-xs">
-                <Button variant="ghost" onClick={() => router.push(`/users/${item.id}`)} type="button" className="text-primary transition hover:text-primary/75">View</Button>
-                <Button variant="ghost" type="button" className="text-slate-400 transition hover:text-slate-700">Edit</Button>
+             <TableCell>
+              <div className="flex items-center justify-end">
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-primary hover:bg-primary/10"
+                  onClick={() => router.push(`/users/${item.id}`)}
+                >
+                  <Eye className="size-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                >
+                  <Edit2 className="size-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                >
+                  <X className="size-4" />
+                </Button>
               </div>
             </TableCell>
           </>

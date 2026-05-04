@@ -1,6 +1,7 @@
 "use client";
 
-import { BriefcaseBusiness, ShieldCheck, UserRound } from "lucide-react";
+import { useState } from "react";
+import { Eye, Info, KeyRound, ShieldCheck, UserRound } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,71 +16,132 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
-function SectionCard({ icon: Icon, title, children }: { icon: React.ElementType; title: string; children: React.ReactNode }) {
-  return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <CardContent className="p-6">
-        <div className="flex items-center gap-2.5">
-          <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <Icon className="size-4" strokeWidth={2.25} />
-          </span>
-          <h2 className="text-sm font-bold text-slate-950">{title}</h2>
-        </div>
-        <div className="mt-5">{children}</div>
-      </CardContent>
-    </Card>
-  );
-}
-
 export function CreateStaffPage() {
+  const [requirePasswordChange, setRequirePasswordChange] = useState(true);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader title="Create Staff" />
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <SectionCard icon={UserRound} title="Staff Details">
-          <div className="space-y-5">
+      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-2.5">
+            <UserRound className="size-4 text-primary" strokeWidth={2.5} />
+            <h2 className="text-sm font-bold text-slate-950">Staff Information</h2>
+          </div>
+
+          <div className="mt-5 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2"><Label htmlFor="staff-name">Full Name</Label><Input id="staff-name" className="h-11! rounded-xl bg-slate-50 text-xs" /></div>
-              <div className="space-y-2"><Label htmlFor="staff-email">Email</Label><Input id="staff-email" className="h-11! rounded-xl bg-slate-50 text-xs" /></div>
+              <div className="space-y-2">
+                <Label htmlFor="full-name">Full Name</Label>
+                <Input id="full-name" placeholder="e.g. Sarah Connor" />
+                <p className="text-[10px] text-slate-400">
+                  Enter the legal name as it appears on documents.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <Input id="email" placeholder="sarah.c@company.com" />
+                <p className="text-[10px] text-slate-400">
+                  Used for login and notifications.
+                </p>
+              </div>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2"><Label htmlFor="staff-phone">Phone</Label><Input id="staff-phone" className="h-11! rounded-xl bg-slate-50 text-xs" /></div>
-              <div className="space-y-2"><Label htmlFor="staff-password">Temporary Password</Label><Input id="staff-password" className="h-11! rounded-xl bg-slate-50 text-xs" /></div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <div className="flex h-12 items-center rounded-[16px] border border-slate-200 bg-slate-50">
+                <span className="flex h-full items-center border-r border-slate-200 px-4 text-sm text-slate-500">
+                  +1
+                </span>
+                <input
+                  id="phone"
+                  placeholder="(555) 000-0000"
+                  className="h-full flex-1 bg-transparent px-4 text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                />
+              </div>
             </div>
           </div>
-        </SectionCard>
+        </CardContent>
+      </Card>
 
-        <div className="space-y-5">
-          <SectionCard icon={BriefcaseBusiness} title="Role Assignment">
+      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-2.5">
+            <ShieldCheck className="size-4 text-primary" strokeWidth={2.5} />
+            <h2 className="text-sm font-bold text-slate-950">Role Assignment</h2>
+          </div>
+
+          <div className="mt-5 space-y-4">
             <div className="space-y-2">
-              <Label>Role</Label>
-              <Select defaultValue="risk-analyst">
-                <SelectTrigger className="h-11 w-full rounded-xl bg-slate-50 text-xs"><SelectValue /></SelectTrigger>
+              <Label>Select Staff Role</Label>
+              <Select defaultValue="manager">
+                <SelectTrigger className="h-12 w-full px-4">
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="risk-analyst">Risk Analyst</SelectItem>
+                  <SelectItem value="manager">Manager</SelectItem>
                   <SelectItem value="support-lead">Support Lead</SelectItem>
                   <SelectItem value="ops-manager">Operations Manager</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-          </SectionCard>
 
-          <SectionCard icon={ShieldCheck} title="Status">
-            <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-4">
-              <div>
-                <p className="text-xs font-semibold text-slate-700">Active Account</p>
-                <p className="mt-1 text-[11px] text-slate-400">Allow this staff member to sign in</p>
+            <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
+              <div className="flex items-center gap-2">
+                <Info className="size-4 text-primary" strokeWidth={2.5} />
+                <p className="text-xs font-bold text-primary">Manager Permissions</p>
               </div>
-              <Switch checked className="h-6 w-11" />
+              <p className="mt-1.5 text-[11px] leading-5 text-slate-500">
+                Managers can oversee daily operations, approve transactions up to
+                $10,000, and manage support tickets. They cannot modify
+                system-wide settings or delete other staff accounts.
+              </p>
             </div>
-          </SectionCard>
-        </div>
-      </section>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-2.5">
+            <KeyRound className="size-4 text-primary" strokeWidth={2.5} />
+            <h2 className="text-sm font-bold text-slate-950">Account Security</h2>
+          </div>
+
+          <div className="mt-5 space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="temp-password">Temporary Password</Label>
+              <Input
+                id="temp-password"
+                type="password"
+                defaultValue="••••••••"
+                rightIcon={<Eye className="size-4" />}
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold text-slate-700">
+                  Require password change on first login
+                </p>
+                <p className="mt-1 text-[10px] text-slate-400">
+                  The user will be prompted to create a new password immediately.
+                </p>
+              </div>
+              <Switch
+                checked={requirePasswordChange}
+                onClick={() => setRequirePasswordChange((c) => !c)}
+                className="h-6 w-11"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="flex justify-end gap-3">
-        <Button variant="outline" className="h-10 rounded-xl px-5 text-xs">Cancel</Button>
-        <Button className="h-10 rounded-xl px-5 text-xs">Create Staff</Button>
+        <Button variant="outline">Cancel</Button>
+        <Button>Create Staff</Button>
       </div>
     </div>
   );

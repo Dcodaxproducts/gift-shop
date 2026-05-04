@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, ListFilter, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { Edit2, Eye, ListFilter, Plus, Search, X } from "lucide-react";
 import {
   staffMembers,
   staffPagination,
@@ -40,7 +40,7 @@ export function StaffUsersPage() {
         title="Staff Management"
         description="Manage staff accounts, roles, and permissions"
         actions={
-          <Button className="h-10 rounded-xl px-5 text-xs" onClick={() => router.push("/create-staff")}>
+          <Button onClick={() => router.push("/create-staff")}>
             <Plus className="mr-2 size-3.5" />
             Create Staff
           </Button>
@@ -78,7 +78,7 @@ export function StaffUsersPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" className="col-span-2 h-11 rounded-xl px-4 text-xs sm:col-span-1 sm:w-11 sm:px-0">
+            <Button variant="outline" className="col-span-2 h-11 sm:col-span-1 sm:w-11 sm:px-0">
               <ListFilter className="size-4" />
               <span className="sm:hidden">More Filters</span>
             </Button>
@@ -118,15 +118,26 @@ export function StaffUsersPage() {
             </TableCell>
             <TableCell className="text-xs text-slate-500">{item.createdAt}</TableCell>
             <TableCell>
-              <div className="flex items-center justify-end gap-2">
-                <Button variant="outline" className="h-9 w-9 rounded-xl px-0 text-slate-500" onClick={() => router.push(`/staff-users/${item.id}`)}>
+              <div className="flex items-center justify-end">
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-primary hover:bg-primary/10"
+                  onClick={() => router.push(`/staff-users/${item.id}`)}
+                >
                   <Eye className="size-4" />
                 </Button>
-                <Button variant="outline" className="h-9 w-9 rounded-xl px-0 text-slate-500" onClick={() => router.push(`/staff-users/${item.id}`)}>
-                  <Pencil className="size-4" />
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                  onClick={() => router.push(`/staff-users/${item.id}`)}
+                >
+                  <Edit2 className="size-4" />
                 </Button>
-                <Button variant="outline" className="h-9 w-9 rounded-xl px-0 text-rose-500">
-                  <Trash2 className="size-4" />
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                >
+                  <X className="size-4" />
                 </Button>
               </div>
             </TableCell>

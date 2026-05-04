@@ -12,6 +12,7 @@ import {
   type UserDetailTab,
 } from "@/constants/user-details";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "../common/page-header";
 
 const tabs: Array<{ id: UserDetailTab; label: string; icon: typeof UserRound }> = [
   { id: "overview", label: "Overview", icon: UserRound },
@@ -30,7 +31,7 @@ function ProfileField({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
       <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">{label}</p>
-      <p className="mt-1 w-full break-words text-[11px] font-bold leading-4 text-slate-700">{value}</p>
+      <p className="mt-1 w-full wrap-break-word text-[11px] font-bold leading-4 text-slate-700">{value}</p>
     </div>
   );
 }
@@ -66,18 +67,18 @@ function OverviewTab() {
     <CardContent className="px-5 pb-5 pt-4">
       <h2 className="text-xs font-black uppercase tracking-wide text-slate-950">Recent Activity</h2>
       <div className="mt-4 space-y-4">
-          {recentActivities.map((activity) => (
-            <div key={activity.title} className="grid grid-cols-[30px_1fr_auto] items-start gap-3">
-              <span className={cn("flex size-6 items-center justify-center rounded-full", activityToneClass[activity.tone])}>
-                <RotateCcw className="size-3" />
-              </span>
-              <div>
-                <p className="text-[11px] font-bold leading-4 text-slate-800">{activity.title}</p>
-                <p className="mt-0.5 text-[10px] text-slate-500">{activity.description}</p>
-              </div>
-              <p className="text-[10px] text-slate-400">{activity.time}</p>
+        {recentActivities.map((activity) => (
+          <div key={activity.title} className="grid grid-cols-[30px_1fr_auto] items-start gap-3">
+            <span className={cn("flex size-6 items-center justify-center rounded-full", activityToneClass[activity.tone])}>
+              <RotateCcw className="size-3" />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold leading-4 text-slate-800">{activity.title}</p>
+              <p className="mt-0.5 text-[10px] text-slate-500">{activity.description}</p>
             </div>
-          ))}
+            <p className="text-[10px] text-slate-400">{activity.time}</p>
+          </div>
+        ))}
       </div>
       <button
         type="button"
@@ -97,14 +98,7 @@ export function UserDetailsPage() {
   return (
     <div className="space-y-5">
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black tracking-tight text-slate-950">User Profile</h1>
-          <div className="mt-2 flex items-center gap-2 text-[11px] font-semibold">
-            <span className="text-slate-400">Users</span>
-            <span className="text-slate-300">/</span>
-            <span className="text-slate-950">Details</span>
-          </div>
-        </div>
+        <PageHeader title="User Details" />
         <Button variant="outline" className="h-9 rounded-xl px-4 text-[11px]" onClick={() => setIsEditDialogOpen(true)}>
           <Pencil className="mr-2 size-3.5" />
           Edit User
