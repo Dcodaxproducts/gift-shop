@@ -86,31 +86,31 @@ function PillBadge({ label, className }: { label: string; className: string }) {
 function ProviderStats() {
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {providerStats.map((stat) => {
-        const Icon = statIconMap[stat.tone];
-
-        return (
-          <Card key={stat.title} className="rounded-[22px] border border-slate-100 bg-white shadow-sm shadow-slate-100/80">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className={cn("flex size-11 items-center justify-center rounded-2xl", statToneClass[stat.tone])}>
-                  <Icon className="size-5" strokeWidth={2.25} />
-                </div>
-                <span className={cn("rounded-full px-2.5 py-1 text-[10px] font-black leading-none", statBadgeClass[stat.tone])}>
-                  {stat.change}
-                </span>
-              </div>
-              <div className="mt-5">
-                <p className="text-[13px] font-semibold text-slate-500">{stat.title}</p>
-                <p className="mt-2 text-[30px] font-black leading-none tracking-tight text-slate-950">
-                  {stat.value}
-                </p>
-                <p className="mt-3 text-[11px] font-medium text-slate-400">{stat.helper}</p>
-              </div>
-            </CardContent>
-          </Card>
-        );
-      })}
+      {providerStats.map((stat) => (
+        <Card
+          key={stat.title}
+          className="rounded-[22px] border border-slate-100 bg-white shadow-sm shadow-slate-100/80"
+        >
+          <CardContent className="p-5">
+            <p className="text-[13px] font-semibold text-slate-500">
+              {stat.title}
+            </p>
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <p className="text-xl font-bold leading-none tracking-tight text-slate-950">
+                {stat.value}
+              </p>
+              <span
+                className={cn(
+                  "rounded-full px-2.5 py-1 text-[11px] font-bold leading-none",
+                  statBadgeClass[stat.tone],
+                )}
+              >
+                {stat.change}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </section>
   );
 }
