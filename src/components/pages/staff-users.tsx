@@ -1,13 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Search } from "lucide-react";
-import { staffMembers, type StaffMember } from "@/constants/staff";
+import { Eye, ListFilter, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import {
+  staffMembers,
+  staffPagination,
+  staffRoleOptions,
+  staffStatusOptions,
+  type StaffMember,
+} from "@/constants/staff";
 import { PageHeader } from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +32,7 @@ const statusToneClass = {
 
 export function StaffUsersPage() {
   const router = useRouter();
+  const [page, setPage] = useState(1);
 
   return (
     <div className="space-y-5">
@@ -27,29 +42,60 @@ export function StaffUsersPage() {
         actions={
           <Button className="h-10 rounded-xl px-5 text-xs" onClick={() => router.push("/create-staff")}>
             <Plus className="mr-2 size-3.5" />
-            Add Staff
+            Create Staff
           </Button>
         }
       />
 
       <Card className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <Input
-          type="search"
-          placeholder="Search staff members..."
-          leftIcon={<Search className="size-4" />}
-          className="h-11! rounded-xl bg-slate-50 text-xs"
-        />
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+          <div className="min-w-0 flex-1">
+            <Input
+              type="search"
+              placeholder="Search staff by name or email..."
+              leftIcon={<Search className="size-4" />}
+              className="h-11! rounded-xl bg-slate-50 text-xs"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:flex">
+            <Select defaultValue="all">
+              <SelectTrigger className="h-11 w-full rounded-xl bg-slate-50 text-xs sm:w-[150px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {staffRoleOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select defaultValue="all">
+              <SelectTrigger className="h-11 w-full rounded-xl bg-slate-50 text-xs sm:w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {staffStatusOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" className="col-span-2 h-11 rounded-xl px-4 text-xs sm:col-span-1 sm:w-11 sm:px-0">
+              <ListFilter className="size-4" />
+              <span className="sm:hidden">More Filters</span>
+            </Button>
+          </div>
+        </div>
       </Card>
 
       <DataTable
         data={staffMembers}
-        showPagination={false}
+        pagination={{ ...staffPagination, page, onPageChange: setPage }}
         headers={
           <>
             <TableHead>Staff</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead>Created Date</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
@@ -70,10 +116,17 @@ export function StaffUsersPage() {
                 {item.status}
               </span>
             </TableCell>
+            <TableCell className="text-xs text-slate-500">{item.createdAt}</TableCell>
             <TableCell>
-              <div className="flex justify-end">
-                <Button variant="ghost" className="text-primary" onClick={() => router.push(`/staff-users/${item.id}`)}>
-                  Edit
+              <div className="flex items-center justify-end gap-2">
+                <Button variant="outline" className="h-9 w-9 rounded-xl px-0 text-slate-500" onClick={() => router.push(`/staff-users/${item.id}`)}>
+                  <Eye className="size-4" />
+                </Button>
+                <Button variant="outline" className="h-9 w-9 rounded-xl px-0 text-slate-500" onClick={() => router.push(`/staff-users/${item.id}`)}>
+                  <Pencil className="size-4" />
+                </Button>
+                <Button variant="outline" className="h-9 w-9 rounded-xl px-0 text-rose-500">
+                  <Trash2 className="size-4" />
                 </Button>
               </div>
             </TableCell>
