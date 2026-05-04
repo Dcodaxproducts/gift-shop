@@ -184,7 +184,7 @@ export function UserDetailsPage() {
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition",
+                  "shrink-0 rounded-xl px-4 py-2 text-xs font-semibold transition",
                   activeTab === tab.id ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:bg-slate-50 hover:text-slate-950",
                 )}
               >

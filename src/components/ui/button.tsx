@@ -9,7 +9,8 @@ const buttonVariants = {
   default:
     "bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90",
   outline: "border border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
-  ghost: "text-gray-500 hover:bg-gray-50 hover:text-gray-900",
+  ghost:
+    "h-auto rounded-none px-0 text-gray-500 hover:bg-transparent hover:text-gray-900 hover:underline",
 };
 
 export function Button({

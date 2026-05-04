@@ -2,6 +2,7 @@ export type RegisteredUserStatus = "Active" | "Inactive" | "Suspended";
 export type UserTone = "blue" | "purple" | "amber" | "emerald" | "rose";
 
 export type RegisteredUser = {
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -20,6 +21,7 @@ export const registeredUsersStats = [
 
 export const registeredUsers: RegisteredUser[] = [
   {
+    id: 1,
     name: "Sarah Johnson",
     email: "sarah.johnson@email.com",
     phone: "+1 (555) 123-4567",
@@ -29,6 +31,7 @@ export const registeredUsers: RegisteredUser[] = [
     tone: "blue",
   },
   {
+    id: 2,
     name: "Michael Chen",
     email: "michael.chen@email.com",
     phone: "+1 (555) 234-5678",
@@ -38,6 +41,7 @@ export const registeredUsers: RegisteredUser[] = [
     tone: "purple",
   },
   {
+    id: 3,
     name: "Emma Wilson",
     email: "emma.wilson@email.com",
     phone: "+1 (555) 345-6789",
@@ -47,6 +51,7 @@ export const registeredUsers: RegisteredUser[] = [
     tone: "amber",
   },
   {
+    id: 4,
     name: "David Rodriguez",
     email: "david.rodriguez@email.com",
     phone: "+1 (555) 456-7890",
@@ -56,6 +61,7 @@ export const registeredUsers: RegisteredUser[] = [
     tone: "rose",
   },
   {
+    id: 5,
     name: "Olivia Brown",
     email: "olivia.brown@email.com",
     phone: "+1 (555) 567-8901",

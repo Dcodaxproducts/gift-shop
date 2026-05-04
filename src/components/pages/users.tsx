@@ -13,7 +13,7 @@ import {
 import { PageHeader } from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -24,20 +24,7 @@ import {
 } from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-
-const statIconMap = {
-  blue: UsersRound,
-  emerald: UserPlus,
-  purple: UserCheck,
-  rose: ShieldAlert,
-};
-
-const statToneClass = {
-  blue: "bg-primary/10 text-primary",
-  emerald: "bg-emerald-50 text-emerald-500",
-  purple: "bg-violet-50 text-violet-500",
-  rose: "bg-rose-50 text-rose-500",
-};
+import { useRouter } from "next/navigation";
 
 const avatarToneClass: Record<UserTone, string> = {
   blue: "bg-primary/10 text-primary",
@@ -62,33 +49,9 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
-function UsersStats() {
-  return (
-    <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-      {registeredUsersStats.map((stat) => {
-        const Icon = statIconMap[stat.tone];
-
-        return (
-          <Card key={stat.title} className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardContent className="flex items-start justify-between p-5">
-              <div>
-                <p className="text-xs font-medium text-slate-500">{stat.title}</p>
-                <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">{stat.value}</p>
-                <p className="mt-4 text-[10px] font-semibold text-slate-400">{stat.change}</p>
-              </div>
-              <span className={cn("flex size-9 items-center justify-center rounded-2xl", statToneClass[stat.tone])}>
-                <Icon className="size-4" strokeWidth={2.25} />
-              </span>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </section>
-  );
-}
-
 export function UsersPage() {
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   return (
     <div className="space-y-5">
@@ -105,8 +68,6 @@ export function UsersPage() {
           </>
         }
       />
-
-      <UsersStats />
 
       <Card className="rounded-2xl border border-border bg-white p-4 shadow-sm">
         <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
@@ -189,9 +150,9 @@ export function UsersPage() {
               </span>
             </TableCell>
             <TableCell>
-              <div className="flex items-center justify-end gap-3 text-xs font-semibold">
-                <button type="button" className="text-primary transition hover:text-primary/75">View</button>
-                <button type="button" className="text-slate-400 transition hover:text-slate-700">Edit</button>
+              <div className="flex items-center justify-end text-xs">
+                <Button variant="ghost" onClick={() => router.push(`/users/${item.id}`)} type="button" className="text-primary transition hover:text-primary/75">View</Button>
+                <Button variant="ghost" type="button" className="text-slate-400 transition hover:text-slate-700">Edit</Button>
               </div>
             </TableCell>
           </>
