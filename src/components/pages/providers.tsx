@@ -34,10 +34,17 @@ const statIconMap = {
 };
 
 const statToneClass = {
-  blue: "bg-primary/10 text-primary",
-  amber: "bg-amber-50 text-amber-500",
-  emerald: "bg-emerald-50 text-emerald-500",
-  rose: "bg-rose-50 text-rose-500",
+  blue: "bg-[#eef2ff] text-[#4f46e5]",
+  amber: "bg-[#fff7ed] text-[#f97316]",
+  emerald: "bg-[#ecfdf5] text-[#10b981]",
+  rose: "bg-[#fff1f2] text-[#f43f5e]",
+};
+
+const statBadgeClass = {
+  blue: "bg-[#eef2ff] text-[#4f46e5]",
+  amber: "bg-[#fff7ed] text-[#f97316]",
+  emerald: "bg-[#ecfdf5] text-[#10b981]",
+  rose: "bg-[#fff1f2] text-[#f43f5e]",
 };
 
 const providerToneClass: Record<ProviderTone, string> = {
@@ -78,23 +85,28 @@ function PillBadge({ label, className }: { label: string; className: string }) {
 
 function ProviderStats() {
   return (
-    <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {providerStats.map((stat) => {
         const Icon = statIconMap[stat.tone];
 
         return (
-          <Card key={stat.title} className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardContent className="flex items-start justify-between p-5">
-              <div>
-                <p className="text-xs font-medium text-slate-500">{stat.title}</p>
-                <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">
+          <Card key={stat.title} className="rounded-[22px] border border-slate-100 bg-white shadow-sm shadow-slate-100/80">
+            <CardContent className="p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className={cn("flex size-11 items-center justify-center rounded-2xl", statToneClass[stat.tone])}>
+                  <Icon className="size-5" strokeWidth={2.25} />
+                </div>
+                <span className={cn("rounded-full px-2.5 py-1 text-[10px] font-black leading-none", statBadgeClass[stat.tone])}>
+                  {stat.change}
+                </span>
+              </div>
+              <div className="mt-5">
+                <p className="text-[13px] font-semibold text-slate-500">{stat.title}</p>
+                <p className="mt-2 text-[30px] font-black leading-none tracking-tight text-slate-950">
                   {stat.value}
                 </p>
-                <p className="mt-4 text-[10px] font-semibold text-slate-400">{stat.change}</p>
+                <p className="mt-3 text-[11px] font-medium text-slate-400">{stat.helper}</p>
               </div>
-              <span className={cn("flex size-9 items-center justify-center rounded-2xl", statToneClass[stat.tone])}>
-                <Icon className="size-4" strokeWidth={2.25} />
-              </span>
             </CardContent>
           </Card>
         );

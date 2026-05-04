@@ -15,25 +15,29 @@ export const providerStats = [
   {
     title: "Total Providers",
     value: "1,284",
-    change: "+12% from last month",
+    change: "+12%",
+    helper: "from last month",
     tone: "blue",
   },
   {
     title: "Pending Approval",
     value: "42",
-    change: "+8 new this week",
+    change: "High Priority",
+    helper: "needs review",
     tone: "amber",
   },
   {
     title: "Active Revenue",
     value: "$4.2M",
-    change: "+18% from last month",
+    change: "+18.5%",
+    helper: "from last month",
     tone: "emerald",
   },
   {
     title: "Inactive Rate",
     value: "2.4%",
-    change: "-0.4% from last month",
+    change: "-0.8%",
+    helper: "from last month",
     tone: "rose",
   },
 ] as const;
