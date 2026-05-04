@@ -22,7 +22,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "inline-flex h-12 items-center justify-center rounded-full px-5 text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex h-12 items-center justify-center rounded-full px-5 text-sm font-semibold transition cursor-pointer disabled:pointer-events-none disabled:opacity-50",
         buttonVariants[variant],
         className,
       )}
