@@ -3,11 +3,11 @@ export type UserDetailTab = "overview" | "transactions" | "gift-history" | "acti
 export const userProfile = {
   name: "Alex Johnson",
   username: "@alexjohnson",
-  email: "alex.johnson@email.com",
-  phone: "+1 (555) 123-4567",
-  address: "123 Market Street, San Francisco, CA",
+  email: "alex.johnson@example.com",
+  phone: "+1 (555) 234-5678",
+  address: "New York, USA",
   status: "Active",
-  joinedAt: "January 12, 2026",
+  joinedAt: "Oct 12, 2023",
   lastActive: "2 hours ago",
   avatarInitials: "AJ",
   subscription: {
@@ -18,15 +18,14 @@ export const userProfile = {
 };
 
 export const userProfileStats = [
-  { label: "Total Gifts", value: "128" },
-  { label: "Transactions", value: "$12.4K" },
-  { label: "Reward Points", value: "8,420" },
+  { label: "Orders", value: "24" },
+  { label: "Spent", value: "$1.2k" },
 ] as const;
 
 export const recentActivities = [
-  { title: "Purchased Premium Gift Box", time: "2 hours ago", tone: "emerald" },
-  { title: "Updated billing information", time: "Yesterday", tone: "blue" },
-  { title: "Redeemed 450 reward points", time: "2 days ago", tone: "amber" },
+  { title: "Logged in from new device", description: "iPhone 14 Pro · New York, US", time: "2h ago", tone: "amber" },
+  { title: "Successful payment of $49.00", description: "Premium Plan Renewal · Visa ...4242", time: "Yesterday", tone: "emerald" },
+  { title: "Profile information updated", description: "Changed phone number and address", time: "Oct 24, 2023", tone: "blue" },
 ] as const;
 
 export const userTransactions = [

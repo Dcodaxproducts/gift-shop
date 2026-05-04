@@ -1,137 +1,91 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, Gift, Mail, MapPin, Phone, ShieldCheck, WalletCards } from "lucide-react";
+import { CreditCard, Gift, History, KeyRound, Mail, Pencil, RotateCcw, ShieldAlert, UserRound } from "lucide-react";
 import { EditUserDialog, SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
-import { PageHeader } from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  activityLog,
-  giftHistory,
   recentActivities,
   userProfile,
   userProfileStats,
-  userTransactions,
   type UserDetailTab,
 } from "@/constants/user-details";
 import { cn } from "@/lib/utils";
 
-const tabs: Array<{ id: UserDetailTab; label: string }> = [
-  { id: "overview", label: "Overview" },
-  { id: "transactions", label: "Transactions" },
-  { id: "gift-history", label: "Gift History" },
-  { id: "activity-log", label: "Activity Log" },
+const tabs: Array<{ id: UserDetailTab; label: string; icon: typeof UserRound }> = [
+  { id: "overview", label: "Overview", icon: UserRound },
+  { id: "transactions", label: "Transactions", icon: CreditCard },
+  { id: "gift-history", label: "Gift History", icon: Gift },
+  { id: "activity-log", label: "Activity Log", icon: History },
 ];
 
 const activityToneClass = {
-  emerald: "bg-emerald-50 text-emerald-500",
-  blue: "bg-primary/10 text-primary",
-  amber: "bg-amber-50 text-amber-500",
+  emerald: "bg-emerald-100 text-emerald-500",
+  blue: "bg-blue-100 text-blue-500",
+  amber: "bg-violet-100 text-violet-500",
 };
 
-function ContactRow({ icon: Icon, label, value }: { icon: typeof Mail; label: string; value: string }) {
+function ProfileField({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-start gap-3 rounded-2xl bg-slate-50 px-4 py-3">
-      <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl bg-white text-primary shadow-sm">
-        <Icon className="size-4" />
-      </span>
-      <div>
-        <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="mt-1 text-xs font-semibold text-slate-700">{value}</p>
-      </div>
+    <div>
+      <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">{label}</p>
+      <p className="mt-1 max-w-[150px] break-words text-[11px] font-bold leading-4 text-slate-700">{value}</p>
+    </div>
+  );
+}
+
+function TabsBar({ activeTab, onTabChange }: { activeTab: UserDetailTab; onTabChange: (tab: UserDetailTab) => void }) {
+  return (
+    <div className="flex gap-7 border-b border-border px-5 pt-4">
+      {tabs.map((tab) => {
+        const Icon = tab.icon;
+        const active = tab.id === activeTab;
+
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => onTabChange(tab.id)}
+            className={cn(
+              "flex items-center gap-2 border-b-2 pb-3 text-xs font-bold transition",
+              active ? "border-[#7c3aed] text-[#7c3aed]" : "border-transparent text-slate-500 hover:text-slate-800",
+            )}
+          >
+            <Icon className="size-3.5" />
+            {tab.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
 
 function OverviewTab() {
   return (
-    <div className="grid gap-5 xl:grid-cols-2">
-      <Card className="rounded-2xl border border-border bg-white shadow-sm">
-        <CardHeader className="p-5 pb-4">
-          <CardTitle className="text-sm font-bold text-text-primary">Contact Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 px-5 pb-5">
-          <ContactRow icon={Mail} label="Email Address" value={userProfile.email} />
-          <ContactRow icon={Phone} label="Phone Number" value={userProfile.phone} />
-          <ContactRow icon={MapPin} label="Billing Address" value={userProfile.address} />
-          <ContactRow icon={CalendarDays} label="Joined" value={userProfile.joinedAt} />
-        </CardContent>
-      </Card>
-
-      <Card className="rounded-2xl border border-border bg-white shadow-sm">
-        <CardHeader className="p-5 pb-4">
-          <CardTitle className="text-sm font-bold text-text-primary">Recent Activity</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 px-5 pb-5">
+    <CardContent className="px-5 pb-5 pt-4">
+        <h2 className="text-xs font-black uppercase tracking-wide text-slate-950">Recent Activity</h2>
+        <div className="mt-4 space-y-4">
           {recentActivities.map((activity) => (
-            <div key={activity.title} className="flex items-start gap-3">
-              <span className={cn("mt-1 size-2.5 rounded-full", activityToneClass[activity.tone])} />
+            <div key={activity.title} className="grid grid-cols-[30px_1fr_auto] items-start gap-3">
+              <span className={cn("flex size-6 items-center justify-center rounded-full", activityToneClass[activity.tone])}>
+                <RotateCcw className="size-3" />
+              </span>
               <div>
-                <p className="text-xs font-semibold text-slate-700">{activity.title}</p>
-                <p className="mt-1 text-[10px] text-slate-400">{activity.time}</p>
+                <p className="text-[11px] font-bold leading-4 text-slate-800">{activity.title}</p>
+                <p className="mt-0.5 text-[10px] text-slate-500">{activity.description}</p>
               </div>
+              <p className="text-[10px] text-slate-400">{activity.time}</p>
             </div>
           ))}
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function TransactionsTab() {
-  return (
-    <Card className="rounded-2xl border border-border bg-white shadow-sm">
-      <CardContent className="divide-y divide-border p-0">
-        {userTransactions.map((transaction) => (
-          <div key={transaction.id} className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
-            <div>
-              <p className="text-xs font-bold text-slate-950">{transaction.title}</p>
-              <p className="mt-1 text-[10px] text-slate-400">{transaction.id} · {transaction.date}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-xs font-bold text-slate-950">{transaction.amount}</p>
-              <p className="mt-1 text-[10px] font-semibold text-emerald-500">{transaction.status}</p>
-            </div>
-          </div>
-        ))}
+        </div>
+        <button
+          type="button"
+          className="mt-5 h-8 w-full rounded-lg bg-slate-50 text-[11px] font-bold text-slate-700 transition hover:bg-slate-100"
+        >
+          View All Activity
+        </button>
       </CardContent>
-    </Card>
-  );
-}
-
-function GiftHistoryTab() {
-  return (
-    <Card className="rounded-2xl border border-border bg-white shadow-sm">
-      <CardContent className="divide-y divide-border p-0">
-        {giftHistory.map((giftItem) => (
-          <div key={giftItem.title} className="flex items-center gap-4 px-5 py-4">
-            <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              <Gift className="size-4" />
-            </span>
-            <div>
-              <p className="text-xs font-bold text-slate-950">{giftItem.title}</p>
-              <p className="mt-1 text-[10px] text-slate-400">Sent to {giftItem.recipient} · {giftItem.date}</p>
-            </div>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
-function ActivityLogTab() {
-  return (
-    <Card className="rounded-2xl border border-border bg-white shadow-sm">
-      <CardContent className="space-y-4 p-5">
-        {activityLog.map((activity) => (
-          <div key={activity.title} className="border-l-2 border-primary/20 pl-4">
-            <p className="text-xs font-bold text-slate-950">{activity.title}</p>
-            <p className="mt-1 text-[10px] text-slate-400">{activity.time}</p>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
   );
 }
 
@@ -142,109 +96,113 @@ export function UserDetailsPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader
-        title="User Profile"
-        description="View account details, activity, purchases, and subscription status."
-      />
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black tracking-tight text-slate-950">User Profile</h1>
+          <div className="mt-2 flex items-center gap-2 text-[11px] font-semibold">
+            <span className="text-slate-400">Users</span>
+            <span className="text-slate-300">/</span>
+            <span className="text-slate-950">Details</span>
+          </div>
+        </div>
+        <Button variant="outline" className="h-9 rounded-xl px-4 text-[11px]" onClick={() => setIsEditDialogOpen(true)}>
+          <Pencil className="mr-2 size-3.5" />
+          Edit User
+        </Button>
+      </div>
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_150px] 2xl:grid-cols-[minmax(0,1fr)_150px]">
         <div className="space-y-5">
-          <Card className="rounded-3xl border border-border bg-white p-5 shadow-sm">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <span className="flex size-20 items-center justify-center rounded-3xl bg-primary/10 text-2xl font-black text-primary">
+          <Card className="rounded-xl border border-border bg-white p-5 shadow-sm">
+            <div className="grid gap-5 md:grid-cols-[88px_1fr]">
+              <div className="relative size-[86px]">
+                <span className="flex size-[86px] items-center justify-center overflow-hidden rounded-full border border-[#a9b8e8] bg-[#d9e5df] text-xl font-black text-slate-700">
                   {userProfile.avatarInitials}
                 </span>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-2xl font-black tracking-tight text-slate-950">{userProfile.name}</h1>
-                    <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-600">
+                <span className="absolute bottom-1 right-0 size-3.5 rounded-full border-2 border-white bg-emerald-500" />
+              </div>
+              <div>
+                <h2 className="text-lg font-black text-slate-950">{userProfile.name}</h2>
+                <p className="mt-0.5 text-xs text-slate-500">Premium Subscription Plan</p>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <ProfileField label="Email Address" value={userProfile.email} />
+                  <ProfileField label="Phone Number" value={userProfile.phone} />
+                  <div>
+                    <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Account Status</p>
+                    <span className="mt-1 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold text-emerald-600">
                       {userProfile.status}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm font-medium text-slate-400">{userProfile.username}</p>
-                  <p className="mt-2 text-xs text-slate-500">Last active {userProfile.lastActive}</p>
+                  <ProfileField label="Registration Date" value={userProfile.joinedAt} />
+                  <ProfileField label="Last Login" value={userProfile.lastActive} />
+                  <ProfileField label="Location" value={userProfile.address} />
                 </div>
-              </div>
-              <div className="grid grid-cols-3 gap-3 sm:w-[330px]">
-                {userProfileStats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl bg-slate-50 px-3 py-4 text-center">
-                    <p className="text-lg font-black text-slate-950">{stat.value}</p>
-                    <p className="mt-1 text-[10px] font-semibold text-slate-400">{stat.label}</p>
-                  </div>
-                ))}
               </div>
             </div>
           </Card>
 
-          <div className="flex gap-2 overflow-x-auto rounded-2xl border border-border bg-white p-2 shadow-sm">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "shrink-0 rounded-xl px-4 py-2 text-xs font-semibold transition",
-                  activeTab === tab.id ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:bg-slate-50 hover:text-slate-950",
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {activeTab === "overview" ? <OverviewTab /> : null}
-          {activeTab === "transactions" ? <TransactionsTab /> : null}
-          {activeTab === "gift-history" ? <GiftHistoryTab /> : null}
-          {activeTab === "activity-log" ? <ActivityLogTab /> : null}
+          <Card className="overflow-hidden rounded-xl border border-border bg-white shadow-sm">
+            <TabsBar activeTab={activeTab} onTabChange={setActiveTab} />
+            {activeTab === "overview" ? <OverviewTab /> : null}
+            {activeTab !== "overview" ? (
+              <CardContent className="px-5 py-5">
+                <p className="text-sm font-bold text-slate-950">{tabs.find((tab) => tab.id === activeTab)?.label}</p>
+                <p className="mt-2 text-xs text-slate-500">Detailed history will appear here.</p>
+              </CardContent>
+            ) : null}
+          </Card>
         </div>
 
-        <aside className="space-y-5">
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <CardTitle className="text-sm font-bold text-text-primary">Account Actions</CardTitle>
+        <aside className="space-y-5 xl:w-[150px]">
+          <Card className="rounded-xl border border-border bg-white shadow-sm">
+            <CardHeader className="p-4 pb-3">
+              <CardTitle className="text-[12px] font-black text-slate-950">Account Actions</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 px-5 pb-5">
-              <Button className="h-10 w-full rounded-2xl text-xs" onClick={() => setIsEditDialogOpen(true)}>
-                Edit User
+            <CardContent className="space-y-3 px-4 pb-4">
+              <Button variant="outline" className="h-9 w-full rounded-lg px-2 text-[10px]" onClick={() => setIsEditDialogOpen(true)}>
+                <KeyRound className="mr-1.5 size-3" />
+                Reset Password
               </Button>
-              <Button variant="outline" className="h-10 w-full rounded-2xl text-xs text-rose-500 hover:bg-rose-50" onClick={() => setIsSuspendDialogOpen(true)}>
+              <Button variant="outline" className="h-9 w-full rounded-lg border-rose-200 px-2 text-[10px] text-rose-600 hover:bg-rose-50" onClick={() => setIsSuspendDialogOpen(true)}>
+                <ShieldAlert className="mr-1.5 size-3" />
                 Suspend User
               </Button>
+              <Button className="h-10 w-full rounded-lg bg-slate-950 px-2 text-[10px] shadow-none hover:bg-slate-800">
+                <Mail className="mr-1.5 size-3" />
+                Send Notification
+              </Button>
             </CardContent>
           </Card>
 
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <CardTitle className="flex items-center gap-2 text-sm font-bold text-text-primary">
-                <ShieldCheck className="size-4 text-primary" />
-                Subscription Overview
-              </CardTitle>
+          <Card className="rounded-xl border border-[#e0d7ff] bg-[#f1eaff] shadow-sm">
+            <CardHeader className="p-4 pb-3">
+              <CardTitle className="text-[12px] font-black text-[#7c3aed]">Subscription Overview</CardTitle>
             </CardHeader>
-            <CardContent className="px-5 pb-5">
-              <div className="rounded-2xl bg-primary/10 p-4">
-                <p className="text-xs font-bold text-primary">{userProfile.subscription.plan}</p>
-                <p className="mt-1 text-[10px] text-slate-500">{userProfile.subscription.renewsAt}</p>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white">
-                  <div className="h-full rounded-full bg-primary" style={{ width: `${userProfile.subscription.usage}%` }} />
-                </div>
-                <p className="mt-2 text-[10px] font-semibold text-slate-500">{userProfile.subscription.usage}% monthly usage</p>
+            <CardContent className="space-y-3 px-4 pb-4">
+              <div className="flex justify-between gap-3 text-[10px]">
+                <span className="text-slate-500">Plan Type</span>
+                <span className="text-right font-black text-slate-950">Premium Yearly</span>
               </div>
+              <div className="flex justify-between gap-3 text-[10px]">
+                <span className="text-slate-500">Renewal Date</span>
+                <span className="text-right font-black text-slate-950">Oct 12, 2024</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-white">
+                <div className="h-full rounded-full bg-[#7c3aed]" style={{ width: "65%" }} />
+              </div>
+              <p className="text-[9px] leading-4 text-slate-500">65% of the subscription period completed.</p>
             </CardContent>
           </Card>
 
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <CardTitle className="flex items-center gap-2 text-sm font-bold text-text-primary">
-                <WalletCards className="size-4 text-primary" />
-                Quick Stats
-              </CardTitle>
+          <Card className="rounded-xl border border-border bg-white shadow-sm">
+            <CardHeader className="p-4 pb-3">
+              <CardTitle className="text-[12px] font-black text-slate-950">Quick Stats</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 px-5 pb-5">
+            <CardContent className="grid grid-cols-2 gap-3 px-4 pb-4">
               {userProfileStats.map((stat) => (
-                <div key={stat.label} className="flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3">
-                  <span className="text-xs font-semibold text-slate-500">{stat.label}</span>
-                  <span className="text-xs font-black text-slate-950">{stat.value}</span>
+                <div key={stat.label} className="rounded-xl bg-slate-50 px-2 py-3 text-center">
+                  <p className="text-[9px] font-black uppercase text-slate-400">{stat.label}</p>
+                  <p className="mt-1 text-sm font-black text-slate-950">{stat.value}</p>
                 </div>
               ))}
             </CardContent>

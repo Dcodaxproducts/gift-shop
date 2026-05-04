@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Download, ListFilter, Search, ShieldAlert, UserCheck, UserPlus, UsersRound } from "lucide-react";
+import { Download, ListFilter, Search } from "lucide-react";
 import {
   registeredUsers,
   registeredUsersPagination,
-  registeredUsersStats,
   type RegisteredUser,
   type RegisteredUserStatus,
   type UserTone,
