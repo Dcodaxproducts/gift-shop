@@ -1,9 +1,10 @@
 "use client";
 
-import { ImagePlus, Info, Package2, Sparkles, Tag } from "lucide-react";
+import { useState } from "react";
+import { ImagePlus } from "lucide-react";
 import { giftCategoryOptions, giftProviderOptions } from "@/constants/gifts";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -13,48 +14,52 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
-function SectionTitle({ icon: Icon, title }: { icon: typeof Package2; title: string }) {
+function SectionHeading({ title, description }: { title: string; description: string }) {
   return (
-    <CardTitle className="flex items-center gap-2 text-sm font-bold text-slate-950">
-      <span className="flex size-7 items-center justify-center rounded-xl bg-primary/10 text-primary">
-        <Icon className="size-3.5" strokeWidth={2.25} />
-      </span>
-      {title}
-    </CardTitle>
+    <div>
+      <h2 className="text-sm font-black text-slate-950">{title}</h2>
+      <p className="mt-1 text-[11px] text-slate-400">{description}</p>
+    </div>
   );
 }
 
 export function CreateGiftPage() {
+  const [visible, setVisible] = useState(true);
+
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-black tracking-tight text-slate-950">Create Gift</h1>
-          <p className="mt-1 text-sm text-slate-500">Add a new gift listing with provider, pricing, and inventory details.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" className="h-10 rounded-xl px-5 text-xs">Save Draft</Button>
-          <Button className="h-10 rounded-xl px-5 text-xs">Publish Gift</Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-black tracking-tight text-slate-950">Create New Gift</h1>
+        <p className="mt-1 text-sm text-slate-500">Add a new gift listing to your inventory</p>
       </div>
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="space-y-5">
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <SectionTitle icon={Info} title="Gift Information" />
-            </CardHeader>
-            <CardContent className="space-y-4 px-5 pb-5">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="gift-title" className="text-[10px] uppercase tracking-wide text-slate-500">Gift Name</Label>
-                  <Input id="gift-title" placeholder="Enter gift name" className="h-10! rounded-2xl bg-white text-xs" />
-                </div>
+      <Card className="rounded-[24px] border border-border bg-white shadow-sm">
+        <CardContent className="space-y-8 p-6">
+          <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+            <div className="space-y-4">
+              <SectionHeading
+                title="Gift Information"
+                description="Enter the main details for this gift listing"
+              />
+              <div className="space-y-2">
+                <Label htmlFor="gift-name" className="text-[10px] uppercase tracking-wide text-slate-500">Gift Name</Label>
+                <Input id="gift-name" placeholder="Enter gift name" className="h-11! rounded-2xl bg-white text-xs" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="gift-description" className="text-[10px] uppercase tracking-wide text-slate-500">Description</Label>
+                <textarea
+                  id="gift-description"
+                  placeholder="Describe the gift experience, contents, and highlights..."
+                  className="min-h-32 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
+                />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label className="text-[10px] uppercase tracking-wide text-slate-500">Category</Label>
                   <Select defaultValue="experience">
-                    <SelectTrigger className="h-10 w-full rounded-2xl bg-white text-xs">
+                    <SelectTrigger className="h-11 w-full rounded-2xl bg-white text-xs">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -65,89 +70,72 @@ export function CreateGiftPage() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-[10px] uppercase tracking-wide text-slate-500">Provider</Label>
-                  <Select defaultValue="wellnesshub">
-                    <SelectTrigger className="h-10 w-full rounded-2xl bg-white text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {giftProviderOptions.filter((option) => option.value !== "all").map((option) => (
-                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="gift-description" className="text-[10px] uppercase tracking-wide text-slate-500">Description</Label>
-                  <textarea
-                    id="gift-description"
-                    placeholder="Write a short description for this gift..."
-                    className="min-h-32 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <SectionTitle icon={Tag} title="Pricing & Inventory" />
-            </CardHeader>
-            <CardContent className="space-y-4 px-5 pb-5">
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="space-y-2">
                   <Label htmlFor="gift-price" className="text-[10px] uppercase tracking-wide text-slate-500">Price</Label>
-                  <Input id="gift-price" placeholder="$199.00" className="h-10! rounded-2xl bg-white text-xs" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="gift-stock" className="text-[10px] uppercase tracking-wide text-slate-500">Stock</Label>
-                  <Input id="gift-stock" placeholder="250" className="h-10! rounded-2xl bg-white text-xs" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="gift-sku" className="text-[10px] uppercase tracking-wide text-slate-500">SKU</Label>
-                  <Input id="gift-sku" placeholder="GFT-1024" className="h-10! rounded-2xl bg-white text-xs" />
+                  <Input id="gift-price" placeholder="$49.99" className="h-11! rounded-2xl bg-white text-xs" />
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
 
-        <div className="space-y-5">
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <SectionTitle icon={ImagePlus} title="Gift Media" />
-            </CardHeader>
-            <CardContent className="px-5 pb-5">
+            <div className="space-y-4">
+              <SectionHeading
+                title="Media Upload"
+                description="Add the main image for this gift"
+              />
               <button
                 type="button"
-                className="flex min-h-52 w-full flex-col items-center justify-center rounded-2xl border border-dashed border-primary/20 bg-slate-50 px-4 text-center transition hover:bg-primary/5"
+                className="flex min-h-[250px] w-full flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 text-center transition hover:bg-slate-100"
               >
-                <span className="flex size-12 items-center justify-center rounded-2xl bg-white text-primary shadow-sm">
+                <span className="flex size-12 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm">
                   <ImagePlus className="size-5" />
                 </span>
-                <p className="mt-4 text-xs font-bold text-slate-700">Click to upload gift image</p>
-                <p className="mt-1 text-[10px] text-slate-400">PNG, JPG up to 5MB</p>
+                <p className="mt-4 text-xs font-bold text-slate-700">Upload Gift Image</p>
+                <p className="mt-1 text-[10px] text-slate-400">PNG, JPG recommended · 1200 × 900</p>
               </button>
-            </CardContent>
-          </Card>
+            </div>
+          </section>
 
-          <Card className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardHeader className="p-5 pb-4">
-              <SectionTitle icon={Sparkles} title="Publishing" />
-            </CardHeader>
-            <CardContent className="space-y-3 px-5 pb-5">
-              <div className="rounded-2xl bg-slate-50 px-4 py-3">
-                <p className="text-[10px] font-black uppercase tracking-wide text-slate-400">Visibility</p>
-                <p className="mt-1 text-xs font-semibold text-slate-700">Public listing</p>
+          <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+            <div className="space-y-4">
+              <SectionHeading
+                title="Provider Assignment"
+                description="Choose which provider will fulfill this gift"
+              />
+              <div className="space-y-2">
+                <Label className="text-[10px] uppercase tracking-wide text-slate-500">Provider</Label>
+                <Select defaultValue="wellnesshub">
+                  <SelectTrigger className="h-11 w-full rounded-2xl bg-white text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {giftProviderOptions.filter((option) => option.value !== "all").map((option) => (
+                      <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-3">
-                <p className="text-[10px] font-black uppercase tracking-wide text-slate-400">Featured Slot</p>
-                <p className="mt-1 text-xs font-semibold text-slate-700">Homepage carousel eligible</p>
+            </div>
+
+            <div className="space-y-4">
+              <SectionHeading
+                title="Status"
+                description="Control whether the gift is visible to customers"
+              />
+              <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+                <div>
+                  <p className="text-xs font-bold text-slate-700">Visible on store</p>
+                  <p className="mt-1 text-[10px] text-slate-400">Customers can browse and purchase this gift</p>
+                </div>
+                <Switch checked={visible} onClick={() => setVisible((current) => !current)} className="h-6 w-11" />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+            </div>
+          </section>
+
+          <div className="flex justify-end gap-3 border-t border-slate-100 pt-2">
+            <Button variant="outline" className="h-10 rounded-xl px-5 text-xs">Cancel</Button>
+            <Button className="h-10 rounded-xl px-6 text-xs">Save Gift</Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
