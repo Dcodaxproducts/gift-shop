@@ -25,13 +25,13 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     title: "Administration",
     items: [
       {
-        title: "Admin Users",
-        href: "/admin-users",
+        title: "Staff Users",
+        href: "/staff-users",
         icon: "users-round",
       },
       {
-        title: "Create Admin",
-        href: "/create-admin",
+        title: "Create Staff",
+        href: "/create-staff",
         icon: "user-plus",
       },
       {
@@ -45,7 +45,6 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     title: "Users & Providers",
     items: [
       { title: "Users List", href: "/users", icon: "users" },
-      { title: "User Details", href: "/user-details", icon: "id-card" },
       {
         title: "Create Provider",
         href: "/create-provider",
@@ -67,8 +66,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     title: "Inventory",
     items: [
-      { title: "Gift Listings", href: "/gifts", icon: "package" },
-      { title: "Create Gift", href: "/create-gift", icon: "circle-plus" },
+      { title: "Gift Listings", href: "/gifts", icon: "package" }
     ],
   },
   {

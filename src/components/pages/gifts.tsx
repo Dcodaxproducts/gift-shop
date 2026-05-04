@@ -109,7 +109,7 @@ export function GiftsPage() {
         title="Gift Inventory"
         description="Manage and monitor all gift listings across the platform."
         actions={
-          <Button className="h-10! rounded-xl text-xs">
+          <Button className="h-10! rounded-xl text-xs" onClick={() => router.push("/gifts/create")}>
             + Add New Gift
           </Button>
         }
