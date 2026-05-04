@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Check, Plus, Upload, X } from "lucide-react";
 import { giftCategoryOptions } from "@/constants/gifts";
@@ -93,9 +94,11 @@ export function EditGiftPage() {
       <section className="grid gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
         <SectionCard title="Gift Media" className="self-start">
           <div className="overflow-hidden rounded-2xl">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80"
               alt="Premium Coffee Set"
+              width={600}
+              height={600}
               className="aspect-square w-full object-cover"
             />
           </div>
