@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CircleDollarSign, Clock3, ListFilter, Search, TrendingDown, UsersRound } from "lucide-react";
+import { ListFilter, Search } from "lucide-react";
 import {
   providerDirectoryItems,
   providerPagination,
@@ -25,20 +25,6 @@ import {
 } from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-
-const statIconMap = {
-  blue: UsersRound,
-  amber: Clock3,
-  emerald: CircleDollarSign,
-  rose: TrendingDown,
-};
-
-const statToneClass = {
-  blue: "bg-[#eef2ff] text-[#4f46e5]",
-  amber: "bg-[#fff7ed] text-[#f97316]",
-  emerald: "bg-[#ecfdf5] text-[#10b981]",
-  rose: "bg-[#fff1f2] text-[#f43f5e]",
-};
 
 const statBadgeClass = {
   blue: "bg-[#eef2ff] text-[#4f46e5]",
