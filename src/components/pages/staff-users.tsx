@@ -40,7 +40,7 @@ export function StaffUsersPage() {
         title="Staff Management"
         description="Manage staff accounts, roles, and permissions"
         actions={
-          <Button onClick={() => router.push("/create-staff")}>
+          <Button onClick={() => router.push("/staff-users/create")}>
             <Plus className="mr-2 size-3.5" />
             Create Staff
           </Button>

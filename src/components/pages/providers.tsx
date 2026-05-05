@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ListFilter, Search } from "lucide-react";
+import { Edit2, Eye, ListFilter, Plus, Search, X } from "lucide-react";
 import {
   providerDirectoryItems,
   providerPagination,
@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const statBadgeClass = {
   blue: "bg-[#eef2ff] text-[#4f46e5]",
@@ -70,6 +71,7 @@ function PillBadge({ label, className }: { label: string; className: string }) {
 }
 
 function ProviderStats() {
+  const router = useRouter();
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {providerStats.map((stat) => (
@@ -111,7 +113,8 @@ export function ProvidersPage() {
         description="Manage fintech service providers and their performance metrics."
         actions={
           <Button className="h-10! rounded-xl text-xs">
-            + Add Provider
+            <Plus className="mr-2 size-3.5" />
+            Add Provider
           </Button>
         }
       />
@@ -195,13 +198,26 @@ export function ProvidersPage() {
             </TableCell>
             <TableCell className="text-xs font-bold text-slate-950">{item.revenue}</TableCell>
             <TableCell>
-              <div className="flex items-center justify-end gap-3 text-xs font-semibold">
-                <button type="button" className="text-primary transition hover:text-primary/75">
-                  View
-                </button>
-                <button type="button" className="text-slate-400 transition hover:text-slate-700">
-                  Edit
-                </button>
+              <div className="flex items-center justify-end">
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-primary hover:bg-primary/10"
+                  // onClick={() => router.push(`/users/${item.id}`)}
+                >
+                  <Eye className="size-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                >
+                  <Edit2 className="size-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                >
+                  <X className="size-4" />
+                </Button>
               </div>
             </TableCell>
           </>

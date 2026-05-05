@@ -30,11 +30,6 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         icon: "users-round",
       },
       {
-        title: "Create Staff",
-        href: "/create-staff",
-        icon: "user-plus",
-      },
-      {
         title: "Role & Permissions",
         href: "/roles-permissions",
         icon: "shield-check",

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarCheck, CheckCircle2, Edit3, Gift, ListFilter, Search, Smile, Star, Trash2 } from "lucide-react";
+import { CalendarCheck, CheckCircle2, Edit3, Gift, ListFilter, Plus, Search, Smile, Star, Trash2 } from "lucide-react";
 import {
   giftCategoryOptions,
   giftInventoryItems,
@@ -110,7 +110,8 @@ export function GiftsPage() {
         description="Manage and monitor all gift listings across the platform."
         actions={
           <Button className="h-10! rounded-xl text-xs" onClick={() => router.push("/gifts/create")}>
-            + Add New Gift
+            <Plus className="mr-2 size-3.5" />
+            Add New Gift
           </Button>
         }
       />

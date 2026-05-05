@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Edit2, Eye, ListFilter, Search, X } from "lucide-react";
+import { Download, Edit2, Eye, ListFilter, Plus, Search, X } from "lucide-react";
 import {
   registeredUsers,
   registeredUsersPagination,
@@ -63,7 +63,12 @@ export function UsersPage() {
               <Download className="mr-2 size-3.5" />
               Export
             </Button>
-            <Button>+ Add User</Button>
+            <Button
+              // onClick={() => router.push("/users/create")}
+            >
+              <Plus className="mr-2 size-3.5" />
+              Add User
+            </Button>
           </>
         }
       />
@@ -148,7 +153,7 @@ export function UsersPage() {
                 {item.status}
               </span>
             </TableCell>
-             <TableCell>
+            <TableCell>
               <div className="flex items-center justify-end">
                 <Button
                   variant="ghost"
