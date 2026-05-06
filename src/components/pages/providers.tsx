@@ -6,7 +6,6 @@ import {
   providerDirectoryItems,
   providerPagination,
   providerStats,
-  type ProviderApproval,
   type ProviderDirectoryItem,
   type ProviderStatus,
   type ProviderTone,
@@ -45,12 +44,6 @@ const statusToneClass: Record<ProviderStatus, string> = {
   Active: "bg-emerald-50 text-emerald-600",
   Pending: "bg-amber-50 text-amber-600",
   Inactive: "bg-slate-100 text-slate-500",
-};
-
-const approvalToneClass: Record<ProviderApproval, string> = {
-  Approved: "bg-primary/10 text-primary",
-  Pending: "bg-amber-50 text-amber-600",
-  Rejected: "bg-rose-50 text-rose-600",
 };
 
 function getProviderInitials(name: string) {

@@ -3,10 +3,14 @@
 import { useState } from "react";
 import {
   ChevronDown,
+  CheckCircle2,
   Download,
   ListFilter,
-  Plus
+  PauseCircle,
+  Plus,
+  XCircle,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   Area,
   AreaChart,
@@ -21,6 +25,7 @@ import {
   monthlyPayoutData,
   payoutActivities,
   payoutActivitiesPagination,
+  payoutBreakdown,
   payoutMetrics,
   type PayoutActivity,
   type PayoutMetric,
@@ -29,6 +34,7 @@ import { PageHeader } from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog } from "@/components/ui/dialog";
 import {
   ChartContainer,
   ChartTooltip,
@@ -185,6 +191,10 @@ function EarningsDistributionChart() {
 
 function RecentPayoutActivities() {
   const [page, setPage] = useState(1);
+  const [selectedActivity, setSelectedActivity] = useState<PayoutActivity | null>(null);
+  const router = useRouter();
+
+  const closeDialog = () => setSelectedActivity(null);
 
   return (
     <div className="rounded-2xl border border-b-0 border-slate-200">
@@ -204,6 +214,7 @@ function RecentPayoutActivities() {
           onPageChange: setPage,
         }}
         isBorder={false}
+        onRowClick={(activity) => router.push(`/providers/${activity.providerSlug}`)}
         headers={
           <>
             <TableHead>Provider</TableHead>
@@ -255,6 +266,10 @@ function RecentPayoutActivities() {
                 <Button
                   variant="ghost"
                   className="h-7 rounded-full bg-primary/10 px-3 text-[10px] text-primary hover:bg-primary/15"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedActivity(activity);
+                  }}
                 >
                   Initiate
                 </Button>
@@ -262,6 +277,85 @@ function RecentPayoutActivities() {
           </>
         )}
       />
+
+      <Dialog
+        open={Boolean(selectedActivity)}
+        onOpenChange={(open) => {
+          if (!open) {
+            closeDialog();
+          }
+        }}
+        title="Transaction Breakdown"
+        description="Review payout calculation before taking action."
+        className="max-w-[560px] rounded-[26px]"
+        headerClassName="border-b-slate-100 px-6 py-5"
+        contentClassName="px-6 py-5"
+        footerClassName="hidden"
+      >
+        <div className="space-y-5">
+          <div className="rounded-2xl bg-slate-50 p-4">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              Provider
+            </p>
+            <h3 className="mt-1 text-lg font-black text-slate-950">{payoutBreakdown.provider}</h3>
+            <p className="mt-1 text-xs font-semibold text-slate-500">
+              Merchant ID: {payoutBreakdown.merchantId}
+            </p>
+          </div>
+
+          <div className="space-y-3 rounded-2xl border border-slate-100 p-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-semibold text-slate-500">Gross Amount</span>
+              <span className="font-black text-slate-950">{payoutBreakdown.grossAmount}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-semibold text-slate-500">Platform Fee</span>
+              <span className="font-black text-rose-500">{payoutBreakdown.platformFee}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-semibold text-slate-500">Processing Fees</span>
+              <span className="font-black text-rose-500">{payoutBreakdown.processingFees}</span>
+            </div>
+            <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-base">
+              <span className="font-black text-slate-950">Net Payout</span>
+              <span className="font-black text-emerald-600">{payoutBreakdown.netPayout}</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-black text-slate-950">Recent Transactions</h4>
+            <div className="mt-3 overflow-hidden rounded-2xl border border-slate-100">
+              {payoutBreakdown.recentTransactions.map((transaction) => (
+                <div
+                  key={transaction.orderId}
+                  className="grid grid-cols-[1fr_auto] gap-3 border-b border-slate-100 px-4 py-3 last:border-b-0"
+                >
+                  <div>
+                    <p className="text-xs font-black text-slate-950">{transaction.orderId}</p>
+                    <p className="mt-1 text-[11px] font-medium text-slate-400">{transaction.date}</p>
+                  </div>
+                  <p className="text-xs font-black text-slate-950">{transaction.amount}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Button className="h-11 rounded-2xl bg-emerald-500 text-xs font-black shadow-none hover:bg-emerald-600">
+              <CheckCircle2 className="size-4" />
+              Approve Payout
+            </Button>
+            <Button className="h-11 rounded-2xl bg-amber-100 text-xs font-black text-amber-700 shadow-none hover:bg-amber-200">
+              <PauseCircle className="size-4" />
+              Hold
+            </Button>
+            <Button className="h-11 rounded-2xl bg-rose-500 text-xs font-black shadow-none hover:bg-rose-600">
+              <XCircle className="size-4" />
+              Reject
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

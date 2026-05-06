@@ -39,12 +39,6 @@ const itemIconToneClass = {
   violet: "bg-violet-50 text-violet-500",
 };
 
-const actionToneClass = {
-  approve: "bg-emerald-500 text-white hover:bg-emerald-600",
-  reject: "bg-rose-500 text-white hover:bg-rose-600",
-  neutral: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
-};
-
 const actionIcon = {
   approve: Check,
   reject: X,

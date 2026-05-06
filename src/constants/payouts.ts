@@ -11,6 +11,7 @@ export type PayoutMetric = {
 
 export type PayoutActivity = {
   provider: string;
+  providerSlug: string;
   id: string;
   avatar: string;
   avatarTone: "teal" | "stone" | "cyan" | "dark";
@@ -54,6 +55,7 @@ export const payoutMetrics: PayoutMetric[] = [
 export const payoutActivities: PayoutActivity[] = [
   {
     provider: "TechSolutions Inc.",
+    providerSlug: "techsolutions-inc",
     id: "PRV-90210",
     avatar: "T",
     avatarTone: "teal",
@@ -64,6 +66,7 @@ export const payoutActivities: PayoutActivity[] = [
   },
   {
     provider: "CreativeFlow Studio",
+    providerSlug: "creativeflow-studio",
     id: "PRV-44321",
     avatar: "C",
     avatarTone: "stone",
@@ -74,6 +77,7 @@ export const payoutActivities: PayoutActivity[] = [
   },
   {
     provider: "GlobalLogistics",
+    providerSlug: "globallogistics",
     id: "PRV-7209",
     avatar: "G",
     avatarTone: "cyan",
@@ -84,6 +88,7 @@ export const payoutActivities: PayoutActivity[] = [
   },
   {
     provider: "UrbanConsultants",
+    providerSlug: "urbanconsultants",
     id: "PRV-88776",
     avatar: "U",
     avatarTone: "dark",
@@ -127,3 +132,17 @@ export const earningsDistributionData = [
   { tier: "Tier 3", amount: 18900 },
   { tier: "Tier 4", amount: 11200 },
 ];
+
+export const payoutBreakdown = {
+  provider: "CloudTech Solutions",
+  merchantId: "MER-29401-2023",
+  grossAmount: "$4,200.00",
+  platformFee: "-$420.00",
+  processingFees: "-$12.50",
+  netPayout: "$3,767.50",
+  recentTransactions: [
+    { orderId: "ORD-10021", date: "Nov 02, 2023", amount: "$1,400.00" },
+    { orderId: "ORD-10035", date: "Nov 04, 2023", amount: "$1,750.00" },
+    { orderId: "ORD-10048", date: "Nov 06, 2023", amount: "$1,050.00" },
+  ],
+} as const;

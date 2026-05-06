@@ -13,6 +13,8 @@ type DataTableProps<T> = {
   data: T[];
   headers: React.ReactNode;
   row: (row: T, index: number) => React.ReactNode;
+  getRowClassName?: (row: T, index: number) => string | undefined;
+  onRowClick?: (row: T, index: number) => void;
   tableClassName?: string;
   isBorder?: boolean;
   pagination?: {
@@ -31,6 +33,8 @@ export function DataTable<T>({
   data,
   headers,
   row,
+  getRowClassName,
+  onRowClick,
   tableClassName,
   isBorder = true,
   pagination,
@@ -53,7 +57,13 @@ export function DataTable<T>({
           </TableHeader>
           <TableBody>
             {data.map((item, index) => (
-              <TableRow key={index}>{row(item, index)}</TableRow>
+              <TableRow
+                key={index}
+                className={cn(onRowClick && "cursor-pointer", getRowClassName?.(item, index))}
+                onClick={() => onRowClick?.(item, index)}
+              >
+                {row(item, index)}
+              </TableRow>
             ))}
           </TableBody>
         </Table>
