@@ -174,7 +174,6 @@ export function ProvidersPage() {
             <TableHead>Provider</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Approval</TableHead>
             <TableHead>Revenue</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </>
@@ -192,9 +191,6 @@ export function ProvidersPage() {
             <TableCell className="text-xs text-slate-500">{item.email}</TableCell>
             <TableCell>
               <PillBadge label={item.status} className={statusToneClass[item.status]} />
-            </TableCell>
-            <TableCell>
-              <PillBadge label={item.approval} className={approvalToneClass[item.approval]} />
             </TableCell>
             <TableCell className="text-xs font-bold text-slate-950">{item.revenue}</TableCell>
             <TableCell>

@@ -51,8 +51,8 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         icon: "store",
       },
       {
-        title: "Provider Approval",
-        href: "/provider-approval",
+        title: "Provider Payouts",
+        href: "/payouts",
         icon: "badge-check",
         badge: "12",
       },

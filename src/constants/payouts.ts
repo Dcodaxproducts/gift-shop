@@ -103,3 +103,27 @@ export const payoutSummaryIcons = {
   clock: Clock3,
   dollar: DollarSign,
 };
+
+export const payoutActivitiesPagination = {
+  total: 1284,
+  limit: 4,
+  totalPages: 321,
+  hasNext: true,
+  hasPrevious: false,
+};
+
+export const monthlyPayoutData = [
+  { month: "Jan", amount: 12000 },
+  { month: "Feb", amount: 18500 },
+  { month: "Mar", amount: 15800 },
+  { month: "Apr", amount: 24200 },
+  { month: "May", amount: 19600 },
+  { month: "Jun", amount: 28400 },
+];
+
+export const earningsDistributionData = [
+  { tier: "Tier 1", amount: 14500 },
+  { tier: "Tier 2", amount: 8200 },
+  { tier: "Tier 3", amount: 18900 },
+  { tier: "Tier 4", amount: 11200 },
+];
