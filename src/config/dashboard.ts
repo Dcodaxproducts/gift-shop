@@ -41,21 +41,10 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       { title: "Users List", href: "/users", icon: "users" },
       {
-        title: "Create Provider",
-        href: "/create-provider",
-        icon: "briefcase-business",
-      },
-      {
         title: "Provider List",
         href: "/providers",
         icon: "store",
-      },
-      {
-        title: "Provider Payouts",
-        href: "/payouts",
-        icon: "badge-check",
-        badge: "12",
-      },
+      }
     ],
   },
   {
@@ -83,14 +72,9 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     title: "Moderation",
     items: [
       {
-        title: "Social Moderation",
-        href: "/social-moderation",
+        title: "Social & Reviews Moderation",
+        href: "/social-reviews-moderation",
         icon: "rss",
-      },
-      {
-        title: "Reviews Moderation",
-        href: "/reviews",
-        icon: "star",
       },
     ],
   },

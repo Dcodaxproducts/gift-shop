@@ -263,16 +263,16 @@ function RecentPayoutActivities() {
               </span>
             </TableCell>
             <TableCell>
-                <Button
-                  variant="ghost"
-                  className="h-7 rounded-full bg-primary/10 px-3 text-[10px] text-primary hover:bg-primary/15"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setSelectedActivity(activity);
-                  }}
-                >
-                  Initiate
-                </Button>
+              <Button
+                variant="ghost"
+                className="h-7 rounded-full bg-primary/10 px-3 text-[10px] text-primary hover:bg-primary/15"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setSelectedActivity(activity);
+                }}
+              >
+                Initiate
+              </Button>
             </TableCell>
           </>
         )}
@@ -286,73 +286,84 @@ function RecentPayoutActivities() {
           }
         }}
         title="Transaction Breakdown"
-        description="Review payout calculation before taking action."
-        className="max-w-[560px] rounded-[26px]"
-        headerClassName="border-b-slate-100 px-6 py-5"
-        contentClassName="px-6 py-5"
-        footerClassName="hidden"
+        hideHeaderBorder
+        className="max-w-[420px] rounded-2xl"
+        headerClassName="px-6 pt-5 pb-0"
+        contentClassName="px-6 pt-4 pb-6"
       >
         <div className="space-y-5">
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-              Provider
-            </p>
-            <h3 className="mt-1 text-lg font-black text-slate-950">{payoutBreakdown.provider}</h3>
-            <p className="mt-1 text-xs font-semibold text-slate-500">
-              Merchant ID: {payoutBreakdown.merchantId}
-            </p>
+          <div className="flex items-center gap-3">
+            <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-sm font-bold text-primary">
+              CT
+            </span>
+            <div>
+              <h3 className="text-sm font-bold text-slate-950">{payoutBreakdown.provider}</h3>
+              <p className="mt-0.5 text-[10px] font-medium text-slate-400">
+                ID: {payoutBreakdown.merchantId}
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-3 rounded-2xl border border-slate-100 p-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="font-semibold text-slate-500">Gross Amount</span>
-              <span className="font-black text-slate-950">{payoutBreakdown.grossAmount}</span>
+          <div className="space-y-3 border-t border-slate-100 pt-4">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-slate-500">Gross Amount</span>
+              <span className="font-bold text-slate-950">{payoutBreakdown.grossAmount}</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="font-semibold text-slate-500">Platform Fee</span>
-              <span className="font-black text-rose-500">{payoutBreakdown.platformFee}</span>
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-slate-500">Platform Fee (10%)</span>
+              <span className="font-bold text-rose-500">{payoutBreakdown.platformFee}</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="font-semibold text-slate-500">Processing Fees</span>
-              <span className="font-black text-rose-500">{payoutBreakdown.processingFees}</span>
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-slate-500">Processing Fee</span>
+              <span className="font-bold text-rose-500">{payoutBreakdown.processingFees}</span>
             </div>
-            <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-base">
-              <span className="font-black text-slate-950">Net Payout</span>
-              <span className="font-black text-emerald-600">{payoutBreakdown.netPayout}</span>
+            <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
+              <span className="font-bold text-slate-950">Net Payout</span>
+              <span className="text-base font-bold text-primary">{payoutBreakdown.netPayout}</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-black text-slate-950">Recent Transactions</h4>
-            <div className="mt-3 overflow-hidden rounded-2xl border border-slate-100">
+            <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+              Recent Transactions
+            </p>
+            <div className="mt-3 space-y-3">
               {payoutBreakdown.recentTransactions.map((transaction) => (
                 <div
                   key={transaction.orderId}
-                  className="grid grid-cols-[1fr_auto] gap-3 border-b border-slate-100 px-4 py-3 last:border-b-0"
+                  className="flex items-start justify-between gap-3"
                 >
                   <div>
-                    <p className="text-xs font-black text-slate-950">{transaction.orderId}</p>
-                    <p className="mt-1 text-[11px] font-medium text-slate-400">{transaction.date}</p>
+                    <p className="text-xs font-bold text-slate-950">Order #{transaction.orderId}</p>
+                    <p className="mt-0.5 text-[10px] font-medium text-slate-400">{transaction.date}</p>
                   </div>
-                  <p className="text-xs font-black text-slate-950">{transaction.amount}</p>
+                  <p className="text-xs font-bold text-slate-950">{transaction.amount}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
-            <Button className="h-11 rounded-2xl bg-emerald-500 text-xs font-black shadow-none hover:bg-emerald-600">
-              <CheckCircle2 className="size-4" />
+          <div className="space-y-2 pt-2">
+            <Button className="h-11 w-full rounded-full text-xs">
+              <CheckCircle2 className="size-4" strokeWidth={2.5} />
               Approve Payout
             </Button>
-            <Button className="h-11 rounded-2xl bg-amber-100 text-xs font-black text-amber-700 shadow-none hover:bg-amber-200">
-              <PauseCircle className="size-4" />
-              Hold
-            </Button>
-            <Button className="h-11 rounded-2xl bg-rose-500 text-xs font-black shadow-none hover:bg-rose-600">
-              <XCircle className="size-4" />
-              Reject
-            </Button>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                variant="outline"
+                className="h-10 rounded-full text-xs"
+              >
+                <PauseCircle className="size-4" strokeWidth={2.5} />
+                Hold
+              </Button>
+              <Button
+                variant="outline"
+                className="h-10 rounded-full border-rose-200 text-xs text-rose-500 hover:bg-rose-50"
+              >
+                <XCircle className="size-4" strokeWidth={2.5} />
+                Reject
+              </Button>
+            </div>
           </div>
         </div>
       </Dialog>
