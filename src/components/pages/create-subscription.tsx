@@ -138,7 +138,7 @@ export function CreateSubscriptionPage() {
 
       <div className="flex justify-end gap-3 pt-2">
         <Button variant="outline" className="h-10 rounded-xl px-6" onClick={() => router.push("/subscriptions")}>Cancel</Button>
-        <Button className="h-10 rounded-xl bg-[#8b2fbe] px-7 shadow-none hover:bg-[#7c2bb3]">Save Plan</Button>
+        <Button className="h-10 rounded-xl px-7">Save Plan</Button>
       </div>
     </div>
   );

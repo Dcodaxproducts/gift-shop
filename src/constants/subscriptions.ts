@@ -1,4 +1,4 @@
-import { BarChart3, CheckCircle2, ClipboardList, Flag, Gift, Handshake, Headphones, LockKeyhole, ShieldCheck, Tag, UsersRound, Zap } from "lucide-react";
+import { BarChart3, CheckCircle2, ClipboardList, Flag, Gift, Handshake, Headphones, LockKeyhole, ShieldCheck, Tag, Trash2, UsersRound, Zap } from "lucide-react";
 import type { ElementType } from "react";
 
 export type SubscriptionPlan = {
@@ -23,6 +23,10 @@ export type SubscriptionFeature = {
   title: string;
   description: string;
   enabled: boolean;
+};
+
+export type SubscriptionEditFeature = {
+  title: string;
 };
 
 export const subscriptionPlans: SubscriptionPlan[] = [
@@ -129,9 +133,25 @@ export const subscriptionCreateSteps = [
   { number: "4", title: "Usage Limits" },
 ] as const;
 
+export const editSubscriptionPlan = {
+  name: "Pro Tier",
+  description: "Best for growing teams and advanced professional projects. Includes all essential features plus priority support and automation.",
+  monthlyPrice: "49",
+  yearlyPrice: "499",
+  subscribers: "1,240",
+  subscriberChange: "+5.2%",
+  features: [
+    { title: "Up to 25 team members" },
+    { title: "100GB Cloud Storage" },
+    { title: "Custom API Access" },
+  ] satisfies SubscriptionEditFeature[],
+  visibility: "public",
+} as const;
+
 export const subscriptionPlanIcons = {
   users: UsersRound,
   check: CheckCircle2,
   security: ShieldCheck,
   lock: LockKeyhole,
+  trash: Trash2,
 };

@@ -25,6 +25,8 @@ function PlanFeature({ feature }: { feature: string }) {
 }
 
 function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
+  const router = useRouter();
+
   return (
     <Card
       className={cn(
@@ -62,13 +64,8 @@ function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
 
         <div className="mt-auto grid grid-cols-2 gap-3 pt-8">
           <Button
-            variant={plan.isPopular ? "default" : "outline"}
-            className={cn(
-              "h-12 rounded-2xl text-[12px] font-black",
-              plan.isPopular
-                ? "bg-[#8b2fbe] text-white hover:bg-[#7c2bb3]"
-                : "border-[#e9d5ff] bg-[#fbf5ff] text-[#8b2fbe] hover:bg-[#f3e8ff]",
-            )}
+            className="h-12 rounded-2xl text-[12px] font-black"
+            onClick={() => router.push(`/subscriptions/${plan.id}`)}
           >
             Edit Plan
           </Button>
@@ -86,7 +83,7 @@ function PlanManagementPanel() {
     <Card className="rounded-[28px] border border-[#eadcf4] bg-[#f3edf8] shadow-sm">
       <CardContent className="p-8">
         <div className="flex items-center gap-2.5">
-          <Settings2 className="size-5 text-[#8b2fbe]" strokeWidth={2.4} />
+          <Settings2 className="size-5 text-primary" strokeWidth={2.4} />
           <h2 className="text-xl font-black tracking-tight text-slate-950">Plan Management Actions</h2>
         </div>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -99,7 +96,7 @@ function PlanManagementPanel() {
                 type="button"
                 className="rounded-2xl bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
-                <Icon className="size-5 text-[#8b2fbe]" strokeWidth={2.4} />
+                <Icon className="size-5 text-primary" strokeWidth={2.4} />
                 <h3 className="mt-4 text-[13px] font-black leading-4 text-slate-950">{action.title}</h3>
                 <p className="mt-1 text-[11px] font-medium leading-4 text-slate-400">{action.description}</p>
               </button>
@@ -121,7 +118,7 @@ export function SubscriptionPlansPage() {
         description="Configure global pricing tiers and feature entitlements for your SaaS."
         actions={
           <Button
-            className="h-12 rounded-2xl bg-[#8b2fbe] px-7 text-[13px] font-black shadow-lg shadow-[#8b2fbe]/20 hover:bg-[#7c2bb3]"
+            className="h-12 rounded-2xl px-7 text-[13px] font-black"
             onClick={() => router.push("/subscriptions/create")}
           >
             <Plus className="size-4" strokeWidth={2.6} />
