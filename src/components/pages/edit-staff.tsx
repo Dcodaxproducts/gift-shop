@@ -49,7 +49,7 @@ export function EditStaffPage() {
               <div>
                 <h2 className="text-sm font-bold text-slate-950">Profile Details</h2>
                 <p className="mt-0.5 text-[11px] text-slate-400">
-                  Update staff's personal information and photo.
+                  Update staff&apos;s personal information and photo.
                 </p>
               </div>
             </div>

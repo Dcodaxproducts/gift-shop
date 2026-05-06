@@ -71,7 +71,6 @@ function PillBadge({ label, className }: { label: string; className: string }) {
 }
 
 function ProviderStats() {
-  const router = useRouter();
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {providerStats.map((stat) => (
@@ -105,6 +104,7 @@ function ProviderStats() {
 
 export function ProvidersPage() {
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   return (
     <div className="space-y-5">
@@ -202,7 +202,7 @@ export function ProvidersPage() {
                 <Button
                   variant="ghost"
                   className="size-9 rounded-full text-primary hover:bg-primary/10"
-                  // onClick={() => router.push(`/users/${item.id}`)}
+                  onClick={() => router.push(`/providers/${item.id}`)}
                 >
                   <Eye className="size-4" />
                 </Button>
