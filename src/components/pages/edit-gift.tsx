@@ -38,7 +38,7 @@ function SectionCard({
               <Icon className="size-4" strokeWidth={2.25} />
             </span>
           ) : null}
-          <h2 className="text-sm font-bold text-slate-950">{title}</h2>
+          <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
         </div>
         <div className="mt-5">{children}</div>
       </CardContent>
@@ -212,7 +212,7 @@ export function EditGiftPage() {
               </div>
 
               <div>
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
                   Active Tags
                 </p>
                 <div className="flex flex-wrap gap-2">

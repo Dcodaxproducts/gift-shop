@@ -134,10 +134,10 @@ export function UsersPage() {
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span className={cn("flex size-10 items-center justify-center rounded-2xl text-xs font-black", avatarToneClass[item.tone])}>
+                <span className={cn("flex size-10 items-center justify-center rounded-2xl text-xs font-semibold", avatarToneClass[item.tone])}>
                   {getInitials(item.name)}
                 </span>
-                <span className="text-xs font-bold text-slate-950">{item.name}</span>
+                <span className="text-xs font-semibold text-slate-950">{item.name}</span>
               </div>
             </TableCell>
             <TableCell>
@@ -147,7 +147,7 @@ export function UsersPage() {
               </div>
             </TableCell>
             <TableCell className="text-xs text-slate-500">{item.registeredAt}</TableCell>
-            <TableCell className="text-xs font-bold text-slate-950">{item.transactions}</TableCell>
+            <TableCell className="text-xs font-semibold text-slate-950">{item.transactions}</TableCell>
             <TableCell>
               <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", statusToneClass[item.status])}>
                 {item.status}

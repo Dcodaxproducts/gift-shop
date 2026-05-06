@@ -17,10 +17,10 @@ import {
 function StepTitle({ number, title }: { number: string; title: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="flex size-7 items-center justify-center rounded-full bg-[#f3e8ff] text-[11px] font-black text-primary">
+      <span className="flex size-7 items-center justify-center rounded-full bg-[#f3e8ff] text-[11px] font-semibold text-primary">
         {number}
       </span>
-      <h2 className="text-sm font-black text-slate-950">{title}</h2>
+      <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
     </div>
   );
 }
@@ -49,7 +49,7 @@ function FeatureToggle({ feature }: { feature: SubscriptionFeature }) {
           <Icon className="size-4" strokeWidth={2.2} />
         </span>
         <div>
-          <p className="text-[12px] font-black text-slate-950">{feature.title}</p>
+          <p className="text-[12px] font-semibold text-slate-950">{feature.title}</p>
           <p className="mt-0.5 text-[10px] font-medium leading-4 text-slate-400">{feature.description}</p>
         </div>
       </div>
@@ -71,11 +71,11 @@ export function CreateSubscriptionPage() {
       <FormSection stepIndex={0}>
         <div className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="plan-name" className="text-[11px] font-bold text-slate-700">Plan Name</Label>
+            <Label htmlFor="plan-name" className="text-[11px] font-semibold text-slate-700">Plan Name</Label>
             <Input id="plan-name" placeholder="e.g. Professional Plan" className="h-11 rounded-xl bg-white text-xs" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-[11px] font-bold text-slate-700">Description</Label>
+            <Label htmlFor="description" className="text-[11px] font-semibold text-slate-700">Description</Label>
             <textarea
               id="description"
               placeholder="Describe what this plan is best for..."
@@ -88,9 +88,9 @@ export function CreateSubscriptionPage() {
       <FormSection stepIndex={1}>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="monthly-price" className="text-[11px] font-bold text-slate-700">Monthly Price (USD)</Label>
+            <Label htmlFor="monthly-price" className="text-[11px] font-semibold text-slate-700">Monthly Price (USD)</Label>
             <div className="flex h-11 items-center rounded-xl border border-slate-200 bg-white px-4 focus-within:border-primary">
-              <span className="text-xs font-bold text-slate-400">$</span>
+              <span className="text-xs font-semibold text-slate-400">$</span>
               <input
                 id="monthly-price"
                 placeholder="0.00"
@@ -99,9 +99,9 @@ export function CreateSubscriptionPage() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="yearly-price" className="text-[11px] font-bold text-slate-700">Yearly Price (USD)</Label>
+            <Label htmlFor="yearly-price" className="text-[11px] font-semibold text-slate-700">Yearly Price (USD)</Label>
             <div className="flex h-11 items-center rounded-xl border border-slate-200 bg-white px-4 focus-within:border-primary">
-              <span className="text-xs font-bold text-slate-400">$</span>
+              <span className="text-xs font-semibold text-slate-400">$</span>
               <input
                 id="yearly-price"
                 placeholder="0.00"
@@ -124,12 +124,12 @@ export function CreateSubscriptionPage() {
       <FormSection stepIndex={3}>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="max-gifts" className="text-[11px] font-bold text-slate-700">Max gifts per month</Label>
+            <Label htmlFor="max-gifts" className="text-[11px] font-semibold text-slate-700">Max gifts per month</Label>
             <Input id="max-gifts" placeholder="e.g. 50" className="h-11 rounded-xl text-xs" />
             <p className="text-[10px] font-medium text-slate-400">Use -1 for unlimited</p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="max-events" className="text-[11px] font-bold text-slate-700">Max group gifting events</Label>
+            <Label htmlFor="max-events" className="text-[11px] font-semibold text-slate-700">Max group gifting events</Label>
             <Input id="max-events" placeholder="e.g. 10" className="h-11 rounded-xl text-xs" />
             <p className="text-[10px] font-medium text-slate-400">Per calendar month</p>
           </div>

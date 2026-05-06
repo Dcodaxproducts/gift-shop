@@ -34,7 +34,7 @@ export function SuspendUserDialog({ open, onOpenChange }: SuspendUserDialogProps
     >
       <div className="space-y-3">
         <div className="rounded-lg bg-[#f4efff] p-3">
-          <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#7c3aed]">User Summary</p>
+          <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#7c3aed]">User Summary</p>
           <div className="mt-2 grid grid-cols-[80px_1fr] gap-y-1 text-[11px]">
             <span className="text-slate-500">Name</span>
             <span className="text-right font-medium text-slate-950">John Doe</span>
@@ -46,7 +46,7 @@ export function SuspendUserDialog({ open, onOpenChange }: SuspendUserDialogProps
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="suspension-reason" className="text-[10px] font-bold text-slate-700">
+          <label htmlFor="suspension-reason" className="text-[10px] font-semibold text-slate-700">
             Reason for suspension
           </label>
           <select
@@ -61,7 +61,7 @@ export function SuspendUserDialog({ open, onOpenChange }: SuspendUserDialogProps
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="suspension-comments" className="text-[10px] font-bold text-slate-700">
+          <label htmlFor="suspension-comments" className="text-[10px] font-semibold text-slate-700">
             Additional Comments (Optional)
           </label>
           <textarea

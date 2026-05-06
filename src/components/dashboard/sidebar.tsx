@@ -93,7 +93,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
             <span className="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/25">
               <Gift className="size-5" />
             </span>
-            <span className="text-[17px] font-black tracking-tight text-text-primary">
+            <span className="text-[17px] font-semibold tracking-tight text-text-primary">
               Gift Platform
             </span>
           </Link>
@@ -153,7 +153,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                           {item.title}
                         </span>
                         {item.badge ? (
-                          <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold text-white">
+                          <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-white">
                             {item.badge}
                           </span>
                         ) : null}
@@ -169,7 +169,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
         <div className="border-t border-border px-5 py-5">
           <p className="mb-2 text-[10px] font-medium text-slate-400">Logged in as</p>
           <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-full bg-[#FFE7B8] text-xs font-black text-[#B7791F]">
+            <div className="flex size-9 items-center justify-center rounded-full bg-[#FFE7B8] text-xs font-semibold text-[#B7791F]">
               {dashboardUser.avatarInitials}
             </div>
             <p className="truncate text-xs font-semibold text-slate-500">

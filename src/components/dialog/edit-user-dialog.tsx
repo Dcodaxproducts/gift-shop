@@ -31,19 +31,19 @@ export function EditUserDialog({ open, onOpenChange }: EditUserDialogProps) {
     >
       <div className="space-y-3">
         <div className="space-y-1.5">
-          <Label htmlFor="edit-user-name" className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+          <Label htmlFor="edit-user-name" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
             Full Name
           </Label>
           <Input id="edit-user-name" defaultValue="Alex Johnson" className="h-10! rounded-lg bg-white text-xs" />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="edit-user-email" className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+          <Label htmlFor="edit-user-email" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
             Email
           </Label>
           <Input id="edit-user-email" type="email" defaultValue="alex.johnson@example.com" className="h-10! rounded-lg bg-white text-xs" />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="edit-user-phone" className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+          <Label htmlFor="edit-user-phone" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
             Phone Number
           </Label>
           <Input id="edit-user-phone" defaultValue="+1 (555) 234-5678" className="h-10! rounded-lg bg-white text-xs" />

@@ -16,7 +16,7 @@ function BrandMark() {
       <div className="flex size-8 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/30">
         <LayoutGrid className="size-4" />
       </div>
-      <span className="text-lg font-black text-slate-950">Gifting</span>
+      <span className="text-lg font-semibold text-slate-950">Gifting</span>
     </div>
   );
 }
@@ -41,7 +41,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-8 max-w-sm text-center">
-              <h2 className="text-2xl font-black tracking-tight text-slate-950">
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
                 Centralized Command
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-500">

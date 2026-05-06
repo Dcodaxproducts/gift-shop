@@ -99,7 +99,7 @@ function PayoutMetricCard({ icon: Icon, label, value, change, tone }: PayoutMetr
         <p className="mt-3 text-[22px] font-semibold leading-none tracking-tight text-slate-950">
           {value}
         </p>
-        <p className={cn("mt-3 text-[10px] font-bold", metricChangeClass[tone])}>
+        <p className={cn("mt-3 text-[10px] font-semibold", metricChangeClass[tone])}>
           {change}
         </p>
       </CardContent>
@@ -112,7 +112,7 @@ function MonthlyTrendChart() {
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <CardContent className="p-6">
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-sm font-bold text-slate-950">Monthly Payout Trend</h2>
+          <h2 className="text-sm font-semibold text-slate-950">Monthly Payout Trend</h2>
           <button
             type="button"
             className="flex h-8 items-center gap-2 rounded-full bg-slate-50 px-4 text-[10px] text-slate-500"
@@ -158,7 +158,7 @@ function EarningsDistributionChart() {
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <CardContent className="p-6">
         <div>
-          <h2 className="text-sm font-bold text-slate-950">Earnings Distribution</h2>
+          <h2 className="text-sm font-semibold text-slate-950">Earnings Distribution</h2>
           <p className="mt-1 text-[10px] font-medium text-slate-400">
             Breakdown by Provider Tier
           </p>
@@ -199,7 +199,7 @@ function RecentPayoutActivities() {
   return (
     <div className="rounded-2xl border border-b-0 border-slate-200">
       <div className="flex flex-col gap-3 rounded-t-2xl bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-sm font-bold text-slate-950">Recent Payout Activities</h2>
+        <h2 className="text-sm font-semibold text-slate-950">Recent Payout Activities</h2>
         <Button variant="outline" className="h-9 rounded-full px-4 text-xs">
           <ListFilter className="size-3.5" />
           Filter
@@ -231,14 +231,14 @@ function RecentPayoutActivities() {
               <div className="flex items-center gap-3">
                 <span
                   className={cn(
-                    "flex size-9 items-center justify-center rounded-full text-[11px] font-black",
+                    "flex size-9 items-center justify-center rounded-full text-[11px] font-semibold",
                     avatarToneClass[activity.avatarTone],
                   )}
                 >
                   {activity.avatar}
                 </span>
                 <div>
-                  <p className="text-xs font-bold leading-4 text-slate-950">
+                  <p className="text-xs font-semibold leading-4 text-slate-950">
                     {activity.provider}
                   </p>
                   <p className="text-[10px] font-medium text-slate-400">
@@ -247,7 +247,7 @@ function RecentPayoutActivities() {
                 </div>
               </div>
             </TableCell>
-            <TableCell className="text-xs font-bold text-slate-950">
+            <TableCell className="text-xs font-semibold text-slate-950">
               {activity.pendingAmount}
             </TableCell>
             <TableCell className="text-xs text-slate-500">{activity.lastPayoutDate}</TableCell>
@@ -255,7 +255,7 @@ function RecentPayoutActivities() {
             <TableCell>
               <span
                 className={cn(
-                  "inline-flex rounded-full px-3 py-1 text-[10px] font-bold",
+                  "inline-flex rounded-full px-3 py-1 text-[10px] font-semibold",
                   statusToneClass[activity.status],
                 )}
               >
@@ -293,11 +293,11 @@ function RecentPayoutActivities() {
       >
         <div className="space-y-5">
           <div className="flex items-center gap-3">
-            <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-sm font-bold text-primary">
+            <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-sm font-semibold text-primary">
               CT
             </span>
             <div>
-              <h3 className="text-sm font-bold text-slate-950">{payoutBreakdown.provider}</h3>
+              <h3 className="text-sm font-semibold text-slate-950">{payoutBreakdown.provider}</h3>
               <p className="mt-0.5 text-[10px] font-medium text-slate-400">
                 ID: {payoutBreakdown.merchantId}
               </p>
@@ -307,24 +307,24 @@ function RecentPayoutActivities() {
           <div className="space-y-3 border-t border-slate-100 pt-4">
             <div className="flex items-center justify-between text-xs">
               <span className="font-medium text-slate-500">Gross Amount</span>
-              <span className="font-bold text-slate-950">{payoutBreakdown.grossAmount}</span>
+              <span className="font-semibold text-slate-950">{payoutBreakdown.grossAmount}</span>
             </div>
             <div className="flex items-center justify-between text-xs">
               <span className="font-medium text-slate-500">Platform Fee (10%)</span>
-              <span className="font-bold text-rose-500">{payoutBreakdown.platformFee}</span>
+              <span className="font-semibold text-rose-500">{payoutBreakdown.platformFee}</span>
             </div>
             <div className="flex items-center justify-between text-xs">
               <span className="font-medium text-slate-500">Processing Fee</span>
-              <span className="font-bold text-rose-500">{payoutBreakdown.processingFees}</span>
+              <span className="font-semibold text-rose-500">{payoutBreakdown.processingFees}</span>
             </div>
             <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
-              <span className="font-bold text-slate-950">Net Payout</span>
-              <span className="text-base font-bold text-primary">{payoutBreakdown.netPayout}</span>
+              <span className="font-semibold text-slate-950">Net Payout</span>
+              <span className="text-base font-semibold text-primary">{payoutBreakdown.netPayout}</span>
             </div>
           </div>
 
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
               Recent Transactions
             </p>
             <div className="mt-3 space-y-3">
@@ -334,10 +334,10 @@ function RecentPayoutActivities() {
                   className="flex items-start justify-between gap-3"
                 >
                   <div>
-                    <p className="text-xs font-bold text-slate-950">Order #{transaction.orderId}</p>
+                    <p className="text-xs font-semibold text-slate-950">Order #{transaction.orderId}</p>
                     <p className="mt-0.5 text-[10px] font-medium text-slate-400">{transaction.date}</p>
                   </div>
-                  <p className="text-xs font-bold text-slate-950">{transaction.amount}</p>
+                  <p className="text-xs font-semibold text-slate-950">{transaction.amount}</p>
                 </div>
               ))}
             </div>

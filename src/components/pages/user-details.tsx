@@ -30,8 +30,8 @@ const activityToneClass = {
 function ProfileField({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">{label}</p>
-      <p className="mt-1 w-full wrap-break-word text-[11px] font-bold leading-4 text-slate-700">{value}</p>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-400">{label}</p>
+      <p className="mt-1 w-full wrap-break-word text-[11px] font-semibold leading-4 text-slate-700">{value}</p>
     </div>
   );
 }
@@ -49,7 +49,7 @@ function TabsBar({ activeTab, onTabChange }: { activeTab: UserDetailTab; onTabCh
             type="button"
             onClick={() => onTabChange(tab.id)}
             className={cn(
-              "flex items-center gap-2 border-b-2 pb-3 text-xs font-bold transition",
+              "flex items-center gap-2 border-b-2 pb-3 text-xs font-semibold transition",
               active ? "border-[#7c3aed] text-[#7c3aed]" : "border-transparent text-slate-500 hover:text-slate-800",
             )}
           >
@@ -65,7 +65,7 @@ function TabsBar({ activeTab, onTabChange }: { activeTab: UserDetailTab; onTabCh
 function OverviewTab() {
   return (
     <CardContent className="px-5 pb-5 pt-4">
-      <h2 className="text-xs font-black uppercase tracking-wide text-slate-950">Recent Activity</h2>
+      <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-950">Recent Activity</h2>
       <div className="mt-4 space-y-4">
         {recentActivities.map((activity) => (
           <div key={activity.title} className="grid grid-cols-[30px_1fr_auto] items-start gap-3">
@@ -73,7 +73,7 @@ function OverviewTab() {
               <RotateCcw className="size-3" />
             </span>
             <div>
-              <p className="text-[11px] font-bold leading-4 text-slate-800">{activity.title}</p>
+              <p className="text-[11px] font-semibold leading-4 text-slate-800">{activity.title}</p>
               <p className="mt-0.5 text-[10px] text-slate-500">{activity.description}</p>
             </div>
             <p className="text-[10px] text-slate-400">{activity.time}</p>
@@ -82,7 +82,7 @@ function OverviewTab() {
       </div>
       <button
         type="button"
-        className="mt-5 h-8 w-full rounded-lg bg-slate-50 text-[11px] font-bold text-slate-700 transition hover:bg-slate-100"
+        className="mt-5 h-8 w-full rounded-lg bg-slate-50 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100"
       >
         View All Activity
       </button>
@@ -110,20 +110,20 @@ export function UserDetailsPage() {
           <Card className="rounded-xl border border-border bg-white p-5 shadow-sm">
             <div className="grid gap-5 md:grid-cols-[88px_minmax(0,1fr)]">
               <div className="relative size-[86px]">
-                <span className="flex size-[86px] items-center justify-center overflow-hidden rounded-full border border-[#a9b8e8] bg-[#d9e5df] text-xl font-black text-slate-700">
+                <span className="flex size-[86px] items-center justify-center overflow-hidden rounded-full border border-[#a9b8e8] bg-[#d9e5df] text-xl font-semibold text-slate-700">
                   {userProfile.avatarInitials}
                 </span>
                 <span className="absolute bottom-1 right-0 size-3.5 rounded-full border-2 border-white bg-emerald-500" />
               </div>
               <div className="min-w-0">
-                <h2 className="text-lg font-black text-slate-950">{userProfile.name}</h2>
+                <h2 className="text-lg font-semibold text-slate-950">{userProfile.name}</h2>
                 <p className="mt-0.5 text-xs text-slate-500">Premium Subscription Plan</p>
                 <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 lg:grid-cols-3">
                   <ProfileField label="Email Address" value={userProfile.email} />
                   <ProfileField label="Phone Number" value={userProfile.phone} />
                   <div className="min-w-0">
-                    <p className="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Account Status</p>
-                    <span className="mt-1 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold text-emerald-600">
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-400">Account Status</p>
+                    <span className="mt-1 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-semibold text-emerald-600">
                       {userProfile.status}
                     </span>
                   </div>
@@ -140,7 +140,7 @@ export function UserDetailsPage() {
             {activeTab === "overview" ? <OverviewTab /> : null}
             {activeTab !== "overview" ? (
               <CardContent className="px-5 py-5">
-                <p className="text-sm font-bold text-slate-950">{tabs.find((tab) => tab.id === activeTab)?.label}</p>
+                <p className="text-sm font-semibold text-slate-950">{tabs.find((tab) => tab.id === activeTab)?.label}</p>
                 <p className="mt-2 text-xs text-slate-500">Detailed history will appear here.</p>
               </CardContent>
             ) : null}
@@ -150,7 +150,7 @@ export function UserDetailsPage() {
         <aside className="space-y-5 xl:w-[230px]">
           <Card className="rounded-xl border border-border bg-white shadow-sm">
             <CardHeader className="p-4 pb-3">
-              <CardTitle className="text-[12px] font-black text-slate-950">Account Actions</CardTitle>
+              <CardTitle className="text-[12px] font-semibold text-slate-950">Account Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 px-4 pb-4">
               <Button variant="outline" className="h-10 w-full justify-center gap-2 rounded-lg px-3 text-[11px] leading-none" onClick={() => setIsEditDialogOpen(true)}>
@@ -170,16 +170,16 @@ export function UserDetailsPage() {
 
           <Card className="rounded-xl border border-[#e0d7ff] bg-[#f1eaff] shadow-sm">
             <CardHeader className="p-4 pb-3">
-              <CardTitle className="text-[12px] font-black text-[#7c3aed]">Subscription Overview</CardTitle>
+              <CardTitle className="text-[12px] font-semibold text-[#7c3aed]">Subscription Overview</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 px-4 pb-4">
               <div className="flex justify-between gap-3 text-[10px]">
                 <span className="text-slate-500">Plan Type</span>
-                <span className="text-right font-black text-slate-950">Premium Yearly</span>
+                <span className="text-right font-semibold text-slate-950">Premium Yearly</span>
               </div>
               <div className="flex justify-between gap-3 text-[10px]">
                 <span className="text-slate-500">Renewal Date</span>
-                <span className="text-right font-black text-slate-950">Oct 12, 2024</span>
+                <span className="text-right font-semibold text-slate-950">Oct 12, 2024</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-white">
                 <div className="h-full rounded-full bg-[#7c3aed]" style={{ width: "65%" }} />
@@ -190,13 +190,13 @@ export function UserDetailsPage() {
 
           <Card className="rounded-xl border border-border bg-white shadow-sm">
             <CardHeader className="p-4 pb-3">
-              <CardTitle className="text-[12px] font-black text-slate-950">Quick Stats</CardTitle>
+              <CardTitle className="text-[12px] font-semibold text-slate-950">Quick Stats</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-3 px-4 pb-4">
               {userProfileStats.map((stat) => (
                 <div key={stat.label} className="rounded-xl bg-slate-50 px-2 py-3 text-center">
-                  <p className="text-[9px] font-black uppercase text-slate-400">{stat.label}</p>
-                  <p className="mt-1 text-sm font-black text-slate-950">{stat.value}</p>
+                  <p className="text-[9px] font-semibold uppercase text-slate-400">{stat.label}</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-950">{stat.value}</p>
                 </div>
               ))}
             </CardContent>

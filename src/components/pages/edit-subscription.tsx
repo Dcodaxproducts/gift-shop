@@ -23,7 +23,7 @@ function SectionTitle({ icon: Icon, title }: { icon: React.ElementType; title: s
   return (
     <div className="flex items-center gap-2.5">
       <Icon className="size-4 text-primary" strokeWidth={2.4} />
-      <h2 className="text-sm font-bold text-slate-950">{title}</h2>
+      <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
     </div>
   );
 }
@@ -37,10 +37,10 @@ function StatusCard() {
             <BadgeCheck className="size-4" strokeWidth={2.4} />
           </span>
           <div>
-            <p className="text-sm font-bold text-slate-950">Plan Status</p>
+            <p className="text-sm font-semibold text-slate-950">Plan Status</p>
             <p className="mt-0.5 text-[11px] font-medium text-slate-500">
               Current status is{" "}
-              <span className="font-bold text-emerald-500">Active</span>
+              <span className="font-semibold text-emerald-500">Active</span>
             </p>
           </div>
         </div>
@@ -55,10 +55,10 @@ function SubscribersCard() {
     <SectionCard>
       <p className="text-[11px] font-medium text-slate-500">Active Subscribers</p>
       <div className="mt-2 flex items-end gap-2">
-        <p className="text-[28px] font-black leading-none tracking-tight text-slate-950">
+        <p className="text-[28px] font-semibold leading-none tracking-tight text-slate-950">
           {editSubscriptionPlan.subscribers}
         </p>
-        <span className="pb-1 text-[11px] font-bold text-emerald-500">
+        <span className="pb-1 text-[11px] font-semibold text-emerald-500">
           {editSubscriptionPlan.subscriberChange}
         </span>
       </div>
@@ -137,7 +137,7 @@ function FeaturesLimitsCard() {
         ))}
         <button
           type="button"
-          className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-white text-xs font-bold text-slate-500 transition hover:border-primary hover:text-primary"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-white text-xs font-semibold text-slate-500 transition hover:border-primary hover:text-primary"
         >
           <CirclePlus className="size-4" strokeWidth={2.4} />
           Add New Feature
@@ -185,7 +185,7 @@ function VisibilityCard() {
 function SaveChangesCard() {
   return (
     <SectionCard className="bg-primary/5">
-      <h2 className="text-sm font-bold text-slate-950">Save Changes</h2>
+      <h2 className="text-sm font-semibold text-slate-950">Save Changes</h2>
       <p className="mt-2 text-[11px] leading-5 text-slate-500">
         Updating this plan will affect any current 1,240 subscribers at their next billing cycle.
       </p>
@@ -206,7 +206,7 @@ function SaveChangesCard() {
 function DangerZoneCard() {
   return (
     <SectionCard className="border-rose-100 bg-rose-50/60">
-      <h2 className="text-sm font-bold text-rose-600">Danger Zone</h2>
+      <h2 className="text-sm font-semibold text-rose-600">Danger Zone</h2>
       <p className="mt-2 text-[11px] leading-5 text-rose-400">
         Deleting this plan will prevent any new subscriptions and might affect legacy accounts.
       </p>

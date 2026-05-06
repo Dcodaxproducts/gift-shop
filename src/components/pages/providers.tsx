@@ -57,7 +57,7 @@ function getProviderInitials(name: string) {
 
 function PillBadge({ label, className }: { label: string; className: string }) {
   return (
-    <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-bold", className)}>
+    <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", className)}>
       {label}
     </span>
   );
@@ -76,12 +76,12 @@ function ProviderStats() {
               {stat.title}
             </p>
             <div className="mt-3 flex items-center justify-between gap-3">
-              <p className="text-xl font-bold leading-none tracking-tight text-slate-950">
+              <p className="text-xl font-semibold leading-none tracking-tight text-slate-950">
                 {stat.value}
               </p>
               <span
                 className={cn(
-                  "rounded-full px-2.5 py-1 text-[11px] font-bold leading-none",
+                  "rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none",
                   statBadgeClass[stat.tone],
                 )}
               >
@@ -175,17 +175,17 @@ export function ProvidersPage() {
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span className={cn("flex size-10 items-center justify-center rounded-2xl text-xs font-black shadow-sm", providerToneClass[item.tone])}>
+                <span className={cn("flex size-10 items-center justify-center rounded-2xl text-xs font-semibold shadow-sm", providerToneClass[item.tone])}>
                   {getProviderInitials(item.name)}
                 </span>
-                <span className="text-xs font-bold text-slate-950">{item.name}</span>
+                <span className="text-xs font-semibold text-slate-950">{item.name}</span>
               </div>
             </TableCell>
             <TableCell className="text-xs text-slate-500">{item.email}</TableCell>
             <TableCell>
               <PillBadge label={item.status} className={statusToneClass[item.status]} />
             </TableCell>
-            <TableCell className="text-xs font-bold text-slate-950">{item.revenue}</TableCell>
+            <TableCell className="text-xs font-semibold text-slate-950">{item.revenue}</TableCell>
             <TableCell>
               <div className="flex items-center justify-end">
                 <Button

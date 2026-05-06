@@ -90,7 +90,7 @@ export function RolesPermissionsPage() {
       <section className="grid gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
         <Card className="h-fit rounded-2xl border border-border bg-white shadow-sm">
           <CardHeader className="p-5 pb-4">
-            <CardTitle className="text-lg font-bold tracking-tight text-text-primary">Roles</CardTitle>
+            <CardTitle className="text-lg font-semibold tracking-tight text-text-primary">Roles</CardTitle>
             <p className="text-xs text-slate-400">Select a role to edit</p>
           </CardHeader>
           <CardContent className="space-y-3 px-5 pb-5">
@@ -110,7 +110,7 @@ export function RolesPermissionsPage() {
                       : "border-transparent bg-white text-slate-600 hover:border-border hover:bg-slate-50 hover:text-text-primary",
                   )}
                 >
-                  <span className="block text-xs font-bold">{role.name}</span>
+                  <span className="block text-xs font-semibold">{role.name}</span>
                   <span className={cn("mt-1 block text-[10px]", isActive ? "text-primary" : "text-slate-400")}>
                     {role.description}
                   </span>
@@ -127,14 +127,14 @@ export function RolesPermissionsPage() {
         <Card className="rounded-2xl border border-border bg-white shadow-sm">
           <CardHeader className="flex flex-col gap-4 p-5 pb-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <CardTitle className="text-lg font-bold tracking-tight text-text-primary">
+              <CardTitle className="text-lg font-semibold tracking-tight text-text-primary">
                 Permissions for {selectedRole.name}
               </CardTitle>
               <p className="mt-2 text-xs text-slate-400">
                 Configure access levels and available actions for this role
               </p>
             </div>
-            <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold text-primary">
+            <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary">
               {selectedRole.name}
             </span>
           </CardHeader>
@@ -145,14 +145,14 @@ export function RolesPermissionsPage() {
 
               return (
                 <section key={group.title} aria-labelledby={`${groupId}-title`}>
-                  <h2 id={`${groupId}-title`} className="text-sm font-bold text-text-primary">
+                  <h2 id={`${groupId}-title`} className="text-sm font-semibold text-text-primary">
                     {group.title}
                   </h2>
                   <div className="mt-3 divide-y divide-border rounded-2xl border border-border bg-white">
                     {group.permissions.map((permission) => (
                       <div key={permission.id} className="flex items-center justify-between gap-4 px-4 py-4">
                         <div>
-                          <p className="text-xs font-bold text-slate-700">{permission.label}</p>
+                          <p className="text-xs font-semibold text-slate-700">{permission.label}</p>
                           <p className="mt-1 text-[10px] leading-4 text-slate-400">{permission.description}</p>
                         </div>
                         <Switch

@@ -19,6 +19,7 @@ import {
   type BroadcastStepId,
 } from "@/constants/notifications";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "../common/page-header";
 
 type FlowStep = BroadcastStepId;
 
@@ -32,9 +33,10 @@ type SelectableCardProps = {
 function BroadcastShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-auto max-w-[1180px] space-y-8">
-      <div className="text-center">
-        <h1 className="text-[28px] font-black tracking-tight text-slate-950">Create New Broadcast</h1>
-      </div>
+      <PageHeader
+        title="Create New Broadcast"
+        className="sm:justify-center"
+      />
       {children}
     </div>
   );
@@ -52,13 +54,13 @@ function Stepper({ activeStep, completed = false }: { activeStep: FlowStep; comp
             <div className="flex items-center gap-2.5">
               <span
                 className={cn(
-                  "flex size-9 items-center justify-center rounded-full text-sm font-black transition",
+                  "flex size-9 items-center justify-center rounded-full text-sm font-semibold transition",
                   isActive || isDone ? "bg-primary text-white" : "bg-slate-100 text-slate-300",
                 )}
               >
                 {step.id}
               </span>
-              <span className={cn("text-xs font-bold", isActive || isDone ? "text-primary" : "text-slate-400")}>
+              <span className={cn("text-xs font-semibold", isActive || isDone ? "text-primary" : "text-slate-400")}>
                 {step.label}
               </span>
             </div>
@@ -86,7 +88,7 @@ function SectionHeading({ icon: Icon, title }: { icon: React.ElementType; title:
       <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
         <Icon className="size-4" strokeWidth={2.5} />
       </span>
-      <h2 className="text-sm font-black text-slate-950">{title}</h2>
+      <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
     </div>
   );
 }
@@ -103,7 +105,7 @@ function SelectableCard({ active, icon: Icon, title, description }: SelectableCa
       <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary">
         <Icon className="size-4" strokeWidth={2.5} />
       </span>
-      <span className="mt-3 block text-xs font-black text-slate-950">{title}</span>
+      <span className="mt-3 block text-xs font-semibold text-slate-950">{title}</span>
       <span className="mt-1 block text-[10px] font-medium leading-4 text-slate-500">{description}</span>
       <span className={cn("absolute right-4 top-4 size-4 rounded-full border", active ? "border-primary bg-primary" : "border-slate-300")}>
         {active ? <Check className="size-3 text-white" strokeWidth={3} /> : null}
@@ -116,7 +118,7 @@ function ActionTile({ icon: Icon, label }: { icon: React.ElementType; label: str
   return (
     <button
       type="button"
-      className="flex h-[105px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-200 bg-white text-xs font-bold text-slate-700 transition hover:border-primary hover:text-primary"
+      className="flex h-[105px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-200 bg-white text-xs font-semibold text-slate-700 transition hover:border-primary hover:text-primary"
     >
       <Icon className="size-5 text-slate-400" strokeWidth={2.4} />
       {label}
@@ -132,33 +134,37 @@ function MobilePreview() {
   return (
     <FormCard className="bg-primary/5">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-black text-slate-950">Live Preview</h2>
+        <h2 className="text-sm font-semibold text-slate-950">Live Preview</h2>
         <div className="flex items-center gap-3">
           <PhoneIcon className="size-5 text-primary" />
           <DesktopIcon className="size-5 text-slate-300" />
         </div>
       </div>
       <div className="mt-7 flex justify-center">
-        <div className="relative w-[245px]">
+        <div className="relative w-[245px] overflow-hidden rounded-[2.5rem] border-8 border-slate-900 shadow-2xl">
           <Image
             src="/mobile.png"
             alt="Mobile notification preview"
             width={490}
             height={640}
             priority
-            className="w-full drop-shadow-2xl"
+            className="block w-full"
           />
-          <div className="absolute left-[32px] right-[32px] top-[88px] rounded-xl bg-white/95 p-3 shadow-xl">
+          <div className="absolute left-3 right-3 top-[80px] rounded-xl bg-white/95 p-3 shadow-xl">
             <div className="flex items-start gap-2">
               <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary text-white">
                 <MegaphoneIcon className="size-3.5" />
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-[8px] font-black uppercase tracking-wide text-slate-500">Broadcast Engine</p>
+                  <p className="text-[8px] font-semibold uppercase tracking-wide text-slate-500">
+                    Broadcast Engine
+                  </p>
                   <span className="text-[8px] font-medium text-slate-400">Now</span>
                 </div>
-                <p className="mt-1 text-[10px] font-black text-slate-950">Maintenance Notice</p>
+                <p className="mt-1 text-[10px] font-semibold text-slate-950">
+                  Maintenance Notice
+                </p>
                 <p className="mt-0.5 line-clamp-2 text-[8px] font-medium leading-3 text-slate-500">
                   The system will be undergoing scheduled maintenance this Sunday between 2:00...
                 </p>
@@ -179,15 +185,15 @@ function ContentStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="grid gap-7 xl:grid-cols-[minmax(0,1fr)_400px]">
       <FormCard>
-        <h2 className="text-lg font-black text-slate-950">Notification Content</h2>
+        <h2 className="text-lg font-semibold text-slate-950">Notification Content</h2>
         <div className="mt-6 space-y-5">
           <div className="space-y-2">
-            <label htmlFor="notification-title" className="text-xs font-bold text-slate-700">Notification Title</label>
+            <label htmlFor="notification-title" className="text-xs font-semibold text-slate-700">Notification Title</label>
             <Input id="notification-title" placeholder="e.g., Maintenance Notice" className="h-12! rounded-xl bg-primary/5 text-xs" />
             <p className="text-[10px] font-medium text-slate-400">Limit to 50 characters for optimal display.</p>
           </div>
           <div className="space-y-2">
-            <label htmlFor="message-body" className="text-xs font-bold text-slate-700">Message Body</label>
+            <label htmlFor="message-body" className="text-xs font-semibold text-slate-700">Message Body</label>
             <textarea
               id="message-body"
               placeholder="Type your message here..."
@@ -201,7 +207,7 @@ function ContentStep({ onNext }: { onNext: () => void }) {
         </div>
         <div className="mt-9 flex items-center justify-between">
           <Button variant="ghost" className="text-slate-700 hover:text-slate-950">Save Draft</Button>
-          <Button className="h-12 rounded-xl px-8 font-black" onClick={onNext}>
+          <Button onClick={onNext}>
             Next: Targeting
           </Button>
         </div>
@@ -213,14 +219,14 @@ function ContentStep({ onNext }: { onNext: () => void }) {
 
 function EstimatedReachCard() {
   return (
-    <Card className="overflow-hidden rounded-2xl border-0 bg-gradient-to-br from-primary to-primary/70 text-white shadow-lg shadow-primary/20">
+    <Card className="overflow-hidden rounded-2xl border-0 bg-linear-to-br from-primary to-primary/70 text-white shadow-lg shadow-primary/20">
       <CardContent className="p-7">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/60">Estimated Reach</p>
-        <p className="mt-5 text-[42px] font-black leading-none tracking-tight">124,430</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">Estimated Reach</p>
+        <p className="mt-5 text-[42px] font-semibold leading-none tracking-tight">124,430</p>
         <p className="mt-2 text-xs font-medium text-white/65">Qualified recipients found</p>
         <div className="mt-9 space-y-5">
           {channelMetrics.map((metric) => (
-            <div key={metric.label} className="flex items-center justify-between text-xs font-bold">
+            <div key={metric.label} className="flex items-center justify-between text-xs font-semibold">
               <span className="text-white/50">{metric.label}</span>
               <span>{metric.value}</span>
             </div>
@@ -258,9 +264,9 @@ function TargetingStep({ onBack, onNext }: { onBack: () => void; onNext: () => v
           ))}
         </div>
         <div className="mt-8 rounded-2xl bg-primary/5 p-6">
-          <h3 className="text-base font-bold text-primary">Targeting Filters</h3>
+          <h3 className="text-base font-semibold text-primary">Targeting Filters</h3>
           <div className="mt-6 max-w-[280px] space-y-2">
-            <p className="text-[10px] font-black uppercase tracking-wide text-slate-400">Location</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Location</p>
             <button type="button" className="flex h-10 w-full items-center justify-between rounded-xl bg-white px-4 text-xs font-medium text-slate-500">
               All Countries
               <span className="text-slate-300">⌄</span>
@@ -272,7 +278,7 @@ function TargetingStep({ onBack, onNext }: { onBack: () => void; onNext: () => v
       <div className="space-y-5">
         <EstimatedReachCard />
         <FormCard className="bg-primary/5">
-          <h3 className="text-sm font-black text-slate-950">Targeting Logic</h3>
+          <h3 className="text-sm font-semibold text-slate-950">Targeting Logic</h3>
           <ul className="mt-4 space-y-3 text-[11px] font-medium text-slate-500">
             <li className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary" /> Excluding unsubscribed users</li>
             <li className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary" /> Only verified email addresses</li>
@@ -295,11 +301,11 @@ function ScheduleOption({ active, icon: Icon, title, description }: SelectableCa
 function FinalSummary() {
   return (
     <FormCard className="bg-primary/5">
-      <h2 className="text-sm font-black text-slate-950">Final Summary</h2>
+      <h2 className="text-sm font-semibold text-slate-950">Final Summary</h2>
       <div className="mt-5 rounded-2xl bg-white p-4">
-        <p className="text-[9px] font-black uppercase tracking-wide text-slate-400">Content Preview</p>
-        <div className="mt-3 h-[120px] rounded-xl bg-gradient-to-br from-primary/20 via-primary/10 to-primary" />
-        <h3 className="mt-3 text-xs font-black text-slate-950">Summer Sale Launch Event</h3>
+        <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">Content Preview</p>
+        <div className="mt-3 h-[120px] rounded-xl bg-linear-to-br from-primary/20 via-primary/10 to-primary" />
+        <h3 className="mt-3 text-xs font-semibold text-slate-950">Summer Sale Launch Event</h3>
         <p className="mt-1 line-clamp-2 text-[10px] font-medium leading-4 text-slate-500">Get ready for the biggest event of the season. Exclusive discounts inside f...</p>
       </div>
       <div className="mt-6 space-y-5">
@@ -307,7 +313,7 @@ function FinalSummary() {
         <SummaryMetric icon={Sparkles} label="Estimated Reach" value={finalPreviewDetails.reach} helper="Users matching current criteria" />
       </div>
       <div className="mt-7 rounded-2xl bg-white p-4">
-        <div className="mb-2 flex items-center justify-between text-[10px] font-bold text-slate-500">
+        <div className="mb-2 flex items-center justify-between text-[10px] font-semibold text-slate-500">
           <span>Network Status</span><span className="size-2 rounded-full bg-emerald-400" />
         </div>
         <div className="h-2 rounded-full bg-slate-100"><div className="h-full w-[92%] rounded-full bg-primary" /></div>
@@ -322,9 +328,9 @@ function SummaryMetric({ icon: Icon, label, value, badge, helper }: { icon: Reac
     <div className="flex gap-3">
       <Icon className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={2.4} />
       <div>
-        <p className="text-[9px] font-black uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="mt-1 text-xs font-black text-slate-950">{value}</p>
-        {badge ? <span className="mt-2 inline-flex rounded-full bg-primary/10 px-2 py-1 text-[9px] font-black text-primary">{badge}</span> : null}
+        <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="mt-1 text-xs font-semibold text-slate-950">{value}</p>
+        {badge ? <span className="mt-2 inline-flex rounded-full bg-primary/10 px-2 py-1 text-[9px] font-semibold text-primary">{badge}</span> : null}
         {helper ? <p className="mt-1 text-[9px] font-medium text-slate-400">{helper}</p> : null}
       </div>
     </div>
@@ -354,7 +360,7 @@ function ScheduleStep({ onBack, onNext }: { onBack: () => void; onNext: () => vo
                 <RepeatIcon className="size-5" strokeWidth={2.4} />
               </span>
               <div>
-                <p className="text-sm font-black text-slate-950">Recurring Broadcast</p>
+                <p className="text-sm font-semibold text-slate-950">Recurring Broadcast</p>
                 <p className="mt-1 text-[11px] font-medium text-slate-500">Automate this broadcast on a repeat cycle.</p>
               </div>
             </div>
@@ -362,7 +368,7 @@ function ScheduleStep({ onBack, onNext }: { onBack: () => void; onNext: () => vo
           </div>
           <div className="mt-5 flex gap-3">
             {['Daily', 'Weekly', 'Monthly'].map((item, index) => (
-              <button key={item} type="button" className={cn("h-9 rounded-xl px-5 text-xs font-black", index === 0 ? "bg-primary text-white" : "bg-white text-slate-600")}>{item}</button>
+              <button key={item} type="button" className={cn("h-9 rounded-xl px-5 text-xs font-semibold", index === 0 ? "bg-primary text-white" : "bg-white text-slate-600")}>{item}</button>
             ))}
           </div>
         </div>
@@ -381,7 +387,7 @@ function CalendarIcon(props: React.ComponentProps<typeof notificationIcons.calen
 function DateField({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] font-black uppercase tracking-wide text-slate-400">{label}</p>
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
       <div className="mt-2 flex h-11 items-center gap-2 rounded-xl bg-white px-4 text-xs font-medium text-slate-700">
         <Clock3 className="size-4 text-slate-400" />
         {value}
@@ -397,7 +403,7 @@ function StepFooter({ onBack, onNext, nextLabel }: { onBack: () => void; onNext:
         <ArrowLeft className="size-4" />
         Back
       </Button>
-      <Button className="h-12 rounded-xl px-8 font-black" onClick={onNext}>
+      <Button onClick={onNext}>
         {nextLabel}
         <ArrowRight className="size-4" />
       </Button>
@@ -416,18 +422,18 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
           <div className="mx-auto flex size-24 rotate-12 items-center justify-center rounded-3xl bg-primary text-white shadow-xl shadow-primary/25">
             <SuccessIcon className="size-12 -rotate-12" strokeWidth={2.8} />
           </div>
-          <h2 className="mx-auto mt-8 max-w-[430px] text-[30px] font-black leading-tight tracking-tight text-slate-950">Broadcast Successfully Scheduled!</h2>
+          <h2 className="mx-auto mt-8 max-w-[430px] text-[30px] font-semibold leading-tight tracking-tight text-slate-950">Broadcast Successfully Scheduled!</h2>
           <p className="mx-auto mt-5 max-w-[420px] text-sm font-medium leading-6 text-slate-500">
             Your campaign has been verified and added to the processing queue. We&apos;ll handle the delivery while you track the progress in real-time.
           </p>
           <div className="mt-8 space-y-4">
-            <Button className="h-13 w-full rounded-xl font-black">View Delivery Report</Button>
-            <Button variant="ghost" className="h-13 w-full rounded-xl bg-primary/10 font-black text-slate-700 hover:bg-primary/15" onClick={onBack}>Back to Overview</Button>
+            <Button className="h-13 w-full">View Delivery Report</Button>
+            <Button variant="ghost" className="h-13 w-full bg-primary/10 text-slate-700 hover:bg-primary/15" onClick={onBack}>Back to Overview</Button>
           </div>
         </FormCard>
         <div className="space-y-5">
           <FormCard className="bg-primary/5">
-            <h3 className="text-[12px] font-black uppercase tracking-[0.16em] text-primary">Campaign Summary</h3>
+            <h3 className="text-[12px] font-semibold uppercase tracking-[0.16em] text-primary">Campaign Summary</h3>
             <div className="mt-5 space-y-4">
               {campaignSummary.map((item) => {
                 const Icon = item.icon;
@@ -443,7 +449,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
                   <div className="text-center">
                     <Icon className="mx-auto size-5 text-primary" />
                     <p className="mt-3 text-[10px] font-medium text-slate-400">{item.label}</p>
-                    <p className="mt-1 text-xs font-black text-slate-950">{item.value}</p>
+                    <p className="mt-1 text-xs font-semibold text-slate-950">{item.value}</p>
                   </div>
                 </FormCard>
               );
@@ -452,7 +458,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
           <FormCard className="bg-primary/5">
             <div className="flex gap-3">
               <Info className="mt-0.5 size-5 shrink-0 text-primary" />
-              <p className="text-[11px] font-bold leading-5 text-primary">Note: You can edit the schedule or cancel this broadcast up to 30 minutes before the scheduled time via the broadcasts list.</p>
+              <p className="text-[11px] font-semibold leading-5 text-primary">Note: You can edit the schedule or cancel this broadcast up to 30 minutes before the scheduled time via the broadcasts list.</p>
             </div>
           </FormCard>
         </div>

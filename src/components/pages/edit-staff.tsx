@@ -47,7 +47,7 @@ export function EditStaffPage() {
                 </button>
               </div>
               <div>
-                <h2 className="text-sm font-bold text-slate-950">Profile Details</h2>
+                <h2 className="text-sm font-semibold text-slate-950">Profile Details</h2>
                 <p className="mt-0.5 text-[11px] text-slate-400">
                   Update staff&apos;s personal information and photo.
                 </p>
@@ -57,13 +57,13 @@ export function EditStaffPage() {
             <div className="mt-6 space-y-5">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="full-name" className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                  <Label htmlFor="full-name" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                     Full Name
                   </Label>
                   <Input id="full-name" defaultValue="Jordan Henderson" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                  <Label htmlFor="email" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                     Email Address
                   </Label>
                   <Input id="email" defaultValue="j.henderson@fintech.com" />
@@ -71,7 +71,7 @@ export function EditStaffPage() {
               </div>
 
               <div className="space-y-2 sm:max-w-[calc(50%-0.5rem)]">
-                <Label htmlFor="phone" className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                <Label htmlFor="phone" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                   Phone Number
                 </Label>
                 <Input id="phone" defaultValue="+1 (555) 012-3456" />
@@ -83,7 +83,7 @@ export function EditStaffPage() {
         <div className="space-y-5">
           <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
             <CardContent className="p-5">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                 Account Status
               </p>
               <div className="mt-4 flex items-center justify-between gap-3">
@@ -101,7 +101,7 @@ export function EditStaffPage() {
 
           <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
             <CardContent className="p-5">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                 Role Assignment
               </p>
               <div className="mt-4 space-y-2">
@@ -121,7 +121,7 @@ export function EditStaffPage() {
               </div>
 
               <div className="mt-4 rounded-xl bg-emerald-50/40 p-3 ring-1 ring-emerald-100">
-                <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                   Permission Summary
                 </p>
                 <ul className="mt-2.5 space-y-2">

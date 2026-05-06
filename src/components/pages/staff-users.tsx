@@ -103,16 +103,16 @@ export function StaffUsersPage() {
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-xs font-black text-primary">
+                <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-xs font-semibold text-primary">
                   {item.initials}
                 </span>
-                <span className="text-xs font-bold text-slate-950">{item.name}</span>
+                <span className="text-xs font-semibold text-slate-950">{item.name}</span>
               </div>
             </TableCell>
             <TableCell className="text-xs text-slate-500">{item.email}</TableCell>
             <TableCell className="text-xs text-slate-700">{item.role}</TableCell>
             <TableCell>
-              <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-bold", statusToneClass[item.status])}>
+              <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", statusToneClass[item.status])}>
                 {item.status}
               </span>
             </TableCell>

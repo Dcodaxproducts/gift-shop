@@ -19,7 +19,7 @@ export function CardHeader({ className, ...props }: CardProps) {
 export function CardTitle({ className, ...props }: CardProps) {
   return (
     <h1
-      className={cn("text-3xl font-black tracking-tight text-slate-950", className)}
+      className={cn("text-3xl font-semibold tracking-tight text-slate-950", className)}
       {...props}
     />
   );

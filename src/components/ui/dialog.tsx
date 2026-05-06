@@ -70,7 +70,7 @@ export function Dialog({
             <h2
               id="dialog-title"
               className={cn(
-                "text-base font-bold tracking-tight text-slate-950",
+                "text-base font-semibold tracking-tight text-slate-950",
                 titleClassName,
               )}
             >

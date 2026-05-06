@@ -54,14 +54,14 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
 
         <div className="hidden items-center gap-3 pl-4 sm:flex">
           <div className="text-right">
-            <p className="truncate text-xs font-black text-text-primary">
+            <p className="truncate text-xs font-semibold text-text-primary">
               {dashboardUser.name}
             </p>
             <p className="truncate text-[11px] font-medium text-slate-400">
               {dashboardUser.role}
             </p>
           </div>
-          <div className="flex size-10 items-center justify-center rounded-full bg-[#FFD6B8] text-xs font-black text-[#D47750]">
+          <div className="flex size-10 items-center justify-center rounded-full bg-[#FFD6B8] text-xs font-semibold text-[#D47750]">
             {dashboardUser.avatarInitials}
           </div>
         </div>

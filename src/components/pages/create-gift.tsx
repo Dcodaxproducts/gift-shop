@@ -40,7 +40,7 @@ function SectionCard({
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Icon className="size-4" strokeWidth={2.25} />
           </span>
-          <h2 className="text-sm font-bold text-slate-950">{title}</h2>
+          <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
         </div>
         <div className="mt-5">{children}</div>
       </CardContent>
@@ -122,7 +122,7 @@ export function CreateGiftPage() {
           <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
             <CloudUpload className="size-5" />
           </span>
-          <p className="mt-3 text-xs font-bold text-slate-700">
+          <p className="mt-3 text-xs font-semibold text-slate-700">
             Drag and drop images here
           </p>
           <p className="mt-1 text-[10px] text-slate-400">
@@ -158,7 +158,7 @@ export function CreateGiftPage() {
         <SectionCard icon={Eye} title="Status">
           <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
             <div>
-              <p className="text-xs font-bold text-slate-700">Gift Visibility</p>
+              <p className="text-xs font-semibold text-slate-700">Gift Visibility</p>
               <p className="mt-0.5 text-[10px] text-slate-400">
                 Toggle active or inactive status
               </p>

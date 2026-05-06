@@ -27,7 +27,7 @@ export function CreateStaffPage() {
         <CardContent className="p-6">
           <div className="flex items-center gap-2.5">
             <UserRound className="size-4 text-primary" strokeWidth={2.5} />
-            <h2 className="text-sm font-bold text-slate-950">Staff Information</h2>
+            <h2 className="text-sm font-semibold text-slate-950">Staff Information</h2>
           </div>
 
           <div className="mt-5 space-y-4">
@@ -69,7 +69,7 @@ export function CreateStaffPage() {
         <CardContent className="p-6">
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="size-4 text-primary" strokeWidth={2.5} />
-            <h2 className="text-sm font-bold text-slate-950">Role Assignment</h2>
+            <h2 className="text-sm font-semibold text-slate-950">Role Assignment</h2>
           </div>
 
           <div className="mt-5 space-y-4">
@@ -90,7 +90,7 @@ export function CreateStaffPage() {
             <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
               <div className="flex items-center gap-2">
                 <Info className="size-4 text-primary" strokeWidth={2.5} />
-                <p className="text-xs font-bold text-primary">Manager Permissions</p>
+                <p className="text-xs font-semibold text-primary">Manager Permissions</p>
               </div>
               <p className="mt-1.5 text-[11px] leading-5 text-slate-500">
                 Managers can oversee daily operations, approve transactions up to
@@ -106,7 +106,7 @@ export function CreateStaffPage() {
         <CardContent className="p-6">
           <div className="flex items-center gap-2.5">
             <KeyRound className="size-4 text-primary" strokeWidth={2.5} />
-            <h2 className="text-sm font-bold text-slate-950">Account Security</h2>
+            <h2 className="text-sm font-semibold text-slate-950">Account Security</h2>
           </div>
 
           <div className="mt-5 space-y-5">

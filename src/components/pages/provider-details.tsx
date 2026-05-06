@@ -71,12 +71,12 @@ function ProviderStatCard({
           <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Icon className="size-4" strokeWidth={2.5} />
           </span>
-          <span className={cn("pt-1 text-[10px] font-black", statBadgeTone[changeTone])}>
+          <span className={cn("pt-1 text-[10px] font-semibold", statBadgeTone[changeTone])}>
             {change}
           </span>
         </div>
         <p className="mt-5 text-[11px] font-medium text-slate-400">{label}</p>
-        <p className="mt-1 text-[28px] font-black leading-none tracking-tight text-slate-950">
+        <p className="mt-1 text-[28px] font-semibold leading-none tracking-tight text-slate-950">
           {value}
         </p>
       </CardContent>
@@ -85,7 +85,7 @@ function ProviderStatCard({
 }
 
 function SectionTitle({ children }: { children: ReactNode }) {
-  return <h2 className="text-sm font-bold text-slate-950">{children}</h2>;
+  return <h2 className="text-sm font-semibold text-slate-950">{children}</h2>;
 }
 
 function ListedItemsCard() {
@@ -140,12 +140,12 @@ function ListedItemsCard() {
                   >
                     <Icon className="size-3.5" strokeWidth={2.5} />
                   </span>
-                  <span className="text-xs font-bold text-slate-950">{item.name}</span>
+                  <span className="text-xs font-semibold text-slate-950">{item.name}</span>
                 </div>
               </TableCell>
-              <TableCell className="text-xs font-bold text-primary">{item.price}</TableCell>
+              <TableCell className="text-xs font-semibold text-primary">{item.price}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950">
+                <div className="flex items-center gap-2 text-[10px] font-semibold text-slate-950">
                   <span>{item.units}</span>
                   <span>{item.percent}%</span>
                 </div>
@@ -159,7 +159,7 @@ function ListedItemsCard() {
               <TableCell>
                 <span
                   className={cn(
-                    "inline-flex rounded-full px-3 py-1 text-[10px] font-bold",
+                    "inline-flex rounded-full px-3 py-1 text-[10px] font-semibold",
                     productStatusTone[item.status as keyof typeof productStatusTone],
                   )}
                 >
@@ -182,17 +182,17 @@ function BusinessDetailsCard() {
         <div className="mt-5 divide-y divide-slate-100">
           {providerBusinessDetails.map((detail) => (
             <div key={detail.label} className="py-3 first:pt-0">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
                 {detail.label}
               </p>
-              <p className="mt-1 text-xs font-bold leading-4 text-slate-950">{detail.value}</p>
+              <p className="mt-1 text-xs font-semibold leading-4 text-slate-950">{detail.value}</p>
             </div>
           ))}
           <div className="py-3">
-            <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
               Verification Status
             </p>
-            <div className="mt-2 flex items-center gap-2 text-xs font-bold text-blue-600">
+            <div className="mt-2 flex items-center gap-2 text-xs font-semibold text-blue-600">
               <ShieldCheck className="size-4" />
               Tier 2 Verified Provider
             </div>
