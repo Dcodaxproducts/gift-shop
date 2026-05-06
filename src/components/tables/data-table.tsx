@@ -14,6 +14,7 @@ type DataTableProps<T> = {
   headers: React.ReactNode;
   row: (row: T, index: number) => React.ReactNode;
   tableClassName?: string;
+  isBorder?: boolean;
   pagination?: {
     total: number;
     page: number;
@@ -31,6 +32,7 @@ export function DataTable<T>({
   headers,
   row,
   tableClassName,
+  isBorder = true,
   pagination,
   showPagination = true,
 }: DataTableProps<T>) {
@@ -43,7 +45,7 @@ export function DataTable<T>({
   }
 
   return (
-    <div className="flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+    <div className={`flex h-full flex-col justify-between overflow-hidden bg-white shadow-sm${isBorder ? "rounded-2xl border border-border" : "border border-border"}`}>
       <div className="overflow-x-auto">
         <Table className={cn(tableClassName)}>
           <TableHeader>

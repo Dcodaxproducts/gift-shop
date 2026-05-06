@@ -7,7 +7,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const buttonVariants = {
   default:
-    "h-10 px-5 bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90",
+    "h-10 px-5 bg-primary text-primary-foreground hover:bg-primary/90",
   outline:
     "h-10 px-5 border border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
   ghost:

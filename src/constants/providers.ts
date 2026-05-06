@@ -179,6 +179,15 @@ export const providerListedItems: ProviderListedItem[] = [
     status: "Active",
     tone: "purple",
   },
+  {
+    icon: Flower2,
+    name: "Flower Bouquet",
+    price: "$35.00",
+    units: "420 units",
+    percent: 40,
+    status: "Out of Stock",
+    tone: "violet",
+  },
 ];
 
 export const providerBusinessDetails = [
@@ -190,8 +199,32 @@ export const providerBusinessDetails = [
 ] as const;
 
 export const providerDetailActions = [
-  { label: "Approve", tone: "approve", icon: "approve" },
-  { label: "Reject", tone: "reject", icon: "reject" },
-  { label: "Message Provider", tone: "neutral", icon: "message" },
-  { label: "Suspend Account", tone: "neutral", icon: "suspend" },
+  {
+    label: "Approve",
+    icon: "approve",
+    className: "bg-green-500! text-white hover:bg-green-600",
+  },
+  {
+    label: "Reject",
+    icon: "reject",
+    className: "bg-red-500 text-white hover:bg-red-600",
+  },
+  {
+    label: "Message Provider",
+    icon: "message",
+    className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
+  },
+  {
+    label: "Suspend Account",
+    icon: "suspend",
+    className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
+  },
 ] as const;
+
+export const providerListedItemsPagination = {
+  total: 1284,
+  limit: 4,
+  totalPages: 321,
+  hasNext: true,
+  hasPrevious: false,
+};
