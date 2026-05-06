@@ -18,7 +18,7 @@ function PlanFeature({ feature }: { feature: string }) {
 
   return (
     <li className="flex items-start gap-2.5 text-[12px] font-medium leading-5 text-slate-600">
-      <CheckIcon className="mt-0.5 size-4 shrink-0 text-[#8b2fbe]" strokeWidth={2.4} />
+      <CheckIcon className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={2.4} />
       <span>{feature}</span>
     </li>
   );
@@ -31,17 +31,17 @@ function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
     <Card
       className={cn(
         "relative overflow-visible rounded-2xl border bg-white shadow-sm",
-        plan.isPopular ? "border-[#8b2fbe] shadow-[#8b2fbe]/20" : "border-slate-200",
+        plan.isPopular ? "border-primary shadow-primary/20" : "border-slate-200",
       )}
     >
       {plan.isPopular ? (
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8b2fbe] px-6 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-sm">
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary px-6 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-sm">
           Most Popular
         </div>
       ) : null}
       <CardContent className="flex min-h-[500px] flex-col p-6">
         <div className="flex items-center justify-between gap-4">
-          <span className="rounded-md bg-[#f8eaff] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#8b2fbe]">
+          <span className="rounded-md bg-[#f8eaff] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-primary">
             {plan.tier}
           </span>
           <span className="flex items-center gap-1 text-[10px] font-bold uppercase text-slate-400">
@@ -118,10 +118,9 @@ export function SubscriptionPlansPage() {
         description="Configure global pricing tiers and feature entitlements for your SaaS."
         actions={
           <Button
-            className="h-12 rounded-2xl px-7 text-[13px] font-black"
             onClick={() => router.push("/subscriptions/create")}
           >
-            <Plus className="size-4" strokeWidth={2.6} />
+            <Plus className="mr-2 size-3.5" />
             Create New Plan
           </Button>
         }

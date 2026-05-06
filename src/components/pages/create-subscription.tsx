@@ -17,7 +17,7 @@ import {
 function StepTitle({ number, title }: { number: string; title: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="flex size-7 items-center justify-center rounded-full bg-[#f3e8ff] text-[11px] font-black text-[#8b2fbe]">
+      <span className="flex size-7 items-center justify-center rounded-full bg-[#f3e8ff] text-[11px] font-black text-primary">
         {number}
       </span>
       <h2 className="text-sm font-black text-slate-950">{title}</h2>
