@@ -53,7 +53,6 @@ export const monthlyRevenueTrends: RevenueBarData[] = [
 ];
 
 export const chartPeriodOptions = [
-  { value: "12-months", label: "Last 12 Months" },
   { value: "6-months", label: "Last 6 Months" },
   { value: "30-days", label: "Last 30 Days" },
   { value: "7-days", label: "Last 7 Days" },

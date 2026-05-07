@@ -58,7 +58,7 @@ export function HomePage() {
                 Yearly comparative growth analysis
               </p>
             </div>
-            <Select defaultValue="12-months">
+            <Select defaultValue="6-months">
               <SelectTrigger className="w-[144px]">
                 <SelectValue placeholder="Select period" />
               </SelectTrigger>
