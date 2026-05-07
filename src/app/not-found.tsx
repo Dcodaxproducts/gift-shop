@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    // Keep the not-found page layout simple and unchanged.
     <main className="flex min-h-screen items-center justify-center bg-white px-6 text-slate-950">
       <div className="flex w-full max-w-md flex-col items-center text-center">
         <span className="text-7xl font-bold tracking-tight text-primary sm:text-8xl">
