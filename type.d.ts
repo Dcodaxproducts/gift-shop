@@ -4,6 +4,34 @@ declare global {
     password: string;
   };
 
+  type VerifyAuthPayload = {
+    email: string;
+    code: string;
+  };
+
+  type ResendAuthPayload = {
+    email: string;
+  };
+
+  type ForgotPasswordPayload = {
+    email: string;
+  };
+
+  type ResetPasswordPayload = {
+    email?: string;
+    code?: string;
+    token?: string;
+    password: string;
+    confirmPassword?: string;
+  };
+
+  type ChangePasswordPayload = {
+    currentPassword?: string;
+    oldPassword?: string;
+    newPassword: string;
+    confirmPassword?: string;
+  };
+
   type DeletionState = {
     isDeleted: boolean;
     deletionScheduled: boolean;
@@ -31,13 +59,25 @@ declare global {
     refreshToken: string;
   };
 
-  type ErrorResponse = {
+  type CurrentUserResponse = {
+    user: AuthUser;
+  };
+
+  type AuthMessageResponse = {
+    success?: boolean;
     message?: string;
   };
 
-  type ApiResponse<T> = {
-    success: boolean;
-    data: T;
+  type ErrorResponse = {
+    message?: string;
+    error?: {
+      message?: string;
+    };
+  };
+
+  type ApiResponse<T = unknown> = {
+    success?: boolean;
+    data?: T;
     message?: string;
   };
 }
