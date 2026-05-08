@@ -12,10 +12,7 @@ export const useLogin = () => {
   return useMutation<LoginResponse, AxiosError<ErrorResponse>, LoginPayload>({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      window.localStorage.setItem("token", data.accessToken);
-      window.localStorage.setItem("refreshToken", data.refreshToken);
-      window.localStorage.setItem("user", JSON.stringify(data.user));
-
+      localStorage.setItem("token", data.accessToken);
       toast.success("Login successful");
       router.push("/");
       router.refresh();
