@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -14,20 +13,13 @@ import {
   verifyAuth,
 } from "@/services/auth";
 
-const authQueryKeys = {
-  currentUser: ["auth", "me"] as const,
-};
-
-const getAuthErrorMessage = (
-  error: AxiosError<ErrorResponse>,
-  fallback = "Something went wrong. Please try again.",
-) => {
-  return error.response?.data?.message ?? error.response?.data?.error?.message ?? error.message ?? fallback;
+const getErrorMessage = (error: any, fallback: string) => {
+  return error?.response?.data?.message || error?.response?.data?.error?.message || error?.message || fallback;
 };
 
 export const useCurrentUser = () => {
-  return useQuery<AuthUser, AxiosError<ErrorResponse>>({
-    queryKey: authQueryKeys.currentUser,
+  return useQuery({
+    queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
 };
@@ -36,64 +28,62 @@ export const useLogin = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  return useMutation<LoginResponse, AxiosError<ErrorResponse>, LoginPayload>({
+  return useMutation({
     mutationFn: loginUser,
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      queryClient.setQueryData(authQueryKeys.currentUser, data.user);
+      queryClient.setQueryData(["currentUser"], data.user);
       toast.success("Login successful");
       router.push("/");
       router.refresh();
     },
     onError: (error) => {
-      toast.error(getAuthErrorMessage(error, "Login failed. Please try again."));
+      toast.error(getErrorMessage(error, "Login failed. Please try again."));
     },
   });
 };
 
 export const useVerifyAuth = () => {
-  return useMutation<AuthMessageResponse, AxiosError<ErrorResponse>, VerifyAuthPayload>({
+  return useMutation({
     mutationFn: verifyAuth,
     onError: (error) => {
-      toast.error(getAuthErrorMessage(error, "Verification failed. Please try again."));
+      toast.error(getErrorMessage(error, "Verification failed. Please try again."));
     },
   });
 };
 
 export const useResendAuthCode = () => {
-  return useMutation<AuthMessageResponse, AxiosError<ErrorResponse>, ResendAuthPayload>({
+  return useMutation({
     mutationFn: resendAuthCode,
     onError: (error) => {
-      toast.error(getAuthErrorMessage(error, "Unable to resend code. Please try again."));
+      toast.error(getErrorMessage(error, "Unable to resend code. Please try again."));
     },
   });
 };
 
 export const useForgotPassword = () => {
-  return useMutation<AuthMessageResponse, AxiosError<ErrorResponse>, ForgotPasswordPayload>({
+  return useMutation({
     mutationFn: forgotPassword,
     onError: (error) => {
-      toast.error(getAuthErrorMessage(error, "Unable to send reset instructions. Please try again."));
+      toast.error(getErrorMessage(error, "Unable to send reset instructions. Please try again."));
     },
   });
 };
 
 export const useResetPassword = () => {
-  return useMutation<AuthMessageResponse, AxiosError<ErrorResponse>, ResetPasswordPayload>({
+  return useMutation({
     mutationFn: resetPassword,
     onError: (error) => {
-      toast.error(getAuthErrorMessage(error, "Unable to reset password. Please try again."));
+      toast.error(getErrorMessage(error, "Unable to reset password. Please try again."));
     },
   });
 };
 
 export const useChangePassword = () => {
-  return useMutation<AuthMessageResponse, AxiosError<ErrorResponse>, ChangePasswordPayload>({
+  return useMutation({
     mutationFn: changePassword,
     onError: (error) => {
-      toast.error(getAuthErrorMessage(error, "Unable to change password. Please try again."));
+      toast.error(getErrorMessage(error, "Unable to change password. Please try again."));
     },
   });
 };
