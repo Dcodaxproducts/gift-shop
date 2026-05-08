@@ -56,12 +56,9 @@ export function LoginForm() {
               placeholder="admin@fintech-gifting.com"
               autoComplete="email"
               leftIcon={<Mail className="size-4" />}
-              aria-invalid={Boolean(errors.email)}
+              errorMessage={errors.email?.message}
               {...register("email")}
             />
-            {errors.email?.message ? (
-              <p className="text-sm font-medium text-destructive">{errors.email.message}</p>
-            ) : null}
           </div>
 
           <div className="space-y-2.5">
@@ -73,12 +70,9 @@ export function LoginForm() {
               autoComplete="current-password"
               leftIcon={<Lock className="size-4" />}
               rightIcon={<Eye className="size-4" />}
-              aria-invalid={Boolean(errors.password)}
+              errorMessage={errors.password?.message}
               {...register("password")}
             />
-            {errors.password?.message ? (
-              <p className="text-sm font-medium text-destructive">{errors.password.message}</p>
-            ) : null}
             <div className="flex justify-end">
               <Link
                 href="/auth/forgot-password"

@@ -27,6 +27,8 @@
   /* Status colors */
   --success: #00a72a;
   --danger: #e5171b;
+  --destructive: #e5171b;
+  --destructive-foreground: #ffffff;
 }
 
 @theme inline {
@@ -47,6 +49,8 @@
   --color-border-muted: var(--border-muted);
   --color-success: var(--success);
   --color-danger: var(--danger);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
