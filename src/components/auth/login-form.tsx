@@ -1,10 +1,9 @@
 "use client";
 
-import type { FormEvent } from "react";
-import { useState } from "react";
 import Link from "next/link";
-import { AxiosError } from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Globe, Headphones, Lock, Mail } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,29 +14,25 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLogin } from "@/hooks/use-auth";
+import { useLogin } from "@/hooks/useAuth";
+import { loginSchema, type LoginFormValues } from "@/validations/auth";
 
 export function LoginForm() {
   const login = useLogin();
-  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError("");
-
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("email") ?? "").trim();
-    const password = String(formData.get("password") ?? "");
-
-    login.mutate(
-      { email, password },
-      {
-        onError: (mutationError) => {
-          const err = mutationError as AxiosError<ErrorResponse>;
-          setError(err.response?.data?.message ?? "Login failed. Please try again.");
-        },
-      },
-    );
+  const onSubmit = (values: LoginFormValues) => {
+    login.mutate(values);
   };
 
   return (
@@ -52,32 +47,38 @@ export function LoginForm() {
       </CardHeader>
 
       <CardContent>
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="space-y-2.5">
             <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
-              name="email"
               type="email"
               placeholder="admin@fintech-gifting.com"
               autoComplete="email"
               leftIcon={<Mail className="size-4" />}
-              required
+              aria-invalid={Boolean(errors.email)}
+              {...register("email")}
             />
+            {errors.email?.message ? (
+              <p className="text-sm font-medium text-destructive">{errors.email.message}</p>
+            ) : null}
           </div>
 
           <div className="space-y-2.5">
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
-              name="password"
               type="password"
               placeholder="••••••••"
               autoComplete="current-password"
               leftIcon={<Lock className="size-4" />}
               rightIcon={<Eye className="size-4" />}
-              required
+              aria-invalid={Boolean(errors.password)}
+              {...register("password")}
             />
+            {errors.password?.message ? (
+              <p className="text-sm font-medium text-destructive">{errors.password.message}</p>
+            ) : null}
             <div className="flex justify-end">
               <Link
                 href="/auth/forgot-password"
@@ -87,8 +88,6 @@ export function LoginForm() {
               </Link>
             </div>
           </div>
-
-          {error ? <p className="text-sm font-medium text-destructive">{error}</p> : null}
 
           <Button type="submit" className="w-full gap-2" disabled={login.isPending}>
             {login.isPending ? "Logging in..." : "Login to Dashboard"}
