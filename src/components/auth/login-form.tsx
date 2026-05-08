@@ -1,4 +1,9 @@
+"use client";
+
+import type { FormEvent } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { AxiosError } from "axios";
 import { Eye, Globe, Headphones, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +15,31 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLogin } from "@/hooks/use-auth";
 
 export function LoginForm() {
+  const login = useLogin();
+  const [error, setError] = useState("");
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError("");
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+
+    login.mutate(
+      { email, password },
+      {
+        onError: (mutationError) => {
+          const err = mutationError as AxiosError<ErrorResponse>;
+          setError(err.response?.data?.message ?? "Login failed. Please try again.");
+        },
+      },
+    );
+  };
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="mb-8">
@@ -24,7 +52,7 @@ export function LoginForm() {
       </CardHeader>
 
       <CardContent>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-2.5">
             <Label htmlFor="email">Email Address</Label>
             <Input
@@ -60,8 +88,10 @@ export function LoginForm() {
             </div>
           </div>
 
-          <Button type="submit" className="w-full gap-2">
-            Login to Dashboard
+          {error ? <p className="text-sm font-medium text-destructive">{error}</p> : null}
+
+          <Button type="submit" className="w-full gap-2" disabled={login.isPending}>
+            {login.isPending ? "Logging in..." : "Login to Dashboard"}
           </Button>
         </form>
 

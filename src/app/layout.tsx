@@ -4,6 +4,7 @@ import "./globals.css";
 import { poppins } from "@/lib/fonts";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { QueryProvider } from "@/components/providers/query-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -23,7 +24,9 @@ export default function RootLayout({
       className={cn("h-full scroll-smooth antialiased", "font-sans", geist.variable)}
       suppressHydrationWarning
     >
-      <body className={`min-h-full ${poppins.className}`}>{children}</body>
+      <body className={`min-h-full ${poppins.className}`}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
