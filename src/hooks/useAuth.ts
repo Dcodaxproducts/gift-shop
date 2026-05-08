@@ -21,7 +21,17 @@ export const useLogin = () => {
       router.refresh();
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message ?? "Login failed. Please try again.");
+      let errorMessage = "Login failed. Please try again.";
+
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data && (error.response.data as any).error?.message) {
+        errorMessage = (error.response.data as any).error.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
     },
   });
 };
