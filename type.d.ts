@@ -4,17 +4,31 @@ declare global {
     password: string;
   };
 
+  type DeletionState = {
+    isDeleted: boolean;
+    deletionScheduled: boolean;
+    deletedAt: string | null;
+    deleteAfter: string | null;
+  };
+
   type AuthUser = {
-    id?: string;
-    name?: string;
-    email?: string;
-    role?: string;
+    id: string;
+    email: string;
+    role: string;
+    firstName: string;
+    lastName: string;
+    phone: string | null;
+    avatarUrl: string | null;
+    isVerified: boolean;
+    isActive: boolean;
+    mustChangePassword: boolean;
+    deletionState: DeletionState;
   };
 
   type LoginResponse = {
-    token?: string;
-    accessToken?: string;
-    user?: AuthUser;
+    user: AuthUser;
+    accessToken: string;
+    refreshToken: string;
   };
 
   type ErrorResponse = {
@@ -22,10 +36,10 @@ declare global {
   };
 
   type ApiResponse<T> = {
-    data?: T;
+    success: boolean;
+    data: T;
     message?: string;
-    success?: boolean;
-  } & T;
+  };
 }
 
 export {};
