@@ -1,8 +1,10 @@
 "use client";
 
+import { Children } from "react";
 import {
   Table,
   TableBody,
+  TableCell,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -17,6 +19,8 @@ type DataTableProps<T> = {
   onRowClick?: (row: T, index: number) => void;
   tableClassName?: string;
   isBorder?: boolean;
+  loading?: boolean;
+  skeletonRows?: number;
   pagination?: {
     total: number;
     page: number;
@@ -37,10 +41,20 @@ export function DataTable<T>({
   onRowClick,
   tableClassName,
   isBorder = true,
+  loading = false,
+  skeletonRows,
   pagination,
   showPagination = true,
 }: DataTableProps<T>) {
-  if (data.length === 0) {
+  const columnCount = Children.count(headers);
+  const rowCount = skeletonRows ?? pagination?.limit ?? 5;
+
+  const containerClassName = cn(
+    "flex h-full flex-col justify-between overflow-hidden bg-white shadow-sm",
+    isBorder ? "rounded-2xl border border-border" : "border border-border",
+  );
+
+  if (!loading && data.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white py-20 shadow-sm">
         <p className="text-sm font-medium text-slate-400">No data found.</p>
@@ -49,22 +63,32 @@ export function DataTable<T>({
   }
 
   return (
-    <div className={`flex h-full flex-col justify-between overflow-hidden bg-white shadow-sm${isBorder ? "rounded-2xl border border-border" : "border border-border"}`}>
+    <div className={containerClassName}>
       <div className="overflow-x-auto">
         <Table className={cn(tableClassName)}>
           <TableHeader>
             <TableRow className="hover:bg-transparent">{headers}</TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((item, index) => (
-              <TableRow
-                key={index}
-                className={cn(onRowClick && "cursor-pointer", getRowClassName?.(item, index))}
-                onClick={() => onRowClick?.(item, index)}
-              >
-                {row(item, index)}
-              </TableRow>
-            ))}
+            {loading
+              ? Array.from({ length: rowCount }).map((_, rowIndex) => (
+                  <TableRow key={`skeleton-${rowIndex}`} className="hover:bg-transparent">
+                    {Array.from({ length: columnCount }).map((_, cellIndex) => (
+                      <TableCell key={cellIndex}>
+                        <div className="h-3 w-full max-w-[140px] animate-pulse rounded-full bg-slate-100" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : data.map((item, index) => (
+                  <TableRow
+                    key={index}
+                    className={cn(onRowClick && "cursor-pointer", getRowClassName?.(item, index))}
+                    onClick={() => onRowClick?.(item, index)}
+                  >
+                    {row(item, index)}
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </div>

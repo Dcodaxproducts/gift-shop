@@ -64,6 +64,9 @@ export const useResendAuthCode = () => {
 export const useForgotPassword = () => {
   return useMutation({
     mutationFn: forgotPassword,
+    onSuccess: () => {
+      toast.success("Password reset instructions sent. Please check your email.");
+    },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Unable to send reset instructions. Please try again."));
     },

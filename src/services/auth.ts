@@ -16,7 +16,7 @@ export const resendAuthCode = async (payload: any) => {
 };
 
 export const forgotPassword = async (payload: any) => {
-  const { data } = await api.post("/auth/forgot", payload);
+  const { data } = await api.post("/auth/forgot-password", payload);
   return data.data;
 };
 
