@@ -10,6 +10,7 @@ import {
   type GiftCategoryTone,
 } from "@/constants/gift-categories";
 import { PageHeader } from "@/components/common/page-header";
+import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
@@ -31,6 +32,7 @@ const toneClassMap: Record<GiftCategoryTone, string> = {
 
 export function GiftCategoriesPage() {
   const [page, setPage] = useState(1);
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
 
   return (
     <div className="space-y-5">
@@ -38,12 +40,14 @@ export function GiftCategoriesPage() {
         title="Gift Categories"
         description="Manage and organize your catalog of gift types."
         actions={
-          <Button>
+          <Button onClick={() => setAddCategoryOpen(true)}>
             <Plus className="mr-2 size-3.5" />
             Add Category
           </Button>
         }
       />
+
+      <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
 
       <DataTable
         data={giftCategoryItems}
