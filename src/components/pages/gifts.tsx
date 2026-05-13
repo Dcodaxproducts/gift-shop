@@ -5,10 +5,7 @@ import { useRouter } from "next/navigation";
 import { Edit2, Gift, Plus, Star, X } from "lucide-react";
 import {
   giftCategoryOptions,
-  giftInventoryItems,
-  giftPagination,
   giftProviderOptions,
-  type GiftInventoryItem,
 } from "@/constants/gifts";
 import { PageHeader } from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
@@ -16,7 +13,23 @@ import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useGifts } from "@/hooks/useGift";
+import type { Gift as GiftItem } from "@/types/gifts";
 import { StatusBadge } from "@/utils/status";
+
+const formatPrice = (price?: number | string) => {
+  const numericPrice = typeof price === "string" ? Number(price) : price;
+
+  if (typeof numericPrice !== "number" || Number.isNaN(numericPrice)) {
+    return "$0";
+  }
+
+  return numericPrice.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+};
 
 export function GiftsPage() {
   const [page, setPage] = useState(1);
@@ -24,7 +37,27 @@ export function GiftsPage() {
   const [category, setCategory] = useState("all");
   const [provider, setProvider] = useState("all");
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const limit = 10;
   const router = useRouter();
+  const debouncedSearch = useDebounce(search, 400);
+
+  const { data, isLoading } = useGifts({
+    page,
+    limit,
+    search: debouncedSearch || undefined,
+    categoryId: category === "all" ? undefined : category,
+    providerId: provider === "all" ? undefined : provider,
+  });
+
+  const gifts = data?.gifts ?? [];
+  const pagination = data?.pagination ?? {
+    total: 0,
+    page,
+    limit,
+    totalPages: 0,
+    hasNext: false,
+    hasPrevious: false,
+  };
 
   return (
     <div className="space-y-5">
@@ -66,8 +99,9 @@ export function GiftsPage() {
       />
 
       <DataTable
-        data={giftInventoryItems}
-        pagination={{ ...giftPagination, page, onPageChange: setPage }}
+        data={gifts}
+        loading={isLoading}
+        pagination={{ ...pagination, page, onPageChange: setPage }}
         headers={
           <>
             <TableHead>Gift Name</TableHead>
@@ -79,7 +113,7 @@ export function GiftsPage() {
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
-        row={(item: GiftInventoryItem) => (
+        row={(item: GiftItem) => (
           <>
             <TableCell>
               <div className="flex items-center gap-3">
@@ -91,13 +125,13 @@ export function GiftsPage() {
                 </span>
               </div>
             </TableCell>
-            <TableCell>{item.category}</TableCell>
-            <TableCell>{item.provider}</TableCell>
-            <TableCell className="font-semibold">{item.price}</TableCell>
+            <TableCell>{item.categoryName ?? item.category?.name ?? item.categoryId ?? "-"}</TableCell>
+            <TableCell>{item.providerName ?? item.provider?.businessName ?? item.provider?.name ?? item.providerId ?? "-"}</TableCell>
+            <TableCell className="font-semibold">{formatPrice(item.price)}</TableCell>
             <TableCell>
               <span className="inline-flex items-center gap-1 text-xs text-slate-600">
                 <Star className="size-3.5 fill-amber-400 text-amber-400" />
-                {item.rating}
+                {item.rating ?? "0.0"}
               </span>
             </TableCell>
             <TableCell>

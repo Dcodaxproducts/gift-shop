@@ -36,6 +36,8 @@ export type GiftCategory = {
   updatedAt: string;
 };
 
+export type GiftCategoryLookupItem = Pick<GiftCategory, "id" | "name" | "slug" | "imageUrl" | "iconKey">;
+
 export type GiftCategoriesPagination = {
   total: number;
   page: number;

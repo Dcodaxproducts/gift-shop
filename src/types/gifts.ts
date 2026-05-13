@@ -32,16 +32,29 @@ export type GiftVariant = {
   metadata?: Record<string, unknown>;
 };
 
+export type GiftCategorySummary = {
+  id?: string;
+  name?: string;
+};
+
+export type GiftProviderSummary = {
+  id?: string;
+  name?: string;
+  businessName?: string;
+};
+
 export type Gift = {
   id: string;
   name: string;
   description?: string | null;
   categoryId?: string | null;
   categoryName?: string | null;
+  category?: GiftCategorySummary | null;
   providerId?: string | null;
   providerName?: string | null;
-  price?: number;
-  rating?: number;
+  provider?: GiftProviderSummary | null;
+  price?: number | string;
+  rating?: number | string;
   imageUrl?: string | null;
   images?: string[];
   status: GiftStatus;
