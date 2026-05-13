@@ -11,11 +11,8 @@ import {
   type GiftInventoryItem,
 } from "@/constants/gifts";
 import { PageHeader } from "@/components/common/page-header";
-<<<<<<< HEAD
 import { FilterSection } from "@/components/common/filter-section";
-=======
 import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
@@ -24,13 +21,10 @@ import GiftCard from "../cards/GiftStatsCard";
 
 export function GiftsPage() {
   const [page, setPage] = useState(1);
-<<<<<<< HEAD
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [provider, setProvider] = useState("all");
-=======
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
   const router = useRouter();
 
   return (
@@ -56,13 +50,9 @@ export function GiftsPage() {
         }
       />
 
-<<<<<<< HEAD
-      <GiftCard />
-=======
       <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
 
-      <GiftStats />
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
+      <GiftCard />
 
       <FilterSection
         searchPlaceholder="Search gifts by name, ID, or provider..."

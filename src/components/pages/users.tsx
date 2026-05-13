@@ -1,31 +1,23 @@
 "use client";
 
 import { useState } from "react";
-<<<<<<< HEAD
-import { Download, Edit2, Eye, X } from "lucide-react";
-=======
 import { Download, Edit2, Eye, ListFilter, Search, X } from "lucide-react";
 import { type UserTone } from "@/constants/users";
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
 import { PageHeader } from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
-<<<<<<< HEAD
-import { useUsers, useExportUsers, useDeleteUser } from "@/hooks/useUsers";
-import { userStatusOptions, userSortOptions } from "@/constants/filter-options";
-import { useDebounce } from "@/hooks/useDebounce";
-=======
-import { useExportUsers, useSuspendUser, useUnsuspendUser, useUsers } from "@/hooks/useUsers";
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
+import { useDeleteUser, useExportUsers, useSuspendUser, useUnsuspendUser, useUsers } from "@/hooks/useUsers";
 import type { User, UserStatus, UserSortBy } from "@/types/users";
 import { EditUserDialog } from "@/components/dialog/edit-user-dialog";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { StatusBadge } from "@/utils/status";
 import { getInitials } from "@/utils/getInitials";
 import { formatDate } from "@/utils/formatDate";
+import { useDebounce } from "@/hooks/useDebounce";
+import { userSortOptions, userStatusOptions } from "@/constants/filter-options";
 
 export function UsersPage() {
   const [page, setPage] = useState(1);
@@ -46,12 +38,9 @@ export function UsersPage() {
     sortBy
   });
   const exportUsers = useExportUsers();
-<<<<<<< HEAD
-  const deleteUser = useDeleteUser();
-=======
   const suspendUser = useSuspendUser();
   const unsuspendUser = useUnsuspendUser();
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
+  const { mutate, isPending } = useDeleteUser();
 
   const users = data?.users ?? [];
   const pagination = data?.pagination ?? {
@@ -72,14 +61,7 @@ export function UsersPage() {
   };
 
   const handleExport = () => {
-<<<<<<< HEAD
     exportUsers.mutate();
-=======
-    exportUsers.mutate({
-      search: search || undefined,
-      status: status === "all" ? undefined : status,
-      sortBy
-    });
   };
 
   const handleSuspendUser = (userId: string) => {
@@ -88,7 +70,6 @@ export function UsersPage() {
 
   const handleUnsuspendUser = (userId: string) => {
     unsuspendUser.mutate(userId);
->>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
   };
 
   return (
@@ -210,10 +191,10 @@ export function UsersPage() {
         title="Delete User"
         description="Are you sure you want to delete this user? This action cannot be undone."
         confirmLabel="Delete"
-        loading={deleteUser.isPending}
+        loading={isPending}
         onConfirm={() => {
           if (!deleteTarget) return;
-          deleteUser.mutate(deleteTarget.id, {
+          mutate(deleteTarget.id, {
             onSuccess: () => setDeleteTarget(null),
           });
         }}
