@@ -13,6 +13,7 @@ import {
   type GiftStatus,
 } from "@/constants/gifts";
 import { PageHeader } from "@/components/common/page-header";
+import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -101,6 +102,7 @@ function StatusBadge({ status }: { status: GiftStatus }) {
 
 export function GiftsPage() {
   const [page, setPage] = useState(1);
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
   const router = useRouter();
 
   return (
@@ -109,12 +111,24 @@ export function GiftsPage() {
         title="Gift Inventory"
         description="Manage and monitor all gift listings across the platform."
         actions={
-          <Button className="h-10! rounded-xl text-xs" onClick={() => router.push("/gifts/create")}>
-            <Plus className="mr-2 size-3.5" />
-            Add New Gift
-          </Button>
+          <>
+            <Button
+              variant="outline"
+              className="h-10! rounded-xl text-xs"
+              onClick={() => setAddCategoryOpen(true)}
+            >
+              <Plus className="mr-2 size-3.5" />
+              Add Category
+            </Button>
+            <Button className="h-10! rounded-xl text-xs" onClick={() => router.push("/gifts/create")}>
+              <Plus className="mr-2 size-3.5" />
+              Add New Gift
+            </Button>
+          </>
         }
       />
+
+      <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
 
       <GiftStats />
 

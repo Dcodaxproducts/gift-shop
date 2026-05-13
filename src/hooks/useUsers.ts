@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/errors";
 import {
   getUser,
   getUsers,
@@ -13,10 +14,6 @@ import {
   exportUsers,
 } from "@/services/users";
 import type { GetUsersParams, GetUsersResponse, UpdateUserPayload, UpdateUserStatusPayload, SuspendUserPayload, ResetUserPasswordPayload, UserDetail } from "@/types/users";
-
-const getErrorMessage = (error: any, fallback: string) => {
-  return error?.response?.data?.message || error?.response?.data?.error?.message || error?.message || fallback;
-};
 
 export const useUsers = (params: GetUsersParams = {}) => {
   return useQuery<GetUsersResponse>({

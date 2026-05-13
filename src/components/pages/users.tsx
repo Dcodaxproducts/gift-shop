@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Edit2, Eye, ListFilter, Plus, Search, X } from "lucide-react";
+import { Download, Edit2, Eye, ListFilter, Search, X } from "lucide-react";
 import { type UserTone } from "@/constants/users";
 import { PageHeader } from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
@@ -18,7 +18,7 @@ import {
 import { TableCell, TableHead } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useUsers, useExportUsers, useSuspendUser, useUnsuspendUser, useResetUserPassword } from "@/hooks/useUsers";
+import { useExportUsers, useSuspendUser, useUnsuspendUser, useUsers } from "@/hooks/useUsers";
 import type { User, UserStatus, UserSortBy } from "@/types/users";
 
 const avatarToneClass: Record<UserTone, string> = {
@@ -74,7 +74,7 @@ export function UsersPage() {
   const limit = 10;
   const router = useRouter();
 
-  const { data, isLoading, error } = useUsers({
+  const { data, isLoading } = useUsers({
     page,
     limit,
     search: search || undefined,
@@ -84,7 +84,6 @@ export function UsersPage() {
   const exportUsers = useExportUsers();
   const suspendUser = useSuspendUser();
   const unsuspendUser = useUnsuspendUser();
-  const resetPassword = useResetUserPassword();
 
   const users = data?.users ?? [];
   const pagination = data?.pagination ?? {
@@ -118,10 +117,6 @@ export function UsersPage() {
 
   const handleUnsuspendUser = (userId: string) => {
     unsuspendUser.mutate(userId);
-  };
-
-  const handleResetPassword = (userId: string) => {
-    resetPassword.mutate({ id: userId });
   };
 
   return (
