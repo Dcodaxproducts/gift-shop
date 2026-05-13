@@ -23,23 +23,17 @@ export type GetGiftCategoriesParams = {
 export type GiftCategory = {
   id: string;
   name: string;
-  description?: string | null;
-  iconUrl?: string | null;
-  icon?: string | null;
-  displayPattern?: string | null;
-  isActive?: boolean;
-  isVisible?: boolean;
-  visibleOnStorefront?: boolean;
-  status?: GiftCategoryStatus;
-  totalGifts?: number;
-  giftsCount?: number;
-  sortOrder?: number;
-  createdAt?: string;
-  updatedAt?: string;
-};
-
-export type GiftCategoryLookupItem = Pick<GiftCategory, "id" | "name" | "iconUrl" | "icon"> & {
-  slug?: string;
+  slug: string;
+  description: string | null;
+  iconKey: string | null;
+  color: string;
+  backgroundColor: string;
+  imageUrl: string | null;
+  totalGifts: number;
+  isActive: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type GiftCategoriesPagination = {
@@ -68,13 +62,8 @@ export type GiftCategoryStats = {
 export type CreateGiftCategoryPayload = {
   name: string;
   description?: string;
-  iconUrl?: string;
-  icon?: string;
-  displayPattern?: string;
+  imageUrl?: string;
   isActive?: boolean;
-  isVisible?: boolean;
-  visibleOnStorefront?: boolean;
-  sortOrder?: number;
 };
 
 export type UpdateGiftCategoryPayload = Partial<CreateGiftCategoryPayload> & {

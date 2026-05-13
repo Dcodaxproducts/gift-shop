@@ -143,7 +143,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                         <Icon
                           className={cn(
                             "size-4 shrink-0",
-                            isActive ? "text-[#6467F2]" : "text-secondary",
+                            isActive ? "text-primary" : "text-secondary",
                           )}
                           strokeWidth={2.25}
                         />

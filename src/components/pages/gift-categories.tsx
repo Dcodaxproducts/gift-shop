@@ -1,38 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, Gem, Laptop, Plus, Ticket, Utensils, X } from "lucide-react";
-import {
-  giftCategoryItems,
-  giftCategoryPagination,
-  type GiftCategoryIcon,
-  type GiftCategoryItem,
-  type GiftCategoryTone,
-} from "@/constants/gift-categories";
+import { Edit2, Plus, X } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-
-const categoryIconMap: Record<GiftCategoryIcon, typeof Ticket> = {
-  voucher: Ticket,
-  food: Utensils,
-  luxury: Gem,
-  electronics: Laptop,
-};
-
-const toneClassMap: Record<GiftCategoryTone, string> = {
-  purple: "bg-primary/10 text-primary",
-  orange: "bg-amber-50 text-amber-500",
-  violet: "bg-violet-50 text-violet-500",
-  emerald: "bg-emerald-50 text-emerald-500",
-};
+import { useGiftCategories } from "@/hooks/useGiftCategories";
+import type { GiftCategory } from "@/types/gift-categories";
+import MyImage from "../common/MyImage";
 
 export function GiftCategoriesPage() {
   const [page, setPage] = useState(1);
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+
+  const { data, isLoading } = useGiftCategories({ page, limit: 10 });
+
+  const categories = data?.categories ?? [];
+  const pagination = data?.pagination;
 
   return (
     <div className="space-y-5">
@@ -47,11 +33,22 @@ export function GiftCategoriesPage() {
         }
       />
 
-      <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
+      <AddCategoryDialog
+        open={addCategoryOpen}
+        onOpenChange={setAddCategoryOpen}
+      />
 
       <DataTable
-        data={giftCategoryItems}
-        pagination={{ ...giftCategoryPagination, page, onPageChange: setPage }}
+        data={categories}
+        loading={isLoading}
+        pagination={
+          pagination
+            ? {
+              ...pagination,
+              onPageChange: setPage,
+            }
+            : undefined
+        }
         headers={
           <>
             <TableHead>Category Name</TableHead>
@@ -60,55 +57,64 @@ export function GiftCategoriesPage() {
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
-        row={(item: GiftCategoryItem) => {
-          const Icon = categoryIconMap[item.icon];
-
-          return (
-            <>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <span
-                    className={cn(
-                      "flex size-9 items-center justify-center rounded-full",
-                      toneClassMap[item.tone],
-                    )}
-                  >
-                    <Icon className="size-4" strokeWidth={2.25} />
-                  </span>
-                  <span className="text-xs font-semibold text-slate-950">
-                    {item.name}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <p className="max-w-[360px] text-xs leading-5 text-slate-500">
-                  {item.description}
-                </p>
-              </TableCell>
-              <TableCell>
-                <span className="inline-flex items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                  {item.totalGifts}
+        row={(item: GiftCategory) => (
+          <>
+            <TableCell>
+              <div className="flex items-center gap-3">
+                <span className="flex size-9 items-center justify-center rounded-full">
+                  {item.imageUrl ? (
+                    <MyImage
+                      src={item.imageUrl}
+                      alt={item.name}
+                      width={36}
+                      height={36}
+                      className="size-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold uppercase text-primary">
+                      {item.name.charAt(0)}
+                    </span>
+                  )}
                 </span>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center justify-end">
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                  >
-                    <Edit2 className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                  >
-                    <X className="size-4" />
-                  </Button>
-                </div>
-              </TableCell>
-            </>
-          );
-        }}
+
+                <span className="text-xs font-semibold text-slate-950 capitalize">
+                  {item.name}
+                </span>
+              </div>
+            </TableCell>
+
+            <TableCell>
+              <p className="max-w-[360px] truncate text-xs leading-5 text-slate-500 first-letter:uppercase">
+                {item.description ?? (
+                  <span className="italic text-slate-300">No description</span>
+                )}
+              </p>
+            </TableCell>
+
+            <TableCell>
+              <span className="inline-flex items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                {item.totalGifts ?? 0}
+              </span>
+            </TableCell>
+
+            <TableCell>
+              <div className="flex items-center justify-end">
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                >
+                  <Edit2 className="size-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
+            </TableCell>
+          </>
+        )}
       />
     </div>
   );
