@@ -36,7 +36,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md border-0 shadow-none">
       <CardHeader className="mb-8">
         <CardTitle className="text-[26px] leading-tight">
           Super Admin Login

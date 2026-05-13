@@ -5,6 +5,7 @@ import { poppins } from "@/lib/fonts";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { AuthGuard } from "@/components/auth/auth-guard";
 import { Toaster } from "sonner";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -26,7 +27,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`min-h-full ${poppins.className}`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <AuthGuard>{children}</AuthGuard>
+        </QueryProvider>
         <Toaster richColors position="top-right" />
       </body>
     </html>

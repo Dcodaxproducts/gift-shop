@@ -40,14 +40,16 @@ export function Dialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6"
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
       role="presentation"
     >
       <button
         type="button"
         aria-label="Close dialog overlay"
         className="absolute inset-0 bg-slate-950/35 backdrop-blur-sm"
-        onClick={() => onOpenChange(false)}
+        onMouseDown={(e) => {
+          if (e.target === e.currentTarget) onOpenChange(false);
+        }}
       />
       <section
         role="dialog"
@@ -61,7 +63,7 @@ export function Dialog({
       >
         <div
           className={cn(
-            "flex shrink-0 items-start justify-between gap-4 px-6 py-5",
+            "flex shrink-0 items-start justify-between gap-4 px-6 pb-3 pt-4",
             !hideHeaderBorder && "border-b border-border",
             headerClassName,
           )}
@@ -79,7 +81,7 @@ export function Dialog({
             {description ? (
               <p
                 id="dialog-description"
-                className={cn("mt-1 text-xs leading-5 text-slate-500", descriptionClassName)}
+                className={cn("text-xs leading-5 text-slate-500", descriptionClassName)}
               >
                 {description}
               </p>
@@ -95,14 +97,14 @@ export function Dialog({
           </button>
         </div>
 
-        <div className={cn("flex-1 overflow-y-auto px-6 py-5", contentClassName)}>
+        <div className={cn("flex-1 overflow-y-auto px-6 py-3", contentClassName)}>
           {children}
         </div>
 
         {footer ? (
           <div
             className={cn(
-              "flex shrink-0 justify-end gap-3 border-t border-border px-6 py-4",
+              "flex shrink-0 justify-end gap-3 px-6 pt-3 pb-4",
               footerClassName,
             )}
           >

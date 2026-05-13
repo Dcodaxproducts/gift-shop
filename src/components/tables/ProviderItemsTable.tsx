@@ -1,0 +1,119 @@
+import { useState } from "react";
+import { ListFilter, Search, ShieldCheck } from "lucide-react";
+import { DataTable } from "@/components/tables/data-table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { TableCell, TableHead } from "@/components/ui/table";
+import { StatusBadge } from "@/utils/status";
+import { useProviderItems } from "@/hooks/useProviders";
+import MyImage from "../common/MyImage";
+import { useDebounce } from "@/hooks/useDebounce";
+
+function ProviderItemsTable({ providerId }: { providerId: string }) {
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 400);
+
+  const { data, isLoading } = useProviderItems(providerId, {
+    page,
+    limit: 10,
+    ...(debouncedSearch ? { search: debouncedSearch } : {}),
+  });
+
+  const items = data?.items ?? [];
+  const pagination = data?.pagination ?? {
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 1,
+    hasNext: false,
+    hasPrevious: false,
+  };
+
+  return (
+    <div className="border border-b-0 border-slate-200 rounded-2xl">
+      <div className="flex flex-col gap-3 rounded-t-2xl bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-sm font-semibold text-slate-950">Listed Items</h2>
+        <div className="flex items-center gap-2">
+          <Input
+            type="search"
+            placeholder="Search products..."
+            leftIcon={<Search className="size-4" />}
+            className="h-9! w-full rounded-full bg-slate-50 text-xs sm:w-[220px]"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Button variant="outline" className="col-span-2 h-11 sm:col-span-1 sm:w-11 sm:px-0">
+            <ListFilter className="size-4" />
+            <span className="sm:hidden">More Filters</span>
+          </Button>
+        </div>
+      </div>
+
+      <DataTable
+        data={items}
+        loading={isLoading}
+        pagination={{
+          total: pagination.total,
+          page: pagination.page,
+          limit: pagination.limit,
+          totalPages: pagination.totalPages,
+          hasNext: pagination.hasNext,
+          hasPrevious: pagination.hasPrevious,
+          onPageChange: setPage,
+        }}
+        isBorder={false}
+        headers={
+          <>
+            <TableHead>Product Name</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Sales Data</TableHead>
+            <TableHead>Status</TableHead>
+          </>
+        }
+        row={(item: any) => (
+          <>
+            <TableCell>
+              <div className="flex items-center gap-3">
+                {item.imageUrl ? (
+                  <MyImage
+                    src="/fallback.png"
+                    alt={item.name}
+                    className="size-8 rounded-full object-cover"
+                    width={32}
+                    height={32}
+                  />
+                ) : (
+                  <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <ShieldCheck className="size-3.5" strokeWidth={2.5} />
+                  </span>
+                )}
+                <span className="text-xs font-semibold text-slate-950">{item.name}</span>
+              </div>
+            </TableCell>
+            <TableCell className="text-xs font-semibold text-primary">
+              {item.currency} {item.price}
+            </TableCell>
+            <TableCell>
+              <div className="flex items-center gap-2 text-[10px] font-semibold text-slate-950">
+                <span>{item.salesCount} units</span>
+                <span>{item.salesPercentage}%</span>
+              </div>
+              <div className="mt-1 h-1.5 w-20 overflow-hidden rounded-full bg-slate-100">
+                <div
+                  className="h-full rounded-full bg-primary"
+                  style={{ width: `${item.salesPercentage}%` }}
+                />
+              </div>
+            </TableCell>
+            <TableCell>
+              <StatusBadge status={item.status} />
+            </TableCell>
+          </>
+        )}
+      />
+    </div>
+  );
+}
+
+export default ProviderItemsTable;

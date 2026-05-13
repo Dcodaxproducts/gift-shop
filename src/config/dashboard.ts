@@ -27,7 +27,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       {
         title: "Staff Users",
         href: "/staff-users",
-        icon: "users-round",
+        icon: "badge-check",
       },
       {
         title: "Role & Permissions",
@@ -43,14 +43,15 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       {
         title: "Provider List",
         href: "/providers",
-        icon: "store",
+        icon: "id-card",
       }
     ],
   },
   {
     title: "Inventory",
     items: [
-      { title: "Gift Listings", href: "/gifts", icon: "package" }
+      { title: "Gift Listings", href: "/gifts", icon: "gift" },
+      { title: "Gift Categories", href: "/gift-categories", icon: "package" },
     ],
   },
   {
@@ -66,6 +67,21 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         href: "/payouts",
         icon: "credit-card",
       },
+      {
+        title: "Refund",
+        href: "/refund",
+        icon: "rotate-ccw",
+      },
+    ],
+  },
+  {
+    title: "Disputes",
+    items: [
+      {
+        title: "Dispute Management",
+        href: "/dispute-management",
+        icon: "chart-line",
+      },
     ],
   },
   {
@@ -75,6 +91,16 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         title: "Social & Reviews Moderation",
         href: "/social-reviews-moderation",
         icon: "rss",
+      },
+    ],
+  },
+  {
+    title: "Communications",
+    items: [
+      {
+        title: "Create Broadcast",
+        href: "/create-broadcast",
+        icon: "share-2",
       },
     ],
   },

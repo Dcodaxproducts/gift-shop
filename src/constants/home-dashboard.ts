@@ -1,7 +1,7 @@
 export type StatCardData = {
   title: string;
   value: string;
-  change: string;
+  change: number;
   icon: "users" | "providers" | "transactions" | "revenue";
 };
 
@@ -35,10 +35,10 @@ export type DisputeData = {
 };
 
 export const dashboardStats: StatCardData[] = [
-  { title: "Total Users", value: "128,430", change: "+12.5%", icon: "users" },
-  { title: "Total Providers", value: "1,240", change: "+5.2%", icon: "providers" },
-  { title: "Transactions", value: "45,200", change: "+18.1%", icon: "transactions" },
-  { title: "Total Revenue", value: "$1.24M", change: "+10.3%", icon: "revenue" },
+  { title: "Total Users", value: "128,430", change: 12.5, icon: "users" },
+  { title: "Total Providers", value: "1,240", change: 5.2, icon: "providers" },
+  { title: "Transactions", value: "45,200", change: 18.1, icon: "transactions" },
+  { title: "Total Revenue", value: "$1.24M", change: 10.3, icon: "revenue" },
 ];
 
 export const monthlyRevenueTrends: RevenueBarData[] = [

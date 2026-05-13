@@ -17,20 +17,6 @@ export const staffMembers: StaffMember[] = [
   { id: "ava-bennett", name: "Ava Bennett", email: "ava.b@example.com", role: "Compliance Officer", status: "Active", initials: "AB", createdAt: "Mar 30, 2026" },
 ];
 
-export const staffRoleOptions = [
-  { value: "all", label: "All Roles" },
-  { value: "risk-analyst", label: "Risk Analyst" },
-  { value: "support-lead", label: "Support Lead" },
-  { value: "operations-manager", label: "Operations Manager" },
-  { value: "compliance-officer", label: "Compliance Officer" },
-] as const;
-
-export const staffStatusOptions = [
-  { value: "all", label: "All Status" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-] as const;
-
 export const staffPagination = {
   total: 48,
   limit: 4,

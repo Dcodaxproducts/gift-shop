@@ -1,97 +1,16 @@
 import { BadgeCheck, Flower2, Gift, Package, Store, TrendingUp, TriangleAlert } from "lucide-react";
 import type { ElementType } from "react";
 
-export type ProviderStatus = "Active" | "Pending" | "Inactive";
-export type ProviderApproval = "Approved" | "Pending" | "Rejected";
-export type ProviderTone = "stripe" | "revolut" | "paypal" | "wise";
+export type ProviderTone = "purple" | "slate" | "blue" | "emerald";
 
-export type ProviderDirectoryItem = {
-  id: string;
-  name: string;
-  email: string;
-  status: ProviderStatus;
-  approval: ProviderApproval;
-  revenue: string;
-  tone: ProviderTone;
+export const providerToneClass: Record<ProviderTone, string> = {
+  purple: "bg-[#635BFF] text-white",
+  slate: "bg-slate-950 text-white",
+  blue: "bg-[#0070BA] text-white",
+  emerald: "bg-[#9FE870] text-[#163300]",
 };
 
-export const providerStats = [
-  {
-    title: "Total Providers",
-    value: "1,284",
-    change: "+12%",
-    helper: "from last month",
-    tone: "blue",
-  },
-  {
-    title: "Pending Approval",
-    value: "42",
-    change: "High Priority",
-    helper: "needs review",
-    tone: "amber",
-  },
-  {
-    title: "Active Revenue",
-    value: "$4.2M",
-    change: "+18.5%",
-    helper: "from last month",
-    tone: "emerald",
-  },
-  {
-    title: "Inactive Rate",
-    value: "2.4%",
-    change: "-0.8%",
-    helper: "from last month",
-    tone: "rose",
-  },
-] as const;
-
-export const providerDirectoryItems: ProviderDirectoryItem[] = [
-  {
-    id: "stripe",
-    name: "Stripe",
-    email: "partners@stripe.com",
-    status: "Active",
-    approval: "Approved",
-    revenue: "$1.2M",
-    tone: "stripe",
-  },
-  {
-    id: "revolut",
-    name: "Revolut",
-    email: "business@revolut.com",
-    status: "Pending",
-    approval: "Pending",
-    revenue: "$850K",
-    tone: "revolut",
-  },
-  {
-    id: "paypal",
-    name: "PayPal",
-    email: "enterprise@paypal.com",
-    status: "Active",
-    approval: "Approved",
-    revenue: "$950K",
-    tone: "paypal",
-  },
-  {
-    id: "wise",
-    name: "Wise",
-    email: "providers@wise.com",
-    status: "Inactive",
-    approval: "Rejected",
-    revenue: "$340K",
-    tone: "wise",
-  },
-];
-
-export const providerPagination = {
-  total: 1284,
-  limit: 4,
-  totalPages: 321,
-  hasNext: true,
-  hasPrevious: false,
-};
+export const providerTones: ProviderTone[] = ["purple", "slate", "blue", "emerald"];
 
 export type ProviderDetailStat = {
   icon: ElementType;
@@ -202,21 +121,25 @@ export const providerDetailActions = [
   {
     label: "Approve",
     icon: "approve",
+    status: "APPROVE",
     className: "bg-green-500! text-white hover:bg-green-600",
   },
   {
     label: "Reject",
     icon: "reject",
+    status: "REJECT",
     className: "bg-red-500 text-white hover:bg-red-600",
   },
   {
     label: "Message Provider",
     icon: "message",
+    status: "UPDATE_STATUS",
     className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
   },
   {
     label: "Suspend Account",
     icon: "suspend",
+    status: "SUSPEND",
     className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
   },
 ] as const;

@@ -2,105 +2,27 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarCheck, CheckCircle2, Edit3, Gift, ListFilter, Plus, Search, Smile, Star, Trash2 } from "lucide-react";
+import { Edit2, Gift, Plus, Star, X } from "lucide-react";
 import {
   giftCategoryOptions,
   giftInventoryItems,
-  giftInventoryStats,
   giftPagination,
   giftProviderOptions,
   type GiftInventoryItem,
-  type GiftStatus,
 } from "@/constants/gifts";
 import { PageHeader } from "@/components/common/page-header";
+import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
-import { getStatusClass } from "@/lib/status";
-import { cn } from "@/lib/utils";
-
-const statIconMap = {
-  gifts: CalendarCheck,
-  active: CheckCircle2,
-  pending: Smile,
-};
-
-const statToneClass = {
-  gifts: "bg-primary/10 text-primary",
-  active: "bg-emerald-50 text-emerald-500",
-  pending: "bg-amber-50 text-amber-500",
-};
-
-const imageToneClass = {
-  green: "from-emerald-300 to-emerald-800",
-  gray: "from-slate-100 to-slate-300",
-  dark: "from-slate-700 to-slate-950",
-  orange: "from-orange-200 to-orange-700",
-};
-
-function GiftStats() {
-  return (
-    <section className="grid gap-5 md:grid-cols-3">
-      {giftInventoryStats.map((stat) => {
-        const Icon = statIconMap[stat.icon];
-
-        return (
-          <Card key={stat.title} className="rounded-2xl border border-border bg-white shadow-sm">
-            <CardContent className="flex items-start justify-between p-5">
-              <div>
-                <p className="text-xs font-medium text-slate-500">{stat.title}</p>
-                <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">
-                  {stat.value}
-                </p>
-                <p
-                  className={cn(
-                    "mt-4 text-[10px] font-semibold",
-                    stat.trend === "up" ? "text-emerald-500" : "text-red-500",
-                  )}
-                >
-                  {stat.change}
-                </p>
-              </div>
-              <span
-                className={cn(
-                  "flex size-9 items-center justify-center rounded-2xl",
-                  statToneClass[stat.icon],
-                )}
-              >
-                <Icon className="size-4" strokeWidth={2.25} />
-              </span>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </section>
-  );
-}
-
-function StatusBadge({ status }: { status: GiftStatus }) {
-  return (
-    <span
-      className={getStatusClass(
-        status,
-        "inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase",
-      )}
-    >
-      {status}
-    </span>
-  );
-}
+import { StatusBadge } from "@/utils/status";
+import GiftCard from "../cards/GiftStatsCard";
 
 export function GiftsPage() {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
+  const [provider, setProvider] = useState("all");
   const router = useRouter();
 
   return (
@@ -116,53 +38,29 @@ export function GiftsPage() {
         }
       />
 
-      <GiftStats />
+      <GiftCard />
 
-      <Card className="rounded-2xl border border-border bg-white p-4 shadow-sm">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="min-w-0 flex-1">
-            <Input
-              type="search"
-              placeholder="Search gifts by name, ID, or provider..."
-              leftIcon={<Search className="size-4" />}
-              className="h-10! rounded-2xl text-xs"
-            />
-          </div>
-          <div className="flex gap-3">
-            <Select defaultValue="all">
-              <SelectTrigger className="h-10 w-[135px] rounded-2xl bg-slate-50 text-xs">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {giftCategoryOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select defaultValue="all">
-              <SelectTrigger className="h-10 w-[130px] rounded-2xl bg-slate-50 text-xs">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {giftProviderOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <button
-              type="button"
-              aria-label="Open filters"
-              className="flex size-10 items-center justify-center rounded-2xl bg-slate-50 text-slate-500 transition hover:bg-primary/10 hover:text-primary"
-            >
-              <ListFilter className="size-4" strokeWidth={3} />
-            </button>
-          </div>
-        </div>
-      </Card>
+      <FilterSection
+        searchPlaceholder="Search gifts by name, ID, or provider..."
+        searchValue={search}
+        onSearchChange={setSearch}
+        filters={[
+          {
+            value: category,
+            onChange: setCategory,
+            placeholder: "Category",
+            width: "sm:w-[135px]",
+            options: giftCategoryOptions.map((option) => ({ value: option.value, label: option.label })),
+          },
+          {
+            value: provider,
+            onChange: setProvider,
+            placeholder: "Provider",
+            width: "sm:w-[130px]",
+            options: giftProviderOptions.map((option) => ({ value: option.value, label: option.label })),
+          },
+        ]}
+      />
 
       <DataTable
         data={giftInventoryItems}
@@ -182,12 +80,7 @@ export function GiftsPage() {
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span
-                  className={cn(
-                    "flex size-11 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-sm",
-                    imageToneClass[item.imageTone],
-                  )}
-                >
+                <span className="flex size-11 items-center justify-center rounded-2xl bg-primary text-white shadow-sm">
                   <Gift className="size-4" />
                 </span>
                 <span className="max-w-[130px] text-xs font-semibold leading-4 text-slate-950">
@@ -195,9 +88,9 @@ export function GiftsPage() {
                 </span>
               </div>
             </TableCell>
-            <TableCell className="text-xs text-slate-600">{item.category}</TableCell>
-            <TableCell className="text-xs text-slate-400">{item.provider}</TableCell>
-            <TableCell className="text-xs font-semibold text-slate-950">{item.price}</TableCell>
+            <TableCell>{item.category}</TableCell>
+            <TableCell>{item.provider}</TableCell>
+            <TableCell className="font-semibold">{item.price}</TableCell>
             <TableCell>
               <span className="inline-flex items-center gap-1 text-xs text-slate-600">
                 <Star className="size-3.5 fill-amber-400 text-amber-400" />
@@ -208,20 +101,19 @@ export function GiftsPage() {
               <StatusBadge status={item.status} />
             </TableCell>
             <TableCell>
-              <div className="flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => router.push(`/gifts/${item.id}`)}
-                  className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-primary"
+              <div className="flex items-center justify-end">
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
                 >
-                  <Edit3 className="size-4" />
-                </button>
-                <button
-                  type="button"
-                  className="rounded-lg p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-500"
+                  <Edit2 className="size-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
                 >
-                  <Trash2 className="size-4" />
-                </button>
+                  <X className="size-4" />
+                </Button>
               </div>
             </TableCell>
           </>

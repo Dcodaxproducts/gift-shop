@@ -94,7 +94,8 @@ export type UpdateUserStatusPayload = {
 };
 
 export type SuspendUserPayload = {
-  reason?: string;
+  reason : string;
+  comments?: string;
 };
 
 export type ResetUserPasswordPayload = {

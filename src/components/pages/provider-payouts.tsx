@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  ChevronDown,
   CheckCircle2,
   Download,
   ListFilter,
@@ -12,17 +11,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-} from "recharts";
-import {
-  earningsDistributionData,
-  monthlyPayoutData,
   payoutActivities,
   payoutActivitiesPagination,
   payoutBreakdown,
@@ -35,14 +23,10 @@ import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog } from "@/components/ui/dialog";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import MonthlyPayoutChart from "../charts/MonthlyPayoutChart";
+import EarningsDistributionChart from "../charts/EarningsDistributionChart";
 
 const metricToneClass: Record<PayoutMetric["tone"], string> = {
   purple: "text-primary",
@@ -71,23 +55,9 @@ const statusToneClass: Record<PayoutActivity["status"], string> = {
   "On Hold": "bg-rose-50 text-rose-600",
 };
 
-const trendChartConfig = {
-  amount: {
-    label: "Payout",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
-const distributionChartConfig = {
-  amount: {
-    label: "Earnings",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
 function PayoutMetricCard({ icon: Icon, label, value, change, tone }: PayoutMetric) {
   return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <Card>
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-4">
           <p className="text-xs font-semibold leading-4 text-slate-500">{label}</p>
@@ -107,87 +77,6 @@ function PayoutMetricCard({ icon: Icon, label, value, change, tone }: PayoutMetr
   );
 }
 
-function MonthlyTrendChart() {
-  return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between gap-4">
-          <h2 className="text-sm font-semibold text-slate-950">Monthly Payout Trend</h2>
-          <button
-            type="button"
-            className="flex h-8 items-center gap-2 rounded-full bg-slate-50 px-4 text-[10px] text-slate-500"
-          >
-            Last 6 Months
-            <ChevronDown className="size-3" strokeWidth={2.5} />
-          </button>
-        </div>
-
-        <ChartContainer config={trendChartConfig} className="mt-6 h-[230px] w-full">
-          <AreaChart data={monthlyPayoutData} margin={{ left: 0, right: 0, top: 8 }}>
-            <defs>
-              <linearGradient id="payoutFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
-            />
-            <YAxis hide />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-            <Area
-              type="monotone"
-              dataKey="amount"
-              stroke="var(--primary)"
-              strokeWidth={3}
-              fill="url(#payoutFill)"
-            />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  );
-}
-
-function EarningsDistributionChart() {
-  return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <CardContent className="p-6">
-        <div>
-          <h2 className="text-sm font-semibold text-slate-950">Earnings Distribution</h2>
-          <p className="mt-1 text-[10px] font-medium text-slate-400">
-            Breakdown by Provider Tier
-          </p>
-        </div>
-
-        <ChartContainer config={distributionChartConfig} className="mt-6 h-[220px] w-full">
-          <LineChart data={earningsDistributionData} margin={{ left: 0, right: 0, top: 8 }}>
-            <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="tier"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
-            />
-            <YAxis hide />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-            <Line
-              type="monotone"
-              dataKey="amount"
-              stroke="var(--primary)"
-              strokeWidth={3}
-              dot={{ r: 4, fill: "var(--primary)", strokeWidth: 0 }}
-            />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  );
-}
 
 function RecentPayoutActivities() {
   const [page, setPage] = useState(1);
@@ -398,7 +287,7 @@ export function ProviderPayoutsPage() {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
-        <MonthlyTrendChart />
+        <MonthlyPayoutChart />
         <EarningsDistributionChart />
       </section>
 

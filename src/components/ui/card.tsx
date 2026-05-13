@@ -6,7 +6,7 @@ type CardProps = HTMLAttributes<HTMLDivElement>;
 export function Card({ className, ...props }: CardProps) {
   return (
     <div
-      className={cn("rounded-3xl bg-white text-slate-950", className)}
+      className={cn("rounded-2xl bg-white text-slate-950 border border-border shadow-sm", className)}
       {...props}
     />
   );
@@ -19,7 +19,7 @@ export function CardHeader({ className, ...props }: CardProps) {
 export function CardTitle({ className, ...props }: CardProps) {
   return (
     <h1
-      className={cn("text-3xl font-semibold tracking-tight text-slate-950", className)}
+      className={cn("text-base font-semibold text-slate-950", className)}
       {...props}
     />
   );

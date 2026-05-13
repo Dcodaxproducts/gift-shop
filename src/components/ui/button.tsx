@@ -10,8 +10,7 @@ const buttonVariants = {
     "h-10 px-5 bg-primary text-primary-foreground hover:bg-primary/90",
   outline:
     "h-10 px-5 border border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
-  ghost:
-    "text-gray-500 hover:text-gray-900",
+  ghost: "text-gray-500 hover:text-gray-900",
 };
 
 export function Button({

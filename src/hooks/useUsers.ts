@@ -6,6 +6,7 @@ import {
   getUser,
   getUsers,
   updateUser,
+  deleteUser,
   updateUserStatus,
   suspendUser,
   unsuspendUser,
@@ -49,6 +50,21 @@ export const useUpdateUser = () => {
   });
 };
 
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User deleted successfully");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Failed to delete user. Please try again."));
+    },
+  });
+};
+
 export const useUpdateUserStatus = () => {
   const queryClient = useQueryClient();
 
@@ -69,8 +85,9 @@ export const useSuspendUser = () => {
 
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload?: SuspendUserPayload }) => suspendUser({ id, payload }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["user", data.id] });
       toast.success("User suspended successfully");
     },
     onError: (error) => {
@@ -84,8 +101,9 @@ export const useUnsuspendUser = () => {
 
   return useMutation({
     mutationFn: unsuspendUser,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["user", data.id] });
       toast.success("User unsuspended successfully");
     },
     onError: (error) => {
@@ -109,7 +127,17 @@ export const useResetUserPassword = () => {
 export const useExportUsers = () => {
   return useMutation({
     mutationFn: exportUsers,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Create a download link for the CSV file
+      const url = window.URL.createObjectURL(data);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `users-export-${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
       toast.success("Users exported successfully");
     },
     onError: (error) => {

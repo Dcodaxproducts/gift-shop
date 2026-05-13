@@ -1,79 +1,201 @@
 "use client";
 
-import { CircleSlash } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { CircleSlash } from "lucide-react";
+import { suspensionFormSchema, type SuspensionFormData } from "@/validations/suspension";
 
-const reasonOptions = ["Select a reason", "Policy violation", "Suspicious activity", "Payment issue"];
+export const userSuspensionReasons = [
+  "POLICY_VIOLATION",
+  "PAYMENT_ISSUE",
+  "FRAUD_SUSPECTED",
+  "USER_REQUEST",
+  "ABUSE_REPORT",
+  "OTHER",
+] as const;
 
-type SuspendUserDialogProps = {
+export const providerSuspensionReasons = [
+  "INCOMPLETE_DOCUMENTS",
+  "INVALID_BUSINESS_DETAILS",
+  "POLICY_VIOLATION",
+  "DUPLICATE_PROVIDER",
+  "BUSINESS_NOT_ELIGIBLE",
+  "OTHER",
+] as const;
+
+export type SuspensionReason =
+  | (typeof userSuspensionReasons)[number]
+  | (typeof providerSuspensionReasons)[number];
+
+const formatReason = (value: string) => value.replace(/_/g, " ").toLowerCase();
+
+type SuspendDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  isSuspended: boolean;
+  isLoading?: boolean;
+  type?: "user" | "provider";
+  title?: string;
+  summaryDetails?: { label: string; value: string }[];
+  onConfirm: (data: { reason: string; comments?: string }) => void;
 };
 
-export function SuspendUserDialog({ open, onOpenChange }: SuspendUserDialogProps) {
+export function SuspendUserDialog({
+  open,
+  onOpenChange,
+  isSuspended,
+  isLoading,
+  type = "user",
+  title,
+  summaryDetails,
+  onConfirm,
+}: SuspendDialogProps) {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<SuspensionFormData>({
+    resolver: zodResolver(suspensionFormSchema),
+    defaultValues: {
+      reason: "",
+      comments: "",
+    },
+  });
+
+  const reasonValue = watch("reason");
+  const options = type === "provider" ? providerSuspensionReasons : userSuspensionReasons;
+
+  useEffect(() => {
+    if (open) {
+      reset();
+    }
+  }, [open, reset]);
+
+  const onSubmit = (data: SuspensionFormData) => {
+    onConfirm({
+      reason: data.reason,
+      comments: data.comments?.trim() || undefined,
+    });
+  };
+
+  const handleConfirmClick = () => {
+    if (isSuspended) {
+      onConfirm({ reason: "", comments: undefined });
+    } else {
+      handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <Dialog
       open={open}
       onOpenChange={onOpenChange}
-      title="Suspend User"
-      className="max-w-[360px] rounded-xl"
+      title={title || (isSuspended ? "Unsuspend Account" : "Suspend Account")}
+      className="max-w-[440px] rounded-xl"
       headerClassName="px-4 py-3"
       contentClassName="px-4 py-3"
       footerClassName="px-4 py-3"
       footer={
         <>
-          <Button variant="outline" className="h-8 rounded-lg px-5 text-[10px]" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            className="h-8 text-[10px]"
+            onClick={() => onOpenChange(false)}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button className="h-8 rounded-lg bg-[#7c3aed] px-5 text-[10px] shadow-lg shadow-violet-500/25 hover:bg-[#6d28d9]" onClick={() => onOpenChange(false)}>
-            Confirm Suspension
+          <Button
+            className="h-8 text-[10px]"
+            onClick={handleConfirmClick}
+            disabled={isLoading}
+          >
+            {isLoading
+              ? isSuspended ? "Unsuspending..." : "Suspending..."
+              : isSuspended ? "Confirm Unsuspension" : "Confirm Suspension"}
           </Button>
         </>
       }
     >
       <div className="space-y-3">
-        <div className="rounded-lg bg-[#f4efff] p-3">
-          <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#7c3aed]">User Summary</p>
-          <div className="mt-2 grid grid-cols-[80px_1fr] gap-y-1 text-[11px]">
-            <span className="text-slate-500">Name</span>
-            <span className="text-right font-medium text-slate-950">John Doe</span>
-            <span className="text-slate-500">Email</span>
-            <span className="text-right font-medium text-slate-950">john.doe@example.com</span>
-            <span className="text-slate-500">Account ID</span>
-            <span className="text-right font-medium text-slate-950">USR-092834</span>
+        {summaryDetails && summaryDetails.length > 0 && (
+          <div className="rounded-lg bg-[#f4efff] p-3">
+            <Label className="text-primary text-[12px] font-semibold">Account Summary</Label>
+            <div className="mt-2 grid grid-cols-[100px_1fr] gap-y-1 text-[11px]">
+              {summaryDetails.map((detail, idx) => (
+                <div key={idx} className="contents">
+                  <Label className="text-muted-foreground">{detail.label}</Label>
+                  <span className="text-right font-medium truncate">{detail.value || "—"}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="space-y-1.5">
-          <label htmlFor="suspension-reason" className="text-[10px] font-semibold text-slate-700">
-            Reason for suspension
-          </label>
-          <select
-            id="suspension-reason"
-            defaultValue={reasonOptions[0]}
-            className="h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-[11px] text-slate-500 outline-none focus:border-[#7c3aed] focus:ring-4 focus:ring-violet-500/10"
-          >
-            {reasonOptions.map((reason) => (
-              <option key={reason}>{reason}</option>
-            ))}
-          </select>
-        </div>
+        {!isSuspended && (
+          <>
+            <div className="space-y-1.5">
+              <Label htmlFor="suspension-reason">Reason for suspension</Label>
+              <Select
+                value={reasonValue}
+                onValueChange={(value) => setValue("reason", value, { shouldValidate: true })}
+              >
+                <SelectTrigger
+                  id="suspension-reason"
+                  className={cn("w-full text-xs capitalize", errors.reason && "border-red-500")}
+                >
+                  <SelectValue placeholder="Select a reason" />
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((option) => (
+                    <SelectItem key={option} value={option} className="capitalize">
+                      {formatReason(option)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.reason && (
+                <p className="text-[10px] text-red-500 mt-1">{errors.reason.message}</p>
+              )}
+            </div>
 
-        <div className="space-y-1.5">
-          <label htmlFor="suspension-comments" className="text-[10px] font-semibold text-slate-700">
-            Additional Comments (Optional)
-          </label>
-          <textarea
-            id="suspension-comments"
-            placeholder="Provide more context about this suspension..."
-            className="min-h-18 w-full resize-none rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-[11px] text-slate-700 outline-none placeholder:text-slate-400 focus:border-[#7c3aed] focus:ring-4 focus:ring-violet-500/10"
-          />
-        </div>
+            {/* Always show comments for Providers too, or keep your logic as is */}
+           {
+            type === "user" && (
+               <div className="space-y-1.5">
+              <Label htmlFor="suspension-comments">Additional Comments (Optional)</Label>
+              <Textarea
+                id="suspension-comments"
+                {...register("comments")}
+                placeholder="Provide more context..."
+                className={cn("text-xs! min-h-[80px]", errors.comments && "border-red-500")}
+              />
+              {errors.comments && (
+                <p className="text-[10px] text-red-500 mt-1">{errors.comments.message}</p>
+              )}
+            </div>
+            )
+           }
+          </>
+        )}
 
         <div className="flex gap-2 rounded-lg bg-rose-50 p-3 text-[10px] font-medium leading-4 text-rose-500">
           <CircleSlash className="mt-0.5 size-3 shrink-0" />
-          <p>Suspending this user will immediately revoke their access to the platform and notify them via email.</p>
+          <p>
+            {isSuspended
+              ? "Unsuspending will immediately restore their access to the platform."
+              : "Suspending will immediately revoke access and notify them via email."}
+          </p>
         </div>
       </div>
     </Dialog>

@@ -36,6 +36,11 @@ export const updateUser = async ({ id, payload }: { id: string; payload: UpdateU
   return data.data;
 };
 
+export const deleteUser = async (id: string) => {
+  const { data } = await api.delete(`/users/${id}`);
+  return data.data;
+};
+
 export const updateUserStatus = async ({ id, payload }: { id: string; payload: UpdateUserStatusPayload }) => {
   const { data } = await api.patch(`/users/${id}/status`, payload);
   return data.data;
@@ -66,7 +71,7 @@ export const getUserStats = async (id: string) => {
   return data.data;
 };
 
-export const exportUsers = async (params: GetUsersParams = {}) => {
-  const { data } = await api.get("/users/export", { params, responseType: "blob" });
+export const exportUsers = async () => {
+  const { data } = await api.get("/users/export", { responseType: "blob" });
   return data;
 };
