@@ -7,10 +7,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-
-const categoryInputClass = "h-8! rounded-md border-slate-200 bg-white px-3 text-[11px] placeholder:text-slate-400 focus:ring-2";
-
-const categoryLabelClass = "text-[10px] font-semibold leading-none text-slate-700";
+import { Textarea } from "../ui/textarea";
 
 type AddCategoryDialogProps = {
   open: boolean;
@@ -25,22 +22,19 @@ export function AddCategoryDialog({ open, onOpenChange }: AddCategoryDialogProps
       open={open}
       onOpenChange={onOpenChange}
       title="Add New Category"
-      className="max-w-[380px] rounded-none border-0 shadow-2xl shadow-slate-950/25"
-      headerClassName="px-[22px] py-[18px]"
+      className="max-w-[380px]"
       contentClassName="px-[22px] pb-0 pt-[21px]"
-      footerClassName="justify-center gap-3 border-t border-slate-100 bg-slate-50/40 px-[22px] py-4"
-      titleClassName="text-sm font-bold text-slate-950"
+      footerClassName="justify-center gap-3 border-t border-slate-100 py-4"
       footer={
         <>
           <Button
-            className="h-[34px] min-w-[123px] rounded-lg bg-[#6d28d9] px-6 text-[11px] font-bold shadow-lg shadow-[#6d28d9]/25 hover:bg-[#5b21b6]"
             onClick={() => onOpenChange(false)}
           >
             Save Category
           </Button>
           <Button
             variant="outline"
-            className="h-[34px] min-w-[123px] rounded-lg border-slate-200 bg-white px-6 text-[11px] font-semibold text-slate-600 hover:bg-slate-50"
+            className="w-32"
             onClick={() => onOpenChange(false)}
           >
             Cancel
@@ -65,31 +59,31 @@ export function AddCategoryDialog({ open, onOpenChange }: AddCategoryDialogProps
           </p>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="category-name" className={categoryLabelClass}>
+        <div>
+          <Label htmlFor="category-name">
             Category Name
           </Label>
           <Input
             id="category-name"
             placeholder="e.g. Anniversary Gifts"
-            className={categoryInputClass}
+            className="h-9! rounded-md text-xs mt-0.5"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="category-description" className={categoryLabelClass}>
+        <div>
+          <Label htmlFor="category-description">
             Description
           </Label>
-          <textarea
+          <Textarea
             id="category-description"
             placeholder="Briefly describe the contents of this category..."
-            className="min-h-[82px] w-full resize-none rounded-md border border-slate-200 bg-white px-3 py-4 text-[11px] leading-4 text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/10"
+            className="rounded-md text-xs! mt-0.5"
           />
         </div>
 
         <div className="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-3">
           <div>
-            <p className="text-[10px] font-bold text-slate-700">Visible on Storefront</p>
+            <Label>Visible on Storefront</Label>
             <p className="mt-0.5 text-[8px] leading-3 text-slate-400">
               Enable this to make the category public.
             </p>
@@ -97,12 +91,7 @@ export function AddCategoryDialog({ open, onOpenChange }: AddCategoryDialogProps
           <Switch
             checked={visible}
             onClick={() => setVisible((current) => !current)}
-            className={visible ? "bg-[#ff5a1f]" : "bg-slate-200"}
           />
-        </div>
-
-        <div className="min-h-[76px] space-y-2">
-          <Label className={categoryLabelClass}>Display Pattern</Label>
         </div>
       </div>
     </Dialog>
