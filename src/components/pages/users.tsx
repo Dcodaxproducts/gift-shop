@@ -1,16 +1,25 @@
 "use client";
 
 import { useState } from "react";
+<<<<<<< HEAD
 import { Download, Edit2, Eye, X } from "lucide-react";
+=======
+import { Download, Edit2, Eye, ListFilter, Search, X } from "lucide-react";
+import { type UserTone } from "@/constants/users";
+>>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
 import { PageHeader } from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { useUsers, useExportUsers, useDeleteUser } from "@/hooks/useUsers";
 import { userStatusOptions, userSortOptions } from "@/constants/filter-options";
 import { useDebounce } from "@/hooks/useDebounce";
+=======
+import { useExportUsers, useSuspendUser, useUnsuspendUser, useUsers } from "@/hooks/useUsers";
+>>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
 import type { User, UserStatus, UserSortBy } from "@/types/users";
 import { EditUserDialog } from "@/components/dialog/edit-user-dialog";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
@@ -37,7 +46,12 @@ export function UsersPage() {
     sortBy
   });
   const exportUsers = useExportUsers();
+<<<<<<< HEAD
   const deleteUser = useDeleteUser();
+=======
+  const suspendUser = useSuspendUser();
+  const unsuspendUser = useUnsuspendUser();
+>>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
 
   const users = data?.users ?? [];
   const pagination = data?.pagination ?? {
@@ -58,7 +72,23 @@ export function UsersPage() {
   };
 
   const handleExport = () => {
+<<<<<<< HEAD
     exportUsers.mutate();
+=======
+    exportUsers.mutate({
+      search: search || undefined,
+      status: status === "all" ? undefined : status,
+      sortBy
+    });
+  };
+
+  const handleSuspendUser = (userId: string) => {
+    suspendUser.mutate({ id: userId });
+  };
+
+  const handleUnsuspendUser = (userId: string) => {
+    unsuspendUser.mutate(userId);
+>>>>>>> c9bea1d91a571857ad0ab91bfaf5041f67cf1243
   };
 
   return (

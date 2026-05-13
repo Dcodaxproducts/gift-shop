@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/errors";
 import {
   changePassword,
   forgotPassword,
@@ -12,10 +13,6 @@ import {
   resetPassword,
   verifyAuth,
 } from "@/services/auth";
-
-const getErrorMessage = (error: any, fallback: string) => {
-  return error?.response?.data?.message || error?.response?.data?.error?.message || error?.message || fallback;
-};
 
 export const useCurrentUser = () => {
   return useQuery({
@@ -30,7 +27,7 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: loginUser,
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       localStorage.setItem("token", data.accessToken);
       queryClient.setQueryData(["currentUser"], data.user);
       toast.success("Login successful");
