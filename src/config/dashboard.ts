@@ -44,7 +44,12 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         title: "Provider List",
         href: "/providers",
         icon: "id-card",
-      }
+      },
+      {
+        title: "Add Provider",
+        href: "/providers/create",
+        icon: "user-plus",
+      },
     ],
   },
   {
@@ -132,6 +137,21 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         href: "/system-logs",
         icon: "list-todo",
       },
+    ],
+  },
+  {
+    title: "Support Chat",
+    items: [
+      {
+        title: "Provider Chat",
+        href: "/provider-chat",
+        icon: "message-circle",
+      },
+      {
+        title: "User Chat",
+        href: "/user-chat",
+        icon: "message-circle",
+      }
     ],
   },
 ];

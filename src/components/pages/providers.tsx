@@ -77,7 +77,7 @@ export function ProvidersPage() {
               <Download className="mr-2 size-3.5" />
               {exportProviders.isPending ? "Exporting..." : "Export"}
             </Button>
-            <Button>
+            <Button onClick={() => router.push("/providers/create")}>
               <Plus className="mr-2 size-3.5" />
               Add Provider
             </Button>
@@ -128,10 +128,7 @@ export function ProvidersPage() {
             <>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <span className={cn(
-                    "flex size-10 items-center justify-center rounded-2xl text-xs font-semibold shadow-sm", 
-                    providerToneClass[tone]
-                  )}>
+                  <span className="flex size-10 items-center justify-center rounded-2xl text-xs font-semibold shadow-sm bg-primary/10 text-primary">
                     {getInitials(item.businessName)}
                   </span>
                   <span className="font-semibold ">
@@ -163,6 +160,7 @@ export function ProvidersPage() {
                   </Button>
                   <Button
                     variant="ghost"
+                    onClick={() => router.push(`/providers/${item.id}/edit`)}
                     className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
                   >
                     <Edit2 className="size-4" />
