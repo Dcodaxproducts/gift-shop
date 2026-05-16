@@ -2,60 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BadgeCheck,
-  BarChart3,
-  BriefcaseBusiness,
-  CalendarDays,
-  ChartLine,
-  CirclePlus,
-  CreditCard,
-  Gift,
-  IdCard,
-  LayoutDashboard,
-  ListTodo,
-  Package,
-  RotateCcw,
-  Rss,
-  Search,
-  Settings,
-  Share2,
-  ShieldCheck,
-  Star,
-  Store,
-  UserPlus,
-  Users,
-  UsersRound,
-  X,
-} from "lucide-react";
+import { Gift, Search, X } from "lucide-react";
 import { dashboardNavGroups, dashboardUser } from "@/config/dashboard";
 import { Input } from "@/components/ui/input";
+import { getDashboardIcon } from "@/lib/dashboard-icons";
 import { cn } from "@/lib/utils";
-
-const iconMap = {
-  "badge-check": BadgeCheck,
-  "bar-chart-3": BarChart3,
-  "briefcase-business": BriefcaseBusiness,
-  "calendar-days": CalendarDays,
-  "chart-line": ChartLine,
-  "circle-plus": CirclePlus,
-  "credit-card": CreditCard,
-  gift: Gift,
-  "id-card": IdCard,
-  "layout-dashboard": LayoutDashboard,
-  "list-todo": ListTodo,
-  package: Package,
-  "rotate-ccw": RotateCcw,
-  rss: Rss,
-  settings: Settings,
-  "share-2": Share2,
-  "shield-check": ShieldCheck,
-  star: Star,
-  store: Store,
-  "user-plus": UserPlus,
-  users: Users,
-  "users-round": UsersRound,
-};
 
 type DashboardSidebarProps = {
   isOpen: boolean;
@@ -128,7 +79,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                 </p>
                 <div className="space-y-1">
                   {group.items.map((item) => {
-                    const Icon = iconMap[item.icon as keyof typeof iconMap];
+                    const Icon = getDashboardIcon(item.icon);
                     const isActive = isActivePath(pathname, item.href);
 
                     return (
