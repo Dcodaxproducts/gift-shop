@@ -39,7 +39,7 @@ export function Input({
           {...props}
         />
         {rightIcon ? (
-          <span className="absolute right-4 top-1/2 flex -translate-y-1/2 text-slate-400">
+          <span className="absolute right-4 top-1/2 flex -translate-y-1/2">
             {rightIcon}
           </span>
         ) : null}

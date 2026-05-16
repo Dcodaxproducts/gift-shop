@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, Globe, Headphones, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Globe, Headphones, Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,9 +16,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLogin } from "@/hooks/useAuth";
 import { loginSchema, type LoginFormValues } from "@/validations/auth";
+import { useState } from "react";
 
 export function LoginForm() {
   const login = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -65,11 +68,21 @@ export function LoginForm() {
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="current-password"
               leftIcon={<Lock className="size-4" />}
-              rightIcon={<Eye className="size-4" />}
+              rightIcon={
+                <Button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  variant="ghost"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </Button>
+              }
               errorMessage={errors.password?.message}
               {...register("password")}
             />
