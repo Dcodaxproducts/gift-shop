@@ -44,12 +44,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
         title: "Provider List",
         href: "/providers",
         icon: "id-card",
-      },
-      {
-        title: "Add Provider",
-        href: "/providers/create",
-        icon: "user-plus",
-      },
+      }
     ],
   },
   {
