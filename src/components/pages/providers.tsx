@@ -5,10 +5,8 @@ import { useRouter } from "next/navigation";
 import { 
   Download, 
   Edit2, 
-  Eye, 
-  ListFilter, 
+  Eye,
   Plus, 
-  Search, 
   X 
 } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
@@ -20,17 +18,14 @@ import { ProviderStatsCard } from "@/components/cards/ProviderStatsCard";
 import { StatusBadge } from "@/utils/status";
 import { useProviders, useProviderStats, useExportProviders } from "@/hooks/useProviders";
 import { useDebounce } from "@/hooks/useDebounce";
-import { cn } from "@/lib/utils";
-import { providerToneClass, providerTones, type ProviderTone } from "@/constants/providers";
+import { providerTones, type ProviderTone } from "@/constants/providers";
 import { providerStatusOptions, providerApprovalOptions } from "@/constants/filter-options";
 import type {
   Provider,
   ProviderApproval,
   ProviderStatus,
-  ProviderStats as ProviderStatsData,
 } from "@/types/providers";
 import { getInitials } from "@/utils/getInitials";
-
 
 export function ProvidersPage() {
   const router = useRouter();
