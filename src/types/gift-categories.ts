@@ -38,19 +38,6 @@ export type GiftCategory = {
 
 export type GiftCategoryLookupItem = Pick<GiftCategory, "id" | "name" | "slug" | "imageUrl" | "iconKey">;
 
-export type GiftCategoriesPagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-};
-
-export type GetGiftCategoriesResponse = {
-  categories: GiftCategory[];
-  pagination: GiftCategoriesPagination;
-};
 
 export type GiftCategoryStats = {
   totalCategories?: number;
@@ -70,20 +57,4 @@ export type CreateGiftCategoryPayload = {
 
 export type UpdateGiftCategoryPayload = Partial<CreateGiftCategoryPayload> & {
   status?: GiftCategoryStatus;
-};
-
-export type ApiPaginationMeta = {
-  total?: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number;
-};
-
-export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: ApiPaginationMeta;
-};
-
-export type ApiDataResponse<T> = {
-  data?: T;
 };

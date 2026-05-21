@@ -15,10 +15,17 @@ export function GiftCategoriesPage() {
   const [page, setPage] = useState(1);
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
 
-  const { data, isLoading } = useGiftCategories({ page, limit: 10 });
-
-  const categories = data?.categories ?? [];
-  const pagination = data?.pagination;
+  const limit = 10;
+  const { data: categories = [], isLoading } = useGiftCategories({ page, limit });
+  const hasNextPage = categories.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + categories.length + (hasNextPage ? 1 : 0),
+    page,
+    limit,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
+  };
 
   return (
     <div className="space-y-5">
@@ -41,14 +48,7 @@ export function GiftCategoriesPage() {
       <DataTable
         data={categories}
         loading={isLoading}
-        pagination={
-          pagination
-            ? {
-              ...pagination,
-              onPageChange: setPage,
-            }
-            : undefined
-        }
+        pagination={{ ...pagination, onPageChange: setPage }}
         headers={
           <>
             <TableHead>Category Name</TableHead>

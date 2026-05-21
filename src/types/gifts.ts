@@ -64,19 +64,6 @@ export type Gift = {
   updatedAt?: string;
 };
 
-export type GiftsPagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-};
-
-export type GetGiftsResponse = {
-  gifts: Gift[];
-  pagination: GiftsPagination;
-};
 
 export type CreateGiftPayload = {
   name: string;
@@ -96,20 +83,4 @@ export type UpdateGiftPayload = Partial<CreateGiftPayload>;
 export type UpdateGiftStatusPayload = {
   status: Exclude<GiftStatus, "DELETED">;
   reason?: string;
-};
-
-export type ApiPaginationMeta = {
-  total?: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number;
-};
-
-export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: ApiPaginationMeta;
-};
-
-export type ApiDataResponse<T> = {
-  data?: T;
 };

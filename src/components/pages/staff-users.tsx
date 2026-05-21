@@ -28,7 +28,7 @@ export function StaffUsersPage() {
   const debouncedSearch = useDebounce(search, 400);
 
   const { data: roles = [] } = useAdminRoles();
-  const { data, isLoading } = useStaffList({
+  const { data: staff = [], isLoading } = useStaffList({
     page,
     limit,
     search: debouncedSearch || undefined,
@@ -45,14 +45,14 @@ export function StaffUsersPage() {
     [roles],
   );
 
-  const staff = data?.staff ?? [];
-  const pagination = data?.pagination ?? {
-    total: 0,
+  const hasNextPage = staff.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + staff.length + (hasNextPage ? 1 : 0),
     page,
     limit,
-    totalPages: 0,
-    hasNext: false,
-    hasPrevious: false,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
   };
 
   return (

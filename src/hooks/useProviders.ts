@@ -15,35 +15,14 @@ import {
   getProviderItems,
 } from "@/services/providers";
 import type {
-  ApiPaginationMeta,
   GetProvidersParams,
   ProviderItemsParams,
 } from "@/types/providers";
-
-const toPagination = (meta?: ApiPaginationMeta) => {
-  const page = meta?.page ?? 1;
-  const limit = meta?.limit ?? 10;
-  const total = meta?.total ?? 0;
-  const totalPages = meta?.totalPages ?? 0;
-
-  return {
-    total,
-    page,
-    limit,
-    totalPages,
-    hasNext: page < totalPages,
-    hasPrevious: page > 1,
-  };
-};
 
 export const useProviders = (params: GetProvidersParams = {}) => {
   return useQuery({
     queryKey: ["providers", params],
     queryFn: () => getProviders(params),
-    select: (body) => ({
-      providers: body.data ?? [],
-      pagination: toPagination(body.meta),
-    }),
   });
 };
 
@@ -150,10 +129,6 @@ export const useProviderItems = (
   return useQuery({
     queryKey: ["providers", id, "items", params],
     queryFn: () => getProviderItems(id, params),
-    select: (body) => ({
-      items: body.data ?? [],
-      pagination: toPagination(body.meta),
-    }),
     enabled: !!id,
   });
 };

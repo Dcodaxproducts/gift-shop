@@ -12,36 +12,14 @@ import {
   getGiftCategoryStats,
   updateGiftCategory,
 } from "@/services/gift-categories";
-import type {
-  ApiPaginationMeta,
-  GetGiftCategoriesParams,
-} from "@/types/gift-categories";
+import type { GetGiftCategoriesParams } from "@/types/gift-categories";
 
 const giftCategoriesQueryKey = ["gift-categories"] as const;
-const toPagination = (meta?: ApiPaginationMeta) => {
-  const page = meta?.page ?? 1;
-  const limit = meta?.limit ?? 10;
-  const total = meta?.total ?? 0;
-  const totalPages = meta?.totalPages ?? 0;
-
-  return {
-    total,
-    page,
-    limit,
-    totalPages,
-    hasNext: page < totalPages,
-    hasPrevious: page > 1,
-  };
-};
 
 export const useGiftCategories = (params: GetGiftCategoriesParams = {}) => {
   return useQuery({
     queryKey: [...giftCategoriesQueryKey, params],
     queryFn: () => getGiftCategories(params),
-    select: (body) => ({
-      categories: body.data ?? [],
-      pagination: toPagination(body.meta),
-    }),
   });
 };
 

@@ -39,15 +39,3 @@ export type UpdateAdminRolePayload = Partial<{
 export type UpdateAdminRolePermissionsPayload = {
   permissions: RolePermissions;
 };
-
-export type ApiDataResponse<T> = {
-  success?: boolean;
-  data?: T;
-  message?: string;
-};
-
-export type ApiListResponse<T> = {
-  success?: boolean;
-  data?: T[];
-  message?: string;
-};

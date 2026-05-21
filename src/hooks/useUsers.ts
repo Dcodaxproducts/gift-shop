@@ -14,32 +14,12 @@ import {
   resetUserPassword,
   exportUsers,
 } from "@/services/users";
-import type { ApiPaginationMeta, GetUsersParams } from "@/types/users";
-
-const toPagination = (meta?: ApiPaginationMeta) => {
-  const page = meta?.page ?? 1;
-  const limit = meta?.limit ?? 10;
-  const total = meta?.total ?? 0;
-  const totalPages = meta?.totalPages ?? 0;
-
-  return {
-    total,
-    page,
-    limit,
-    totalPages,
-    hasNext: page < totalPages,
-    hasPrevious: page > 1,
-  };
-};
+import type { GetUsersParams } from "@/types/users";
 
 export const useUsers = (params: GetUsersParams = {}) => {
   return useQuery({
     queryKey: ["users", params],
     queryFn: () => getUsers(params),
-    select: (body) => ({
-      users: body.data ?? [],
-      pagination: toPagination(body.meta),
-    }),
   });
 };
 

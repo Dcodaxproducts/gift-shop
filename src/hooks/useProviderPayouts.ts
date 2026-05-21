@@ -13,12 +13,12 @@ import {
   updateProviderPayoutStatus,
 } from "@/services/provider-payouts";
 import type {
-  ApiPaginationMeta,
   ProviderPayoutsParams,
   ProviderPayoutTrendsParams,
 } from "@/types/provider-payouts";
 
 const providerPayoutsQueryKey = ["provider-payouts"] as const;
+<<<<<<< HEAD
 
 const toPagination = (meta?: ApiPaginationMeta) => {
   const page = meta?.page ?? 1;
@@ -35,6 +35,8 @@ const toPagination = (meta?: ApiPaginationMeta) => {
     hasPrevious: page > 1,
   };
 };
+=======
+>>>>>>> 97698ead150ab7f6c82643dd59b664e96388325a
 
 export const useProviderPayoutStats = () => {
   return useQuery({
@@ -61,10 +63,6 @@ export const useProviderPayouts = (params: ProviderPayoutsParams = {}) => {
   return useQuery({
     queryKey: [...providerPayoutsQueryKey, "list", params],
     queryFn: () => getProviderPayouts(params),
-    select: (body) => ({
-      payouts: body.data ?? [],
-      pagination: toPagination(body.meta),
-    }),
   });
 };
 

@@ -65,19 +65,6 @@ export type ProviderItem = {
   status: string;
 };
 
-export type ProvidersPagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-};
-
-export type GetProvidersResponse = {
-  providers: Provider[];
-  pagination: ProvidersPagination;
-};
 
 export type ProviderStats = {
   totalProviders: number;
@@ -101,29 +88,4 @@ export type ProviderItemsParams = {
   page?: number;
   limit?: number;
   search?: string;
-};
-
-export type ProviderItemsResponse = {
-  items: ProviderItem[];
-  pagination: ProvidersPagination;
-};
-
-export type ApiDataResponse<T> = {
-  data?: T;
-  message?: string;
-  success?: boolean;
-};
-
-export type ApiPaginationMeta = {
-  total?: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number;
-};
-
-export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: ApiPaginationMeta;
-  message?: string;
-  success?: boolean;
 };

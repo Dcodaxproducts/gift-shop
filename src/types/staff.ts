@@ -27,19 +27,6 @@ export type GetStaffParams = {
   isActive?: boolean;
 };
 
-export type StaffPagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-};
-
-export type GetStaffResponse = {
-  staff: StaffMember[];
-  pagination: StaffPagination;
-};
 
 export type CreateStaffPayload = {
   email: string;
@@ -74,20 +61,4 @@ export type UpdateStaffPasswordPayload = {
   generateTemporaryPassword?: boolean;
   mustChangePassword?: boolean;
   sendInviteEmail?: boolean;
-};
-
-export type ApiPaginationMeta = {
-  total?: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number;
-};
-
-export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: ApiPaginationMeta;
-};
-
-export type ApiDataResponse<T> = {
-  data?: T;
 };
