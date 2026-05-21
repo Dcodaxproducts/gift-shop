@@ -49,7 +49,7 @@ export function SalesPerformanceCard() {
           </div>
         </div>
 
-        <div className="mt-6 h-[220px] w-full">
+        <div className="mt-6 h-55 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={salesPerformanceData[range]}
