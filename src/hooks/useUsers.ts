@@ -14,12 +14,32 @@ import {
   resetUserPassword,
   exportUsers,
 } from "@/services/users";
-import type { GetUsersParams, UpdateUserPayload, UpdateUserStatusPayload, SuspendUserPayload, ResetUserPasswordPayload } from "@/types/users";
+import type { ApiPaginationMeta, GetUsersParams } from "@/types/users";
+
+const toPagination = (meta?: ApiPaginationMeta) => {
+  const page = meta?.page ?? 1;
+  const limit = meta?.limit ?? 10;
+  const total = meta?.total ?? 0;
+  const totalPages = meta?.totalPages ?? 0;
+
+  return {
+    total,
+    page,
+    limit,
+    totalPages,
+    hasNext: page < totalPages,
+    hasPrevious: page > 1,
+  };
+};
 
 export const useUsers = (params: GetUsersParams = {}) => {
   return useQuery({
     queryKey: ["users", params],
     queryFn: () => getUsers(params),
+    select: (body) => ({
+      users: body.data ?? [],
+      pagination: toPagination(body.meta),
+    }),
   });
 };
 
@@ -35,7 +55,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateUserPayload }) => updateUser({ id, payload }),
+    mutationFn: updateUser,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.setQueryData(["user", variables.id], data);
@@ -51,7 +71,7 @@ export const useDeleteUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteUser(id),
+    mutationFn: deleteUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("User deleted successfully");
@@ -66,7 +86,7 @@ export const useUpdateUserStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateUserStatusPayload }) => updateUserStatus({ id, payload }),
+    mutationFn: updateUserStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("User status updated successfully");
@@ -81,7 +101,7 @@ export const useSuspendUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload?: SuspendUserPayload }) => suspendUser({ id, payload }),
+    mutationFn: suspendUser,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["user", data.id] });
@@ -111,7 +131,7 @@ export const useUnsuspendUser = () => {
 
 export const useResetUserPassword = () => {
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload?: ResetUserPasswordPayload }) => resetUserPassword({ id, payload }),
+    mutationFn: resetUserPassword,
     onSuccess: () => {
       toast.success("Password reset instructions sent successfully");
     },

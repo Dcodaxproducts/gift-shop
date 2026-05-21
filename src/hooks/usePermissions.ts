@@ -12,11 +12,6 @@ import {
   updateAdminRole,
   updateAdminRolePermissions,
 } from "@/services/admin-roles";
-import type {
-  CreateAdminRolePayload,
-  UpdateAdminRolePayload,
-  UpdateAdminRolePermissionsPayload,
-} from "@/types/admin-roles";
 
 const adminRolesQueryKey = ["admin-roles"] as const;
 const permissionsCatalogQueryKey = ["permissions-catalog"] as const;
@@ -47,7 +42,7 @@ export const useCreateAdminRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateAdminRolePayload) => createAdminRole(payload),
+    mutationFn: createAdminRole,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
       toast.success("Role created successfully");
@@ -62,8 +57,7 @@ export const useUpdateAdminRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateAdminRolePayload }) =>
-      updateAdminRole({ id, payload }),
+    mutationFn: updateAdminRole,
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
       queryClient.invalidateQueries({
@@ -81,13 +75,7 @@ export const useUpdateAdminRolePermissions = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: UpdateAdminRolePermissionsPayload;
-    }) => updateAdminRolePermissions({ id, payload }),
+    mutationFn: updateAdminRolePermissions,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
       queryClient.setQueryData([...adminRolesQueryKey, variables.id], data);
@@ -105,7 +93,7 @@ export const useDeleteAdminRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteAdminRole(id),
+    mutationFn: deleteAdminRole,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
       toast.success("Role deleted successfully");

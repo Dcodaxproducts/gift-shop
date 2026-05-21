@@ -15,15 +15,35 @@ import {
   getProviderItems,
 } from "@/services/providers";
 import type {
-  CreateProviderPayload,
+  ApiPaginationMeta,
   GetProvidersParams,
-  ProviderMessagePayload,
+  ProviderItemsParams,
 } from "@/types/providers";
+
+const toPagination = (meta?: ApiPaginationMeta) => {
+  const page = meta?.page ?? 1;
+  const limit = meta?.limit ?? 10;
+  const total = meta?.total ?? 0;
+  const totalPages = meta?.totalPages ?? 0;
+
+  return {
+    total,
+    page,
+    limit,
+    totalPages,
+    hasNext: page < totalPages,
+    hasPrevious: page > 1,
+  };
+};
 
 export const useProviders = (params: GetProvidersParams = {}) => {
   return useQuery({
     queryKey: ["providers", params],
     queryFn: () => getProviders(params),
+    select: (body) => ({
+      providers: body.data ?? [],
+      pagination: toPagination(body.meta),
+    }),
   });
 };
 
@@ -45,7 +65,7 @@ export const useCreateProvider = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateProviderPayload) => createProvider(payload),
+    mutationFn: createProvider,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["providers"] });
       toast.success("Provider created successfully");
@@ -82,8 +102,7 @@ export const useUpdateProvider = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: Partial<CreateProviderPayload> }) =>
-      updateProvider(id, payload),
+    mutationFn: updateProvider,
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["providers"] });
       queryClient.invalidateQueries({ queryKey: ["providers", id] });
@@ -99,8 +118,7 @@ export const useUpdateProviderStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, action, reason }: { id: string; action: string; reason?: string }) =>
-      updateProviderStatus(id, action, reason), 
+    mutationFn: updateProviderStatus,
     
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["providers"] });
@@ -115,8 +133,7 @@ export const useUpdateProviderStatus = () => {
 
 export const useSendProviderMessage = () => {
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: ProviderMessagePayload }) =>
-      sendProviderMessage(id, payload),
+    mutationFn: sendProviderMessage,
     onSuccess: () => {
       toast.success("Message sent successfully");
     },
@@ -128,11 +145,15 @@ export const useSendProviderMessage = () => {
 
 export const useProviderItems = (
   id: string,
-  params: { page?: number; limit?: number; search?: string } = {}
+  params: ProviderItemsParams = {}
 ) => {
   return useQuery({
     queryKey: ["providers", id, "items", params],
     queryFn: () => getProviderItems(id, params),
+    select: (body) => ({
+      items: body.data ?? [],
+      pagination: toPagination(body.meta),
+    }),
     enabled: !!id,
   });
 };

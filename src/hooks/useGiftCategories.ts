@@ -13,17 +13,35 @@ import {
   updateGiftCategory,
 } from "@/services/gift-categories";
 import type {
-  CreateGiftCategoryPayload,
+  ApiPaginationMeta,
   GetGiftCategoriesParams,
-  UpdateGiftCategoryPayload,
 } from "@/types/gift-categories";
 
 const giftCategoriesQueryKey = ["gift-categories"] as const;
+const toPagination = (meta?: ApiPaginationMeta) => {
+  const page = meta?.page ?? 1;
+  const limit = meta?.limit ?? 10;
+  const total = meta?.total ?? 0;
+  const totalPages = meta?.totalPages ?? 0;
+
+  return {
+    total,
+    page,
+    limit,
+    totalPages,
+    hasNext: page < totalPages,
+    hasPrevious: page > 1,
+  };
+};
 
 export const useGiftCategories = (params: GetGiftCategoriesParams = {}) => {
   return useQuery({
     queryKey: [...giftCategoriesQueryKey, params],
     queryFn: () => getGiftCategories(params),
+    select: (body) => ({
+      categories: body.data ?? [],
+      pagination: toPagination(body.meta),
+    }),
   });
 };
 
@@ -53,7 +71,7 @@ export const useCreateGiftCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateGiftCategoryPayload) => createGiftCategory(payload),
+    mutationFn: createGiftCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: giftCategoriesQueryKey });
       toast.success("Gift category created successfully");
@@ -68,8 +86,7 @@ export const useUpdateGiftCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateGiftCategoryPayload }) =>
-      updateGiftCategory({ id, payload }),
+    mutationFn: updateGiftCategory,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: giftCategoriesQueryKey });
       queryClient.setQueryData([...giftCategoriesQueryKey, variables.id], data);
@@ -85,7 +102,7 @@ export const useDeleteGiftCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteGiftCategory(id),
+    mutationFn: deleteGiftCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: giftCategoriesQueryKey });
       toast.success("Gift category deleted successfully");

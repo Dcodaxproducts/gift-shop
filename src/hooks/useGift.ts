@@ -12,18 +12,35 @@ import {
   updateGiftStatus,
 } from "@/services/gift";
 import type {
-  CreateGiftPayload,
+  ApiPaginationMeta,
   GetGiftsParams,
-  UpdateGiftPayload,
-  UpdateGiftStatusPayload,
 } from "@/types/gifts";
 
 const giftsQueryKey = ["gifts"] as const;
+const toPagination = (meta?: ApiPaginationMeta) => {
+  const page = meta?.page ?? 1;
+  const limit = meta?.limit ?? 10;
+  const total = meta?.total ?? 0;
+  const totalPages = meta?.totalPages ?? 0;
+
+  return {
+    total,
+    page,
+    limit,
+    totalPages,
+    hasNext: page < totalPages,
+    hasPrevious: page > 1,
+  };
+};
 
 export const useGifts = (params: GetGiftsParams = {}) => {
   return useQuery({
     queryKey: [...giftsQueryKey, params],
     queryFn: () => getGifts(params),
+    select: (body) => ({
+      gifts: body.data ?? [],
+      pagination: toPagination(body.meta),
+    }),
   });
 };
 
@@ -39,7 +56,7 @@ export const useCreateGift = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateGiftPayload) => createGift(payload),
+    mutationFn: createGift,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: giftsQueryKey });
       toast.success("Gift created successfully");
@@ -54,7 +71,7 @@ export const useUpdateGift = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateGiftPayload }) => updateGift({ id, payload }),
+    mutationFn: updateGift,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: giftsQueryKey });
       queryClient.setQueryData([...giftsQueryKey, variables.id], data);
@@ -70,8 +87,7 @@ export const useUpdateGiftStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateGiftStatusPayload }) =>
-      updateGiftStatus({ id, payload }),
+    mutationFn: updateGiftStatus,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: giftsQueryKey });
       queryClient.setQueryData([...giftsQueryKey, variables.id], data);
@@ -87,7 +103,7 @@ export const useDeleteGift = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteGift(id),
+    mutationFn: deleteGift,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: giftsQueryKey });
       toast.success("Gift deleted successfully");

@@ -113,3 +113,17 @@ export type ApiDataResponse<T> = {
   message?: string;
   success?: boolean;
 };
+
+export type ApiPaginationMeta = {
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
+};
+
+export type ApiListResponse<T> = {
+  data?: T[];
+  meta?: ApiPaginationMeta;
+  message?: string;
+  success?: boolean;
+};

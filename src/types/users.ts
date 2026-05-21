@@ -106,3 +106,19 @@ export type GetUserActivityParams = {
   page?: number;
   limit?: number;
 };
+
+export type ApiPaginationMeta = {
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
+};
+
+export type ApiListResponse<T> = {
+  data?: T[];
+  meta?: ApiPaginationMeta;
+};
+
+export type ApiDataResponse<T> = {
+  data?: T;
+};

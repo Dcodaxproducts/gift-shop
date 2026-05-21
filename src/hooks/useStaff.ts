@@ -13,19 +13,35 @@ import {
   updateStaffPassword,
 } from "@/services/staff";
 import type {
-  CreateStaffPayload,
+  ApiPaginationMeta,
   GetStaffParams,
-  UpdateStaffActiveStatusPayload,
-  UpdateStaffPasswordPayload,
-  UpdateStaffPayload,
 } from "@/types/staff";
 
 const staffQueryKey = ["staff"] as const;
+const toPagination = (meta?: ApiPaginationMeta) => {
+  const page = meta?.page ?? 1;
+  const limit = meta?.limit ?? 10;
+  const total = meta?.total ?? 0;
+  const totalPages = meta?.totalPages ?? 0;
+
+  return {
+    total,
+    page,
+    limit,
+    totalPages,
+    hasNext: page < totalPages,
+    hasPrevious: page > 1,
+  };
+};
 
 export const useStaffList = (params: GetStaffParams = {}) => {
   return useQuery({
     queryKey: [...staffQueryKey, params],
     queryFn: () => getStaff(params),
+    select: (body) => ({
+      staff: body.data ?? [],
+      pagination: toPagination(body.meta),
+    }),
   });
 };
 
@@ -41,7 +57,7 @@ export const useCreateStaff = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateStaffPayload) => createStaff(payload),
+    mutationFn: createStaff,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: staffQueryKey });
       toast.success("Staff member created successfully");
@@ -56,8 +72,7 @@ export const useUpdateStaff = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateStaffPayload }) =>
-      updateStaff({ id, payload }),
+    mutationFn: updateStaff,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: staffQueryKey });
       queryClient.setQueryData([...staffQueryKey, variables.id], data);
@@ -73,13 +88,7 @@ export const useUpdateStaffActiveStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: UpdateStaffActiveStatusPayload;
-    }) => updateStaffActiveStatus({ id, payload }),
+    mutationFn: updateStaffActiveStatus,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: staffQueryKey });
       queryClient.setQueryData([...staffQueryKey, variables.id], data);
@@ -93,13 +102,7 @@ export const useUpdateStaffActiveStatus = () => {
 
 export const useUpdateStaffPassword = () => {
   return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: UpdateStaffPasswordPayload;
-    }) => updateStaffPassword({ id, payload }),
+    mutationFn: updateStaffPassword,
     onSuccess: () => {
       toast.success("Password updated successfully");
     },
@@ -113,7 +116,7 @@ export const useDeleteStaff = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteStaff(id),
+    mutationFn: deleteStaff,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: staffQueryKey });
       toast.success("Staff member deleted successfully");

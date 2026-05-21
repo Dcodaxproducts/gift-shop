@@ -1,8 +1,9 @@
 import { api } from "@/lib/axios";
 import type {
+  ApiDataResponse,
+  ApiListResponse,
   CreateStaffPayload,
   GetStaffParams,
-  GetStaffResponse,
   StaffMember,
   UpdateStaffActiveStatusPayload,
   UpdateStaffPasswordPayload,
@@ -11,31 +12,23 @@ import type {
 
 const ADMINS_ENDPOINT = "/admins";
 
-export const getStaff = async (params: GetStaffParams = {}): Promise<GetStaffResponse> => {
+export const getStaff = async (params: GetStaffParams = {}) => {
   const { data } = await api.get(ADMINS_ENDPOINT, { params });
-  const meta = data.meta ?? { page: 1, limit: 10, total: 0, totalPages: 0 };
-
-  return {
-    staff: data.data ?? [],
-    pagination: {
-      total: meta.total,
-      page: meta.page,
-      limit: meta.limit,
-      totalPages: meta.totalPages,
-      hasNext: meta.page < meta.totalPages,
-      hasPrevious: meta.page > 1,
-    },
-  };
+  return data as ApiListResponse<StaffMember>;
 };
 
-export const getStaffMember = async (id: string): Promise<StaffMember> => {
+export const getStaffMember = async (id: string) => {
   const { data } = await api.get(`${ADMINS_ENDPOINT}/${id}`);
-  return data.data;
+  const body = data as ApiDataResponse<StaffMember>;
+
+  return body.data as StaffMember;
 };
 
-export const createStaff = async (payload: CreateStaffPayload): Promise<StaffMember> => {
+export const createStaff = async (payload: CreateStaffPayload) => {
   const { data } = await api.post(ADMINS_ENDPOINT, payload);
-  return data.data;
+  const body = data as ApiDataResponse<StaffMember>;
+
+  return body.data as StaffMember;
 };
 
 export const updateStaff = async ({
@@ -44,9 +37,11 @@ export const updateStaff = async ({
 }: {
   id: string;
   payload: UpdateStaffPayload;
-}): Promise<StaffMember> => {
+}) => {
   const { data } = await api.patch(`${ADMINS_ENDPOINT}/${id}`, payload);
-  return data.data;
+  const body = data as ApiDataResponse<StaffMember>;
+
+  return body.data as StaffMember;
 };
 
 export const updateStaffActiveStatus = async ({
@@ -55,9 +50,11 @@ export const updateStaffActiveStatus = async ({
 }: {
   id: string;
   payload: UpdateStaffActiveStatusPayload;
-}): Promise<StaffMember> => {
+}) => {
   const { data } = await api.patch(`${ADMINS_ENDPOINT}/${id}/active-status`, payload);
-  return data.data;
+  const body = data as ApiDataResponse<StaffMember>;
+
+  return body.data as StaffMember;
 };
 
 export const updateStaffPassword = async ({
@@ -66,12 +63,16 @@ export const updateStaffPassword = async ({
 }: {
   id: string;
   payload: UpdateStaffPasswordPayload;
-}): Promise<StaffMember> => {
+}) => {
   const { data } = await api.patch(`${ADMINS_ENDPOINT}/${id}/password`, payload);
-  return data.data;
+  const body = data as ApiDataResponse<StaffMember>;
+
+  return body.data as StaffMember;
 };
 
-export const deleteStaff = async (id: string): Promise<StaffMember> => {
+export const deleteStaff = async (id: string) => {
   const { data } = await api.delete(`${ADMINS_ENDPOINT}/${id}`);
-  return data.data;
+  const body = data as ApiDataResponse<StaffMember>;
+
+  return body.data as StaffMember;
 };
