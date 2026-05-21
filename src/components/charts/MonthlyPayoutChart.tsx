@@ -46,7 +46,7 @@ const trendRanges: { label: string; value: ProviderPayoutTrendRange }[] = [
 
 function MonthlyPayoutChart({ data = monthlyPayoutData, range, onRangeChange }: MonthlyPayoutChartProps) {
   return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <Card>
       <CardContent className="p-6">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-sm font-semibold ">Monthly Payout Trend</h2>

@@ -38,27 +38,14 @@ import type {
   ProviderPayoutStats,
   ProviderPayoutTrendRange,
 } from "@/types/provider-payouts";
+import { formatDate } from "@/utils/formatDate";
 
 const formatMoney = (amount: number) => `$${Number(amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-const formatDate = (date?: string | null) => {
-  if (!date) {
-    return "--";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  }).format(new Date(date));
-};
 
 const formatDelta = (value: number, period: string) => {
   const prefix = value > 0 ? "+" : "";
   return `${prefix}${value}% vs ${period}`;
 };
-
-const formatStatus = (status: string) => status.replaceAll("_", " ");
 
 const buildPayoutMetrics = (stats?: ProviderPayoutStats): PayoutMetric[] => {
   if (!stats) {
@@ -157,7 +144,7 @@ function RecentPayoutActivities() {
             </TableCell>
             <TableCell>{formatDate(activity.lastPayoutDate)}</TableCell>
             <TableCell>{formatDate(activity.nextPayoutDate)}</TableCell>
-            <TableCell>{StatusBadge({ status: formatStatus(activity.status) })}</TableCell>
+            <TableCell>{StatusBadge({ status: activity.status })}</TableCell>
             <TableCell>
               <Button
                 variant="soft"
