@@ -3,6 +3,7 @@ export type DashboardNavItem = {
   href: string;
   icon: string;
   badge?: string;
+  permissionKey?: string; // maps to permissions object key
 };
 
 export type DashboardNavGroup = {
@@ -14,139 +15,71 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     title: "Core",
     items: [
-      {
-        title: "Dashboard Overview",
-        href: "/",
-        icon: "layout-dashboard",
-      },
+      { title: "Dashboard Overview", href: "/", icon: "layout-dashboard" },
     ],
   },
   {
     title: "Administration",
     items: [
-      {
-        title: "Staff Users",
-        href: "/staff-users",
-        icon: "badge-check",
-      },
-      {
-        title: "Role & Permissions",
-        href: "/roles-permissions",
-        icon: "shield-check",
-      },
+      { title: "Staff Users", href: "/staff-users", icon: "badge-check", permissionKey: "admins" },
+      { title: "Role & Permissions", href: "/roles-permissions", icon: "shield-check", permissionKey: "roles" }, // Handled by roles permission row
     ],
   },
   {
     title: "Users & Providers",
     items: [
-      { title: "Users List", href: "/users", icon: "users" },
-      {
-        title: "Provider List",
-        href: "/providers",
-        icon: "id-card",
-      }
+      { title: "Users List", href: "/users", icon: "users", permissionKey: "users" },
+      { title: "Provider List", href: "/providers", icon: "id-card", permissionKey: "providers" },
     ],
   },
   {
     title: "Inventory",
     items: [
-      { title: "Gift Listings", href: "/gifts", icon: "gift" },
-      { title: "Gift Categories", href: "/gift-categories", icon: "package" },
+      { title: "Gift Listings", href: "/gifts", icon: "gift", permissionKey: "giftListings" }, // Added key
+      { title: "Gift Categories", href: "/gift-categories", icon: "giftCategories", permissionKey: "giftCategories" }, // Added key
     ],
   },
   {
     title: "Financials",
     items: [
-      {
-        title: "Transaction Monitoring",
-        href: "/transactions",
-        icon: "chart-line",
-      },
-      {
-        title: "Provider Payouts",
-        href: "/payouts",
-        icon: "credit-card",
-      },
-      {
-        title: "Refund",
-        href: "/refund",
-        icon: "rotate-ccw",
-      },
+      { title: "Transaction Monitoring", href: "/transactions", icon: "chart-line", permissionKey: "transactions" }, // Added key
+      { title: "Provider Payouts", href: "/payouts", icon: "credit-card", permissionKey: "payouts" },
+      { title: "Refund", href: "/refund", icon: "rotate-ccw", permissionKey: "refunds" },
     ],
   },
   {
     title: "Disputes",
     items: [
-      {
-        title: "Dispute Management",
-        href: "/dispute-management",
-        icon: "chart-line",
-      },
+      { title: "Dispute Management", href: "/dispute-management", icon: "chart-line", permissionKey: "disputes" },
     ],
   },
   {
     title: "Moderation",
     items: [
-      {
-        title: "Social & Reviews Moderation",
-        href: "/social-reviews-moderation",
-        icon: "rss",
-      },
+      { title: "Social & Reviews Moderation", href: "/social-reviews-moderation", icon: "rss", permissionKey: "moderation" },
     ],
   },
   {
     title: "Communications",
     items: [
-      {
-        title: "Create Broadcast",
-        href: "/create-broadcast",
-        icon: "share-2",
-      },
+      { title: "Create Broadcast", href: "/create-broadcast", icon: "share-2", permissionKey: "broadcasts" },
     ],
   },
   {
     title: "System",
     items: [
-      {
-        title: "Referral Settings",
-        href: "/referral-settings",
-        icon: "share-2",
-      },
-      {
-        title: "Subscription Plans",
-        href: "/subscriptions",
-        icon: "calendar-days",
-      },
-      {
-        title: "System Settings",
-        href: "/settings",
-        icon: "settings",
-      },
-      {
-        title: "Platform Analytics",
-        href: "/platform-analytics",
-        icon: "bar-chart-3",
-      },
-      {
-        title: "System Logs",
-        href: "/system-logs",
-        icon: "list-todo",
-      },
+      { title: "Referral Settings", href: "/referral-settings", icon: "share-2", permissionKey: "settings" },
+      { title: "Subscription Plans", href: "/subscriptions", icon: "calendar-days", permissionKey: "settings" },
+      { title: "System Settings", href: "/settings", icon: "settings", permissionKey: "settings" },
+      { title: "Platform Analytics", href: "/platform-analytics", icon: "bar-chart-3", permissionKey: "reports" },
+      { title: "System Logs", href: "/system-logs", icon: "list-todo", permissionKey: "auditLogs" },
     ],
   },
   {
     title: "Support Chat",
     items: [
-      {
-        title: "Provider Chat",
-        href: "/provider-chat",
-        icon: "message-circle",
-      },
-      {
-        title: "User Chat",
-        href: "/user-chat",
-        icon: "message-circle",
-      }
+      { title: "Provider Chat", href: "/provider-chat", icon: "message-circle", permissionKey: "chat" },
+      { title: "User Chat", href: "/user-chat", icon: "message-circle", permissionKey: "chat" },
     ],
   },
 ];

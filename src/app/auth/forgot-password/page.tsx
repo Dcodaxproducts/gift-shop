@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
       <ForgotPasswordForm />
 
       <footer className="mt-8 text-center text-xs text-slate-400">
-        <p>© 2026 FintechGifts Admin Portal. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} {SITE_NAME} . All rights reserved.</p>
         <div className="mt-2 flex items-center justify-center gap-3">
           <Link href="/privacy-policy" className="transition hover:text-primary">
             Privacy Policy

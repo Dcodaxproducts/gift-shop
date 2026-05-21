@@ -1,6 +1,8 @@
 "use client";
 
-import { Camera, CircleCheck, CircleSlash2, Clock } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { CircleCheck, Clock, UserRound } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,15 +16,97 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { useAdminRole, useAdminRoles } from "@/hooks/usePermissions";
+import { useStaffMember, useUpdateStaff } from "@/hooks/useStaff";
+import { formatDate } from "@/utils/formatDate";
+import { buildRolePermissionSummary } from "@/utils/role-permissions";
 
-const permissions = [
-  { label: "Review high-value transactions", allowed: true },
-  { label: "Approve/Reject KYC documents", allowed: true },
-  { label: "Generate risk reports", allowed: true },
-  { label: "Cannot edit platform fees", allowed: false },
-];
+function splitFullName(fullName: string) {
+  const trimmed = fullName.trim();
+  const spaceIndex = trimmed.indexOf(" ");
+
+  if (spaceIndex === -1) {
+    return { firstName: trimmed, lastName: trimmed };
+  }
+
+  return {
+    firstName: trimmed.slice(0, spaceIndex),
+    lastName: trimmed.slice(spaceIndex + 1).trim() || trimmed.slice(0, spaceIndex),
+  };
+}
 
 export function EditStaffPage() {
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const staffId = params.id;
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [roleId, setRoleId] = useState("");
+  const [isActive, setIsActive] = useState(true);
+
+  const { data: staff, isLoading } = useStaffMember(staffId);
+  const { data: roles = [] } = useAdminRoles();
+  const { data: selectedRoleDetails, isLoading: roleDetailsLoading } = useAdminRole(roleId || undefined);
+  const { mutate: updateStaffMember, isPending: isUpdating } = useUpdateStaff();
+
+  const activeRoles = useMemo(
+    () => roles.filter((role) => role.isActive || role.id === staff?.role.id),
+    [roles, staff?.role?.id],
+  );
+
+  useEffect(() => {
+    if (!staff) return;
+
+    setFullName(staff.fullName || `${staff.firstName} ${staff.lastName}`);
+    setEmail(staff.email);
+    setPhone(staff.phone ?? "");
+    setRoleId(staff.role.id);
+    setIsActive(staff.isActive);
+  }, [staff]);
+
+  const permissions = useMemo(
+    () => buildRolePermissionSummary(selectedRoleDetails?.permissions),
+    [selectedRoleDetails],
+  );
+
+  const handleActiveToggle = () => {
+    setIsActive((prev) => !prev);
+  };
+
+  const handleSave = () => {
+    if (!staff) return;
+
+    const { firstName, lastName } = splitFullName(fullName);
+
+    updateStaffMember(
+      {
+        id: staffId,
+        payload: {
+          firstName,
+          lastName,
+          email: email.trim(),
+          phone: phone.trim() || undefined,
+          roleId,
+          isActive,
+        },
+      },
+      {
+        onSuccess: () => router.push("/staff-users"),
+      },
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-5">
+        <PageHeader title="Edit Staff" />
+        <div className="h-64 animate-pulse rounded-2xl bg-slate-100" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-5">
       <PageHeader title="Edit Staff" />
@@ -30,26 +114,12 @@ export function EditStaffPage() {
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
         <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
           <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <span className="flex size-14 items-center justify-center overflow-hidden rounded-2xl bg-slate-100">
-                  <img
-                    src="https://i.pravatar.cc/120?img=12"
-                    alt="Jordan Henderson"
-                    className="size-full object-cover"
-                  />
-                </span>
-                <button
-                  type="button"
-                  className="absolute -bottom-1 -right-1 flex size-6 items-center justify-center rounded-full bg-white text-primary shadow-md ring-1 ring-slate-200 hover:bg-primary/5"
-                >
-                  <Camera className="size-3" strokeWidth={2.5} />
-                </button>
-              </div>
+            <div className="flex items-center gap-2.5">
+              <UserRound className="size-4 text-primary" strokeWidth={2.5} />
               <div>
                 <h2 className="text-sm font-semibold text-slate-950">Profile Details</h2>
                 <p className="mt-0.5 text-[11px] text-slate-400">
-                  Update staff&apos;s personal information and photo.
+                  Update staff&apos;s personal information.
                 </p>
               </div>
             </div>
@@ -57,24 +127,45 @@ export function EditStaffPage() {
             <div className="mt-6 space-y-5">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="full-name" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                  <Label
+                    htmlFor="full-name"
+                    className="text-[10px] font-semibold uppercase tracking-wide text-slate-500"
+                  >
                     Full Name
                   </Label>
-                  <Input id="full-name" defaultValue="Jordan Henderson" />
+                  <Input
+                    id="full-name"
+                    value={fullName}
+                    onChange={(event) => setFullName(event.target.value)}
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                  <Label
+                    htmlFor="email"
+                    className="text-[10px] font-semibold uppercase tracking-wide text-slate-500"
+                  >
                     Email Address
                   </Label>
-                  <Input id="email" defaultValue="j.henderson@fintech.com" />
+                  <Input
+                    id="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
                 </div>
               </div>
 
               <div className="space-y-2 sm:max-w-[calc(50%-0.5rem)]">
-                <Label htmlFor="phone" className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                <Label
+                  htmlFor="phone"
+                  className="text-[10px] font-semibold uppercase tracking-wide text-slate-500"
+                >
                   Phone Number
                 </Label>
-                <Input id="phone" defaultValue="+1 (555) 012-3456" />
+                <Input
+                  id="phone"
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                />
               </div>
             </div>
           </CardContent>
@@ -90,11 +181,21 @@ export function EditStaffPage() {
                 <span className="text-xs font-semibold text-slate-700">
                   Active / Disabled
                 </span>
-                <Switch checked className="h-6 w-11" />
+                <Switch
+                  checked={isActive}
+                  onClick={handleActiveToggle}
+                  disabled={isUpdating}
+                  className="h-6 w-11"
+                />
               </div>
               <div className="mt-4 flex items-center gap-1.5 text-[10px] text-slate-400">
                 <Clock className="size-3" />
-                <span>Last login: Oct 24, 2023, 14:30</span>
+                <span>
+                  Last login:{" "}
+                  {staff?.lastLoginAt
+                    ? formatDate(staff.lastLoginAt)
+                    : "Not logged in yet"}
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -108,14 +209,16 @@ export function EditStaffPage() {
                 <Label className="text-[11px] font-semibold text-slate-700">
                   Staff Role
                 </Label>
-                <Select defaultValue="risk-analyst">
+                <Select value={roleId} onValueChange={setRoleId}>
                   <SelectTrigger className="h-11 w-full px-4">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="risk-analyst">Risk Analyst</SelectItem>
-                    <SelectItem value="support-lead">Support Lead</SelectItem>
-                    <SelectItem value="ops-manager">Operations Manager</SelectItem>
+                    {activeRoles.map((role) => (
+                      <SelectItem key={role.id} value={role.id}>
+                        {role.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -124,31 +227,30 @@ export function EditStaffPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                   Permission Summary
                 </p>
-                <ul className="mt-2.5 space-y-2">
-                  {permissions.map((p) => (
-                    <li
-                      key={p.label}
-                      className={
-                        "flex items-center gap-2 text-[11px] " +
-                        (p.allowed
-                          ? "text-slate-700"
-                          : "text-slate-400 line-through")
-                      }
-                    >
-                      {p.allowed ? (
+                <ul className="mt-2.5 max-h-48 space-y-2 overflow-y-auto">
+                  {roleDetailsLoading ? (
+                    Array.from({ length: 4 }).map((_, index) => (
+                      <li
+                        key={`perm-skeleton-${index}`}
+                        className="h-3 animate-pulse rounded-full bg-slate-100"
+                      />
+                    ))
+                  ) : permissions.length === 0 ? (
+                    <li className="text-[11px] text-slate-400">No permissions assigned</li>
+                  ) : (
+                    permissions.map((permission,i) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-2 text-[11px] text-slate-700"
+                      >
                         <CircleCheck
-                          className="size-3.5 text-emerald-500"
+                          className="size-3.5 shrink-0 text-emerald-500"
                           strokeWidth={2.5}
                         />
-                      ) : (
-                        <CircleSlash2
-                          className="size-3.5 text-slate-400"
-                          strokeWidth={2.5}
-                        />
-                      )}
-                      {p.label}
-                    </li>
-                  ))}
+                        {permission.label}
+                      </li>
+                    ))
+                  )}
                 </ul>
               </div>
             </CardContent>
@@ -157,8 +259,12 @@ export function EditStaffPage() {
       </section>
 
       <div className="flex justify-end gap-3">
-        <Button variant="outline">Cancel</Button>
-        <Button>Save Changes</Button>
+        <Button variant="outline" onClick={() => router.back()}>
+          Cancel
+        </Button>
+        <Button onClick={handleSave} disabled={isUpdating || !fullName.trim() || !email.trim()}>
+          Save Changes
+        </Button>
       </div>
     </div>
   );

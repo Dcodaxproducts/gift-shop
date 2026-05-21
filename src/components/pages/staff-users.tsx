@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Edit2, Eye, Plus, X } from "lucide-react";
-import {
-  staffMembers,
-  staffPagination,
-  type StaffMember,
-} from "@/constants/staff";
 import { PageHeader } from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableHead } from "@/components/ui/table"
+import { TableCell, TableHead } from "@/components/ui/table";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { StatusBadge } from "@/utils/status";
-import { staffRoleOptions, staffStatusOptions } from "@/constants/filter-options";
+import { staffStatusOptions } from "@/constants/filter-options";
+import { useAdminRoles } from "@/hooks/usePermissions";
+import { useDeleteStaff, useStaffList } from "@/hooks/useStaff";
+import { useDebounce } from "@/hooks/useDebounce";
+import { formatDate } from "@/utils/formatDate";
+import type { StaffMember } from "@/types/staff";
 
 export function StaffUsersPage() {
   const router = useRouter();
@@ -22,6 +23,37 @@ export function StaffUsersPage() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
   const [status, setStatus] = useState("all");
+  const [deleteTarget, setDeleteTarget] = useState<StaffMember | null>(null);
+  const limit = 10;
+  const debouncedSearch = useDebounce(search, 400);
+
+  const { data: roles = [] } = useAdminRoles();
+  const { data, isLoading } = useStaffList({
+    page,
+    limit,
+    search: debouncedSearch || undefined,
+    roleId: role === "all" ? undefined : role,
+    isActive: status === "all" ? undefined : status === "active",
+  });
+  const { mutate: deleteStaff, isPending } = useDeleteStaff();
+
+  const roleOptions = useMemo(
+    () => [
+      { value: "all", label: "All Roles" },
+      ...roles.map((item) => ({ value: item.id, label: item.name })),
+    ],
+    [roles],
+  );
+
+  const staff = data?.staff ?? [];
+  const pagination = data?.pagination ?? {
+    total: 0,
+    page,
+    limit,
+    totalPages: 0,
+    hasNext: false,
+    hasPrevious: false,
+  };
 
   return (
     <div className="space-y-5">
@@ -46,21 +78,25 @@ export function StaffUsersPage() {
             onChange: setRole,
             placeholder: "Role",
             width: "sm:w-[150px]",
-            options: staffRoleOptions.map(option => ({ value: option.value, label: option.label }))
+            options: roleOptions,
           },
           {
             value: status,
             onChange: setStatus,
             placeholder: "Status",
             width: "sm:w-[140px]",
-            options: staffStatusOptions.map(option => ({ value: option.value, label: option.label }))
+            options: staffStatusOptions.map((option) => ({
+              value: option.value,
+              label: option.label,
+            })),
           },
         ]}
       />
 
       <DataTable
-        data={staffMembers}
-        pagination={{ ...staffPagination, page, onPageChange: setPage }}
+        data={staff}
+        loading={isLoading}
+        pagination={{ ...pagination, page, onPageChange: setPage }}
         headers={
           <>
             <TableHead>Staff</TableHead>
@@ -73,29 +109,17 @@ export function StaffUsersPage() {
         }
         row={(item: StaffMember) => (
           <>
-            <TableCell>
-              <div className="flex items-center gap-3">
-                <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 font-semibold text-primary">
-                  {item.initials}
-                </span>
-                <span className="font-semibold text-slate-950">{item.name}</span>
-              </div>
+            <TableCell className="font-semibold text-slate-950">
+              {item.fullName || `${item.firstName} ${item.lastName}`}
             </TableCell>
             <TableCell className="text-slate-500">{item.email}</TableCell>
-            <TableCell className="text-slate-700">{item.role}</TableCell>
+            <TableCell className="text-slate-700">{item.role.name}</TableCell>
             <TableCell>
-              <StatusBadge status={item.status} />
+              <StatusBadge status={item.isActive ? "Active" : "Inactive"} />
             </TableCell>
-            <TableCell className="text-slate-500">{item.createdAt}</TableCell>
+            <TableCell className="text-slate-500">{formatDate(item.createdAt)}</TableCell>
             <TableCell>
               <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-primary hover:bg-primary/10"
-                  onClick={() => router.push(`/staff-users/${item.id}`)}
-                >
-                  <Eye className="size-4" />
-                </Button>
                 <Button
                   variant="ghost"
                   className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
@@ -106,6 +130,7 @@ export function StaffUsersPage() {
                 <Button
                   variant="ghost"
                   className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                  onClick={() => setDeleteTarget(item)}
                 >
                   <X className="size-4" />
                 </Button>
@@ -113,6 +138,23 @@ export function StaffUsersPage() {
             </TableCell>
           </>
         )}
+      />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+        title="Delete Staff"
+        description="Are you sure you want to delete this staff member? This action cannot be undone."
+        confirmLabel="Delete"
+        loading={isPending}
+        onConfirm={() => {
+          if (!deleteTarget) return;
+          deleteStaff(deleteTarget.id, {
+            onSuccess: () => setDeleteTarget(null),
+          });
+        }}
       />
     </div>
   );

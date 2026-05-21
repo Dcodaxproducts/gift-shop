@@ -18,7 +18,7 @@ import { useLogin } from "@/hooks/useAuth";
 import { loginSchema, type LoginFormValues } from "@/validations/auth";
 import { useState } from "react";
 
-export function LoginForm() {
+export function LoginForm({ variant }: { variant: 'staff' | 'admin' }) {
   const login = useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,14 +38,18 @@ export function LoginForm() {
     login.mutate(values);
   };
 
+  const isAdmin = variant !== 'staff';
+
   return (
     <Card className="w-full max-w-md border-0 shadow-none">
       <CardHeader className="mb-8">
         <CardTitle className="text-[26px] leading-tight">
-          Super Admin Login
+          {isAdmin ? "Super Admin Login" : "Staff Login"}
         </CardTitle>
         <CardDescription className="text-[13px]">
-          Access the system management dashboard
+          {isAdmin
+            ? "Access the system management dashboard"
+            : "Access the staff management dashboard"}
         </CardDescription>
       </CardHeader>
 
@@ -56,7 +60,7 @@ export function LoginForm() {
             <Input
               id="email"
               type="email"
-              placeholder="admin@fintech-gifting.com"
+              placeholder={isAdmin ? "superadmin@fintech-gifting.com" : "staff@fintech-gifting.com"}
               autoComplete="email"
               leftIcon={<Mail className="size-4" />}
               errorMessage={errors.email?.message}
@@ -103,7 +107,10 @@ export function LoginForm() {
 
         <div className="mt-8 space-y-8">
           <p className="flex items-center justify-center gap-2 text-center text-[10px] uppercase tracking-[0.12em] text-slate-400">
-            <Lock className="size-3" /> Secure access for authorized administrators only
+            <Lock className="size-3" />
+            {isAdmin
+              ? "Secure access for authorized super admins only"
+              : "Secure access for authorized staff only"}
           </p>
 
           <footer className="flex flex-wrap items-center justify-center gap-5 text-xs font-medium text-slate-500 border-t border-border pt-8">

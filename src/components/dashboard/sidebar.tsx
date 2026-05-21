@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Gift, Search, X } from "lucide-react";
-import { dashboardNavGroups, dashboardUser } from "@/config/dashboard";
+import { dashboardNavGroups } from "@/config/dashboard";
 import { Input } from "@/components/ui/input";
 import { getDashboardIcon } from "@/lib/dashboard-icons";
 import { cn } from "@/lib/utils";
+import { useCurrentUser } from "@/hooks/useAuth";
 
 type DashboardSidebarProps = {
   isOpen: boolean;
@@ -14,15 +15,27 @@ type DashboardSidebarProps = {
 };
 
 function isActivePath(pathname: string, href: string) {
-  if (href === "/") {
-    return pathname === "/";
-  }
-
+  if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const { data } = useCurrentUser();
+
+  const permissions = data?.admin?.permissions ?? null;
+  const hasReadAccess = (permissionKey?: string) => {
+    if (!permissionKey) return true;
+    if (!permissions) return true;
+    return (permissions as Record<string, string[]>)[permissionKey]?.includes("read") ?? false;
+  };
+
+  const filteredGroups = dashboardNavGroups
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => hasReadAccess(item.permissionKey)),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <>
@@ -72,7 +85,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
 
         <nav className="min-h-0 flex-1 overflow-y-auto px-3 pb-5">
           <div className="space-y-4">
-            {dashboardNavGroups.map((group) => (
+            {filteredGroups.map((group) => (
               <div key={group.title}>
                 <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-300">
                   {group.title}
@@ -124,10 +137,10 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
           <p className="mb-2 text-[10px] font-medium text-slate-400">Logged in as</p>
           <div className="flex items-center gap-3">
             <div className="flex size-9 items-center justify-center rounded-full bg-[#FFE7B8] text-xs font-semibold text-[#B7791F]">
-              {dashboardUser.avatarInitials}
+              {data?.firstName?.[0]}{data?.lastName?.[0]}
             </div>
             <p className="truncate text-xs font-semibold text-slate-500">
-              {dashboardUser.email}
+              {data?.email}
             </p>
           </div>
         </div>

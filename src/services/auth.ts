@@ -30,7 +30,7 @@ export const changePassword = async (payload: ChangePasswordPayload): Promise<Au
   return data.data ?? {};
 };
 
-export const getCurrentUser = async (): Promise<AuthUser> => {
-  const { data } = await api.get<ApiResponse<CurrentUserResponse>>("/auth/me");
-  return (data.data as CurrentUserResponse).user;
+export const getCurrentUser = async () => {
+  const { data } = await api.get("/auth/me");
+  return data.data;
 };
