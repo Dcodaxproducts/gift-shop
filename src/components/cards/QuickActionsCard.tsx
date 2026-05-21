@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useUpdateProviderStatus } from "@/hooks/useProviders";
 import { SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
+import type { ProviderDetails } from "@/types/providers";
 
 const actionIcon = {
   approve: Check,
@@ -16,7 +17,7 @@ const actionIcon = {
   suspend: CircleSlash,
 };
 
-function QuickActionsCard({ provider }: { provider?: any }) {
+function QuickActionsCard({ provider }: { provider?: ProviderDetails }) {
   const params = useParams();
   const providerId = params.id as string;
   

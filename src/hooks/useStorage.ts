@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import {
-  completeUpload,
   getPresignedUrl,
   uploadFileToS3,
 } from "@/services/storage";
@@ -37,7 +36,7 @@ export const useStorage = (): UseStorageReturn => {
       await uploadFileToS3(uploadUrl, file);
 
       return { fileUrl: uploadUrl, key };
-    } catch (error) {
+    } catch {
       toast.error("Failed to upload image. Please try again.");
       return null;
     } finally {

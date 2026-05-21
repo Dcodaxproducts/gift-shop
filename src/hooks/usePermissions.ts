@@ -13,8 +13,6 @@ import {
   updateAdminRolePermissions,
 } from "@/services/admin-roles";
 import type {
-  AdminRole,
-  AdminRoleDetails,
   CreateAdminRolePayload,
   UpdateAdminRolePayload,
   UpdateAdminRolePermissionsPayload,
@@ -24,14 +22,14 @@ const adminRolesQueryKey = ["admin-roles"] as const;
 const permissionsCatalogQueryKey = ["permissions-catalog"] as const;
 
 export const useAdminRoles = () => {
-  return useQuery<AdminRole[]>({
+  return useQuery({
     queryKey: adminRolesQueryKey,
     queryFn: getAdminRoles,
   });
 };
 
 export const useAdminRole = (id: string | undefined) => {
-  return useQuery<AdminRoleDetails>({
+  return useQuery({
     queryKey: [...adminRolesQueryKey, id],
     queryFn: () => getAdminRole(id as string),
     enabled: !!id,
@@ -39,7 +37,7 @@ export const useAdminRole = (id: string | undefined) => {
 };
 
 export const usePermissionsCatalog = () => {
-  return useQuery<Record<string, string[]>>({
+  return useQuery({
     queryKey: permissionsCatalogQueryKey,
     queryFn: getPermissionsCatalog,
   });

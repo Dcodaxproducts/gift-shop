@@ -23,11 +23,10 @@ interface CompleteUploadResponse {
 export const getPresignedUrl = async (
   payload: GetPresignedUrlPayload,
 ): Promise<PresignedUrlResponse> => {
-  const { data } = await api.post<{ data: PresignedUrlResponse }>(
-    "/uploads/presigned-url",
-    payload,
-  );
-  return data.data;
+  const { data } = await api.post("/uploads/presigned-url", payload);
+  const body = data as { data: PresignedUrlResponse };
+
+  return body.data;
 };
 
 export const uploadFileToS3 = async (
@@ -46,9 +45,8 @@ export const uploadFileToS3 = async (
 export const completeUpload = async (
   payload: CompleteUploadPayload,
 ): Promise<CompleteUploadResponse> => {
-  const { data } = await api.post<{ data: CompleteUploadResponse }>(
-    "/uploads/complete",
-    payload,
-  );
-  return data.data;
+  const { data } = await api.post("/uploads/complete", payload);
+  const body = data as { data: CompleteUploadResponse };
+
+  return body.data;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -61,7 +61,7 @@ export function SuspendUserDialog({
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<SuspensionFormData>({
@@ -72,7 +72,7 @@ export function SuspendUserDialog({
     },
   });
 
-  const reasonValue = watch("reason");
+  const reasonValue = useWatch({ control, name: "reason" });
   const options = type === "provider" ? providerSuspensionReasons : userSuspensionReasons;
 
   useEffect(() => {

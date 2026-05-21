@@ -18,7 +18,6 @@ import { ProviderStatsCard } from "@/components/cards/ProviderStatsCard";
 import { StatusBadge } from "@/utils/status";
 import { useProviders, useProviderStats, useExportProviders } from "@/hooks/useProviders";
 import { useDebounce } from "@/hooks/useDebounce";
-import { providerTones, type ProviderTone } from "@/constants/providers";
 import { providerStatusOptions, providerApprovalOptions } from "@/constants/filter-options";
 import type {
   Provider,
@@ -89,17 +88,17 @@ export function ProvidersPage() {
         filters={[
           {
             value: status,
-            onChange: (value) => { setStatus(value as any); setPage(1); },
+            onChange: (value) => { setStatus(value as ProviderStatus | "all"); setPage(1); },
             placeholder: "Status",
             width: "sm:w-[140px]",
-            options: providerStatusOptions as any,
+            options: providerStatusOptions,
           },
           {
             value: approval,
-            onChange: (value) => { setApproval(value as any); setPage(1); },
+            onChange: (value) => { setApproval(value as ProviderApproval | "all"); setPage(1); },
             placeholder: "Approval",
             width: "sm:w-[150px]",
-            options: providerApprovalOptions as any,
+            options: providerApprovalOptions,
           },
         ]}
       />
@@ -117,8 +116,7 @@ export function ProvidersPage() {
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
-        row={(item: Provider, index) => {
-          const tone: ProviderTone = providerTones[index % providerTones.length];
+        row={(item: Provider) => {
           return (
             <>
               <TableCell>

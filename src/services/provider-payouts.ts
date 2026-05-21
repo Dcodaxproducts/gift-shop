@@ -33,34 +33,43 @@ const createPagination = (meta?: ApiListResponse<ProviderPayoutListItem>["meta"]
 };
 
 export const getProviderPayoutStats = async (): Promise<ProviderPayoutStats> => {
-  const { data } = await api.get<ApiDataResponse<ProviderPayoutStats>>(`${PROVIDER_PAYOUTS_ENDPOINT}/stats`);
-  return data.data as ProviderPayoutStats;
+  const { data } = await api.get(`${PROVIDER_PAYOUTS_ENDPOINT}/stats`);
+  const body = data as ApiDataResponse<ProviderPayoutStats>;
+
+  return body.data as ProviderPayoutStats;
 };
 
 export const getProviderPayoutTrends = async (
   params: ProviderPayoutTrendsParams = {},
 ): Promise<ProviderPayoutTrends> => {
-  const { data } = await api.get<ApiDataResponse<ProviderPayoutTrends>>(`${PROVIDER_PAYOUTS_ENDPOINT}/trends`, { params });
-  return data.data as ProviderPayoutTrends;
+  const { data } = await api.get(`${PROVIDER_PAYOUTS_ENDPOINT}/trends`, { params });
+  const body = data as ApiDataResponse<ProviderPayoutTrends>;
+
+  return body.data as ProviderPayoutTrends;
 };
 
 export const getProviderEarningDistribution = async (): Promise<ProviderEarningDistributionItem[]> => {
-  const { data } = await api.get<ApiDataResponse<ProviderEarningDistributionItem[]>>(`${PROVIDER_PAYOUTS_ENDPOINT}/earning-distribution`);
-  return data.data ?? [];
+  const { data } = await api.get(`${PROVIDER_PAYOUTS_ENDPOINT}/earning-distribution`);
+  const body = data as ApiDataResponse<ProviderEarningDistributionItem[]>;
+
+  return body.data ?? [];
 };
 
 export const getProviderPayouts = async (params: ProviderPayoutsParams = {}): Promise<ProviderPayoutsResponse> => {
-  const { data } = await api.get<ApiListResponse<ProviderPayoutListItem>>(PROVIDER_PAYOUTS_ENDPOINT, { params });
+  const { data } = await api.get(PROVIDER_PAYOUTS_ENDPOINT, { params });
+  const body = data as ApiListResponse<ProviderPayoutListItem>;
 
   return {
-    payouts: data.data ?? [],
-    pagination: createPagination(data.meta),
+    payouts: body.data ?? [],
+    pagination: createPagination(body.meta),
   };
 };
 
 export const getProviderPayoutBreakdown = async (id: string): Promise<ProviderPayoutBreakdown> => {
-  const { data } = await api.get<ApiDataResponse<ProviderPayoutBreakdown>>(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/breakdown`);
-  return data.data as ProviderPayoutBreakdown;
+  const { data } = await api.get(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/breakdown`);
+  const body = data as ApiDataResponse<ProviderPayoutBreakdown>;
+
+  return body.data as ProviderPayoutBreakdown;
 };
 
 export const updateProviderPayoutStatus = async ({
@@ -68,8 +77,10 @@ export const updateProviderPayoutStatus = async ({
   action,
   payload,
 }: ProviderPayoutActionRequest): Promise<ProviderPayoutActionResponse> => {
-  const { data } = await api.post<ApiDataResponse<ProviderPayoutActionResponse>>(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/${action}`, payload);
-  return data.data as ProviderPayoutActionResponse;
+  const { data } = await api.post(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/${action}`, payload);
+  const body = data as ApiDataResponse<ProviderPayoutActionResponse>;
+
+  return body.data as ProviderPayoutActionResponse;
 };
 
 export const exportProviderPayouts = async (): Promise<Blob> => {

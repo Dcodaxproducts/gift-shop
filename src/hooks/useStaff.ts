@@ -15,8 +15,6 @@ import {
 import type {
   CreateStaffPayload,
   GetStaffParams,
-  GetStaffResponse,
-  StaffMember,
   UpdateStaffActiveStatusPayload,
   UpdateStaffPasswordPayload,
   UpdateStaffPayload,
@@ -25,14 +23,14 @@ import type {
 const staffQueryKey = ["staff"] as const;
 
 export const useStaffList = (params: GetStaffParams = {}) => {
-  return useQuery<GetStaffResponse>({
+  return useQuery({
     queryKey: [...staffQueryKey, params],
     queryFn: () => getStaff(params),
   });
 };
 
 export const useStaffMember = (id: string | undefined) => {
-  return useQuery<StaffMember>({
+  return useQuery({
     queryKey: [...staffQueryKey, id],
     queryFn: () => getStaffMember(id as string),
     enabled: !!id,

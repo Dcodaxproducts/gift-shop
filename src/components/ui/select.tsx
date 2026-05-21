@@ -1,7 +1,7 @@
 "use client";
 
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Select = SelectPrimitive.Root;
@@ -26,20 +26,6 @@ export function SelectTrigger({
         <ChevronDown className="size-3.5 text-slate-400" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
-  );
-}
-
-function SelectScrollDownButton({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>) {
-  return (
-    <SelectPrimitive.ScrollDownButton
-      className={cn("flex cursor-default items-center justify-center py-1", className)}
-      {...props}
-    >
-      <ChevronDown className="size-3.5 text-slate-400" />
-    </SelectPrimitive.ScrollDownButton>
   );
 }
 

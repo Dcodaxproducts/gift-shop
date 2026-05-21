@@ -32,35 +32,41 @@ const createPagination = (meta?: ApiListResponse<GiftCategory>["meta"]) => {
 export const getGiftCategories = async (
   params: GetGiftCategoriesParams = {},
 ): Promise<GetGiftCategoriesResponse> => {
-  const { data } = await api.get<ApiListResponse<GiftCategory>>(GIFT_CATEGORIES_ENDPOINT, { params });
+  const { data } = await api.get(GIFT_CATEGORIES_ENDPOINT, { params });
+  const body = data as ApiListResponse<GiftCategory>;
 
   return {
-    categories: data.data ?? [],
-    pagination: createPagination(data.meta),
+    categories: body.data ?? [],
+    pagination: createPagination(body.meta),
   };
 };
 
 export const getGiftCategoryLookup = async (): Promise<GiftCategoryLookupItem[]> => {
-  const { data } = await api.get<ApiDataResponse<GiftCategoryLookupItem[]> | GiftCategoryLookupItem[]>(
-    `${GIFT_CATEGORIES_ENDPOINT}/lookup`,
-  );
+  const { data } = await api.get(`${GIFT_CATEGORIES_ENDPOINT}/lookup`);
+  const body = data as ApiDataResponse<GiftCategoryLookupItem[]> | GiftCategoryLookupItem[];
 
-  return Array.isArray(data) ? data : data.data ?? [];
+  return Array.isArray(body) ? body : body.data ?? [];
 };
 
 export const getGiftCategoryStats = async (): Promise<GiftCategoryStats> => {
-  const { data } = await api.get<ApiDataResponse<GiftCategoryStats>>(`${GIFT_CATEGORIES_ENDPOINT}/stats`);
-  return data.data ?? {};
+  const { data } = await api.get(`${GIFT_CATEGORIES_ENDPOINT}/stats`);
+  const body = data as ApiDataResponse<GiftCategoryStats>;
+
+  return body.data ?? {};
 };
 
 export const getGiftCategory = async (id: string): Promise<GiftCategory> => {
-  const { data } = await api.get<ApiDataResponse<GiftCategory>>(`${GIFT_CATEGORIES_ENDPOINT}/${id}`);
-  return data.data as GiftCategory;
+  const { data } = await api.get(`${GIFT_CATEGORIES_ENDPOINT}/${id}`);
+  const body = data as ApiDataResponse<GiftCategory>;
+
+  return body.data as GiftCategory;
 };
 
 export const createGiftCategory = async (payload: CreateGiftCategoryPayload): Promise<GiftCategory> => {
-  const { data } = await api.post<ApiDataResponse<GiftCategory>>(GIFT_CATEGORIES_ENDPOINT, payload);
-  return data.data as GiftCategory;
+  const { data } = await api.post(GIFT_CATEGORIES_ENDPOINT, payload);
+  const body = data as ApiDataResponse<GiftCategory>;
+
+  return body.data as GiftCategory;
 };
 
 export const updateGiftCategory = async ({
@@ -70,11 +76,15 @@ export const updateGiftCategory = async ({
   id: string;
   payload: UpdateGiftCategoryPayload;
 }): Promise<GiftCategory> => {
-  const { data } = await api.patch<ApiDataResponse<GiftCategory>>(`${GIFT_CATEGORIES_ENDPOINT}/${id}`, payload);
-  return data.data as GiftCategory;
+  const { data } = await api.patch(`${GIFT_CATEGORIES_ENDPOINT}/${id}`, payload);
+  const body = data as ApiDataResponse<GiftCategory>;
+
+  return body.data as GiftCategory;
 };
 
 export const deleteGiftCategory = async (id: string): Promise<GiftCategory> => {
-  const { data } = await api.delete<ApiDataResponse<GiftCategory>>(`${GIFT_CATEGORIES_ENDPOINT}/${id}`);
-  return data.data as GiftCategory;
+  const { data } = await api.delete(`${GIFT_CATEGORIES_ENDPOINT}/${id}`);
+  const body = data as ApiDataResponse<GiftCategory>;
+
+  return body.data as GiftCategory;
 };

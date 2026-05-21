@@ -36,6 +36,35 @@ export type Provider = {
   updatedAt?: string;
 };
 
+export type ProviderDetails = Omit<Provider, "status"> & {
+  status: string;
+  serviceArea?: string | null;
+  verification?: {
+    label?: string;
+  };
+  stats?: {
+    performanceStats?: number;
+    performanceChangePercent?: number;
+    listedItems?: number;
+    listedItemsChange?: number;
+    orderFulfillment?: number;
+    orderFulfillmentChangePercent?: number;
+    disputeCount?: number;
+    disputeChangePercent?: number;
+  };
+};
+
+export type ProviderItem = {
+  id: string;
+  imageUrl?: string | null;
+  name: string;
+  currency: string;
+  price: number;
+  salesCount: number;
+  salesPercentage: number;
+  status: string;
+};
+
 export type ProvidersPagination = {
   total: number;
   page: number;
@@ -64,4 +93,23 @@ export type CreateProviderPayload = {
   businessName: string;
   email: string;
   phone?: string;
+};
+
+export type ProviderMessagePayload = Record<string, unknown>;
+
+export type ProviderItemsParams = {
+  page?: number;
+  limit?: number;
+  search?: string;
+};
+
+export type ProviderItemsResponse = {
+  items: ProviderItem[];
+  pagination: ProvidersPagination;
+};
+
+export type ApiDataResponse<T> = {
+  data?: T;
+  message?: string;
+  success?: boolean;
 };

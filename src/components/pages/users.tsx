@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Edit2, Eye, ListFilter, Search, X } from "lucide-react";
-import { type UserTone } from "@/constants/users";
+import { Download, Edit2, Eye, X } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
-import { useDeleteUser, useExportUsers, useSuspendUser, useUnsuspendUser, useUsers } from "@/hooks/useUsers";
+import { useDeleteUser, useExportUsers, useUsers } from "@/hooks/useUsers";
 import type { User, UserStatus, UserSortBy } from "@/types/users";
 import { EditUserDialog } from "@/components/dialog/edit-user-dialog";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
@@ -38,8 +37,6 @@ export function UsersPage() {
     sortBy
   });
   const exportUsers = useExportUsers();
-  const suspendUser = useSuspendUser();
-  const unsuspendUser = useUnsuspendUser();
   const { mutate, isPending } = useDeleteUser();
 
   const users = data?.users ?? [];
@@ -62,14 +59,6 @@ export function UsersPage() {
 
   const handleExport = () => {
     exportUsers.mutate();
-  };
-
-  const handleSuspendUser = (userId: string) => {
-    suspendUser.mutate({ id: userId });
-  };
-
-  const handleUnsuspendUser = (userId: string) => {
-    unsuspendUser.mutate(userId);
   };
 
   return (
@@ -97,14 +86,14 @@ export function UsersPage() {
             onChange: handleStatusChange,
             placeholder: "Status",
             width: "sm:w-[135px]",
-            options: userStatusOptions as any,
+            options: userStatusOptions,
           },
           {
             value: sortBy,
             onChange: handleSortByChange,
             placeholder: "Sort By",
             width: "sm:w-[140px]",
-            options: userSortOptions as any,
+            options: userSortOptions,
           },
         ]}
       />
@@ -123,7 +112,7 @@ export function UsersPage() {
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
-        row={(item: User, index) => {
+        row={(item: User) => {
           const fullName = `${item.firstName ?? ""} ${item.lastName ?? ""}`.trim();
           return (
             <>

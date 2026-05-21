@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
@@ -25,31 +25,34 @@ import type { AdminRole, PermissionAction, RolePermissions } from "@/types/admin
 
 export function RolesPermissionsPage() {
   const [createRoleOpen, setCreateRoleOpen] = useState(false);
-  const [selectedRoleId, setSelectedRoleId] = useState<string | undefined>();
-  const [permissions, setPermissions] = useState<RolePermissions>({});
-  const [originalPermissions, setOriginalPermissions] = useState<RolePermissions>({});
+  const [selectedRoleIdState, setSelectedRoleIdState] = useState<string | undefined>();
+  const [permissionsDraft, setPermissionsDraft] = useState<{
+    roleId?: string;
+    permissions: RolePermissions;
+    originalPermissions: RolePermissions;
+  }>({ permissions: {}, originalPermissions: {} });
   const [deleteTarget, setDeleteTarget] = useState<AdminRole | null>(null);
 
   const { data: roles = [], isLoading: rolesLoading } = useAdminRoles();
+  const selectedRoleId = selectedRoleIdState ?? roles[0]?.id;
   const { data: roleDetails, isLoading: roleDetailsLoading } = useAdminRole(
     selectedRoleId,
   );
   const updatePermissionsMutation = useUpdateAdminRolePermissions();
   const { mutate: deleteRole, isPending: isDeleting } = useDeleteAdminRole();
 
-  useEffect(() => {
-    if (!selectedRoleId && roles.length > 0) {
-      setSelectedRoleId(roles[0].id);
-    }
-  }, [roles, selectedRoleId]);
-
-  useEffect(() => {
-    if (roleDetails) {
-      const normalized = normalizeRolePermissions(roleDetails.permissions);
-      setPermissions(normalized);
-      setOriginalPermissions(normalized);
-    }
-  }, [roleDetails]);
+  const normalizedRolePermissions = useMemo(
+    () => normalizeRolePermissions(roleDetails?.permissions),
+    [roleDetails],
+  );
+  const permissionsState = permissionsDraft.roleId === roleDetails?.id
+    ? permissionsDraft
+    : {
+        roleId: roleDetails?.id,
+        permissions: normalizedRolePermissions,
+        originalPermissions: normalizedRolePermissions,
+      };
+  const { permissions, originalPermissions } = permissionsState;
 
   const selectedRole = useMemo(
     () => roles.find((role) => role.id === selectedRoleId),
@@ -62,15 +65,24 @@ export function RolesPermissionsPage() {
   );
 
   const handleToggleAction = (moduleKey: string, action: PermissionAction) => {
-    setPermissions((current) => togglePermissionAction(current, moduleKey, action));
+    setPermissionsDraft({
+      ...permissionsState,
+      permissions: togglePermissionAction(permissions, moduleKey, action),
+    });
   };
 
   const handleReset = () => {
-    setPermissions(buildDefaultPermissions());
+    setPermissionsDraft({
+      ...permissionsState,
+      permissions: buildDefaultPermissions(),
+    });
   };
 
   const handleCancel = () => {
-    setPermissions(originalPermissions);
+    setPermissionsDraft({
+      ...permissionsState,
+      permissions: originalPermissions,
+    });
   };
 
   const handleSave = async () => {
@@ -83,7 +95,11 @@ export function RolesPermissionsPage() {
         id: selectedRoleId,
         payload: { permissions: payload },
       });
-      setOriginalPermissions(payload);
+      setPermissionsDraft({
+        roleId: selectedRoleId,
+        permissions: payload,
+        originalPermissions: payload,
+      });
     } catch {
       // toast handled in hook
     }
@@ -95,7 +111,7 @@ export function RolesPermissionsPage() {
     deleteRole(deleteTarget.id, {
       onSuccess: () => {
         if (selectedRoleId === deleteTarget.id) {
-          setSelectedRoleId(undefined);
+          setSelectedRoleIdState(undefined);
         }
         setDeleteTarget(null);
       },
@@ -123,7 +139,7 @@ export function RolesPermissionsPage() {
             roles={roles}
             loading={rolesLoading}
             selectedRoleId={selectedRoleId}
-            onSelect={setSelectedRoleId}
+            onSelect={setSelectedRoleIdState}
             onDelete={setDeleteTarget}
           />
         </div>

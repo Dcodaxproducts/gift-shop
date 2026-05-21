@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Edit2, Eye, Plus, X } from "lucide-react";
+import { Edit2, Plus, X } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";

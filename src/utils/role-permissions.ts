@@ -24,11 +24,11 @@ export function buildRolePermissionSummary(permissions?: RolePermissions) {
   const knownKeys = new Set(permissionModules.map((module) => module.key));
   const entries: Array<{ label: string; allowed: boolean }> = [];
 
-  for (const module of permissionModules) {
-    const actions = permissions[module.key] ?? [];
+  for (const permissionModule of permissionModules) {
+    const actions = permissions[permissionModule.key] ?? [];
     if (actions.length > 0) {
       entries.push({
-        label: `${module.title}: ${formatActions(actions)}`,
+        label: `${permissionModule.title}: ${formatActions(actions)}`,
         allowed: true,
       });
     }
@@ -61,8 +61,8 @@ export function arePermissionsEqual(
 
 export function buildDefaultPermissions(): RolePermissions {
   const state: RolePermissions = {};
-  permissionModules.forEach((module) => {
-    state[module.key] = ["read", "create", "update"];
+  permissionModules.forEach((permissionModule) => {
+    state[permissionModule.key] = ["read", "create", "update"];
   });
   return state;
 }

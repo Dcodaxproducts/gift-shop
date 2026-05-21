@@ -14,17 +14,17 @@ import {
   resetUserPassword,
   exportUsers,
 } from "@/services/users";
-import type { GetUsersParams, GetUsersResponse, UpdateUserPayload, UpdateUserStatusPayload, SuspendUserPayload, ResetUserPasswordPayload, UserDetail } from "@/types/users";
+import type { GetUsersParams, UpdateUserPayload, UpdateUserStatusPayload, SuspendUserPayload, ResetUserPasswordPayload } from "@/types/users";
 
 export const useUsers = (params: GetUsersParams = {}) => {
-  return useQuery<GetUsersResponse>({
+  return useQuery({
     queryKey: ["users", params],
     queryFn: () => getUsers(params),
   });
 };
 
 export const useUser = (id: string) => {
-  return useQuery<UserDetail>({
+  return useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
     enabled: !!id,

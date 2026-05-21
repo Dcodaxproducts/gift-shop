@@ -1,7 +1,8 @@
 import { Card, CardContent } from "../ui/card";
 import { ShieldCheck } from "lucide-react";
+import type { ProviderDetails } from "@/types/providers";
 
-function BusinessDetailsCard({ data }: { data: any }) {
+function BusinessDetailsCard({ data }: { data?: ProviderDetails }) {
   return (
     <Card>
       <CardContent className="p-5">

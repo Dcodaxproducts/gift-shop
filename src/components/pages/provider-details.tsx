@@ -2,13 +2,9 @@
 
 import type { ElementType } from "react";
 import {
-  ListFilter,
   ShieldCheck,
 } from "lucide-react";
-import {
-} from "@/constants/providers";
 import { PageHeader } from "@/components/common/page-header";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import QuickActionsCard from "../cards/QuickActionsCard";
@@ -17,8 +13,9 @@ import { useParams } from "next/navigation";
 import ProviderItemsTable from "../tables/ProviderItemsTable";
 import BusinessDetailsCard from "../cards/BusinessDetailsCard";
 import { statBadgeTone } from "@/constants/custom";
+import type { ProviderDetails } from "@/types/providers";
 
-function buildProviderDetailStats(data?: any) {
+function buildProviderDetailStats(data?: ProviderDetails) {
   return [
     {
       icon: ShieldCheck,

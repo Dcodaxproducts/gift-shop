@@ -14,8 +14,6 @@ import {
 import type {
   CreateGiftPayload,
   GetGiftsParams,
-  GetGiftsResponse,
-  Gift,
   UpdateGiftPayload,
   UpdateGiftStatusPayload,
 } from "@/types/gifts";
@@ -23,14 +21,14 @@ import type {
 const giftsQueryKey = ["gifts"] as const;
 
 export const useGifts = (params: GetGiftsParams = {}) => {
-  return useQuery<GetGiftsResponse>({
+  return useQuery({
     queryKey: [...giftsQueryKey, params],
     queryFn: () => getGifts(params),
   });
 };
 
 export const useGift = (id: string) => {
-  return useQuery<Gift>({
+  return useQuery({
     queryKey: [...giftsQueryKey, id],
     queryFn: () => getGift(id),
     enabled: !!id,

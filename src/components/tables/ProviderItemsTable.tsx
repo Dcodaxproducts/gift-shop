@@ -7,6 +7,7 @@ import { StatusBadge } from "@/utils/status";
 import { useProviderItems } from "@/hooks/useProviders";
 import MyImage from "../common/MyImage";
 import { useDebounce } from "@/hooks/useDebounce";
+import type { ProviderItem } from "@/types/providers";
 
 function ProviderItemsTable({ providerId }: { providerId: string }) {
   const [page, setPage] = useState(1);
@@ -70,7 +71,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
             <TableHead>Status</TableHead>
           </>
         }
-        row={(item: any) => (
+        row={(item: ProviderItem) => (
           <>
             <TableCell>
               <div className="flex items-center gap-3">

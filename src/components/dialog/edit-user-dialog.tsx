@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -16,29 +16,28 @@ type EditUserDialogProps = {
 
 export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps) {
   const updateUser = useUpdateUser();
+  const initialDraft = useMemo(
+    () => ({
+      userId: user?.id,
+      firstName: user?.firstName ?? "",
+      lastName: user?.lastName ?? "",
+      email: user?.email ?? "",
+      phone: user?.phone ?? "",
+    }),
+    [user],
+  );
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-
-  useEffect(() => {
-    if (open && user) {
-      setFirstName(user.firstName ?? "");
-      setLastName(user.lastName ?? "");
-      setEmail(user.email ?? "");
-      setPhone(user.phone ?? "");
-    }
-  }, [open, user]);
+  const [draft, setDraft] = useState(initialDraft);
+  const currentDraft = draft.userId === user?.id ? draft : initialDraft;
 
   const handleSave = () => {
     if (!user?.id) return;
 
     const payload: UpdateUserPayload = {};
-    if (firstName !== (user.firstName ?? "")) payload.firstName = firstName;
-    if (lastName !== (user.lastName ?? "")) payload.lastName = lastName;
-    if (email !== (user.email ?? "")) payload.email = email;
-    if (phone !== (user.phone ?? "")) payload.phone = phone;
+    if (currentDraft.firstName !== (user.firstName ?? "")) payload.firstName = currentDraft.firstName;
+    if (currentDraft.lastName !== (user.lastName ?? "")) payload.lastName = currentDraft.lastName;
+    if (currentDraft.email !== (user.email ?? "")) payload.email = currentDraft.email;
+    if (currentDraft.phone !== (user.phone ?? "")) payload.phone = currentDraft.phone;
 
     if (Object.keys(payload).length === 0) {
       onOpenChange(false);
@@ -55,7 +54,7 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
     );
   };
 
-  const fullName = `${firstName} ${lastName}`.trim();
+  const fullName = `${currentDraft.firstName} ${currentDraft.lastName}`.trim();
 
   return (
     <Dialog
@@ -94,8 +93,11 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
             value={fullName}
             onChange={(e) => {
               const parts = e.target.value.split(" ");
-              setFirstName(parts[0] ?? "");
-              setLastName(parts.slice(1).join(" "));
+              setDraft({
+                ...currentDraft,
+                firstName: parts[0] ?? "",
+                lastName: parts.slice(1).join(" "),
+              });
             }}
             className="h-10! rounded-lg bg-white text-xs"
           />
@@ -107,8 +109,8 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
           <Input
             id="edit-user-email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={currentDraft.email}
+            onChange={(e) => setDraft({ ...currentDraft, email: e.target.value })}
             className="h-10! rounded-lg bg-white text-xs"
           />
         </div>
@@ -118,8 +120,8 @@ export function EditUserDialog({ open, onOpenChange, user }: EditUserDialogProps
           </Label>
           <Input
             id="edit-user-phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={currentDraft.phone}
+            onChange={(e) => setDraft({ ...currentDraft, phone: e.target.value })}
             className="h-10! rounded-lg bg-white text-xs"
           />
         </div>

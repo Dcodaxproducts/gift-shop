@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Image, { ImageProps, StaticImageData } from "next/image";
 
@@ -9,7 +9,6 @@ interface MyImageProps extends Omit<ImageProps, "src"> {
   alt: string;
   className?: string;
   fallbackSrc?: string;
-  fallbackText?: string;
 }
 
 const LOADED_IMAGE_CACHE = new Set<string>();
@@ -23,28 +22,57 @@ const MyImage = ({
   alt,
   className,
   fallbackSrc = "/fallback.png",
-  fallbackText,
   fill,
   ...rest
 }: MyImageProps) => {
   const resolvedSrc = typeof src === "string" ? normalizeUrl(src) : src;
   const srcKey = typeof resolvedSrc === "string" ? resolvedSrc : "";
 
+  if (!resolvedSrc) {
+    return (
+      <Image
+        src={fallbackSrc}
+        alt={alt}
+        fill={fill}
+        className={cn("object-cover", className)}
+        {...rest}
+      />
+    );
+  }
+
+  return (
+    <ImageWithLoadingState
+      key={srcKey || "static-image"}
+      src={resolvedSrc}
+      srcKey={srcKey}
+      alt={alt}
+      className={className}
+      fallbackSrc={fallbackSrc}
+      fill={fill}
+      {...rest}
+    />
+  );
+};
+
+type ImageWithLoadingStateProps = Omit<MyImageProps, "src"> & {
+  src: string | StaticImageData | File;
+  srcKey: string;
+};
+
+function ImageWithLoadingState({
+  src,
+  srcKey,
+  alt,
+  className,
+  fallbackSrc = "/fallback.png",
+  fill,
+  ...rest
+}: ImageWithLoadingStateProps) {
   const isAlreadyLoaded = srcKey ? LOADED_IMAGE_CACHE.has(srcKey) : false;
-
   const [isLoading, setIsLoading] = useState(!isAlreadyLoaded);
-  const [isError, setIsError] = useState(!src);
+  const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    if (srcKey && LOADED_IMAGE_CACHE.has(srcKey)) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-    setIsError(!src);
-  }, [srcKey, src]);
-
-  if (isError || !resolvedSrc) {
+  if (isError) {
     return (
       <Image
         src={fallbackSrc}
@@ -64,7 +92,7 @@ const MyImage = ({
           <div className={cn("absolute inset-0 bg-gray-200 animate-shimmer z-10", className)} />
         )}
         <Image
-          src={resolvedSrc as string}
+          src={src as string}
           alt={alt}
           fill
           className={cn(
@@ -94,7 +122,7 @@ const MyImage = ({
         <div className="absolute inset-0 bg-gray-200 animate-shimmer z-10" />
       )}
       <Image
-        src={resolvedSrc as string}
+        src={src as string}
         alt={alt}
         className={cn(
           "object-cover w-full h-full",
@@ -113,6 +141,6 @@ const MyImage = ({
       />
     </div>
   );
-};
+}
 
 export default MyImage;

@@ -1,9 +1,15 @@
 import { api } from "@/lib/axios";
 import type {
+  ApiDataResponse,
   CreateProviderPayload,
   GetProvidersParams,
   GetProvidersResponse,
   Provider,
+  ProviderDetails,
+  ProviderItemsParams,
+  ProviderItemsResponse,
+  ProviderMessagePayload,
+  ProviderStats,
 } from "@/types/providers";
 
 export const getProviders = async (params: GetProvidersParams = {}): Promise<GetProvidersResponse> => {
@@ -22,14 +28,18 @@ export const getProviders = async (params: GetProvidersParams = {}): Promise<Get
   };
 };
 
-export const getProvider = async (id: string) => {
+export const getProvider = async (id: string): Promise<ProviderDetails> => {
   const { data } = await api.get(`/providers/${id}`);
-  return data.data;
+  const body = data as ApiDataResponse<ProviderDetails>;
+
+  return body.data as ProviderDetails;
 };
 
-export const getProviderStats = async () => {
+export const getProviderStats = async (): Promise<ProviderStats> => {
   const { data } = await api.get("/providers/stats");
-  return data.data;
+  const body = data as ApiDataResponse<ProviderStats>;
+
+  return body.data as ProviderStats;
 };
 
 export const createProvider = async (payload: CreateProviderPayload): Promise<Provider> => {
@@ -52,15 +62,15 @@ export const updateProviderStatus = async (id: string, action: string, reason?: 
   return data.data;
 };
 
-export const sendProviderMessage = async (id: string, payload: Record<string, any>) => {
+export const sendProviderMessage = async (id: string, payload: ProviderMessagePayload) => {
   const { data } = await api.post(`/providers/${id}/message`, payload);
   return data.data;
 };
 
 export const getProviderItems = async (
   id: string,
-  params: { page?: number; limit?: number; search?: string } = {}
-) => {
+  params: ProviderItemsParams = {},
+): Promise<ProviderItemsResponse> => {
   const { data } = await api.get(`/providers/${id}/items`, { params });
   const meta = data.meta ?? { page: 1, limit: 10, total: 0, totalPages: 0 };
   return {

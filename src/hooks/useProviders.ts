@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/errors";
 import {
   getProviders,
   getProviderStats,
@@ -16,16 +17,11 @@ import {
 import type {
   CreateProviderPayload,
   GetProvidersParams,
-  GetProvidersResponse,
-  ProviderStats,
+  ProviderMessagePayload,
 } from "@/types/providers";
 
-const getErrorMessage = (error: any, fallback: string) => {
-  return error?.response?.data?.message || error?.response?.data?.error?.message || error?.message || fallback;
-};
-
 export const useProviders = (params: GetProvidersParams = {}) => {
-  return useQuery<GetProvidersResponse>({
+  return useQuery({
     queryKey: ["providers", params],
     queryFn: () => getProviders(params),
   });
@@ -39,7 +35,7 @@ export const useProvider = (id: string) => {
 };
 
 export const useProviderStats = () => {
-  return useQuery<ProviderStats>({
+  return useQuery({
     queryKey: ["providers", "stats"],
     queryFn: () => getProviderStats(),
   });
@@ -119,7 +115,7 @@ export const useUpdateProviderStatus = () => {
 
 export const useSendProviderMessage = () => {
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: Record<string, any> }) =>
+    mutationFn: ({ id, payload }: { id: string; payload: ProviderMessagePayload }) =>
       sendProviderMessage(id, payload),
     onSuccess: () => {
       toast.success("Message sent successfully");

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useRef, useState } from "react";
+import Image from "next/image";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -180,9 +181,11 @@ export function AddCategoryDialog({
             {isUploading ? (
               <Loader2 className="size-4 animate-spin text-[#6d28d9]" />
             ) : iconPreview ? (
-              <img
+              <Image
                 src={iconPreview}
                 alt="Category icon"
+                width={66}
+                height={66}
                 className="size-full rounded-full object-cover"
               />
             ) : (

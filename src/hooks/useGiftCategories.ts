@@ -15,24 +15,20 @@ import {
 import type {
   CreateGiftCategoryPayload,
   GetGiftCategoriesParams,
-  GetGiftCategoriesResponse,
-  GiftCategory,
-  GiftCategoryLookupItem,
-  GiftCategoryStats,
   UpdateGiftCategoryPayload,
 } from "@/types/gift-categories";
 
 const giftCategoriesQueryKey = ["gift-categories"] as const;
 
 export const useGiftCategories = (params: GetGiftCategoriesParams = {}) => {
-  return useQuery<GetGiftCategoriesResponse>({
+  return useQuery({
     queryKey: [...giftCategoriesQueryKey, params],
     queryFn: () => getGiftCategories(params),
   });
 };
 
 export const useGiftCategory = (id: string) => {
-  return useQuery<GiftCategory>({
+  return useQuery({
     queryKey: [...giftCategoriesQueryKey, id],
     queryFn: () => getGiftCategory(id),
     enabled: !!id,
@@ -40,14 +36,14 @@ export const useGiftCategory = (id: string) => {
 };
 
 export const useGiftCategoryLookup = () => {
-  return useQuery<GiftCategoryLookupItem[]>({
+  return useQuery({
     queryKey: [...giftCategoriesQueryKey, "lookup"],
     queryFn: getGiftCategoryLookup,
   });
 };
 
 export const useGiftCategoryStats = () => {
-  return useQuery<GiftCategoryStats>({
+  return useQuery({
     queryKey: [...giftCategoriesQueryKey, "stats"],
     queryFn: getGiftCategoryStats,
   });

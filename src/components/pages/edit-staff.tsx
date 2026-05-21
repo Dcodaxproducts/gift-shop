@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { CircleCheck, Clock, UserRound } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
@@ -40,31 +40,38 @@ export function EditStaffPage() {
   const params = useParams<{ id: string }>();
   const staffId = params.id;
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [roleId, setRoleId] = useState("");
-  const [isActive, setIsActive] = useState(true);
+  const [draft, setDraft] = useState({
+    staffId: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    roleId: "",
+    isActive: true,
+  });
 
   const { data: staff, isLoading } = useStaffMember(staffId);
   const { data: roles = [] } = useAdminRoles();
+  const initialDraft = useMemo(
+    () => ({
+      staffId: staff?.id ?? "",
+      fullName: staff ? staff.fullName || `${staff.firstName} ${staff.lastName}` : "",
+      email: staff?.email ?? "",
+      phone: staff?.phone ?? "",
+      roleId: staff?.role.id ?? "",
+      isActive: staff?.isActive ?? true,
+    }),
+    [staff],
+  );
+  const currentDraft = draft.staffId === staff?.id ? draft : initialDraft;
+  const staffRoleId = staff?.role.id;
+  const { fullName, email, phone, roleId, isActive } = currentDraft;
   const { data: selectedRoleDetails, isLoading: roleDetailsLoading } = useAdminRole(roleId || undefined);
   const { mutate: updateStaffMember, isPending: isUpdating } = useUpdateStaff();
 
   const activeRoles = useMemo(
-    () => roles.filter((role) => role.isActive || role.id === staff?.role.id),
-    [roles, staff?.role?.id],
+    () => roles.filter((role) => role.isActive || role.id === staffRoleId),
+    [roles, staffRoleId],
   );
-
-  useEffect(() => {
-    if (!staff) return;
-
-    setFullName(staff.fullName || `${staff.firstName} ${staff.lastName}`);
-    setEmail(staff.email);
-    setPhone(staff.phone ?? "");
-    setRoleId(staff.role.id);
-    setIsActive(staff.isActive);
-  }, [staff]);
 
   const permissions = useMemo(
     () => buildRolePermissionSummary(selectedRoleDetails?.permissions),
@@ -72,7 +79,7 @@ export function EditStaffPage() {
   );
 
   const handleActiveToggle = () => {
-    setIsActive((prev) => !prev);
+    setDraft({ ...currentDraft, isActive: !currentDraft.isActive });
   };
 
   const handleSave = () => {
@@ -136,7 +143,7 @@ export function EditStaffPage() {
                   <Input
                     id="full-name"
                     value={fullName}
-                    onChange={(event) => setFullName(event.target.value)}
+                    onChange={(event) => setDraft({ ...currentDraft, fullName: event.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -149,7 +156,7 @@ export function EditStaffPage() {
                   <Input
                     id="email"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event) => setDraft({ ...currentDraft, email: event.target.value })}
                   />
                 </div>
               </div>
@@ -164,7 +171,7 @@ export function EditStaffPage() {
                 <Input
                   id="phone"
                   value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
+                  onChange={(event) => setDraft({ ...currentDraft, phone: event.target.value })}
                 />
               </div>
             </div>
@@ -209,7 +216,7 @@ export function EditStaffPage() {
                 <Label className="text-[11px] font-semibold text-slate-700">
                   Staff Role
                 </Label>
-                <Select value={roleId} onValueChange={setRoleId}>
+                <Select value={roleId} onValueChange={(value) => setDraft({ ...currentDraft, roleId: value })}>
                   <SelectTrigger className="h-11 w-full px-4">
                     <SelectValue />
                   </SelectTrigger>

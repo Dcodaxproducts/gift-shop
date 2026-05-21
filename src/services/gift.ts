@@ -29,22 +29,27 @@ const createPagination = (meta?: ApiListResponse<Gift>["meta"]) => {
 };
 
 export const getGifts = async (params: GetGiftsParams = {}): Promise<GetGiftsResponse> => {
-  const { data } = await api.get<ApiListResponse<Gift>>(GIFTS_ENDPOINT, { params });
+  const { data } = await api.get(GIFTS_ENDPOINT, { params });
+  const body = data as ApiListResponse<Gift>;
 
   return {
-    gifts: data.data ?? [],
-    pagination: createPagination(data.meta),
+    gifts: body.data ?? [],
+    pagination: createPagination(body.meta),
   };
 };
 
 export const getGift = async (id: string): Promise<Gift> => {
-  const { data } = await api.get<ApiDataResponse<Gift>>(`${GIFTS_ENDPOINT}/${id}`);
-  return data.data as Gift;
+  const { data } = await api.get(`${GIFTS_ENDPOINT}/${id}`);
+  const body = data as ApiDataResponse<Gift>;
+
+  return body.data as Gift;
 };
 
 export const createGift = async (payload: CreateGiftPayload): Promise<Gift> => {
-  const { data } = await api.post<ApiDataResponse<Gift>>(GIFTS_ENDPOINT, payload);
-  return data.data as Gift;
+  const { data } = await api.post(GIFTS_ENDPOINT, payload);
+  const body = data as ApiDataResponse<Gift>;
+
+  return body.data as Gift;
 };
 
 export const updateGift = async ({
@@ -54,8 +59,10 @@ export const updateGift = async ({
   id: string;
   payload: UpdateGiftPayload;
 }): Promise<Gift> => {
-  const { data } = await api.patch<ApiDataResponse<Gift>>(`${GIFTS_ENDPOINT}/${id}`, payload);
-  return data.data as Gift;
+  const { data } = await api.patch(`${GIFTS_ENDPOINT}/${id}`, payload);
+  const body = data as ApiDataResponse<Gift>;
+
+  return body.data as Gift;
 };
 
 export const updateGiftStatus = async ({
@@ -65,11 +72,15 @@ export const updateGiftStatus = async ({
   id: string;
   payload: UpdateGiftStatusPayload;
 }): Promise<Gift> => {
-  const { data } = await api.patch<ApiDataResponse<Gift>>(`${GIFTS_ENDPOINT}/${id}/status`, payload);
-  return data.data as Gift;
+  const { data } = await api.patch(`${GIFTS_ENDPOINT}/${id}/status`, payload);
+  const body = data as ApiDataResponse<Gift>;
+
+  return body.data as Gift;
 };
 
 export const deleteGift = async (id: string): Promise<Gift> => {
-  const { data } = await api.delete<ApiDataResponse<Gift>>(`${GIFTS_ENDPOINT}/${id}`);
-  return data.data as Gift;
+  const { data } = await api.delete(`${GIFTS_ENDPOINT}/${id}`);
+  const body = data as ApiDataResponse<Gift>;
+
+  return body.data as Gift;
 };

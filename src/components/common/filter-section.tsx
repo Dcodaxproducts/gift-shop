@@ -1,4 +1,4 @@
-import { Search, ListFilter } from "lucide-react";
+import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,10 +22,9 @@ interface FilterSectionProps {
     value: string;
     onChange: (value: string) => void;
     placeholder: string;
-    options: FilterOption[];
+    options: readonly FilterOption[];
     width?: string;
   }>;
-  showFiltersButton?: boolean;
 }
 
 export function FilterSection({
@@ -33,7 +32,6 @@ export function FilterSection({
   searchValue,
   onSearchChange,
   filters = [],
-  showFiltersButton = true,
 }: FilterSectionProps) {
   return (
     <Card className="p-4">

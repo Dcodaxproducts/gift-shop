@@ -13,49 +13,42 @@ import {
   updateProviderPayoutStatus,
 } from "@/services/provider-payouts";
 import type {
-  ProviderEarningDistributionItem,
-  ProviderPayoutActionRequest,
-  ProviderPayoutActionResponse,
-  ProviderPayoutBreakdown,
   ProviderPayoutsParams,
-  ProviderPayoutsResponse,
-  ProviderPayoutStats,
-  ProviderPayoutTrends,
   ProviderPayoutTrendsParams,
 } from "@/types/provider-payouts";
 
 const providerPayoutsQueryKey = ["provider-payouts"] as const;
 
 export const useProviderPayoutStats = () => {
-  return useQuery<ProviderPayoutStats>({
+  return useQuery({
     queryKey: [...providerPayoutsQueryKey, "stats"],
     queryFn: getProviderPayoutStats,
   });
 };
 
 export const useProviderPayoutTrends = (params: ProviderPayoutTrendsParams = {}) => {
-  return useQuery<ProviderPayoutTrends>({
+  return useQuery({
     queryKey: [...providerPayoutsQueryKey, "trends", params],
     queryFn: () => getProviderPayoutTrends(params),
   });
 };
 
 export const useProviderEarningDistribution = () => {
-  return useQuery<ProviderEarningDistributionItem[]>({
+  return useQuery({
     queryKey: [...providerPayoutsQueryKey, "earning-distribution"],
     queryFn: getProviderEarningDistribution,
   });
 };
 
 export const useProviderPayouts = (params: ProviderPayoutsParams = {}) => {
-  return useQuery<ProviderPayoutsResponse>({
+  return useQuery({
     queryKey: [...providerPayoutsQueryKey, "list", params],
     queryFn: () => getProviderPayouts(params),
   });
 };
 
 export const useProviderPayoutBreakdown = (id?: string) => {
-  return useQuery<ProviderPayoutBreakdown>({
+  return useQuery({
     queryKey: [...providerPayoutsQueryKey, "breakdown", id],
     queryFn: () => getProviderPayoutBreakdown(id as string),
     enabled: !!id,
@@ -65,7 +58,7 @@ export const useProviderPayoutBreakdown = (id?: string) => {
 export const useUpdateProviderPayoutStatus = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<ProviderPayoutActionResponse, Error, ProviderPayoutActionRequest>({
+  return useMutation({
     mutationFn: updateProviderPayoutStatus,
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: providerPayoutsQueryKey });
