@@ -23,17 +23,16 @@ import { StatusBadge } from "@/utils/status";
 import { TransactionBreakdownDialog } from "../dialog/transaction-dialog";
 import PayoutMetricCard from "../cards/PayoutMetricCard";
 import {
-  useApproveProviderPayout,
   useExportProviderPayouts,
-  useHoldProviderPayout,
   useProviderEarningDistribution,
   useProviderPayoutBreakdown,
   useProviderPayouts,
   useProviderPayoutStats,
   useProviderPayoutTrends,
-  useRejectProviderPayout,
+  useUpdateProviderPayoutStatus,
 } from "@/hooks/useProviderPayouts";
 import type {
+  ProviderPayoutActionRequest,
   ProviderPayoutListItem,
   ProviderPayoutStats,
   ProviderPayoutTrendRange,
@@ -101,14 +100,20 @@ function RecentPayoutActivities() {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState<ProviderPayoutListItem | null>(null);
   const router = useRouter();
-  const payouts = useProviderPayouts({ page, limit: 4, sortBy: "createdAt", sortOrder: "DESC" });
-  const breakdown = useProviderPayoutBreakdown(selectedActivity?.id);
-  const approvePayout = useApproveProviderPayout();
-  const holdPayout = useHoldProviderPayout();
-  const rejectPayout = useRejectProviderPayout();
+  const { data: payoutsData, isLoading: isPayoutsLoading } = useProviderPayouts({
+    page,
+    limit: 4,
+    sortBy: "createdAt",
+    sortOrder: "DESC",
+  });
+  const { data: breakdown, isLoading: isBreakdownLoading } = useProviderPayoutBreakdown(selectedActivity?.id);
+  const { mutate: updatePayoutStatus, isPending } = useUpdateProviderPayoutStatus();
 
   const closeDialog = () => setSelectedActivity(null);
-  const processing = approvePayout.isPending || holdPayout.isPending || rejectPayout.isPending;
+
+  const handleStatusUpdate = (request: ProviderPayoutActionRequest) => {
+    updatePayoutStatus(request, { onSuccess: closeDialog });
+  };
 
   return (
     <div className="rounded-2xl border border-b-0 border-slate-200">
@@ -117,10 +122,10 @@ function RecentPayoutActivities() {
       </div>
 
       <DataTable
-        data={payouts.data?.payouts ?? []}
-        pagination={payouts.data ? { ...payouts.data.pagination, page, onPageChange: setPage } : undefined}
+        data={payoutsData?.payouts ?? []}
+        pagination={payoutsData ? { ...payoutsData.pagination, page, onPageChange: setPage } : undefined}
         isBorder={false}
-        loading={payouts.isLoading}
+        loading={isPayoutsLoading}
         skeletonRows={4}
         onRowClick={(activity) => router.push(`/providers/${activity.provider.id}`)}
         headers={
@@ -137,24 +142,16 @@ function RecentPayoutActivities() {
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span
-                  className="flex size-9 items-center justify-center rounded-full text-[11px] font-semibold bg-primary/10 text-primary"
-                >
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
                   {activity.provider.businessName.charAt(0)}
                 </span>
                 <div>
-                  <p className="text-xs font-semibold leading-4">
-                    {activity.provider.businessName}
-                  </p>
-                  <p className="text-[10px] font-medium text-slate-400">
-                    ID: {activity.provider.providerCode ?? activity.provider.id}
-                  </p>
+                  <p className="text-xs font-semibold leading-4">{activity.provider.businessName}</p>
+                  <p className="text-[10px] font-medium text-slate-400">ID: {activity.provider.providerCode ?? activity.provider.id}</p>
                 </div>
               </div>
             </TableCell>
-            <TableCell className="font-semibold">
-              {formatMoney(activity.pendingAmount)}
-            </TableCell>
+            <TableCell className="font-semibold">{formatMoney(activity.pendingAmount)}</TableCell>
             <TableCell>{formatDate(activity.lastPayoutDate)}</TableCell>
             <TableCell>{formatDate(activity.nextPayoutDate)}</TableCell>
             <TableCell>{StatusBadge({ status: formatStatus(activity.status) })}</TableCell>
@@ -173,14 +170,26 @@ function RecentPayoutActivities() {
         )}
       />
       <TransactionBreakdownDialog
-        breakdown={breakdown.data}
-        loading={breakdown.isLoading}
-        processing={processing}
+        breakdown={breakdown}
+        loading={isBreakdownLoading}
+        processing={isPending}
         selectedActivity={selectedActivity}
-        onApprove={(id) => approvePayout.mutate({ id, payload: { notifyProvider: true } }, { onSuccess: closeDialog })}
+        onApprove={(id) => handleStatusUpdate({ id, action: "approve", payload: { notifyProvider: true } })}
         onClose={closeDialog}
-        onHold={(id) => holdPayout.mutate({ id, payload: { reason: "BANK_VERIFICATION_PENDING", notifyProvider: true } }, { onSuccess: closeDialog })}
-        onReject={(id) => rejectPayout.mutate({ id, payload: { reason: "OTHER", notifyProvider: true } }, { onSuccess: closeDialog })}
+        onHold={(id) =>
+          handleStatusUpdate({
+            id,
+            action: "hold",
+            payload: { reason: "BANK_VERIFICATION_PENDING", notifyProvider: true },
+          })
+        }
+        onReject={(id) =>
+          handleStatusUpdate({
+            id,
+            action: "reject",
+            payload: { reason: "OTHER", notifyProvider: true },
+          })
+        }
       />
     </div>
   );
@@ -191,7 +200,7 @@ export function ProviderPayoutsPage() {
   const { data: stats } = useProviderPayoutStats();
   const { data: trends } = useProviderPayoutTrends({ range: trendRange });
   const { data: earningDistribution } = useProviderEarningDistribution();
-  const exportPayouts = useExportProviderPayouts();
+  const { mutate: exportPayouts, isPending: isExportPending } = useExportProviderPayouts();
 
   const metrics = buildPayoutMetrics(stats);
   const trendData = trends?.labels.map((label, index) => ({
@@ -210,11 +219,7 @@ export function ProviderPayoutsPage() {
         description="Manage and monitor provider earnings and distributions"
         actions={
           <>
-            <Button
-              variant="outline"
-              disabled={exportPayouts.isPending}
-              onClick={() => exportPayouts.mutate()}
-            >
+            <Button variant="outline" disabled={isExportPending} onClick={() => exportPayouts()}>
               <Download className="size-3.5" />
               Export
             </Button>

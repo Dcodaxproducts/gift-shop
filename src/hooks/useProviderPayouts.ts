@@ -4,20 +4,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors";
 import {
-  approveProviderPayout,
   exportProviderPayouts,
   getProviderEarningDistribution,
   getProviderPayoutBreakdown,
   getProviderPayouts,
   getProviderPayoutStats,
   getProviderPayoutTrends,
-  holdProviderPayout,
-  rejectProviderPayout,
+  updateProviderPayoutStatus,
 } from "@/services/provider-payouts";
 import type {
-  HoldProviderPayoutPayload,
   ProviderEarningDistributionItem,
-  ProviderPayoutActionPayload,
+  ProviderPayoutActionRequest,
   ProviderPayoutActionResponse,
   ProviderPayoutBreakdown,
   ProviderPayoutsParams,
@@ -25,7 +22,6 @@ import type {
   ProviderPayoutStats,
   ProviderPayoutTrends,
   ProviderPayoutTrendsParams,
-  RejectProviderPayoutPayload,
 } from "@/types/provider-payouts";
 
 const providerPayoutsQueryKey = ["provider-payouts"] as const;
@@ -66,47 +62,17 @@ export const useProviderPayoutBreakdown = (id?: string) => {
   });
 };
 
-export const useApproveProviderPayout = () => {
+export const useUpdateProviderPayoutStatus = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<ProviderPayoutActionResponse, Error, { id: string; payload: ProviderPayoutActionPayload }>({
-    mutationFn: approveProviderPayout,
-    onSuccess: () => {
+  return useMutation<ProviderPayoutActionResponse, Error, ProviderPayoutActionRequest>({
+    mutationFn: updateProviderPayoutStatus,
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: providerPayoutsQueryKey });
-      toast.success("Payout approved successfully");
+      toast.success(`Payout ${variables.action}d successfully`);
     },
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Failed to approve payout. Please try again."));
-    },
-  });
-};
-
-export const useHoldProviderPayout = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<ProviderPayoutActionResponse, Error, { id: string; payload: HoldProviderPayoutPayload }>({
-    mutationFn: holdProviderPayout,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: providerPayoutsQueryKey });
-      toast.success("Payout held successfully");
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Failed to hold payout. Please try again."));
-    },
-  });
-};
-
-export const useRejectProviderPayout = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<ProviderPayoutActionResponse, Error, { id: string; payload: RejectProviderPayoutPayload }>({
-    mutationFn: rejectProviderPayout,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: providerPayoutsQueryKey });
-      toast.success("Payout rejected successfully");
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Failed to reject payout. Please try again."));
+    onError: (error, variables) => {
+      toast.error(getErrorMessage(error, `Failed to ${variables.action} payout. Please try again.`));
     },
   });
 };

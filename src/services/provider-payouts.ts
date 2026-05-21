@@ -2,9 +2,8 @@ import { api } from "@/lib/axios";
 import type {
   ApiDataResponse,
   ApiListResponse,
-  HoldProviderPayoutPayload,
   ProviderEarningDistributionItem,
-  ProviderPayoutActionPayload,
+  ProviderPayoutActionRequest,
   ProviderPayoutActionResponse,
   ProviderPayoutBreakdown,
   ProviderPayoutListItem,
@@ -13,7 +12,6 @@ import type {
   ProviderPayoutStats,
   ProviderPayoutTrends,
   ProviderPayoutTrendsParams,
-  RejectProviderPayoutPayload,
 } from "@/types/provider-payouts";
 
 const PROVIDER_PAYOUTS_ENDPOINT = "/admin/provider-payouts";
@@ -65,36 +63,12 @@ export const getProviderPayoutBreakdown = async (id: string): Promise<ProviderPa
   return data.data as ProviderPayoutBreakdown;
 };
 
-export const approveProviderPayout = async ({
+export const updateProviderPayoutStatus = async ({
   id,
+  action,
   payload,
-}: {
-  id: string;
-  payload: ProviderPayoutActionPayload;
-}): Promise<ProviderPayoutActionResponse> => {
-  const { data } = await api.post<ApiDataResponse<ProviderPayoutActionResponse>>(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/approve`, payload);
-  return data.data as ProviderPayoutActionResponse;
-};
-
-export const holdProviderPayout = async ({
-  id,
-  payload,
-}: {
-  id: string;
-  payload: HoldProviderPayoutPayload;
-}): Promise<ProviderPayoutActionResponse> => {
-  const { data } = await api.post<ApiDataResponse<ProviderPayoutActionResponse>>(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/hold`, payload);
-  return data.data as ProviderPayoutActionResponse;
-};
-
-export const rejectProviderPayout = async ({
-  id,
-  payload,
-}: {
-  id: string;
-  payload: RejectProviderPayoutPayload;
-}): Promise<ProviderPayoutActionResponse> => {
-  const { data } = await api.post<ApiDataResponse<ProviderPayoutActionResponse>>(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/reject`, payload);
+}: ProviderPayoutActionRequest): Promise<ProviderPayoutActionResponse> => {
+  const { data } = await api.post<ApiDataResponse<ProviderPayoutActionResponse>>(`${PROVIDER_PAYOUTS_ENDPOINT}/${id}/${action}`, payload);
   return data.data as ProviderPayoutActionResponse;
 };
 
