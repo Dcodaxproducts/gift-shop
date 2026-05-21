@@ -5,9 +5,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  earningsDistributionData,
-} from "@/constants/payouts";
+import { earningsDistributionData } from "@/constants/payouts";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartContainer,
@@ -16,6 +14,12 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
+type EarningsDistributionChartProps = {
+  data?: {
+    tier: string;
+    amount: number;
+  }[];
+};
 
 const distributionChartConfig = {
   amount: {
@@ -24,9 +28,7 @@ const distributionChartConfig = {
   },
 } satisfies ChartConfig;
 
-
-
-function EarningsDistributionChart() {
+function EarningsDistributionChart({ data = earningsDistributionData }: EarningsDistributionChartProps) {
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <CardContent className="p-6">
@@ -38,7 +40,7 @@ function EarningsDistributionChart() {
         </div>
 
         <ChartContainer config={distributionChartConfig} className="mt-6 h-[220px] w-full">
-          <LineChart data={earningsDistributionData} margin={{ left: 0, right: 0, top: 8 }}>
+          <LineChart data={data} margin={{ left: 0, right: 0, top: 8 }}>
             <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
             <XAxis
               dataKey="tier"

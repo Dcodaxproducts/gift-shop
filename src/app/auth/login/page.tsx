@@ -73,7 +73,7 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-1 items-center justify-center">
-            <LoginForm />
+            <LoginForm variant="admin" />
           </div>
         </section>
       </section>
