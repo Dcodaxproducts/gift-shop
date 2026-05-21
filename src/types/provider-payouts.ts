@@ -111,6 +111,14 @@ export type RejectProviderPayoutPayload = ProviderPayoutActionPayload & {
   reason: "INVALID_BANK_ACCOUNT" | "FRAUD_RISK" | "COMPLIANCE_REJECTED" | "PROVIDER_INELIGIBLE" | "OTHER";
 };
 
+export type ProviderPayoutActionType = "approve" | "hold" | "reject";
+
+export type ProviderPayoutActionRequest = {
+  id: string;
+  action: ProviderPayoutActionType;
+  payload: ProviderPayoutActionPayload | HoldProviderPayoutPayload | RejectProviderPayoutPayload;
+};
+
 export type ProviderPayoutActionResponse = {
   id: string;
   status: ProviderPayoutStatus | string;
