@@ -37,7 +37,7 @@ export function ProvidersPage() {
   const debouncedSearch = useDebounce(search, 400);
 
   // Data Fetching
-  const { data, isLoading } = useProviders({
+  const { data: providers = [], isLoading } = useProviders({
     page,
     limit,
     search: debouncedSearch || undefined,
@@ -48,16 +48,14 @@ export function ProvidersPage() {
   const { data: statsData } = useProviderStats();
   const exportProviders = useExportProviders();
 
-  // Derived State
-  const providers = data?.providers ?? [];
-
-  const pagination = data?.pagination ?? {
-    total: 0,
+  const hasNextPage = providers.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + providers.length + (hasNextPage ? 1 : 0),
     page,
     limit,
-    totalPages: 0,
-    hasNext: false,
-    hasPrevious: false,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
   };
 
   return (

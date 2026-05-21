@@ -14,20 +14,21 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 400);
 
-  const { data, isLoading } = useProviderItems(providerId, {
+  const limit = 10;
+  const { data: items = [], isLoading } = useProviderItems(providerId, {
     page,
-    limit: 10,
+    limit,
     ...(debouncedSearch ? { search: debouncedSearch } : {}),
   });
 
-  const items = data?.items ?? [];
-  const pagination = data?.pagination ?? {
-    total: 0,
-    page: 1,
-    limit: 10,
-    totalPages: 1,
-    hasNext: false,
-    hasPrevious: false,
+  const hasNextPage = items.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + items.length + (hasNextPage ? 1 : 0),
+    page,
+    limit,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
   };
 
   return (

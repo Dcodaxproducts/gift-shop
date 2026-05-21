@@ -87,14 +87,25 @@ function RecentPayoutActivities() {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState<ProviderPayoutListItem | null>(null);
   const router = useRouter();
-  const { data: payoutsData, isLoading: isPayoutsLoading } = useProviderPayouts({
+  const limit = 4;
+  const { data: payouts = [], isLoading: isPayoutsLoading } = useProviderPayouts({
     page,
-    limit: 4,
+    limit,
     sortBy: "createdAt",
     sortOrder: "DESC",
   });
   const { data: breakdown, isLoading: isBreakdownLoading } = useProviderPayoutBreakdown(selectedActivity?.id);
   const { mutate: updatePayoutStatus, isPending } = useUpdateProviderPayoutStatus();
+
+  const hasNextPage = payouts.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + payouts.length + (hasNextPage ? 1 : 0),
+    page,
+    limit,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
+  };
 
   const closeDialog = () => setSelectedActivity(null);
 
@@ -109,8 +120,8 @@ function RecentPayoutActivities() {
       </div>
 
       <DataTable
-        data={payoutsData?.payouts ?? []}
-        pagination={payoutsData ? { ...payoutsData.pagination, page, onPageChange: setPage } : undefined}
+        data={payouts}
+        pagination={{ ...pagination, onPageChange: setPage }}
         isBorder={false}
         loading={isPayoutsLoading}
         skeletonRows={4}

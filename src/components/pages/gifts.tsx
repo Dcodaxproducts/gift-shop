@@ -41,7 +41,7 @@ export function GiftsPage() {
   const router = useRouter();
   const debouncedSearch = useDebounce(search, 400);
 
-  const { data, isLoading } = useGifts({
+  const { data: gifts = [], isLoading } = useGifts({
     page,
     limit,
     search: debouncedSearch || undefined,
@@ -49,14 +49,14 @@ export function GiftsPage() {
     providerId: provider === "all" ? undefined : provider,
   });
 
-  const gifts = data?.gifts ?? [];
-  const pagination = data?.pagination ?? {
-    total: 0,
+  const hasNextPage = gifts.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + gifts.length + (hasNextPage ? 1 : 0),
     page,
     limit,
-    totalPages: 0,
-    hasNext: false,
-    hasPrevious: false,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
   };
 
   return (

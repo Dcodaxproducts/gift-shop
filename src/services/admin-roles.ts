@@ -2,8 +2,6 @@ import { api } from "@/lib/axios";
 import type {
   AdminRole,
   AdminRoleDetails,
-  ApiDataResponse,
-  ApiListResponse,
   CreateAdminRolePayload,
   UpdateAdminRolePayload,
   UpdateAdminRolePermissionsPayload,
@@ -13,25 +11,19 @@ const ADMIN_ROLES_ENDPOINT = "/admin-roles";
 
 export const getAdminRoles = async () => {
   const { data } = await api.get(ADMIN_ROLES_ENDPOINT);
-  const body = data as ApiListResponse<AdminRole>;
-
-  return body.data ?? [];
+  return (data.data ?? []) as AdminRole[];
 };
 
 export const getAdminRole = async (id: string) => {
   const { data } = await api.get(`${ADMIN_ROLES_ENDPOINT}/${id}`);
-  const body = data as ApiDataResponse<AdminRoleDetails>;
-
-  return body.data as AdminRoleDetails;
+  return data.data as AdminRoleDetails;
 };
 
 export const createAdminRole = async (
   payload: CreateAdminRolePayload,
 ) => {
   const { data } = await api.post(ADMIN_ROLES_ENDPOINT, payload);
-  const body = data as ApiDataResponse<AdminRole>;
-
-  return body.data as AdminRole;
+  return data.data as AdminRole;
 };
 
 export const updateAdminRole = async ({
@@ -42,9 +34,7 @@ export const updateAdminRole = async ({
   payload: UpdateAdminRolePayload;
 }) => {
   const { data } = await api.patch(`${ADMIN_ROLES_ENDPOINT}/${id}`, payload);
-  const body = data as ApiDataResponse<AdminRole>;
-
-  return body.data as AdminRole;
+  return data.data as AdminRole;
 };
 
 export const updateAdminRolePermissions = async ({
@@ -55,21 +45,15 @@ export const updateAdminRolePermissions = async ({
   payload: UpdateAdminRolePermissionsPayload;
 }) => {
   const { data } = await api.patch(`${ADMIN_ROLES_ENDPOINT}/${id}/permissions`, payload);
-  const body = data as ApiDataResponse<AdminRoleDetails>;
-
-  return body.data as AdminRoleDetails;
+  return data.data as AdminRoleDetails;
 };
 
 export const deleteAdminRole = async (id: string) => {
   const { data } = await api.delete(`${ADMIN_ROLES_ENDPOINT}/${id}`);
-  const body = data as ApiDataResponse<AdminRole>;
-
-  return body.data as AdminRole;
+  return data.data as AdminRole;
 };
 
 export const getPermissionsCatalog = async () => {
   const { data } = await api.get("/permissions/catalog");
-  const body = data as ApiDataResponse<Record<string, string[]>>;
-
-  return body.data ?? {};
+  return (data.data ?? {}) as Record<string, string[]>;
 };

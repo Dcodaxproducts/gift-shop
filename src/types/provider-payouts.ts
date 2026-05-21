@@ -64,19 +64,6 @@ export type ProviderPayoutsParams = {
   sortOrder?: "ASC" | "DESC";
 };
 
-export type ProviderPayoutsPagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-};
-
-export type ProviderPayoutsResponse = {
-  payouts: ProviderPayoutListItem[];
-  pagination: ProviderPayoutsPagination;
-};
 
 export type ProviderPayoutBreakdown = {
   payoutId: string;
@@ -123,20 +110,4 @@ export type ProviderPayoutActionResponse = {
   id: string;
   status: ProviderPayoutStatus | string;
   ledgerReleased?: boolean;
-};
-
-export type ApiPaginationMeta = {
-  page?: number;
-  limit?: number;
-  total?: number;
-  totalPages?: number;
-};
-
-export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: ApiPaginationMeta;
-};
-
-export type ApiDataResponse<T> = {
-  data?: T;
 };

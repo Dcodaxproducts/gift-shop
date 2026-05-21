@@ -12,36 +12,14 @@ import {
   updateStaffActiveStatus,
   updateStaffPassword,
 } from "@/services/staff";
-import type {
-  ApiPaginationMeta,
-  GetStaffParams,
-} from "@/types/staff";
+import type { GetStaffParams } from "@/types/staff";
 
 const staffQueryKey = ["staff"] as const;
-const toPagination = (meta?: ApiPaginationMeta) => {
-  const page = meta?.page ?? 1;
-  const limit = meta?.limit ?? 10;
-  const total = meta?.total ?? 0;
-  const totalPages = meta?.totalPages ?? 0;
-
-  return {
-    total,
-    page,
-    limit,
-    totalPages,
-    hasNext: page < totalPages,
-    hasPrevious: page > 1,
-  };
-};
 
 export const useStaffList = (params: GetStaffParams = {}) => {
   return useQuery({
     queryKey: [...staffQueryKey, params],
     queryFn: () => getStaff(params),
-    select: (body) => ({
-      staff: body.data ?? [],
-      pagination: toPagination(body.meta),
-    }),
   });
 };
 

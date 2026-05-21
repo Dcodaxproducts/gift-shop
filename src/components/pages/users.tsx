@@ -29,7 +29,7 @@ export function UsersPage() {
   const router = useRouter();
   const debouncedSearch = useDebounce(search, 400);
 
-  const { data, isLoading } = useUsers({
+  const { data: users = [], isLoading } = useUsers({
     page,
     limit,
     search: debouncedSearch || undefined,
@@ -39,14 +39,14 @@ export function UsersPage() {
   const exportUsers = useExportUsers();
   const { mutate, isPending } = useDeleteUser();
 
-  const users = data?.users ?? [];
-  const pagination = data?.pagination ?? {
-    total: 0,
+  const hasNextPage = users.length === limit;
+  const pagination = {
+    total: (page - 1) * limit + users.length + (hasNextPage ? 1 : 0),
     page,
     limit,
-    totalPages: 0,
-    hasNext: false,
-    hasPrevious: false,
+    totalPages: page + (hasNextPage ? 1 : 0),
+    hasNext: hasNextPage,
+    hasPrevious: page > 1,
   };
 
   const handleStatusChange = (value: string) => {

@@ -40,19 +40,6 @@ export type User = {
   updatedAt?: string;
 };
 
-export type UsersPagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-};
-
-export type GetUsersResponse = {
-  users: User[];
-  pagination: UsersPagination;
-};
 
 export type UserSubscription = {
   planName: string | null;
@@ -105,20 +92,4 @@ export type ResetUserPasswordPayload = {
 export type GetUserActivityParams = {
   page?: number;
   limit?: number;
-};
-
-export type ApiPaginationMeta = {
-  total?: number;
-  page?: number;
-  limit?: number;
-  totalPages?: number;
-};
-
-export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: ApiPaginationMeta;
-};
-
-export type ApiDataResponse<T> = {
-  data?: T;
 };
