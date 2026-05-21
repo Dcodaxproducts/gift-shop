@@ -18,25 +18,6 @@ import type {
 } from "@/types/provider-payouts";
 
 const providerPayoutsQueryKey = ["provider-payouts"] as const;
-<<<<<<< HEAD
-
-const toPagination = (meta?: ApiPaginationMeta) => {
-  const page = meta?.page ?? 1;
-  const limit = meta?.limit ?? 10;
-  const total = meta?.total ?? 0;
-  const totalPages = meta?.totalPages ?? 0;
-
-  return {
-    total,
-    page,
-    limit,
-    totalPages,
-    hasNext: page < totalPages,
-    hasPrevious: page > 1,
-  };
-};
-=======
->>>>>>> 97698ead150ab7f6c82643dd59b664e96388325a
 
 export const useProviderPayoutStats = () => {
   return useQuery({
