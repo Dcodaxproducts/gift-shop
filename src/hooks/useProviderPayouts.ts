@@ -19,6 +19,7 @@ import type {
 } from "@/types/provider-payouts";
 
 const providerPayoutsQueryKey = ["provider-payouts"] as const;
+
 const toPagination = (meta?: ApiPaginationMeta) => {
   const page = meta?.page ?? 1;
   const limit = meta?.limit ?? 10;
