@@ -29,6 +29,8 @@ const distributionChartConfig = {
 } satisfies ChartConfig;
 
 function EarningsDistributionChart({ data = earningsDistributionData }: EarningsDistributionChartProps) {
+  const isEmpty = data.length === 0;
+
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <CardContent className="p-6">
@@ -39,25 +41,31 @@ function EarningsDistributionChart({ data = earningsDistributionData }: Earnings
           </p>
         </div>
 
-        <ChartContainer config={distributionChartConfig} className="mt-6 h-[220px] w-full">
-          <LineChart data={data} margin={{ left: 0, right: 0, top: 8 }}>
-            <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="tier"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
-            />
-            <YAxis hide />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-            <Line
-              type="monotone"
-              dataKey="amount"
-              stroke="var(--primary)"
-              strokeWidth={3}
-              dot={{ r: 4, fill: "var(--primary)", strokeWidth: 0 }}
-            />
-          </LineChart>
+        <ChartContainer config={distributionChartConfig} className="relative mt-6 h-[220px] w-full">
+          {isEmpty ? (
+            <div className="flex h-full items-end border-b border-border pb-4">
+              <p className="w-full text-center text-[10px] font-medium text-slate-400">Graph is empty</p>
+            </div>
+          ) : (
+            <LineChart data={data} margin={{ left: 0, right: 0, top: 8 }}>
+              <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
+              <XAxis
+                dataKey="tier"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+              />
+              <YAxis hide />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+              <Line
+                type="monotone"
+                dataKey="amount"
+                stroke="var(--primary)"
+                strokeWidth={3}
+                dot={{ r: 4, fill: "var(--primary)", strokeWidth: 0 }}
+              />
+            </LineChart>
+          )}
         </ChartContainer>
       </CardContent>
     </Card>

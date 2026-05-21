@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -9,18 +8,27 @@ import {
 import { monthlyPayoutData } from "@/constants/payouts";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import type { ProviderPayoutTrendRange } from "@/types/provider-payouts";
 
 type MonthlyPayoutChartProps = {
   data?: {
     month: string;
     amount: number;
   }[];
-  rangeLabel?: string;
+  range: ProviderPayoutTrendRange;
+  onRangeChange: (range: ProviderPayoutTrendRange) => void;
 };
 
 const trendChartConfig = {
@@ -30,19 +38,30 @@ const trendChartConfig = {
   },
 } satisfies ChartConfig;
 
-function MonthlyPayoutChart({ data = monthlyPayoutData, rangeLabel = "Last 6 Months" }: MonthlyPayoutChartProps) {
+const trendRanges: { label: string; value: ProviderPayoutTrendRange }[] = [
+  { label: "Last 3 Months", value: "LAST_3_MONTHS" },
+  { label: "Last 6 Months", value: "LAST_6_MONTHS" },
+  { label: "Last 12 Months", value: "LAST_12_MONTHS" },
+];
+
+function MonthlyPayoutChart({ data = monthlyPayoutData, range, onRangeChange }: MonthlyPayoutChartProps) {
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <CardContent className="p-6">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-sm font-semibold ">Monthly Payout Trend</h2>
-          <button
-            type="button"
-            className="flex h-8 items-center gap-2 rounded-full bg-slate-50 px-4 text-[10px] text-slate-500"
-          >
-            {rangeLabel}
-            <ChevronDown className="size-3" strokeWidth={2.5} />
-          </button>
+          <Select value={range} onValueChange={onRangeChange}>
+            <SelectTrigger className="h-8 w-[130px] rounded-full border-0 bg-slate-50 px-4 text-[10px] text-slate-500 shadow-none">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {trendRanges.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <ChartContainer config={trendChartConfig} className="mt-6 h-[230px] w-full">
