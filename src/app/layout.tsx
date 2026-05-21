@@ -2,13 +2,10 @@ import type { Metadata } from "next";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/constants/site";
 import "./globals.css";
 import { poppins } from "@/lib/fonts";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { AuthGuard } from "@/components/auth/auth-guard";
 import { Toaster } from "sonner";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import TopLoader from "@/components/ui/top-loader";
 
 export const metadata: Metadata = {
   title: SITE_NAME,
@@ -23,7 +20,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full scroll-smooth antialiased", "font-sans", geist.variable)}
+      className="h-full scroll-smooth antialiased"
       suppressHydrationWarning
     >
       <body className={`min-h-full ${poppins.className}`}>
@@ -31,6 +28,7 @@ export default function RootLayout({
           <AuthGuard>{children}</AuthGuard>
         </QueryProvider>
         <Toaster richColors position="top-right" />
+        <TopLoader />
       </body>
     </html>
   );

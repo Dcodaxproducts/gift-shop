@@ -94,12 +94,12 @@ export function ProviderDetailsPage() {
     <div className="space-y-5">
       <PageHeader
         title={data?.businessName || "Provider Profile"}
-        actions={
-          <Button>
-            <ListFilter className="size-3.5" />
-            Filter
-          </Button>
-        }
+        // actions={
+        //   <Button>
+        //     <ListFilter className="size-3.5" />
+        //     Filter
+        //   </Button>
+        // }
       />
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">

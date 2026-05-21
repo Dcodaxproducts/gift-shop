@@ -74,8 +74,6 @@ export function GiftsPage() {
 
       <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
 
-      {/* <GiftCard /> */}
-
       <FilterSection
         searchPlaceholder="Search gifts by name, ID, or provider..."
         searchValue={search}

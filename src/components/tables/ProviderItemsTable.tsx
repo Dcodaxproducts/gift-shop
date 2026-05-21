@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { ListFilter, Search, ShieldCheck } from "lucide-react";
+import { Search, ShieldCheck } from "lucide-react";
 import { DataTable } from "@/components/tables/data-table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { StatusBadge } from "@/utils/status";
@@ -43,10 +42,10 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button variant="outline" className="col-span-2 h-11 sm:col-span-1 sm:w-11 sm:px-0">
+          {/* <Button variant="outline" className="col-span-2 h-11 sm:col-span-1 sm:w-11 sm:px-0">
             <ListFilter className="size-4" />
             <span className="sm:hidden">More Filters</span>
-          </Button>
+          </Button> */}
         </div>
       </div>
 

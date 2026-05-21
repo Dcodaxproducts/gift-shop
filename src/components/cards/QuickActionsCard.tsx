@@ -46,12 +46,12 @@ function QuickActionsCard({ provider }: { provider?: any }) {
       status: "SUSPEND",
       className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
     },
-    {
-      label: "Message Provider",
-      icon: "message" as const,
-      status: "UPDATE_STATUS",
-      className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
-    }
+    // {
+    //   label: "Message Provider",
+    //   icon: "message" as const,
+    //   status: "UPDATE_STATUS",
+    //   className: "bg-slate-100 text-slate-900 shadow-none hover:bg-slate-200",
+    // }
   ], [provider?.status, isCurrentlySuspended]);
 
   const handleActionClick = (status: string) => {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { CreditCard, Gift, History, KeyRound, Mail, Pencil, RotateCcw, ShieldAlert, UserRound } from "lucide-react";
+import { CreditCard, Gift, History, KeyRound, Pencil, RotateCcw, ShieldAlert, UserRound } from "lucide-react";
 import { EditUserDialog, SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -101,7 +101,6 @@ export function UserDetailsPage() {
   const params = useParams<{ id: string }>();
   const userId = params?.id ?? "";
   const { data: user, isLoading } = useUser(userId);
-  console.log(user);
 
   const suspendMutation = useSuspendUser();
   const unsuspendMutation = useUnsuspendUser();
@@ -230,10 +229,10 @@ export function UserDetailsPage() {
                 <ShieldAlert className="size-3 shrink-0" />
                 <span>{isSuspended ? "Unsuspend User" : "Suspend User"}</span>
               </Button>
-              <Button className="h-12 w-full justify-center gap-2 rounded-lg bg-slate-950 px-3 text-[11px] leading-none shadow-none hover:bg-slate-800">
+              {/* <Button className="h-12 w-full justify-center gap-2 rounded-lg bg-slate-950 px-3 text-[11px] leading-none shadow-none hover:bg-slate-800">
                 <Mail className="size-3 shrink-0" />
                 <span className="text-center leading-3">Send Notification</span>
-              </Button>
+              </Button> */}
             </CardContent>
           </Card>
 
@@ -280,7 +279,12 @@ export function UserDetailsPage() {
         </aside>
       </section>
 
-      <EditUserDialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} user={user} />
+      <EditUserDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        user={user}
+      />
+
       <SuspendUserDialog
         open={isSuspendDialogOpen}
         onOpenChange={setIsSuspendDialogOpen}
