@@ -76,7 +76,7 @@ function ProviderStatCard({
           </span>
         </div>
         <p className="mt-5 text-[11px] font-medium text-slate-400">{label}</p>
-        <p className="mt-1 text-[28px] font-semibold leading-none tracking-tight text-slate-950">
+        <p className="mt-1 text-[28px] font-semibold leading-none tracking-tight ">
           {value}
         </p>
       </CardContent>

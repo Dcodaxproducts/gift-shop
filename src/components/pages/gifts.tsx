@@ -118,7 +118,7 @@ export function GiftsPage() {
                 <span className="flex size-11 items-center justify-center rounded-2xl bg-primary text-white shadow-sm">
                   <Gift className="size-4" />
                 </span>
-                <span className="max-w-[130px] text-xs font-semibold leading-4 text-slate-950">
+                <span className="max-w-[130px] text-xs font-semibold leading-4 ">
                   {item.name}
                 </span>
               </div>

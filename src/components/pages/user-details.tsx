@@ -68,7 +68,7 @@ function TabsBar({ activeTab, onTabChange }: { activeTab: UserDetailTab; onTabCh
 function OverviewTab() {
   return (
     <CardContent className="px-5 pb-5 pt-4">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-950">Recent Activity</h2>
+      <h2 className="text-xs font-semibold uppercase tracking-wide ">Recent Activity</h2>
       <div className="mt-4 space-y-4">
         {recentActivities.map((activity) => (
           <div key={activity.title} className="grid grid-cols-[30px_1fr_auto] items-start gap-3">
@@ -175,7 +175,7 @@ export function UserDetailsPage() {
                 {isLoading ? (
                   <SkeletonBar className="h-5 w-40" />
                 ) : (
-                  <h2 className="text-lg font-semibold text-slate-950 capitalize">{fullName || PLACEHOLDER}</h2>
+                  <h2 className="text-lg font-semibold  capitalize">{fullName || PLACEHOLDER}</h2>
                 )}
                 <p className="mt-0.5 text-xs text-slate-500">{subscriptionTagline}</p>
                 <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 lg:grid-cols-3">
@@ -198,7 +198,7 @@ export function UserDetailsPage() {
             {activeTab === "overview" ? <OverviewTab /> : null}
             {activeTab !== "overview" ? (
               <CardContent className="px-5 py-5">
-                <p className="text-sm font-semibold text-slate-950">{tabs.find((tab) => tab.id === activeTab)?.label}</p>
+                <p className="text-sm font-semibold ">{tabs.find((tab) => tab.id === activeTab)?.label}</p>
                 <p className="mt-2 text-xs text-slate-500">Detailed history will appear here.</p>
               </CardContent>
             ) : null}
@@ -208,7 +208,7 @@ export function UserDetailsPage() {
         <aside className="space-y-5 xl:w-[230px]">
           <Card className="rounded-xl border border-border bg-white shadow-sm">
             <CardHeader className="p-4 pb-3">
-              <CardTitle className="text-[12px] font-semibold text-slate-950">Account Actions</CardTitle>
+              <CardTitle className="text-[12px] font-semibold ">Account Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 px-4 pb-4">
               <Button
@@ -243,11 +243,11 @@ export function UserDetailsPage() {
             <CardContent className="space-y-3 px-4 pb-4">
               <div className="flex justify-between gap-3 text-[10px]">
                 <span className="text-slate-500">Plan Type</span>
-                <span className="text-right font-semibold text-slate-950">{subscriptionPlanType}</span>
+                <span className="text-right font-semibold ">{subscriptionPlanType}</span>
               </div>
               <div className="flex justify-between gap-3 text-[10px]">
                 <span className="text-slate-500">Renewal Date</span>
-                <span className="text-right font-semibold text-slate-950">{subscriptionRenewal}</span>
+                <span className="text-right font-semibold ">{subscriptionRenewal}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-white">
                 <div
@@ -263,16 +263,16 @@ export function UserDetailsPage() {
 
           <Card className="rounded-xl border border-border bg-white shadow-sm">
             <CardHeader className="p-4 pb-3">
-              <CardTitle className="text-[12px] font-semibold text-slate-950">Quick Stats</CardTitle>
+              <CardTitle className="text-[12px] font-semibold ">Quick Stats</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-3 px-4 pb-4">
               <div className="rounded-xl bg-slate-50 px-2 py-3 text-center">
                 <p className="text-[9px] font-semibold uppercase text-slate-400">Orders</p>
-                <p className="mt-1 text-sm font-semibold text-slate-950">{ordersCount}</p>
+                <p className="mt-1 text-sm font-semibold ">{ordersCount}</p>
               </div>
               <div className="rounded-xl bg-slate-50 px-2 py-3 text-center">
                 <p className="text-[9px] font-semibold uppercase text-slate-400">Spent</p>
-                <p className="mt-1 text-sm font-semibold text-slate-950">${totalSpent}</p>
+                <p className="mt-1 text-sm font-semibold ">${totalSpent}</p>
               </div>
             </CardContent>
           </Card>

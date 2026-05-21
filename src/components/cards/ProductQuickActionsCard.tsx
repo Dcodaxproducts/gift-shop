@@ -26,7 +26,7 @@ export function ProductQuickActionsCard({
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <CardContent className="p-0">
-        <h2 className="text-sm font-semibold text-slate-950">Quick Actions</h2>
+        <h2 className="text-sm font-semibold ">Quick Actions</h2>
         <div className="mt-4 space-y-3">
           {actions.map((action) => {
             const Icon = action.icon;

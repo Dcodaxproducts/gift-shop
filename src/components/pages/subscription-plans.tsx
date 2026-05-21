@@ -50,9 +50,9 @@ function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
           </span>
         </div>
 
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">{plan.name}</h2>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight ">{plan.name}</h2>
         <div className="mt-8 flex items-end gap-1">
-          <p className="text-[40px] font-semibold leading-none tracking-tight text-slate-950">{plan.price}</p>
+          <p className="text-[40px] font-semibold leading-none tracking-tight ">{plan.price}</p>
           <span className="pb-1 text-sm font-medium text-slate-400">{plan.period}</span>
         </div>
 
@@ -84,7 +84,7 @@ function PlanManagementPanel() {
       <CardContent className="p-8">
         <div className="flex items-center gap-2.5">
           <Settings2 className="size-5 text-primary" strokeWidth={2.4} />
-          <h2 className="text-xl font-semibold tracking-tight text-slate-950">Plan Management Actions</h2>
+          <h2 className="text-xl font-semibold tracking-tight ">Plan Management Actions</h2>
         </div>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {planManagementActions.map((action) => {
@@ -97,7 +97,7 @@ function PlanManagementPanel() {
                 className="rounded-2xl bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Icon className="size-5 text-primary" strokeWidth={2.4} />
-                <h3 className="mt-4 text-[13px] font-semibold leading-4 text-slate-950">{action.title}</h3>
+                <h3 className="mt-4 text-[13px] font-semibold leading-4 ">{action.title}</h3>
                 <p className="mt-1 text-[11px] font-medium leading-4 text-slate-400">{action.description}</p>
               </button>
             );

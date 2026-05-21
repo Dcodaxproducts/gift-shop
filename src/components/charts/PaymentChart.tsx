@@ -6,7 +6,7 @@ export function PaymentDistributionChart() {
   return (
     <Card className="rounded-2xl border border-border bg-white shadow-sm">
       <CardHeader className="p-5 pb-0">
-        <CardTitle className="text-base font-semibold text-slate-950">
+        <CardTitle className="text-base font-semibold ">
           Gift vs Payment
         </CardTitle>
         <p className="mt-1 text-xs font-medium text-slate-400">
@@ -16,7 +16,7 @@ export function PaymentDistributionChart() {
       <CardContent className="p-5">
         <div className="mx-auto mb-7 mt-6 flex size-44 items-center justify-center rounded-full bg-[conic-gradient(var(--primary)_0_65%,#e2e8f0_65%_100%)]">
           <div className="flex size-32 flex-col items-center justify-center rounded-full bg-white text-center">
-            <span className="text-3xl font-semibold text-slate-950">65%</span>
+            <span className="text-3xl font-semibold ">65%</span>
             <span className="mt-1 text-[10px] font-semibold uppercase text-slate-400">
               Gift Usage
             </span>
@@ -32,7 +32,7 @@ export function PaymentDistributionChart() {
                 )}
               />
               <span className="text-slate-500">{item.label}</span>
-              <span className="ml-auto font-semibold text-slate-950">{item.value}%</span>
+              <span className="ml-auto font-semibold ">{item.value}%</span>
             </div>
           ))}
         </div>

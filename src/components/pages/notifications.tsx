@@ -88,7 +88,7 @@ function SectionHeading({ icon: Icon, title }: { icon: React.ElementType; title:
       <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
         <Icon className="size-4" strokeWidth={2.5} />
       </span>
-      <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
+      <h2 className="text-sm font-semibold ">{title}</h2>
     </div>
   );
 }
@@ -105,7 +105,7 @@ function SelectableCard({ active, icon: Icon, title, description }: SelectableCa
       <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary">
         <Icon className="size-4" strokeWidth={2.5} />
       </span>
-      <span className="mt-3 block text-xs font-semibold text-slate-950">{title}</span>
+      <span className="mt-3 block text-xs font-semibold ">{title}</span>
       <span className="mt-1 block text-[10px] font-medium leading-4 text-slate-500">{description}</span>
       <span className={cn("absolute right-4 top-4 size-4 rounded-full border", active ? "border-primary bg-primary" : "border-slate-300")}>
         {active ? <Check className="size-3 text-white" strokeWidth={3} /> : null}
@@ -134,7 +134,7 @@ function MobilePreview() {
   return (
     <FormCard className="bg-primary/5">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-950">Live Preview</h2>
+        <h2 className="text-sm font-semibold ">Live Preview</h2>
         <div className="flex items-center gap-3">
           <PhoneIcon className="size-5 text-primary" />
           <DesktopIcon className="size-5 text-slate-300" />
@@ -162,7 +162,7 @@ function MobilePreview() {
                   </p>
                   <span className="text-[8px] font-medium text-slate-400">Now</span>
                 </div>
-                <p className="mt-1 text-[10px] font-semibold text-slate-950">
+                <p className="mt-1 text-[10px] font-semibold ">
                   Maintenance Notice
                 </p>
                 <p className="mt-0.5 line-clamp-2 text-[8px] font-medium leading-3 text-slate-500">
@@ -185,7 +185,7 @@ function ContentStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="grid gap-7 xl:grid-cols-[minmax(0,1fr)_400px]">
       <FormCard>
-        <h2 className="text-lg font-semibold text-slate-950">Notification Content</h2>
+        <h2 className="text-lg font-semibold ">Notification Content</h2>
         <div className="mt-6 space-y-5">
           <div className="space-y-2">
             <label htmlFor="notification-title" className="text-xs font-semibold text-slate-700">Notification Title</label>
@@ -206,7 +206,7 @@ function ContentStep({ onNext }: { onNext: () => void }) {
           </div>
         </div>
         <div className="mt-9 flex items-center justify-between">
-          <Button variant="ghost" className="text-slate-700 hover:text-slate-950">Save Draft</Button>
+          <Button variant="ghost" className="text-slate-700 hover:">Save Draft</Button>
           <Button onClick={onNext}>
             Next: Targeting
           </Button>
@@ -278,7 +278,7 @@ function TargetingStep({ onBack, onNext }: { onBack: () => void; onNext: () => v
       <div className="space-y-5">
         <EstimatedReachCard />
         <FormCard className="bg-primary/5">
-          <h3 className="text-sm font-semibold text-slate-950">Targeting Logic</h3>
+          <h3 className="text-sm font-semibold ">Targeting Logic</h3>
           <ul className="mt-4 space-y-3 text-[11px] font-medium text-slate-500">
             <li className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary" /> Excluding unsubscribed users</li>
             <li className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary" /> Only verified email addresses</li>
@@ -301,11 +301,11 @@ function ScheduleOption({ active, icon: Icon, title, description }: SelectableCa
 function FinalSummary() {
   return (
     <FormCard className="bg-primary/5">
-      <h2 className="text-sm font-semibold text-slate-950">Final Summary</h2>
+      <h2 className="text-sm font-semibold ">Final Summary</h2>
       <div className="mt-5 rounded-2xl bg-white p-4">
         <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">Content Preview</p>
         <div className="mt-3 h-[120px] rounded-xl bg-linear-to-br from-primary/20 via-primary/10 to-primary" />
-        <h3 className="mt-3 text-xs font-semibold text-slate-950">Summer Sale Launch Event</h3>
+        <h3 className="mt-3 text-xs font-semibold ">Summer Sale Launch Event</h3>
         <p className="mt-1 line-clamp-2 text-[10px] font-medium leading-4 text-slate-500">Get ready for the biggest event of the season. Exclusive discounts inside f...</p>
       </div>
       <div className="mt-6 space-y-5">
@@ -329,7 +329,7 @@ function SummaryMetric({ icon: Icon, label, value, badge, helper }: { icon: Reac
       <Icon className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={2.4} />
       <div>
         <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="mt-1 text-xs font-semibold text-slate-950">{value}</p>
+        <p className="mt-1 text-xs font-semibold ">{value}</p>
         {badge ? <span className="mt-2 inline-flex rounded-full bg-primary/10 px-2 py-1 text-[9px] font-semibold text-primary">{badge}</span> : null}
         {helper ? <p className="mt-1 text-[9px] font-medium text-slate-400">{helper}</p> : null}
       </div>
@@ -360,7 +360,7 @@ function ScheduleStep({ onBack, onNext }: { onBack: () => void; onNext: () => vo
                 <RepeatIcon className="size-5" strokeWidth={2.4} />
               </span>
               <div>
-                <p className="text-sm font-semibold text-slate-950">Recurring Broadcast</p>
+                <p className="text-sm font-semibold ">Recurring Broadcast</p>
                 <p className="mt-1 text-[11px] font-medium text-slate-500">Automate this broadcast on a repeat cycle.</p>
               </div>
             </div>
@@ -399,7 +399,7 @@ function DateField({ label, value }: { label: string; value: string }) {
 function StepFooter({ onBack, onNext, nextLabel }: { onBack: () => void; onNext: () => void; nextLabel: string }) {
   return (
     <div className="mt-9 flex items-center justify-between">
-      <Button variant="ghost" className="text-slate-700 hover:text-slate-950" onClick={onBack}>
+      <Button variant="ghost" className="text-slate-700 hover:" onClick={onBack}>
         <ArrowLeft className="size-4" />
         Back
       </Button>
@@ -422,7 +422,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
           <div className="mx-auto flex size-24 rotate-12 items-center justify-center rounded-3xl bg-primary text-white shadow-xl shadow-primary/25">
             <SuccessIcon className="size-12 -rotate-12" strokeWidth={2.8} />
           </div>
-          <h2 className="mx-auto mt-8 max-w-[430px] text-[30px] font-semibold leading-tight tracking-tight text-slate-950">Broadcast Successfully Scheduled!</h2>
+          <h2 className="mx-auto mt-8 max-w-[430px] text-[30px] font-semibold leading-tight tracking-tight ">Broadcast Successfully Scheduled!</h2>
           <p className="mx-auto mt-5 max-w-[420px] text-sm font-medium leading-6 text-slate-500">
             Your campaign has been verified and added to the processing queue. We&apos;ll handle the delivery while you track the progress in real-time.
           </p>
@@ -449,7 +449,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
                   <div className="text-center">
                     <Icon className="mx-auto size-5 text-primary" />
                     <p className="mt-3 text-[10px] font-medium text-slate-400">{item.label}</p>
-                    <p className="mt-1 text-xs font-semibold text-slate-950">{item.value}</p>
+                    <p className="mt-1 text-xs font-semibold ">{item.value}</p>
                   </div>
                 </FormCard>
               );

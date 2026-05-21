@@ -32,7 +32,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
   return (
     <div className="border border-b-0 border-slate-200 rounded-2xl">
       <div className="flex flex-col gap-3 rounded-t-2xl bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-sm font-semibold text-slate-950">Listed Items</h2>
+        <h2 className="text-sm font-semibold ">Listed Items</h2>
         <div className="flex items-center gap-2">
           <Input
             type="search"
@@ -87,14 +87,14 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
                     <ShieldCheck className="size-3.5" strokeWidth={2.5} />
                   </span>
                 )}
-                <span className="text-xs font-semibold text-slate-950">{item.name}</span>
+                <span className="text-xs font-semibold ">{item.name}</span>
               </div>
             </TableCell>
             <TableCell className="text-xs font-semibold text-primary">
               {item.currency} {item.price}
             </TableCell>
             <TableCell>
-              <div className="flex items-center gap-2 text-[10px] font-semibold text-slate-950">
+              <div className="flex items-center gap-2 text-[10px] font-semibold ">
                 <span>{item.salesCount} units</span>
                 <span>{item.salesPercentage}%</span>
               </div>

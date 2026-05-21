@@ -31,7 +31,7 @@ function EarningsDistributionChart() {
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <CardContent className="p-6">
         <div>
-          <h2 className="text-sm font-semibold text-slate-950">Earnings Distribution</h2>
+          <h2 className="text-sm font-semibold ">Earnings Distribution</h2>
           <p className="mt-1 text-[10px] font-medium text-slate-400">
             Breakdown by Provider Tier
           </p>

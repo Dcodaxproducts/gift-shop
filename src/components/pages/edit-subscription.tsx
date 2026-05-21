@@ -23,7 +23,7 @@ function SectionTitle({ icon: Icon, title }: { icon: React.ElementType; title: s
   return (
     <div className="flex items-center gap-2.5">
       <Icon className="size-4 text-primary" strokeWidth={2.4} />
-      <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
+      <h2 className="text-sm font-semibold ">{title}</h2>
     </div>
   );
 }
@@ -37,7 +37,7 @@ function StatusCard() {
             <BadgeCheck className="size-4" strokeWidth={2.4} />
           </span>
           <div>
-            <p className="text-sm font-semibold text-slate-950">Plan Status</p>
+            <p className="text-sm font-semibold ">Plan Status</p>
             <p className="mt-0.5 text-[11px] font-medium text-slate-500">
               Current status is{" "}
               <span className="font-semibold text-emerald-500">Active</span>
@@ -55,7 +55,7 @@ function SubscribersCard() {
     <SectionCard>
       <p className="text-[11px] font-medium text-slate-500">Active Subscribers</p>
       <div className="mt-2 flex items-end gap-2">
-        <p className="text-[28px] font-semibold leading-none tracking-tight text-slate-950">
+        <p className="text-[28px] font-semibold leading-none tracking-tight ">
           {editSubscriptionPlan.subscribers}
         </p>
         <span className="pb-1 text-[11px] font-semibold text-emerald-500">
@@ -185,7 +185,7 @@ function VisibilityCard() {
 function SaveChangesCard() {
   return (
     <SectionCard className="bg-primary/5">
-      <h2 className="text-sm font-semibold text-slate-950">Save Changes</h2>
+      <h2 className="text-sm font-semibold ">Save Changes</h2>
       <p className="mt-2 text-[11px] leading-5 text-slate-500">
         Updating this plan will affect any current 1,240 subscribers at their next billing cycle.
       </p>

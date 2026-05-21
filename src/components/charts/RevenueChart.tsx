@@ -15,7 +15,7 @@ export function RevenueBarChart() {
     <Card className="rounded-2xl border border-border bg-white shadow-sm">
       <CardHeader className="flex flex-row items-start justify-between gap-4 p-5 pb-0">
         <div>
-          <CardTitle className="text-base font-semibold text-slate-950">
+          <CardTitle className="text-base font-semibold ">
             Monthly Revenue Trends
           </CardTitle>
           <p className="mt-1 text-xs font-medium text-slate-400">

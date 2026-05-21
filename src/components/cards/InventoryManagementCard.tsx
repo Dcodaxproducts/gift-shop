@@ -80,7 +80,7 @@ export function InventoryManagementCard() {
     <Card className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <CardContent className="p-0">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-sm font-semibold text-slate-950">
+          <h2 className="text-sm font-semibold ">
             Inventory Management
           </h2>
           <div className="flex items-center gap-2.5">

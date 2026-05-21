@@ -109,7 +109,7 @@ export function StaffUsersPage() {
         }
         row={(item: StaffMember) => (
           <>
-            <TableCell className="font-semibold text-slate-950">
+            <TableCell className="font-semibold ">
               {item.fullName || `${item.firstName} ${item.lastName}`}
             </TableCell>
             <TableCell className="text-slate-500">{item.email}</TableCell>

@@ -31,7 +31,7 @@ function MonthlyPayoutChart() {
         <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
             <CardContent className="p-6">
                 <div className="flex items-start justify-between gap-4">
-                    <h2 className="text-sm font-semibold text-slate-950">Monthly Payout Trend</h2>
+                    <h2 className="text-sm font-semibold ">Monthly Payout Trend</h2>
                     <button
                         type="button"
                         className="flex h-8 items-center gap-2 rounded-full bg-slate-50 px-4 text-[10px] text-slate-500"

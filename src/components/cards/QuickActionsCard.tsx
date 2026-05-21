@@ -66,7 +66,7 @@ function QuickActionsCard({ provider }: { provider?: any }) {
     <>
       <Card>
         <CardContent className="p-5">
-          <h2 className="text-sm font-semibold text-slate-950">Quick Actions</h2>
+          <h2 className="text-sm font-semibold ">Quick Actions</h2>
           <div className="mt-5 space-y-3">
             {dynamicActions.map((action) => {
               if (action.hide) return null;

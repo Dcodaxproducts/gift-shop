@@ -57,7 +57,7 @@ function SectionHeader({ icon: Icon, title, description }: SectionHeaderProps) {
         <Icon className="size-4" strokeWidth={2.25} />
       </span>
       <div>
-        <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
+        <h2 className="text-sm font-semibold ">{title}</h2>
         <p className="mt-0.5 text-[11px] text-slate-400">{description}</p>
       </div>
     </div>
@@ -133,7 +133,7 @@ export function ProviderFormPage({
       <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <CardContent className="p-0">
           <div>
-            <h2 className="text-sm font-semibold text-slate-950">
+            <h2 className="text-sm font-semibold ">
               Provider Branding
             </h2>
             <p className="mt-1 text-[11px] text-slate-400">

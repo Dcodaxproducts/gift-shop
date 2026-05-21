@@ -21,7 +21,7 @@ import { Switch } from "@/components/ui/switch";
 
 function SectionTitle({ icon: Icon, title }: { icon: typeof Shield; title: string }) {
   return (
-    <CardTitle className="flex items-center gap-2 text-sm font-semibold text-slate-950">
+    <CardTitle className="flex items-center gap-2 text-sm font-semibold ">
       <span className="flex size-5 items-center justify-center rounded-full bg-primary/10 text-primary">
         <Icon className="size-3.5" strokeWidth={2.25} />
       </span>

@@ -34,13 +34,13 @@ function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <CardContent className="p-6">
+    <Card>
+      <CardContent>
         <div className="flex items-center gap-2.5">
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Icon className="size-4" strokeWidth={2.25} />
           </span>
-          <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
+          <h2 className="text-sm font-semibold">{title}</h2>
         </div>
         <div className="mt-5">{children}</div>
       </CardContent>

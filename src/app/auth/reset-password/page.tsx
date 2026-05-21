@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ResetPasswordPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-surface px-6 py-10 text-slate-950">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-surface px-6 py-10 ">
       <div className="mb-8 flex size-11 items-center justify-center rounded-xl bg-primary text-white shadow-xl shadow-primary/30">
         <KeyRound className="size-5" />
       </div>

@@ -16,14 +16,14 @@ function BrandMark() {
       <div className="flex size-8 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/30">
         <LayoutGrid className="size-4" />
       </div>
-      <span className="text-lg font-semibold text-slate-950">Gifting</span>
+      <span className="text-lg font-semibold ">Gifting</span>
     </div>
   );
 }
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-white text-slate-950">
+    <main className="min-h-screen bg-white ">
       <section className="grid min-h-screen lg:grid-cols-2">
         <aside className="relative hidden overflow-hidden bg-surface px-12 py-12 lg:flex lg:flex-col">
           <BrandMark />
@@ -41,7 +41,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-8 max-w-sm text-center">
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+              <h2 className="text-2xl font-semibold tracking-tight ">
                 Centralized Command
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-500">

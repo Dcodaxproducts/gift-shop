@@ -20,7 +20,7 @@ function StepTitle({ number, title }: { number: string; title: string }) {
       <span className="flex size-7 items-center justify-center rounded-full bg-[#f3e8ff] text-[11px] font-semibold text-primary">
         {number}
       </span>
-      <h2 className="text-sm font-semibold text-slate-950">{title}</h2>
+      <h2 className="text-sm font-semibold ">{title}</h2>
     </div>
   );
 }
@@ -49,7 +49,7 @@ function FeatureToggle({ feature }: { feature: SubscriptionFeature }) {
           <Icon className="size-4" strokeWidth={2.2} />
         </span>
         <div>
-          <p className="text-[12px] font-semibold text-slate-950">{feature.title}</p>
+          <p className="text-[12px] font-semibold ">{feature.title}</p>
           <p className="mt-0.5 text-[10px] font-medium leading-4 text-slate-400">{feature.description}</p>
         </div>
       </div>

@@ -117,7 +117,7 @@ export function EditStaffPage() {
             <div className="flex items-center gap-2.5">
               <UserRound className="size-4 text-primary" strokeWidth={2.5} />
               <div>
-                <h2 className="text-sm font-semibold text-slate-950">Profile Details</h2>
+                <h2 className="text-sm font-semibold ">Profile Details</h2>
                 <p className="mt-0.5 text-[11px] text-slate-400">
                   Update staff&apos;s personal information.
                 </p>

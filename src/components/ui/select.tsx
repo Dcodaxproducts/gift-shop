@@ -16,7 +16,7 @@ export function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex h-9 items-center justify-between gap-2 rounded-[16px] bg-slate-50 px-3 text-sm text-slate-500 outline-none transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-9 items-center justify-between gap-2 rounded-[16px] bg-slate-50 border border-slate-200 px-3 text-sm text-slate-500 outline-none transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
@@ -26,20 +26,6 @@ export function SelectTrigger({
         <ChevronDown className="size-3.5 text-slate-400" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
-  );
-}
-
-function SelectScrollUpButton({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>) {
-  return (
-    <SelectPrimitive.ScrollUpButton
-      className={cn("flex cursor-default items-center justify-center py-1", className)}
-      {...props}
-    >
-      <ChevronUp className="size-3.5 text-slate-400" />
-    </SelectPrimitive.ScrollUpButton>
   );
 }
 
@@ -68,7 +54,7 @@ export function SelectContent({
       <SelectPrimitive.Content
         position={position}
         className={cn(
-          "relative z-50 min-w-[var(--radix-select-trigger-width)] rounded-[16px] border border-border bg-white p-1 text-slate-700 shadow-xl shadow-slate-200/70",
+          "relative z-50 min-w-[var(--radix-select-trigger-width)] rounded-[16px] border border-slate-200 bg-white p-1 text-slate-700 shadow-xl shadow-slate-200/70",
           className,
         )}
         {...props}

@@ -25,7 +25,7 @@ export function ProductDetailsPage() {
     <div className="space-y-5">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-950">
+          <h1 className="text-2xl font-semibold tracking-tight ">
             {productMetadata.name}
           </h1>
           <p className="mt-1 text-xs text-slate-500">Product ID: {productId}</p>

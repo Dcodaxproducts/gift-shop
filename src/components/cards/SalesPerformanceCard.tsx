@@ -23,7 +23,7 @@ export function SalesPerformanceCard() {
       <CardContent className="p-0">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-sm font-semibold text-slate-950">
+            <h2 className="text-sm font-semibold ">
               Sales Performance
             </h2>
             <p className="mt-1 text-[11px] text-slate-400">

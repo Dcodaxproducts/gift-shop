@@ -21,7 +21,7 @@ export function ResetPasswordForm() {
   return (
     <Card className="w-full max-w-[400px] border border-border bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
       <CardHeader className="mb-7">
-        <CardTitle className="text-[26px] leading-tight text-slate-950">
+        <CardTitle className="text-[26px] leading-tight ">
           Reset Password
         </CardTitle>
         <CardDescription className="text-[13px] leading-5 text-slate-500">

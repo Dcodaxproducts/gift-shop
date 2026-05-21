@@ -40,7 +40,7 @@ export function ForgotPasswordForm() {
   return (
     <Card className="w-full max-w-[395px] rounded-3xl bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
       <CardHeader className="mb-8 text-center">
-        <CardTitle className="text-[25px] leading-tight text-slate-950">
+        <CardTitle className="text-[25px] leading-tight ">
           Forgot Password
         </CardTitle>
         <CardDescription className="text-[13px] leading-5 text-slate-500">

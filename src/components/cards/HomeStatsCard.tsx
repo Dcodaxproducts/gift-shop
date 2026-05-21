@@ -31,7 +31,7 @@ export function HomeStatsCard() {
               <div className="mt-4">
                 <p className="text-xs font-medium text-slate-500">{stat.title}</p>
                 <div className="mt-1 flex items-end justify-between gap-2">
-                  <p className="text-2xl font-semibold tracking-tight text-slate-950">
+                  <p className="text-2xl font-semibold tracking-tight ">
                     {stat.value}
                   </p>
                 </div>

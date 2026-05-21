@@ -77,7 +77,7 @@ export function GiftCategoriesPage() {
                   )}
                 </span>
 
-                <span className="text-xs font-semibold text-slate-950 capitalize">
+                <span className="text-xs font-semibold  capitalize">
                   {item.name}
                 </span>
               </div>

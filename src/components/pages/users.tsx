@@ -132,7 +132,7 @@ export function UsersPage() {
                   <span className="flex bg-primary/10 text-primary size-10 items-center justify-center rounded-2xl text-xs font-semibold">
                     {getInitials(fullName)}
                   </span>
-                  <span className="text-xs font-semibold text-slate-950 capitalize">{fullName}</span>
+                  <span className="text-xs font-semibold  capitalize">{fullName}</span>
                 </div>
               </TableCell>
               <TableCell>
@@ -142,7 +142,7 @@ export function UsersPage() {
                 </div>
               </TableCell>
               <TableCell className="text-xs text-slate-500">{formatDate(item.createdAt)}</TableCell>
-              <TableCell className="text-xs font-semibold text-slate-950">${item.totalSpent}</TableCell>
+              <TableCell className="text-xs font-semibold ">${item.totalSpent}</TableCell>
               <TableCell>
                 <StatusBadge status={item.status} />
               </TableCell>

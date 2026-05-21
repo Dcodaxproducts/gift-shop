@@ -16,7 +16,7 @@ export function ProviderPerformanceTable() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between p-5 pb-4">
-        <CardTitle className="text-base font-semibold text-slate-950">
+        <CardTitle className="text-base font-semibold ">
           Provider Performance
         </CardTitle>
         <Button variant="ghost" className="text-primary">
