@@ -76,6 +76,20 @@ export function GiftInfoForm({
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="gift-price">Price ($)</Label>
+              <div className="relative">
+                <Input
+                  id="gift-price"
+                  type="number"
+                  min="1"
+                  placeholder="0"
+                  errorMessage={errors.price?.message}
+                  {...register("price", { valueAsNumber: true })}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="gift-description">Description</Label>
               <Textarea
                 id="gift-description"

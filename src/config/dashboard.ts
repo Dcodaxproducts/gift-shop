@@ -44,13 +44,8 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       { title: "Transaction Monitoring", href: "/transactions", icon: "chart-line", permissionKey: "transactions" }, // Added key
       { title: "Provider Payouts", href: "/payouts", icon: "credit-card", permissionKey: "payouts" },
-      { title: "Refund", href: "/refund", icon: "rotate-ccw", permissionKey: "refunds" },
-    ],
-  },
-  {
-    title: "Disputes",
-    items: [
-      { title: "Dispute Management", href: "/dispute-management", icon: "chart-line", permissionKey: "disputes" },
+      { title: "Dispute & Refund", href: "/disputes-refund", icon: "chart-line", permissionKey: "disputes" },
+      { title: "Provider Dispute", href: "/provider-dispute", icon: "rotate-ccw", permissionKey: "refunds" },
     ],
   },
   {

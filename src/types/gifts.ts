@@ -74,10 +74,11 @@ export type CreateGiftPayload = {
   name: string;
   description: string;
   categoryId: string;
+  price: number;
   providerId: string;
   imageUrls: string[];
   isPublished: boolean;
-  variants: {
+  variants?: {
     name: string;
     price: number;
   }[];

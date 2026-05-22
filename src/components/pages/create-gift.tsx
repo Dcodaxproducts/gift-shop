@@ -65,10 +65,11 @@ export function CreateGiftPage() {
       name: "",
       description: "",
       categoryId: "",
+      price: 1,
       providerId: "",
       imageUrls: [],
       isPublished: false,
-      variants: [{ id: "1", name: "", price: 0 }],
+      variants: [],
     },
   });
 
