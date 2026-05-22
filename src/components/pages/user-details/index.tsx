@@ -24,7 +24,7 @@ export function UserDetailsPage() {
     const userId = params?.id ?? "";
     const { data: user, isLoading, isError, refetch } = useUser(userId);
     const { data: activities } = useUserActivity(userId);
-
+    console.log("User Details:", user);
     const suspendMutation = useSuspendUser();
     const unsuspendMutation = useUnsuspendUser();
 
@@ -33,6 +33,7 @@ export function UserDetailsPage() {
     const [isSuspendDialogOpen, setIsSuspendDialogOpen] = useState(false);
 
     const fullName = user?.fullName?.trim() || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+    const avatarUrl = user?.avatarUrl || null;
     const subscriptionTagline = user?.subscription?.planName ? `${user.subscription.planName} Plan` : "No active subscription";
     const subscriptionPlanType = user?.subscription?.planType ?? PLACEHOLDER;
     const subscriptionRenewal = formatDate(user?.subscription?.renewalDate);
@@ -97,6 +98,7 @@ export function UserDetailsPage() {
                     <ProfileInfoCard
                         user={user}
                         fullName={fullName}
+                        avatarUrl={avatarUrl}
                         placeholder={PLACEHOLDER}
                         subscriptionTagline={subscriptionTagline}
                     />
