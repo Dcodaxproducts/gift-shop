@@ -4,7 +4,7 @@ import type { ElementType } from "react";
 import {
   ShieldCheck,
 } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import QuickActionsCard from "../cards/QuickActionsCard";

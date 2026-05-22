@@ -5,7 +5,7 @@ import {
   platformSettings,
   securitySettings,
 } from "@/constants/settings";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

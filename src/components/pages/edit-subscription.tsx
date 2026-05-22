@@ -2,7 +2,7 @@
 
 import { ArrowLeft, BadgeCheck, CirclePlus, Eye, Info, Save, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

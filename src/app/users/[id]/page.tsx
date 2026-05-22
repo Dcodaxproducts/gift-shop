@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
-import { UserDetailsPage } from "@/components/pages/user-details";
+import { UserDetailsPage } from "@/components/pages/user-details/index";
 import { SITE_NAME } from "@/constants/site";
 
 export const metadata: Metadata = {

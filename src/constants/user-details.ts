@@ -1,5 +1,3 @@
-export type UserDetailTab = "overview" | "transactions" | "gift-history" | "activity-log";
-
 export const userProfile = {
   name: "Alex Johnson",
   username: "@alexjohnson",

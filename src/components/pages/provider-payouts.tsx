@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import {
   type PayoutMetric,
 } from "@/constants/payouts";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";

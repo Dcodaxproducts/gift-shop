@@ -13,13 +13,13 @@ export function Card({ className, ...props }: CardProps) {
 }
 
 export function CardHeader({ className, ...props }: CardProps) {
-  return <div className={cn("space-y-2", className)} {...props} />;
+  return <div className={cn("space-y-2 p-4", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: CardProps) {
   return (
     <h1
-      className={cn("text-base font-semibold ", className)}
+      className={cn("text-sm font-semibold ", className)}
       {...props}
     />
   );

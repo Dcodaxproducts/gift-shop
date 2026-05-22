@@ -13,8 +13,9 @@ import {
   unsuspendUser,
   resetUserPassword,
   exportUsers,
+  getUserActivity,
 } from "@/services/users";
-import type { GetUsersParams } from "@/types/users";
+import type { GetUserActivityParams, GetUsersParams } from "@/types/users";
 
 export const useUsers = (params: GetUsersParams = {}) => {
   return useQuery({
@@ -27,6 +28,14 @@ export const useUser = (id: string) => {
   return useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
+    enabled: !!id,
+  });
+};
+
+export const useUserActivity = (id: string, params?: GetUserActivityParams) => {
+  return useQuery({
+    queryKey: ["user-activity", id, params],
+    queryFn: () => getUserActivity({ id, params }),
     enabled: !!id,
   });
 };

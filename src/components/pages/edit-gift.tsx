@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Check, Plus, Upload, X } from "lucide-react";
 import { giftCategoryOptions } from "@/constants/gifts";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

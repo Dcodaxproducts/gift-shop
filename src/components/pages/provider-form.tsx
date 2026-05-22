@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Camera, FileText, IdCard, Mail, UserCircle2 } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

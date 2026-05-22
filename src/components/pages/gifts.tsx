@@ -7,7 +7,7 @@ import {
   giftCategoryOptions,
   giftProviderOptions,
 } from "@/constants/gifts";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";

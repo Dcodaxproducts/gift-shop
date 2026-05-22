@@ -2,7 +2,7 @@
 
 import { Plus, Settings2, UsersRound } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {

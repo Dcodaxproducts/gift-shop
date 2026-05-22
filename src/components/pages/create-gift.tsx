@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { GiftMediaGalleryCard } from "@/components/custom/gift-media-gallery-card";
 import { GiftInfoForm } from "@/components/forms/gift-info-form";
 import { PricingVariantsForm } from "@/components/forms/pricing-variants-form";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Download, Edit2, Eye, X } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";

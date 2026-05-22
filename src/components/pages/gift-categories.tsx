@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Edit2, Plus, X } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";

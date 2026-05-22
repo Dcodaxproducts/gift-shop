@@ -19,7 +19,7 @@ import {
   type BroadcastStepId,
 } from "@/constants/notifications";
 import { cn } from "@/lib/utils";
-import { PageHeader } from "../common/page-header";
+import PageHeader from "../common/page-header";
 
 type FlowStep = BroadcastStepId;
 
@@ -32,7 +32,7 @@ type SelectableCardProps = {
 
 function BroadcastShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto max-w-[1180px] space-y-8">
+    <div className="mx-auto max-w-295 space-y-8">
       <PageHeader
         title="Create New Broadcast"
         className="sm:justify-center"
@@ -118,7 +118,7 @@ function ActionTile({ icon: Icon, label }: { icon: React.ElementType; label: str
   return (
     <button
       type="button"
-      className="flex h-[105px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-200 bg-white text-xs font-semibold text-slate-700 transition hover:border-primary hover:text-primary"
+      className="flex h-26.25 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-200 bg-white text-xs font-semibold text-slate-700 transition hover:border-primary hover:text-primary"
     >
       <Icon className="size-5 text-slate-400" strokeWidth={2.4} />
       {label}
@@ -141,7 +141,7 @@ function MobilePreview() {
         </div>
       </div>
       <div className="mt-7 flex justify-center">
-        <div className="relative w-[245px] overflow-hidden rounded-[2.5rem] border-8 border-slate-900 shadow-2xl">
+        <div className="relative w-61.25 overflow-hidden rounded-[2.5rem] border-8 border-slate-900 shadow-2xl">
           <Image
             src="/mobile.png"
             alt="Mobile notification preview"
@@ -150,7 +150,7 @@ function MobilePreview() {
             priority
             className="block w-full"
           />
-          <div className="absolute left-3 right-3 top-[80px] rounded-xl bg-white/95 p-3 shadow-xl">
+          <div className="absolute left-3 right-3 top-20 rounded-xl bg-white/95 p-3 shadow-xl">
             <div className="flex items-start gap-2">
               <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary text-white">
                 <MegaphoneIcon className="size-3.5" />
@@ -197,7 +197,7 @@ function ContentStep({ onNext }: { onNext: () => void }) {
             <textarea
               id="message-body"
               placeholder="Type your message here..."
-              className="min-h-[140px] w-full resize-none rounded-xl border border-transparent bg-primary/5 px-4 py-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
+              className="min-h-35 w-full resize-none rounded-xl border border-transparent bg-primary/5 px-4 py-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
             />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -265,7 +265,7 @@ function TargetingStep({ onBack, onNext }: { onBack: () => void; onNext: () => v
         </div>
         <div className="mt-8 rounded-2xl bg-primary/5 p-6">
           <h3 className="text-base font-semibold text-primary">Targeting Filters</h3>
-          <div className="mt-6 max-w-[280px] space-y-2">
+          <div className="mt-6 max-w-70 space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Location</p>
             <button type="button" className="flex h-10 w-full items-center justify-between rounded-xl bg-white px-4 text-xs font-medium text-slate-500">
               All Countries
@@ -304,7 +304,7 @@ function FinalSummary() {
       <h2 className="text-sm font-semibold ">Final Summary</h2>
       <div className="mt-5 rounded-2xl bg-white p-4">
         <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">Content Preview</p>
-        <div className="mt-3 h-[120px] rounded-xl bg-linear-to-br from-primary/20 via-primary/10 to-primary" />
+        <div className="mt-3 h-30 rounded-xl bg-linear-to-br from-primary/20 via-primary/10 to-primary" />
         <h3 className="mt-3 text-xs font-semibold ">Summer Sale Launch Event</h3>
         <p className="mt-1 line-clamp-2 text-[10px] font-medium leading-4 text-slate-500">Get ready for the biggest event of the season. Exclusive discounts inside f...</p>
       </div>
@@ -422,8 +422,8 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
           <div className="mx-auto flex size-24 rotate-12 items-center justify-center rounded-3xl bg-primary text-white shadow-xl shadow-primary/25">
             <SuccessIcon className="size-12 -rotate-12" strokeWidth={2.8} />
           </div>
-          <h2 className="mx-auto mt-8 max-w-[430px] text-[30px] font-semibold leading-tight tracking-tight ">Broadcast Successfully Scheduled!</h2>
-          <p className="mx-auto mt-5 max-w-[420px] text-sm font-medium leading-6 text-slate-500">
+          <h2 className="mx-auto mt-8 max-w-107.5 text-[30px] font-semibold leading-tight tracking-tight ">Broadcast Successfully Scheduled!</h2>
+          <p className="mx-auto mt-5 max-w-105 text-sm font-medium leading-6 text-slate-500">
             Your campaign has been verified and added to the processing queue. We&apos;ll handle the delivery while you track the progress in real-time.
           </p>
           <div className="mt-8 space-y-4">

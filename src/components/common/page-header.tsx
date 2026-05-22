@@ -7,7 +7,7 @@ type PageHeaderProps = {
   className?: string;
 };
 
-export function PageHeader({
+export default function PageHeader({
   title,
   description,
   actions,

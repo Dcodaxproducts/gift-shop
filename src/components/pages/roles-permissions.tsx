@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
+import PageHeader from "@/components/common/page-header";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { CreateRoleDialog } from "@/components/dialog/create-role-dialog";
 import { PermissionsPanel } from "@/components/roles-permissions/permissions-panel";
