@@ -12,6 +12,7 @@ import {
   updateGiftStatus,
 } from "@/services/gift";
 import type { GetGiftsParams } from "@/types/gifts";
+import { useRouter } from "next/navigation";
 
 const giftsQueryKey = ["gifts"] as const;
 
@@ -31,6 +32,7 @@ export const useGift = (id: string) => {
 };
 
 export const useCreateGift = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -38,6 +40,7 @@ export const useCreateGift = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: giftsQueryKey });
       toast.success("Gift created successfully");
+      router.push("/gifts")
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Failed to create gift. Please try again."));

@@ -42,7 +42,7 @@ export function ProvidersPage() {
     limit,
     search: debouncedSearch || undefined,
     status: status === "all" ? undefined : status,
-    approval: approval === "all" ? undefined : approval,
+    approvalStatus: approval === "all" ? undefined : approval,
   });
 
   const { data: statsData } = useProviderStats();

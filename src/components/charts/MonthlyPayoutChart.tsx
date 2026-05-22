@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { monthlyPayoutData } from "@/constants/payouts";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
@@ -44,7 +43,7 @@ const trendRanges: { label: string; value: ProviderPayoutTrendRange }[] = [
   { label: "Last 12 Months", value: "LAST_12_MONTHS" },
 ];
 
-function MonthlyPayoutChart({ data = monthlyPayoutData, range, onRangeChange }: MonthlyPayoutChartProps) {
+function MonthlyPayoutChart({ data = [], range, onRangeChange }: MonthlyPayoutChartProps) {
   return (
     <Card>
       <CardContent className="p-6">

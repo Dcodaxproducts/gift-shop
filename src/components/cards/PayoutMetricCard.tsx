@@ -6,7 +6,11 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-function PayoutMetricCard({ icon: Icon, label, value, change, tone }: PayoutMetric) {
+type PayoutMetricCardProps = PayoutMetric & {
+  loading?: boolean;
+};
+
+function PayoutMetricCard({ icon: Icon, label, value, change, tone, loading = false }: PayoutMetricCardProps) {
   return (
     <Card>
       <CardContent className="p-5">
@@ -17,12 +21,21 @@ function PayoutMetricCard({ icon: Icon, label, value, change, tone }: PayoutMetr
             strokeWidth={2.4}
           />
         </div>
-        <p className="mt-3 text-[22px] font-semibold leading-none tracking-tight ">
-          {value}
-        </p>
-        <p className={cn("mt-3 text-[10px] font-semibold", tone === "green" ? "text-green-600" : "text-red-600")}>
-          {change}
-        </p>
+        {loading ? (
+          <>
+            <div className="mt-3 h-[22px] w-32 animate-pulse rounded-full bg-slate-100" />
+            <div className="mt-3 h-2.5 w-24 animate-pulse rounded-full bg-slate-100" />
+          </>
+        ) : (
+          <>
+            <p className="mt-3 text-[22px] font-semibold leading-none tracking-tight ">
+              {value}
+            </p>
+            <p className={cn("mt-3 text-[10px] font-semibold", tone === "green" ? "text-green-600" : "text-red-600")}>
+              {change}
+            </p>
+          </>
+        )}
       </CardContent>
     </Card>
   );

@@ -124,7 +124,7 @@ export function CreateStaffPage() {
 
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number</Label>
-              <div className="flex h-12 items-center rounded-[16px] border border-slate-200 bg-slate-50">
+              <div className="flex h-12 items-center rounded-2xl border border-slate-200 bg-slate-50">
                 <span className="flex h-full items-center border-r border-slate-200 px-4 text-sm text-slate-500">
                   +1
                 </span>

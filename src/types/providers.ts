@@ -15,7 +15,7 @@ export type GetProvidersParams = {
   limit?: number;
   search?: string;
   status?: ProviderStatus;
-  approval?: ProviderApproval;
+  approvalStatus?: ProviderApproval;
   sortBy?: ProviderSortBy;
   sortOrder?: SortOrder;
 };

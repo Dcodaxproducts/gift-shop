@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
-  payoutMetrics,
   type PayoutMetric,
 } from "@/constants/payouts";
 import { PageHeader } from "@/components/common/page-header";
@@ -25,59 +24,68 @@ import PayoutMetricCard from "../cards/PayoutMetricCard";
 import {
   useExportProviderPayouts,
   useProviderEarningDistribution,
-  useProviderPayoutBreakdown,
   useProviderPayouts,
   useProviderPayoutStats,
   useProviderPayoutTrends,
-  useUpdateProviderPayoutStatus,
 } from "@/hooks/useProviderPayouts";
 import type {
-  ProviderPayoutActionRequest,
   ProviderPayoutListItem,
   ProviderPayoutStats,
   ProviderPayoutTrendRange,
 } from "@/types/provider-payouts";
 import { formatDate } from "@/utils/formatDate";
 
-const formatMoney = (amount: number) => `$${Number(amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const formatMoney = (amount: number, currency = "USD") => {
+  const normalizedAmount = Number(amount);
+  const safeAmount = Number.isFinite(normalizedAmount) ? normalizedAmount : 0;
+
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(safeAmount);
+  } catch {
+    return `${safeAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currency}`;
+  }
+};
 
 const formatDelta = (value: number, period: string) => {
   const prefix = value > 0 ? "+" : "";
   return `${prefix}${value}% vs ${period}`;
 };
 
-const buildPayoutMetrics = (stats?: ProviderPayoutStats): PayoutMetric[] => {
-  if (!stats) {
-    return payoutMetrics;
-  }
+const emptyValue = "--";
 
+const buildPayoutMetrics = (stats?: ProviderPayoutStats): PayoutMetric[] => {
   return [
     {
       icon: CalendarDays,
       label: "Total payouts this month",
-      value: formatMoney(stats.totalPayoutsThisMonth),
-      change: formatDelta(stats.totalPayoutsDeltaPercent, "last month"),
+      value: stats ? formatMoney(stats.totalPayoutsThisMonth, stats.currency) : emptyValue,
+      change: stats ? formatDelta(stats.totalPayoutsDeltaPercent, "last month") : emptyValue,
       tone: "purple",
     },
     {
       icon: Hourglass,
       label: "Pending payouts",
-      value: formatMoney(stats.pendingPayouts),
-      change: formatDelta(stats.pendingPayoutsDeltaPercent, "last week"),
+      value: stats ? formatMoney(stats.pendingPayouts, stats.currency) : emptyValue,
+      change: stats ? formatDelta(stats.pendingPayoutsDeltaPercent, "last week") : emptyValue,
       tone: "amber",
     },
     {
       icon: CheckCircle2,
       label: "Completed payouts",
-      value: formatMoney(stats.completedPayouts),
-      change: formatDelta(stats.completedPayoutsDeltaPercent, "last month"),
+      value: stats ? formatMoney(stats.completedPayouts, stats.currency) : emptyValue,
+      change: stats ? formatDelta(stats.completedPayoutsDeltaPercent, "last month") : emptyValue,
       tone: "green",
     },
     {
       icon: Hexagon,
       label: "Platform revenue",
-      value: formatMoney(stats.platformRevenue),
-      change: formatDelta(stats.platformRevenueDeltaPercent, "last month"),
+      value: stats ? formatMoney(stats.platformRevenue, stats.currency) : emptyValue,
+      change: stats ? formatDelta(stats.platformRevenueDeltaPercent, "last month") : emptyValue,
       tone: "violet",
     },
   ];
@@ -94,8 +102,6 @@ function RecentPayoutActivities() {
     sortBy: "createdAt",
     sortOrder: "DESC",
   });
-  const { data: breakdown, isLoading: isBreakdownLoading } = useProviderPayoutBreakdown(selectedActivity?.id);
-  const { mutate: updatePayoutStatus, isPending } = useUpdateProviderPayoutStatus();
 
   const hasNextPage = payouts.length === limit;
   const pagination = {
@@ -108,10 +114,6 @@ function RecentPayoutActivities() {
   };
 
   const closeDialog = () => setSelectedActivity(null);
-
-  const handleStatusUpdate = (request: ProviderPayoutActionRequest) => {
-    updatePayoutStatus(request, { onSuccess: closeDialog });
-  };
 
   return (
     <div className="rounded-2xl border border-b-0 border-slate-200">
@@ -149,7 +151,7 @@ function RecentPayoutActivities() {
                 </div>
               </div>
             </TableCell>
-            <TableCell className="font-semibold">{formatMoney(activity.pendingAmount)}</TableCell>
+            <TableCell className="font-semibold">{formatMoney(activity.pendingAmount, activity.currency)}</TableCell>
             <TableCell>{formatDate(activity.lastPayoutDate)}</TableCell>
             <TableCell>{formatDate(activity.nextPayoutDate)}</TableCell>
             <TableCell>{StatusBadge({ status: activity.status })}</TableCell>
@@ -168,26 +170,8 @@ function RecentPayoutActivities() {
         )}
       />
       <TransactionBreakdownDialog
-        breakdown={breakdown}
-        loading={isBreakdownLoading}
-        processing={isPending}
         selectedActivity={selectedActivity}
-        onApprove={(id) => handleStatusUpdate({ id, action: "approve", payload: { notifyProvider: true } })}
         onClose={closeDialog}
-        onHold={(id) =>
-          handleStatusUpdate({
-            id,
-            action: "hold",
-            payload: { reason: "BANK_VERIFICATION_PENDING", notifyProvider: true },
-          })
-        }
-        onReject={(id) =>
-          handleStatusUpdate({
-            id,
-            action: "reject",
-            payload: { reason: "OTHER", notifyProvider: true },
-          })
-        }
       />
     </div>
   );
@@ -195,7 +179,7 @@ function RecentPayoutActivities() {
 
 export function ProviderPayoutsPage() {
   const [trendRange, setTrendRange] = useState<ProviderPayoutTrendRange>("LAST_12_MONTHS");
-  const { data: stats } = useProviderPayoutStats();
+  const { data: stats, isLoading: isStatsLoading } = useProviderPayoutStats();
   const { data: trends } = useProviderPayoutTrends({ range: trendRange });
   const { data: earningDistribution } = useProviderEarningDistribution();
   const { mutate: exportPayouts, isPending: isExportPending } = useExportProviderPayouts();
@@ -231,13 +215,13 @@ export function ProviderPayoutsPage() {
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => (
-          <PayoutMetricCard key={metric.label} {...metric} />
+          <PayoutMetricCard key={metric.label} {...metric} loading={isStatsLoading} />
         ))}
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
-        <MonthlyPayoutChart data={trendData} range={trendRange} onRangeChange={setTrendRange} />
-        <EarningsDistributionChart data={distributionData} />
+        <MonthlyPayoutChart data={trendData ?? []} range={trendRange} onRangeChange={setTrendRange} />
+        <EarningsDistributionChart data={distributionData ?? []} />
       </section>
 
       <RecentPayoutActivities />

@@ -1,9 +1,11 @@
 import { api } from "@/lib/axios";
 
 interface PresignedUrlResponse {
+  id: string;
   uploadUrl: string;
   fileUrl: string;
-  key: string;
+  objectKey: string;
+  expiresIn: number;
 }
 
 interface GetPresignedUrlPayload {
@@ -13,11 +15,12 @@ interface GetPresignedUrlPayload {
 }
 
 interface CompleteUploadPayload {
-  key: string;
+  uploadId: string;
 }
 
 interface CompleteUploadResponse {
   fileUrl: string;
+  objectKey?: string;
 }
 
 export const getPresignedUrl = async (
@@ -49,4 +52,9 @@ export const completeUpload = async (
   const body = data as { data: CompleteUploadResponse };
 
   return body.data;
+};
+
+export const deleteUpload = async (id: string) => {
+  const { data } = await api.delete(`/uploads/${id}`);
+  return data.data;
 };

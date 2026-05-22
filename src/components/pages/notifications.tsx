@@ -467,7 +467,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
   );
 }
 
-export function NotificationsPage() {
+export default function NotificationsPage() {
   const [step, setStep] = useState<FlowStep | 4>(1);
   const activeStep = useMemo<FlowStep>(() => (step === 4 ? 3 : step), [step]);
 

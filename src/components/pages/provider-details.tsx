@@ -62,7 +62,7 @@ function ProviderStatCard({
   changeTone: "green" | "orange";
 }) {
   return (
-    <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <Card >
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-4">
           <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">

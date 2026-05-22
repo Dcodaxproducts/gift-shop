@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { earningsDistributionData } from "@/constants/payouts";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartContainer,
@@ -28,7 +27,7 @@ const distributionChartConfig = {
   },
 } satisfies ChartConfig;
 
-function EarningsDistributionChart({ data = earningsDistributionData }: EarningsDistributionChartProps) {
+function EarningsDistributionChart({ data = [] }: EarningsDistributionChartProps) {
   const chartData = data;
 
   return (

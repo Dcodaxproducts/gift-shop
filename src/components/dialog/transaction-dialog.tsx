@@ -4,32 +4,45 @@ import { CheckCircle2, PauseCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Label } from "../ui/label";
-import type { ProviderPayoutBreakdown, ProviderPayoutListItem } from "@/types/provider-payouts";
+import {
+  useProviderPayoutBreakdown,
+  useUpdateProviderPayoutStatus,
+} from "@/hooks/useProviderPayouts";
+import type { ProviderPayoutActionRequest, ProviderPayoutListItem } from "@/types/provider-payouts";
 
 type TransactionBreakdownDialogProps = {
-  breakdown?: ProviderPayoutBreakdown;
-  loading?: boolean;
   selectedActivity: ProviderPayoutListItem | null;
-  onApprove: (id: string) => void;
   onClose: () => void;
-  onHold: (id: string) => void;
-  onReject: (id: string) => void;
-  processing?: boolean;
 };
 
-const formatMoney = (amount?: number) => `$${Number(amount ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const formatMoney = (amount?: number, currency = "USD") => {
+  const normalizedAmount = Number(amount ?? 0);
+  const safeAmount = Number.isFinite(normalizedAmount) ? normalizedAmount : 0;
+
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(safeAmount);
+  } catch {
+    return `${safeAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currency}`;
+  }
+};
 
 export function TransactionBreakdownDialog({
-  breakdown,
-  loading,
   selectedActivity,
-  onApprove,
   onClose,
-  onHold,
-  onReject,
-  processing,
 }: TransactionBreakdownDialogProps) {
   const payoutId = selectedActivity?.id;
+  const { data: breakdown, isLoading: loading } = useProviderPayoutBreakdown(payoutId);
+  const { mutate: updatePayoutStatus, isPending: processing } = useUpdateProviderPayoutStatus();
+  const currency = breakdown?.currency ?? selectedActivity?.currency ?? "USD";
+
+  const handleStatusUpdate = (request: ProviderPayoutActionRequest) => {
+    updatePayoutStatus(request, { onSuccess: onClose });
+  };
 
   return (
     <Dialog
@@ -67,19 +80,19 @@ export function TransactionBreakdownDialog({
             <div className="space-y-3 border-t border-slate-100 pt-4">
               <div className="flex items-center justify-between text-xs">
                 <Label>Gross Amount</Label>
-                <span className="font-semibold">{formatMoney(breakdown?.grossAmount ?? selectedActivity?.pendingAmount)}</span>
+                <span className="font-semibold">{formatMoney(breakdown?.grossAmount ?? selectedActivity?.pendingAmount, currency)}</span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <Label>Platform Fee ({breakdown?.platformFeePercent ?? 0}%)</Label>
-                <span className="font-semibold text-rose-500">-{formatMoney(breakdown?.platformFee)}</span>
+                <span className="font-semibold text-rose-500">-{formatMoney(breakdown?.platformFee, currency)}</span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <Label>Processing Fee</Label>
-                <span className="font-semibold text-rose-500">-{formatMoney(breakdown?.processingFee)}</span>
+                <span className="font-semibold text-rose-500">-{formatMoney(breakdown?.processingFee, currency)}</span>
               </div>
               <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
                 <Label>Net Payout</Label>
-                <span className="text-base font-semibold text-primary">{formatMoney(breakdown?.netPayout)}</span>
+                <span className="text-base font-semibold text-primary">{formatMoney(breakdown?.netPayout, currency)}</span>
               </div>
             </div>
 
@@ -100,7 +113,7 @@ export function TransactionBreakdownDialog({
                         <p className="text-xs font-semibold">Order #{transaction.orderNumber}</p>
                         <p className="mt-0.5 text-[10px] font-medium text-slate-400">{transaction.description}</p>
                       </div>
-                      <p className="text-xs font-semibold">{formatMoney(transaction.amount)}</p>
+                      <p className="text-xs font-semibold">{formatMoney(transaction.amount, currency)}</p>
                     </div>
                   ))
                 )}
@@ -110,15 +123,44 @@ export function TransactionBreakdownDialog({
         )}
 
         <div className="space-y-4 pt-2">
-          <Button className="h-11 w-full rounded-full text-xs" disabled={!payoutId || processing} onClick={() => payoutId && onApprove(payoutId)}>
+          <Button
+            className="h-11 w-full rounded-full text-xs"
+            disabled={!payoutId || processing}
+            onClick={() =>
+              payoutId &&
+              handleStatusUpdate({ id: payoutId, action: "approve", payload: { notifyProvider: true } })
+            }
+          >
             <CheckCircle2 className="size-4" strokeWidth={2.5} />
             Approve Payout
           </Button>
           <div className="grid grid-cols-2 gap-2">
-            <Button variant="warning" disabled={!payoutId || processing} onClick={() => payoutId && onHold(payoutId)}>
+            <Button
+              variant="warning"
+              disabled={!payoutId || processing}
+              onClick={() =>
+                payoutId &&
+                handleStatusUpdate({
+                  id: payoutId,
+                  action: "hold",
+                  payload: { reason: "BANK_VERIFICATION_PENDING", notifyProvider: true },
+                })
+              }
+            >
               <PauseCircle className="size-4" /> Hold
             </Button>
-            <Button variant="danger" disabled={!payoutId || processing} onClick={() => payoutId && onReject(payoutId)}>
+            <Button
+              variant="danger"
+              disabled={!payoutId || processing}
+              onClick={() =>
+                payoutId &&
+                handleStatusUpdate({
+                  id: payoutId,
+                  action: "reject",
+                  payload: { reason: "OTHER", notifyProvider: true },
+                })
+              }
+            >
               <XCircle className="size-4" /> Reject
             </Button>
           </div>

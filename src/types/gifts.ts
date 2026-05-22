@@ -26,8 +26,13 @@ export type GiftVariant = {
   id?: string;
   name: string;
   price?: number;
+  originalPrice?: number;
   sku?: string;
   stock?: number;
+  stockQuantity?: number;
+  isPopular?: boolean;
+  isDefault?: boolean;
+  sortOrder?: number;
   isActive?: boolean;
   metadata?: Record<string, unknown>;
 };
@@ -55,7 +60,7 @@ export type Gift = {
   provider?: GiftProviderSummary | null;
   price?: number | string;
   rating?: number | string;
-  imageUrl?: string | null;
+  imagesUrl?: string | null;
   images?: string[];
   status: GiftStatus;
   isActive?: boolean;
@@ -67,15 +72,15 @@ export type Gift = {
 
 export type CreateGiftPayload = {
   name: string;
-  description?: string;
-  categoryId?: string;
-  providerId?: string;
-  price?: number;
-  imageUrl?: string;
-  images?: string[];
-  status?: GiftStatus;
-  isActive?: boolean;
-  variants?: GiftVariant[];
+  description: string;
+  categoryId: string;
+  providerId: string;
+  imageUrls: string[];
+  isPublished: boolean;
+  variants: {
+    name: string;
+    price: number;
+  }[];
 };
 
 export type UpdateGiftPayload = Partial<CreateGiftPayload>;

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Edit2, Gift, Plus, Star, X } from "lucide-react";
+import { Edit2, Plus, Star, X } from "lucide-react";
 import {
   giftCategoryOptions,
   giftProviderOptions,
@@ -13,6 +13,7 @@ import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import MyImage from "@/components/common/MyImage";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useGifts } from "@/hooks/useGift";
 import type { Gift as GiftItem } from "@/types/gifts";
@@ -115,10 +116,16 @@ export function GiftsPage() {
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span className="flex size-11 items-center justify-center rounded-2xl bg-primary text-white shadow-sm">
-                  <Gift className="size-4" />
+                <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
+                  <MyImage
+                    src={item.imagesUrl?.[0]}
+                    alt={item.name}
+                    fill
+                    sizes="44px"
+                  />
                 </span>
-                <span className="max-w-[130px] text-xs font-semibold leading-4 ">
+
+                <span className="max-w-32.5 text-xs font-semibold leading-4 ">
                   {item.name}
                 </span>
               </div>

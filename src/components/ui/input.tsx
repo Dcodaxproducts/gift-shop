@@ -29,7 +29,7 @@ export function Input({
           ref={ref}
           type={type}
           className={cn(
-            "flex h-12 w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring focus:ring-primary/10 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring focus:ring-primary/10 disabled:cursor-not-allowed disabled:opacity-50",
             leftIcon ? "pl-10" : undefined,
             rightIcon ? "pr-10" : undefined,
             errorMessage ? "border-destructive bg-white focus:border-destructive focus:ring-destructive/10" : undefined,
