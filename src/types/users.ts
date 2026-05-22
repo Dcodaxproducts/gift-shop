@@ -86,7 +86,7 @@ export type SuspendUserPayload = {
 };
 
 export type ResetUserPasswordPayload = {
-  password?: string;
+  newPassword?: string;
 };
 
 export type GetUserActivityParams = {

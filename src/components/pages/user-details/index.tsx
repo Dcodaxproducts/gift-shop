@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 
-import { EditUserDialog, SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
+import { EditUserDialog, ResetPasswordDialog, SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
 import { Button } from "@/components/ui/button";
 import { useSuspendUser, useUnsuspendUser, useUser, useUserActivity } from "@/hooks/useUsers";
 import { formatDate } from "@/utils/formatDate";
@@ -29,6 +29,7 @@ export function UserDetailsPage() {
     const unsuspendMutation = useUnsuspendUser();
 
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
     const [isSuspendDialogOpen, setIsSuspendDialogOpen] = useState(false);
 
     const fullName = user?.fullName?.trim() || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
@@ -111,7 +112,7 @@ export function UserDetailsPage() {
                     subscriptionProgress={subscriptionProgress}
                     ordersCount={ordersCount}
                     totalSpent={totalSpent}
-                    onResetPassword={() => setIsEditDialogOpen(true)}
+                    onResetPassword={() => setIsResetPasswordDialogOpen(true)}
                     onToggleSuspend={() => setIsSuspendDialogOpen(true)}
                 />
             </section>
@@ -120,6 +121,12 @@ export function UserDetailsPage() {
                 open={isEditDialogOpen}
                 onOpenChange={setIsEditDialogOpen}
                 user={user}
+            />
+
+            <ResetPasswordDialog
+                open={isResetPasswordDialogOpen}
+                onOpenChange={setIsResetPasswordDialogOpen}
+                userId={user?.id}
             />
 
             <SuspendUserDialog
