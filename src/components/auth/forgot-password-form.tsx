@@ -38,7 +38,7 @@ export function ForgotPasswordForm() {
   };
 
   return (
-    <Card className="w-full max-w-[395px] rounded-3xl bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
+    <Card className="w-full max-w-98.75 rounded-3xl bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
       <CardHeader className="mb-8 text-center">
         <CardTitle className="text-[25px] leading-tight ">
           Forgot Password
