@@ -47,3 +47,35 @@ export const providerApprovalOptions = [
   { value: "PENDING", label: "Pending" },
   { value: "REJECTED", label: "Rejected" },
 ] as const;
+
+// Dispute refund filter options
+export const disputeRefundCategoryOptions = [
+  { value: "all", label: "All Categories" },
+  { value: "delivery", label: "Delivery" },
+  { value: "payment", label: "Payment" },
+  { value: "quality", label: "Quality" },
+  { value: "refund", label: "Refund" },
+] as const;
+
+export const disputeRefundStatusOptions = [
+  { value: "all", label: "All Status" },
+  { value: "OPEN", label: "Open" },
+  { value: "IN_REVIEW", label: "In Review" },
+  { value: "ESCALATED", label: "Escalated" },
+  { value: "RESOLVED", label: "Resolved" },
+] as const;
+
+// Provider dispute filter options
+export const providerDisputeCategoryOptions = [
+  { value: "all", label: "All Categories" },
+  { value: "non-delivery", label: "Non-Delivery" },
+  { value: "quality-issue", label: "Quality Issue" },
+  { value: "refund-conflict", label: "Refund Conflict" },
+] as const;
+
+export const providerDisputeStatusOptions = [
+  { value: "all", label: "All Status" },
+  { value: "RULING_PENDING", label: "Ruling Pending" },
+  { value: "AWAITING_INFO", label: "Awaiting Info" },
+  { value: "ESCALATED", label: "Escalated" },
+] as const;

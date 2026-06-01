@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type StatusTone = "active" | "pending" | "inactive" | "danger" | "success" | "suspended";
+export type StatusTone = "active" | "pending" | "inactive" | "danger" | "success" | "suspended" | "primary" | "info";
 
 const statusToneClass: Record<StatusTone, string> = {
   active: "bg-emerald-50 text-emerald-600",
@@ -9,6 +9,8 @@ const statusToneClass: Record<StatusTone, string> = {
   danger: "bg-red-50 text-red-500",
   success: "bg-emerald-50 text-emerald-600",
   suspended: "bg-rose-50 text-rose-600",
+  primary: "bg-primary/10 text-primary",
+  info: "bg-blue-50 text-slate-500",
 };
 
 // Map your database/API status to the visual Tone
@@ -19,6 +21,14 @@ const statusToToneMap: Record<string, StatusTone> = {
   SUSPENDED: "suspended",
   REJECTED: "danger",
   APPROVED: "success",
+  OPEN: "primary",
+  IN_REVIEW: "info",
+  ESCALATED: "danger",
+  RESOLVED: "success",
+  RULING_PENDING: "primary",
+  AWAITING_INFO: "info",
+  VERIFIED: "success",
+  PENDING_SYNC: "inactive",
 };
 
 interface StatusBadgeProps {
@@ -30,8 +40,10 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const normalizedStatus = status.toUpperCase();
   const tone = statusToToneMap[normalizedStatus] || "inactive";
   
-  // Format Label: "ACTIVE" -> "Active"
-  const label = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  const label = status
+    .replace(/[_-]/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
     <span className={cn(

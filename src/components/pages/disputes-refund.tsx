@@ -1,29 +1,21 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronUp, Eye, RefreshCw, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ChevronUp, Eye, RefreshCw } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
+import { FilterSection } from "@/components/common/filter-section";
 import { DisputeRefundStatsCard } from "@/components/cards/DisputeRefundStatsCard";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
 import {
   disputeRefundCases,
-  disputeRefundCategoryOptions,
-  disputeRefundStatusOptions,
   type DisputeRefundCase,
   type DisputeRefundPriority,
   type DisputeRefundStatus,
 } from "@/constants/disputes-refund";
+import { disputeRefundCategoryOptions, disputeRefundStatusOptions } from "@/constants/filter-options";
 import { cn } from "@/lib/utils";
 import { StatusBadge } from "@/utils/status";
 
@@ -41,6 +33,7 @@ function formatCurrency(value: number) {
 }
 
 export function DisputesRefundPage() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -65,6 +58,21 @@ export function DisputesRefundPage() {
     });
   }, [category, search, status]);
 
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setCategory(value);
+    setPage(1);
+  };
+
+  const handleStatusChange = (value: string) => {
+    setStatus(value as DisputeRefundStatus | "all");
+    setPage(1);
+  };
+
   return (
     <div className="space-y-5">
       <PageHeader
@@ -86,63 +94,27 @@ export function DisputesRefundPage() {
 
       <DisputeRefundStatsCard />
 
-      <Card className="p-4">
-        <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-          <div className="min-w-0 flex-1">
-            <Input
-              type="search"
-              placeholder="Search by case ID, customer, or transaction..."
-              leftIcon={<Search className="size-4" />}
-              className="h-10! rounded-2xl bg-white text-xs"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setPage(1);
-              }}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 sm:flex">
-            <Select
-              value={category}
-              onValueChange={(value) => {
-                setCategory(value);
-                setPage(1);
-              }}
-            >
-              <SelectTrigger className="h-10 w-full rounded-2xl bg-slate-50 text-xs sm:w-37.5">
-                <SelectValue placeholder="All Categories" />
-              </SelectTrigger>
-              <SelectContent>
-                {disputeRefundCategoryOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={status}
-              onValueChange={(value) => {
-                setStatus(value as DisputeRefundStatus | "all");
-                setPage(1);
-              }}
-            >
-              <SelectTrigger className="h-10 w-full rounded-2xl bg-slate-50 text-xs sm:w-32.5">
-                <SelectValue placeholder="All Status" />
-              </SelectTrigger>
-              <SelectContent>
-                {disputeRefundStatusOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </Card>
+      <FilterSection
+        searchPlaceholder="Search by case ID, customer, or transaction..."
+        searchValue={search}
+        onSearchChange={handleSearchChange}
+        filters={[
+          {
+            value: category,
+            onChange: handleCategoryChange,
+            placeholder: "All Categories",
+            width: "sm:w-37.5",
+            options: disputeRefundCategoryOptions,
+          },
+          {
+            value: status,
+            onChange: handleStatusChange,
+            placeholder: "All Status",
+            width: "sm:w-32.5",
+            options: disputeRefundStatusOptions,
+          },
+        ]}
+      />
 
       <DataTable
         data={filteredCases}
@@ -172,11 +144,11 @@ export function DisputesRefundPage() {
             <TableCell className="font-semibold text-primary">{item.id}</TableCell>
             <TableCell>
               <div className="space-y-1">
-                <p className="text-xs font-semibold">{item.customerName}</p>
-                <p className="text-[10px] text-slate-400">{item.customerEmail}</p>
+                <p className="font-semibold">{item.customerName}</p>
+                <p className="text-xs text-slate-400">{item.customerEmail}</p>
               </div>
             </TableCell>
-            <TableCell className="text-[10px] font-medium text-slate-500">{item.transactionId}</TableCell>
+            <TableCell className="text-slate-500">{item.transactionId}</TableCell>
             <TableCell className="font-semibold">{formatCurrency(item.amount)}</TableCell>
             <TableCell>
               <span className={cn("inline-flex items-center gap-1 text-xs font-semibold", priorityClassName[item.priority])}>
@@ -187,7 +159,11 @@ export function DisputesRefundPage() {
             <TableCell>{StatusBadge({ status: item.status })}</TableCell>
             <TableCell className="font-medium">{item.daysOpen} days</TableCell>
             <TableCell className="text-right">
-              <Button variant="ghost" className="h-8 px-2 text-[10px] font-semibold text-primary">
+              <Button
+                variant="ghost"
+                className="text-primary" 
+                onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id.replace("#", ""))}`)}
+              >
                 {item.status === "RESOLVED" ? "History" : "Review"}
               </Button>
             </TableCell>
