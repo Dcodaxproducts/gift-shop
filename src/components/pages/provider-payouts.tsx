@@ -205,10 +205,6 @@ export function ProviderPayoutsPage() {
               <Download className="size-3.5" />
               Export
             </Button>
-            {/* <Button>
-              <Plus className="size-3.5" />
-              Bulk Payout
-            </Button> */}
           </>
         }
       />

@@ -63,7 +63,7 @@ function ProviderStatCard({
 }) {
   return (
     <Card >
-      <CardContent className="p-5">
+      <CardContent>
         <div className="flex items-start justify-between gap-4">
           <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Icon className="size-4" strokeWidth={2.5} />
@@ -91,12 +91,6 @@ export function ProviderDetailsPage() {
     <div className="space-y-5">
       <PageHeader
         title={data?.businessName || "Provider Profile"}
-        // actions={
-        //   <Button>
-        //     <ListFilter className="size-3.5" />
-        //     Filter
-        //   </Button>
-        // }
       />
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">

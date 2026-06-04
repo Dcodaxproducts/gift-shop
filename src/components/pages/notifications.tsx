@@ -77,7 +77,7 @@ function Stepper({ activeStep, completed = false }: { activeStep: FlowStep; comp
 function FormCard({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <Card className={cn("rounded-2xl border border-slate-200 bg-white shadow-sm", className)}>
-      <CardContent className="p-6">{children}</CardContent>
+      <CardContent>{children}</CardContent>
     </Card>
   );
 }

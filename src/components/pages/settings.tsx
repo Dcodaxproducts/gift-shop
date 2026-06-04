@@ -7,7 +7,7 @@ import {
 } from "@/constants/settings";
 import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -18,17 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-
-function SectionTitle({ icon: Icon, title }: { icon: typeof Shield; title: string }) {
-  return (
-    <CardTitle className="flex items-center gap-2 text-sm font-semibold ">
-      <span className="flex size-5 items-center justify-center rounded-full bg-primary/10 text-primary">
-        <Icon className="size-3.5" strokeWidth={2.25} />
-      </span>
-      {title}
-    </CardTitle>
-  );
-}
+import SectionHeader from "../common/section-header";
 
 export function SettingsPage() {
   return (
@@ -39,13 +29,12 @@ export function SettingsPage() {
       />
 
       <section className="grid gap-5 xl:grid-cols-2">
-        <Card className="rounded-2xl border border-border bg-white shadow-sm">
-          <CardHeader className="p-5 pb-4">
-            <SectionTitle icon={Shield} title="Platform Info" />
-          </CardHeader>
-          <CardContent className="space-y-4 px-5 pb-5">
+        <Card className="space-y-5">
+          <SectionHeader icon={Shield} title="Platform Info" />
+
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="app-name" className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label htmlFor="app-name" >
                 Application Name
               </Label>
               <Input
@@ -55,7 +44,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="support-email" className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label htmlFor="support-email" >
                 Support Email
               </Label>
               <Input
@@ -66,7 +55,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label >
                 Platform Logo
               </Label>
               <button
@@ -90,13 +79,11 @@ export function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-border bg-white shadow-sm">
-          <CardHeader className="p-5 pb-4">
-            <SectionTitle icon={Shield} title="Security" />
-          </CardHeader>
-          <CardContent className="space-y-4 px-5 pb-5">
+        <Card className="space-y-5">
+          <SectionHeader icon={Shield} title="Security" />
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label >
                 Session Timeout
               </Label>
               <Select defaultValue={securitySettings.sessionTimeout}>
@@ -122,7 +109,7 @@ export function SettingsPage() {
               <Switch checked />
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label >
                 Password Policy
               </Label>
               <div className="grid grid-cols-2 gap-3">
@@ -140,13 +127,12 @@ export function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-border bg-white shadow-sm">
-          <CardHeader className="p-5 pb-4">
-            <SectionTitle icon={CreditCard} title="Payments" />
-          </CardHeader>
-          <CardContent className="space-y-4 px-5 pb-5">
+        <Card className="space-y-5">
+          <SectionHeader icon={CreditCard} title="Payments" />
+
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label >
                 Default Currency
               </Label>
               <Select defaultValue={paymentSettings.defaultCurrency}>
@@ -163,7 +149,7 @@ export function SettingsPage() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="transaction-fee" className="text-[10px] uppercase tracking-wide text-slate-500">
+              <Label htmlFor="transaction-fee" >
                 Transaction Fee %
               </Label>
               <div className="relative">
@@ -185,11 +171,9 @@ export function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-border bg-white shadow-sm">
-          <CardHeader className="p-5 pb-4">
-            <SectionTitle icon={Bell} title="Notifications" />
-          </CardHeader>
-          <CardContent className="space-y-5 px-5 pb-5">
+        <Card className="space-y-5">
+          <SectionHeader icon={Bell} title="Notifications" />
+          <CardContent className="space-y-5">
             {notificationSettings.map((setting) => (
               <div key={setting.title} className="flex items-center justify-between gap-4">
                 <div>
@@ -211,11 +195,11 @@ export function SettingsPage() {
         </Card>
       </section>
 
-      <div className="flex justify-end gap-3 pt-1">
-        <Button variant="outline" className="h-10 rounded-2xl px-5 text-xs">
+      <div className="flex justify-end gap-3">
+        <Button variant="outline" className="">
           Cancel Changes
         </Button>
-        <Button className="h-10 rounded-2xl px-6 text-xs">Save System Settings</Button>
+        <Button>Save System Settings</Button>
       </div>
     </div>
   );

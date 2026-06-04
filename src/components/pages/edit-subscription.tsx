@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 function SectionCard({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <Card className={cn("rounded-2xl border border-slate-200 bg-white shadow-sm", className)}>
-      <CardContent className="p-5">{children}</CardContent>
+      <CardContent>{children}</CardContent>
     </Card>
   );
 }

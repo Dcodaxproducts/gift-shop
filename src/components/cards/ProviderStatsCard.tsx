@@ -62,7 +62,7 @@ export function ProviderStatsCard({ data }: { data?: ProviderStatsData }) {
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => (
         <Card key={stat.title}>
-          <CardContent className="p-5">
+          <CardContent>
             <div>
               <p className="text-xs font-medium text-slate-500">{stat.title}</p>
               <div className="mt-1 flex items-end justify-between gap-2">

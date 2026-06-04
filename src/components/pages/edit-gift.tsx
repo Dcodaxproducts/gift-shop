@@ -31,7 +31,7 @@ function SectionCard({
 }) {
   return (
     <Card className={cn("rounded-2xl border border-slate-200 bg-white shadow-sm", className)}>
-      <CardContent className="p-6">
+      <CardContent>
         <div className="flex items-center gap-2.5">
           {Icon ? (
             <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">

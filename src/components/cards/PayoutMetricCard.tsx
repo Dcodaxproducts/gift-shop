@@ -13,7 +13,7 @@ type PayoutMetricCardProps = PayoutMetric & {
 function PayoutMetricCard({ icon: Icon, label, value, change, tone, loading = false }: PayoutMetricCardProps) {
   return (
     <Card>
-      <CardContent className="p-5">
+      <CardContent>
         <div className="flex items-start justify-between gap-4">
           <p className="text-xs font-semibold leading-4 text-slate-500">{label}</p>
           <Icon

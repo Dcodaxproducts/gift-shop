@@ -5,7 +5,7 @@ import type { ProviderDetails } from "@/types/providers";
 function BusinessDetailsCard({ data }: { data?: ProviderDetails }) {
   return (
     <Card>
-      <CardContent className="p-5">
+      <CardContent>
         <h2 className="text-sm font-semibold ">Business Details</h2>
         <div className="mt-5 divide-y divide-slate-100">
           <div className="py-3 first:pt-0">

@@ -32,7 +32,7 @@ function EarningsDistributionChart({ data = [] }: EarningsDistributionChartProps
 
   return (
     <Card>
-      <CardContent className="p-6">
+      <CardContent>
         <div>
           <h2 className="text-sm font-semibold">Earnings Distribution</h2>
           <p className="mt-1 text-[10px] font-medium text-slate-400">

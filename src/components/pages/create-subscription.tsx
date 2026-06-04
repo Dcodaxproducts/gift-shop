@@ -30,7 +30,7 @@ function FormSection({ stepIndex, children }: { stepIndex: number; children: Rea
 
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <CardContent className="p-6">
+      <CardContent>
         <StepTitle number={step.number} title={step.title} />
         <div className="mt-6">{children}</div>
       </CardContent>

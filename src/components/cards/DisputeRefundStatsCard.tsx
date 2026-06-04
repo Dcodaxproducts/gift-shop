@@ -30,7 +30,7 @@ export function DisputeRefundStatsCard() {
 
         return (
           <Card key={stat.label}>
-            <CardContent className="p-5">
+            <CardContent>
               <div className="flex items-start justify-between gap-3">
                 <span className={cn("flex size-9 items-center justify-center rounded-xl", tone.icon)}>
                   <Icon className="size-4" strokeWidth={2.4} />

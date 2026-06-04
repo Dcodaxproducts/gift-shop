@@ -45,40 +45,6 @@ const emptyValues: ProviderFormValues = {
 
 const BIO_MAX_LENGTH = 500;
 
-function CoverUpload() {
-  return (
-    <button
-      type="button"
-      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
-    >
-      <span className="flex size-10 items-center justify-center rounded-xl bg-white text-primary shadow-sm">
-        <Camera className="size-5" strokeWidth={2} />
-      </span>
-      <p className="text-xs font-medium text-slate-700">
-        Click to upload or drag cover photo
-      </p>
-      <p className="text-[10px] text-slate-400">
-        Recommended size: 1200x480px
-      </p>
-    </button>
-  );
-}
-
-function LogoUpload() {
-  return (
-    <button
-      type="button"
-      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
-    >
-      <span className="flex size-12 items-center justify-center rounded-full bg-white text-primary shadow-sm">
-        <Camera className="size-5" strokeWidth={2} />
-      </span>
-      <p className="text-xs font-medium text-slate-700">Upload Logo</p>
-      <p className="text-[10px] text-slate-400">PNG, JPG up to 5MB</p>
-    </button>
-  );
-}
-
 type ProviderFormPageProps = {
   mode: ProviderFormMode;
   defaultValues?: Partial<ProviderFormValues>;
@@ -276,13 +242,47 @@ export function ProviderFormPage({
       </Card>
 
       <Card>
-        <CardContent className="flex items-center justify-end gap-3 p-0">
-          <Button variant="outline" onClick={onCancel}>
+        <CardContent className="flex items-end justify-end gap-3">
+          <Button variant="outline" onClick={onCancel} className="my-auto">
             Cancel
           </Button>
           <Button onClick={() => onSubmit?.(values)}>{submitLabel}</Button>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function CoverUpload() {
+  return (
+    <button
+      type="button"
+      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+    >
+      <span className="flex size-10 items-center justify-center rounded-xl bg-white text-primary shadow-sm">
+        <Camera className="size-5" strokeWidth={2} />
+      </span>
+      <p className="text-xs font-medium text-slate-700">
+        Click to upload or drag cover photo
+      </p>
+      <p className="text-[10px] text-slate-400">
+        Recommended size: 1200x480px
+      </p>
+    </button>
+  );
+}
+
+function LogoUpload() {
+  return (
+    <button
+      type="button"
+      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+    >
+      <span className="flex size-12 items-center justify-center rounded-full bg-white text-primary shadow-sm">
+        <Camera className="size-5" strokeWidth={2} />
+      </span>
+      <p className="text-xs font-medium text-slate-700">Upload Logo</p>
+      <p className="text-[10px] text-slate-400">PNG, JPG up to 5MB</p>
+    </button>
   );
 }

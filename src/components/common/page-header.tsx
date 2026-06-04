@@ -16,11 +16,11 @@ export default function PageHeader({
   return (
     <div className={cn("flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between", className)}>
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight ">
+        <h1 className="text-2xl font-semibold tracking-tight capitalize">
           {title}
         </h1>
         {description ? (
-          <p className="mt-1 text-sm text-slate-500">{description}</p>
+          <p className="mt-1 text-sm text-slate-500 first-letter:uppercase">{description}</p>
         ) : null}
       </div>
       {actions ? <div className="flex items-center gap-3">{actions}</div> : null}

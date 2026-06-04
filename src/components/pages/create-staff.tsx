@@ -87,14 +87,14 @@ export function CreateStaffPage() {
     <div className="space-y-5">
       <PageHeader title="Create Staff" />
 
-      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <CardContent className="p-6">
+      <Card>
+        <CardContent>
           <div className="flex items-center gap-2.5">
             <UserRound className="size-4 text-primary" strokeWidth={2.5} />
             <h2 className="text-sm font-semibold ">Staff Information</h2>
           </div>
 
-          <div className="mt-5 space-y-4">
+          <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="full-name">Full Name</Label>
@@ -122,7 +122,7 @@ export function CreateStaffPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div>
               <Label htmlFor="phone">Phone Number</Label>
               <div className="flex h-12 items-center rounded-2xl border border-slate-200 bg-slate-50">
                 <span className="flex h-full items-center border-r border-slate-200 px-4 text-sm text-slate-500">
@@ -141,14 +141,14 @@ export function CreateStaffPage() {
         </CardContent>
       </Card>
 
-      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <CardContent className="p-6">
+      <Card>
+        <CardContent>
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="size-4 text-primary" strokeWidth={2.5} />
             <h2 className="text-sm font-semibold ">Role Assignment</h2>
           </div>
 
-          <div className="mt-5 space-y-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label>Select Staff Role</Label>
               <Select
@@ -213,14 +213,14 @@ export function CreateStaffPage() {
         </CardContent>
       </Card>
 
-      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <CardContent className="p-6">
+      <Card>
+        <CardContent>
           <div className="flex items-center gap-2.5">
             <KeyRound className="size-4 text-primary" strokeWidth={2.5} />
             <h2 className="text-sm font-semibold ">Account Security</h2>
           </div>
 
-          <div className="mt-5 space-y-5">
+          <div className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="temp-password">Temporary Password</Label>
               <Input

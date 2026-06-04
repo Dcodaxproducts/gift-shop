@@ -40,14 +40,10 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
             type="search"
             placeholder="Search products..."
             leftIcon={<Search className="size-4" />}
-            className="h-9! w-full rounded-full bg-slate-50 text-xs sm:w-[220px]"
+            className="h-9! w-full rounded-full bg-slate-50 text-xs sm:w-55"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {/* <Button variant="outline" className="col-span-2 h-11 sm:col-span-1 sm:w-11 sm:px-0">
-            <ListFilter className="size-4" />
-            <span className="sm:hidden">More Filters</span>
-          </Button> */}
         </div>
       </div>
 

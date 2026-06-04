@@ -38,7 +38,7 @@ export function SocialReviewStatsCard() {
 
         return (
           <Card key={stat.label} className={cn("border-transparent shadow-md shadow-slate-200/60", tone.card)}>
-            <CardContent className="p-5">
+            <CardContent>
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                   {stat.label}

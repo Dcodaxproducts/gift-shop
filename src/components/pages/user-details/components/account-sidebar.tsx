@@ -34,7 +34,7 @@ export function AccountSidebar({
         <CardHeader>
           <CardTitle>Account Actions</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 px-4 pb-4 pt-0">
+        <CardContent className="space-y-3">
           <Button
             variant="outline"
             className="w-full"
@@ -60,7 +60,7 @@ export function AccountSidebar({
         <CardHeader>
           <CardTitle className="text-primary">Subscription Overview</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 px-4 pb-4 pt-0">
+        <CardContent className="space-y-3">
           <div className="flex justify-between gap-3 text-[10px]">
             <Label>Plan Type</Label>
             <span className="text-right font-semibold">{subscriptionPlanType}</span>
@@ -85,7 +85,7 @@ export function AccountSidebar({
         <CardHeader>
           <CardTitle>Quick Stats</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-3 px-4 pb-4 pt-0">
+        <CardContent className="grid grid-cols-2 gap-3">
           <div className="rounded-xl bg-slate-50 px-2 py-3 text-center">
             <p className="text-[9px] font-semibold uppercase text-slate-400">Orders</p>
             <p className="mt-1 text-sm font-semibold">{ordersCount}</p>

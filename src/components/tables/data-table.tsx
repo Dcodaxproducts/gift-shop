@@ -75,7 +75,7 @@ export function DataTable<T>({
                   <TableRow key={`skeleton-${rowIndex}`} className="hover:bg-transparent">
                     {Array.from({ length: columnCount }).map((_, cellIndex) => (
                       <TableCell key={cellIndex}>
-                        <div className="h-3 w-full max-w-[140px] animate-pulse rounded-full bg-slate-100" />
+                        <div className="h-3 w-full max-w-35 animate-pulse rounded-full bg-slate-100" />
                       </TableCell>
                     ))}
                   </TableRow>

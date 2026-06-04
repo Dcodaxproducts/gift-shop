@@ -20,6 +20,7 @@ import { useAdminRole, useAdminRoles } from "@/hooks/usePermissions";
 import { useStaffMember, useUpdateStaff } from "@/hooks/useStaff";
 import { formatDate } from "@/utils/formatDate";
 import { buildRolePermissionSummary } from "@/utils/role-permissions";
+import SectionHeader from "../common/section-header";
 
 function splitFullName(fullName: string) {
   const trimmed = fullName.trim();
@@ -119,17 +120,13 @@ export function EditStaffPage() {
       <PageHeader title="Edit Staff" />
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
-        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2.5">
-              <UserRound className="size-4 text-primary" strokeWidth={2.5} />
-              <div>
-                <h2 className="text-sm font-semibold ">Profile Details</h2>
-                <p className="mt-0.5 text-[11px] text-slate-400">
-                  Update staff&apos;s personal information.
-                </p>
-              </div>
-            </div>
+        <Card>
+          <CardContent>
+            <SectionHeader
+              icon={UserRound}
+              title="Profile Details"
+              description="Update staff&apos;s personal information."
+            />
 
             <div className="mt-6 space-y-5">
               <div className="grid gap-4 sm:grid-cols-2">
@@ -180,7 +177,7 @@ export function EditStaffPage() {
 
         <div className="space-y-5">
           <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <CardContent className="p-5">
+            <CardContent>
               <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                 Account Status
               </p>
@@ -208,7 +205,7 @@ export function EditStaffPage() {
           </Card>
 
           <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <CardContent className="p-5">
+            <CardContent>
               <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                 Role Assignment
               </p>
@@ -245,7 +242,7 @@ export function EditStaffPage() {
                   ) : permissions.length === 0 ? (
                     <li className="text-[11px] text-slate-400">No permissions assigned</li>
                   ) : (
-                    permissions.map((permission,i) => (
+                    permissions.map((permission, i) => (
                       <li
                         key={i}
                         className="flex items-center gap-2 text-[11px] text-slate-700"

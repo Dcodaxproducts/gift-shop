@@ -5,7 +5,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -46,11 +46,11 @@ const trendRanges: { label: string; value: ProviderPayoutTrendRange }[] = [
 function MonthlyPayoutChart({ data = [], range, onRangeChange }: MonthlyPayoutChartProps) {
   return (
     <Card>
-      <CardContent className="p-6">
+      <CardContent>
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-sm font-semibold ">Monthly Payout Trend</h2>
+          <CardTitle>Monthly Payout Trends</CardTitle>
           <Select value={range} onValueChange={onRangeChange}>
-            <SelectTrigger className="h-8 w-[130px] rounded-full border-0 bg-slate-50 px-4 text-[10px] text-slate-500 shadow-none">
+            <SelectTrigger className="w-36 h-8 font-medium text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -63,7 +63,7 @@ function MonthlyPayoutChart({ data = [], range, onRangeChange }: MonthlyPayoutCh
           </Select>
         </div>
 
-        <ChartContainer config={trendChartConfig} className="mt-6 h-[230px] w-full">
+        <ChartContainer config={trendChartConfig} className="mt-6 h-57.5 w-full">
           <AreaChart data={data} margin={{ left: 0, right: 0, top: 8 }}>
             <defs>
               <linearGradient id="payoutFill" x1="0" y1="0" x2="0" y2="1">
