@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronUp, Eye, RefreshCw } from "lucide-react";
+import { Eye, RefreshCw } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DisputeRefundStatsCard } from "@/components/cards/DisputeRefundStatsCard";
@@ -16,14 +16,7 @@ import {
   type DisputeRefundStatus,
 } from "@/constants/disputes-refund";
 import { disputeRefundCategoryOptions, disputeRefundStatusOptions } from "@/constants/filter-options";
-import { cn } from "@/lib/utils";
 import { StatusBadge } from "@/utils/status";
-
-const priorityClassName: Record<DisputeRefundPriority, string> = {
-  HIGH: "text-red-600",
-  MEDIUM: "text-slate-600",
-  LOW: "text-slate-400",
-};
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-US", {
@@ -131,9 +124,8 @@ export function DisputesRefundPage() {
           <>
             <TableHead>Case ID</TableHead>
             <TableHead>Customer</TableHead>
-            <TableHead>Transaction ID</TableHead>
+            <TableHead>Order ID</TableHead>
             <TableHead>Amount</TableHead>
-            <TableHead>Priority</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Days Open</TableHead>
             <TableHead className="text-right">Action</TableHead>
@@ -150,12 +142,6 @@ export function DisputesRefundPage() {
             </TableCell>
             <TableCell className="text-slate-500">{item.transactionId}</TableCell>
             <TableCell className="font-semibold">{formatCurrency(item.amount)}</TableCell>
-            <TableCell>
-              <span className={cn("inline-flex items-center gap-1 text-xs font-semibold", priorityClassName[item.priority])}>
-                <ChevronUp className="size-3" />
-                {item.priority.charAt(0) + item.priority.slice(1).toLowerCase()}
-              </span>
-            </TableCell>
             <TableCell>{StatusBadge({ status: item.status })}</TableCell>
             <TableCell className="font-medium">{item.daysOpen} days</TableCell>
             <TableCell className="text-right">

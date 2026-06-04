@@ -1,21 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { CalendarDays, Download, Eye } from "lucide-react";
+import { useState } from "react";
+import { Download, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { TransactionStatsCard } from "@/components/cards/TransactionStatsCard";
+import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { getInitials } from "@/utils/getInitials";
-import { cn } from "@/lib/utils";
 import PageHeader from "../common/page-header";
 import { StatusBadge } from "@/utils/status";
 
@@ -30,27 +23,6 @@ type TransactionItem = {
   status: TransactionStatus;
   date: string;
 };
-
-const dateRangeOptions = [
-  { value: "all", label: "Date Range" },
-  { value: "today", label: "Today" },
-  { value: "week", label: "This Week" },
-  { value: "month", label: "This Month" },
-] as const;
-
-const typeOptions = [
-  { value: "all", label: "Transaction Type" },
-  { value: "Payment", label: "Payment" },
-  { value: "Gift", label: "Gift" },
-  { value: "Withdrawal", label: "Withdrawal" },
-] as const;
-
-const statusOptions = [
-  { value: "all", label: "Status" },
-  { value: "success", label: "Success" },
-  { value: "pending", label: "Pending" },
-  { value: "failed", label: "Failed" },
-] as const;
 
 const transactions: TransactionItem[] = [
   {
@@ -118,92 +90,19 @@ const transactions: TransactionItem[] = [
   },
 ];
 
-const statusClasses = {
-  success: "bg-emerald-50 text-emerald-600",
-  pending: "bg-amber-50 text-amber-600",
-  failed: "bg-rose-50 text-rose-600",
-};
+const transactionTypeOptions = [
+  { value: "all", label: "Transaction Type" },
+  { value: "payment", label: "Payment" },
+  { value: "gift", label: "Gift" },
+  { value: "withdrawal", label: "Withdrawal" },
+] as const;
 
-function TransactionsFilters({
-  dateRange,
-  type,
-  status,
-  onDateRangeChange,
-  onTypeChange,
-  onStatusChange,
-}: {
-  dateRange: string;
-  type: string;
-  status: string;
-  onDateRangeChange: (value: string) => void;
-  onTypeChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-}) {
-  return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <div className="grid gap-3 sm:flex">
-        <Select value={dateRange} onValueChange={onDateRangeChange}>
-          <SelectTrigger className="h-9 rounded-xl bg-white text-xs sm:w-[130px]">
-            <CalendarDays className="size-3.5 text-slate-500" />
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {dateRangeOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={type} onValueChange={onTypeChange}>
-          <SelectTrigger className="h-9 rounded-xl bg-white text-xs sm:w-[160px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {typeOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={status} onValueChange={onStatusChange}>
-          <SelectTrigger className="h-9 rounded-xl bg-white text-xs sm:w-[120px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {statusOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <Button className="h-9 rounded-xl">
-        <Download className="size-3.5" />
-        Export Report
-      </Button>
-    </div>
-  );
-}
-
-function TransactionStatusBadge({ status }: { status: TransactionStatus }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase",
-        statusClasses[status],
-      )}
-    >
-      <span className="mr-1.5 size-1.5 rounded-full bg-current" />
-      {status}
-    </span>
-  );
-}
+const transactionStatusOptions = [
+  { value: "all", label: "Status" },
+  { value: "success", label: "Success" },
+  { value: "pending", label: "Pending" },
+  { value: "failed", label: "Failed" },
+] as const;
 
 function TransactionsTable({
   data,
@@ -290,29 +189,15 @@ function TransactionsTable({
 
 export function TransactionsPage() {
   const [page, setPage] = useState(1);
-  const [dateRange, setDateRange] = useState("all");
-  const [type, setType] = useState("all");
+  const [search, setSearch] = useState("");
+  const [transactionType, setTransactionType] = useState("all");
   const [status, setStatus] = useState("all");
   const limit = 5;
 
-  const filteredTransactions = useMemo(() => {
-    return transactions.filter((transaction) => {
-      const matchesType = type === "all" || transaction.type === type;
-      const matchesStatus = status === "all" || transaction.status === status;
-
-      return matchesType && matchesStatus;
-    });
-  }, [status, type]);
-
-  const paginatedTransactions = filteredTransactions.slice(
+  const paginatedTransactions = transactions.slice(
     (page - 1) * limit,
     page * limit,
   );
-
-  const resetPage = (callback: (value: string) => void) => (value: string) => {
-    callback(value);
-    setPage(1);
-  };
 
   return (
     <div className="space-y-5">
@@ -328,11 +213,33 @@ export function TransactionsPage() {
 
       <TransactionStatsCard />
 
+      <FilterSection
+        searchPlaceholder="Search transactions by ID, user, or provider..."
+        searchValue={search}
+        onSearchChange={setSearch}
+        filters={[
+          {
+            value: transactionType,
+            onChange: setTransactionType,
+            placeholder: "Transaction Type",
+            width: "sm:w-[170px]",
+            options: transactionTypeOptions,
+          },
+          {
+            value: status,
+            onChange: setStatus,
+            placeholder: "Status",
+            width: "sm:w-[130px]",
+            options: transactionStatusOptions,
+          },
+        ]}
+      />
+
       <TransactionsTable
         data={paginatedTransactions}
         page={page}
         limit={limit}
-        total={filteredTransactions.length}
+        total={transactions.length}
         onPageChange={setPage}
       />
     </div>
