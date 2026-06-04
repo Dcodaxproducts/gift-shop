@@ -61,7 +61,7 @@ export function PermissionsPanel({
   onToggleAction,
 }: PermissionsPanelProps) {
   return (
-    <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <Card className="">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-slate-900">

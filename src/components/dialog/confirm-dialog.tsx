@@ -30,7 +30,7 @@ export function ConfirmDialog({
       onOpenChange={onOpenChange}
       title={title}
       description={description}
-      className="max-w-[400px] rounded-xl m-4"
+      className="max-w-100 rounded-xl m-4"
       headerClassName="p-4"
       contentClassName="hidden"
       footerClassName="p-4"
@@ -39,14 +39,14 @@ export function ConfirmDialog({
         <>
           <Button
             variant="outline"
-            className="h-8"
+            className="h-9"
             onClick={() => onOpenChange(false)}
             disabled={loading}
           >
             {cancelLabel}
           </Button>
           <Button
-            className="h-8"
+            className="h-9"
             onClick={onConfirm}
             disabled={loading}
           >

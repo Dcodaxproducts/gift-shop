@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import SectionHeader from "../common/section-header";
 
 export type ProviderFormMode = "create" | "edit";
 
@@ -44,31 +45,11 @@ const emptyValues: ProviderFormValues = {
 
 const BIO_MAX_LENGTH = 500;
 
-type SectionHeaderProps = {
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
-  title: string;
-  description: string;
-};
-
-function SectionHeader({ icon: Icon, title, description }: SectionHeaderProps) {
-  return (
-    <div className="flex items-start gap-3">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        <Icon className="size-4" strokeWidth={2.25} />
-      </span>
-      <div>
-        <h2 className="text-sm font-semibold ">{title}</h2>
-        <p className="mt-0.5 text-[11px] text-slate-400">{description}</p>
-      </div>
-    </div>
-  );
-}
-
 function CoverUpload() {
   return (
     <button
       type="button"
-      className="flex h-[150px] w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
     >
       <span className="flex size-10 items-center justify-center rounded-xl bg-white text-primary shadow-sm">
         <Camera className="size-5" strokeWidth={2} />
@@ -87,7 +68,7 @@ function LogoUpload() {
   return (
     <button
       type="button"
-      className="flex h-[150px] w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
     >
       <span className="flex size-12 items-center justify-center rounded-full bg-white text-primary shadow-sm">
         <Camera className="size-5" strokeWidth={2} />
@@ -130,26 +111,21 @@ export function ProviderFormPage({
     <div className="space-y-5">
       <PageHeader title={pageTitle} />
 
-      <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <Card>
         <CardContent className="p-0">
-          <div>
-            <h2 className="text-sm font-semibold ">
-              Provider Branding
-            </h2>
-            <p className="mt-1 text-[11px] text-slate-400">
-              Update the visual identity for your storefront.
-            </p>
-          </div>
-
+          <SectionHeader
+            title="Provider Branding"
+            description="Update the visual identity for your storefront."
+          />
           <div className="mt-5 grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
             <div>
-              <Label className="mb-2 block text-xs font-medium text-slate-700">
+              <Label>
                 Cover Image
               </Label>
               <CoverUpload />
             </div>
             <div>
-              <Label className="mb-2 block text-xs font-medium text-slate-700">
+              <Label>
                 Company Logo
               </Label>
               <LogoUpload />
@@ -159,7 +135,7 @@ export function ProviderFormPage({
       </Card>
 
       <section className="grid gap-5 lg:grid-cols-2">
-        <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <Card className="">
           <CardContent className="space-y-5 p-0">
             <SectionHeader
               icon={UserCircle2}
@@ -168,7 +144,7 @@ export function ProviderFormPage({
             />
 
             <div className="space-y-4">
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="userName">User Name</Label>
                 <Input
                   id="userName"
@@ -177,7 +153,7 @@ export function ProviderFormPage({
                   onChange={(event) => updateField("userName", event.target.value)}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -188,7 +164,7 @@ export function ProviderFormPage({
                   onChange={(event) => updateField("email", event.target.value)}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="contact">Contact</Label>
                 <Input
                   id="contact"
@@ -197,7 +173,7 @@ export function ProviderFormPage({
                   onChange={(event) => updateField("contact", event.target.value)}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
@@ -211,7 +187,7 @@ export function ProviderFormPage({
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <Card className="">
           <CardContent className="space-y-5 p-0">
             <SectionHeader
               icon={IdCard}
@@ -220,7 +196,7 @@ export function ProviderFormPage({
             />
 
             <div className="space-y-4">
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="businessName">Business Name</Label>
                 <Input
                   id="businessName"
@@ -231,7 +207,7 @@ export function ProviderFormPage({
                   }
                 />
               </div>
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="businessCategory">Business Category</Label>
                 <Select
                   value={values.businessCategory || undefined}
@@ -251,7 +227,7 @@ export function ProviderFormPage({
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-1.5">
+              <div>
                 <Label htmlFor="taxId">Tax ID / VAT Number</Label>
                 <Input
                   id="taxId"
@@ -260,7 +236,7 @@ export function ProviderFormPage({
                   onChange={(event) => updateField("taxId", event.target.value)}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div >
                 <Label htmlFor="businessAddress">Business Address</Label>
                 <Input
                   id="businessAddress"
@@ -276,7 +252,7 @@ export function ProviderFormPage({
         </Card>
       </section>
 
-      <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <Card className="">
         <CardContent className="space-y-5 p-0">
           <SectionHeader
             icon={FileText}
@@ -290,7 +266,7 @@ export function ProviderFormPage({
               maxLength={BIO_MAX_LENGTH}
               onChange={(event) => updateField("businessBio", event.target.value)}
               placeholder="Tell customers about this business..."
-              className="min-h-[112px] resize-none"
+              className="min-h-28 resize-none"
             />
             <p className="mt-2 text-right text-[10px] text-slate-400">
               {values.businessBio.length} / {BIO_MAX_LENGTH} characters
@@ -299,7 +275,7 @@ export function ProviderFormPage({
         </CardContent>
       </Card>
 
-      <Card className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <Card>
         <CardContent className="flex items-center justify-end gap-3 p-0">
           <Button variant="outline" onClick={onCancel}>
             Cancel

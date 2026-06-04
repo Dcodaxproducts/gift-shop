@@ -24,7 +24,6 @@ export function UserDetailsPage() {
     const userId = params?.id ?? "";
     const { data: user, isLoading, isError, refetch } = useUser(userId);
     const { data: activities } = useUserActivity(userId);
-    console.log("User Details:", user);
     const suspendMutation = useSuspendUser();
     const unsuspendMutation = useUnsuspendUser();
 

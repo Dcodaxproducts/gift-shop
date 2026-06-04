@@ -37,6 +37,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       { title: "Gift Listings", href: "/gifts", icon: "gift", permissionKey: "giftListings" }, // Added key
       { title: "Gift Categories", href: "/gift-categories", icon: "giftCategories", permissionKey: "giftCategories" }, // Added key
+      { title: "Business Categories", href: "/business-categories", icon: "giftCategories", permissionKey: "giftCategories" }, // Added key
     ],
   },
   {
@@ -63,7 +64,6 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     title: "System",
     items: [
-      { title: "Referral Settings", href: "/referral-settings", icon: "share-2", permissionKey: "settings" },
       { title: "Subscription Plans", href: "/subscriptions", icon: "calendar-days", permissionKey: "settings" },
       { title: "System Settings", href: "/settings", icon: "settings", permissionKey: "settings" },
       { title: "Platform Analytics", href: "/platform-analytics", icon: "bar-chart-3", permissionKey: "reports" },

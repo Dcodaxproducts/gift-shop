@@ -6,20 +6,20 @@ type CardProps = HTMLAttributes<HTMLDivElement>;
 export function Card({ className, ...props }: CardProps) {
   return (
     <div
-      className={cn("rounded-2xl bg-white  border border-border shadow-sm", className)}
+      className={cn("rounded-2xl bg-white  border border-border shadow-sm p-5", className)}
       {...props}
     />
   );
 }
 
 export function CardHeader({ className, ...props }: CardProps) {
-  return <div className={cn("space-y-2 p-4", className)} {...props} />;
+  return <div className={cn("space-y-2", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: CardProps) {
   return (
     <h1
-      className={cn("text-sm font-semibold ", className)}
+      className={cn("text-base font-semibold ", className)}
       {...props}
     />
   );
@@ -30,5 +30,5 @@ export function CardDescription({ className, ...props }: CardProps) {
 }
 
 export function CardContent({ className, ...props }: CardProps) {
-  return <div className={cn("p-6", className)} {...props} />;
+  return <div className={cn("", className)} {...props} />;
 }

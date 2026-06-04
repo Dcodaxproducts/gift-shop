@@ -21,7 +21,7 @@ export function HomeStatsCard() {
 
         return (
           <Card key={stat.title}>
-            <CardContent className="p-5">
+            <CardContent>
               <div className="flex items-start justify-between">
                 <div className={cn("flex size-9 items-center justify-center rounded-2xl", statToneClasses[tone])}>
                   <Icon className="size-4" strokeWidth={2.4} />

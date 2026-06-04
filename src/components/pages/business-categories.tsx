@@ -3,25 +3,35 @@
 import { useState } from "react";
 import { Edit2, Plus, X } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
-import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
+import { AddBusinessCategoryDialog } from "@/components/dialog/add-business-category-dialog";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
-import { useDeleteGiftCategory, useGiftCategories } from "@/hooks/useGiftCategories";
-import type { GiftCategory } from "@/types/gift-categories";
-import MyImage from "../common/MyImage";
+import {
+  useDeleteProviderBusinessCategory,
+  useProviderBusinessCategories,
+} from "@/hooks/useProviderBusinessCategories";
+import type { ProviderBusinessCategory } from "@/types/provider-business-categories";
 import { StatusBadge } from "@/utils/status";
 
-export function GiftCategoriesPage() {
+export function BusinessCategoriesPage() {
   const [page, setPage] = useState(1);
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
-  const [editCategory, setEditCategory] = useState<GiftCategory | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<GiftCategory | null>(null);
+  const [editCategory, setEditCategory] =
+    useState<ProviderBusinessCategory | null>(null);
+  const [deleteTarget, setDeleteTarget] =
+    useState<ProviderBusinessCategory | null>(null);
 
   const limit = 10;
-  const { data: categories = [], isLoading } = useGiftCategories({ page, limit });
-  const { mutate: deleteGiftCategory, isPending: isDeleting } = useDeleteGiftCategory();
+  const { data: categories = [], isLoading } = useProviderBusinessCategories({
+    page,
+    limit,
+  });
+  const {
+    mutate: deleteBusinessCategory,
+    isPending: isDeleting,
+  } = useDeleteProviderBusinessCategory();
   const hasNextPage = categories.length === limit;
   const pagination = {
     total: (page - 1) * limit + categories.length + (hasNextPage ? 1 : 0),
@@ -35,8 +45,8 @@ export function GiftCategoriesPage() {
   return (
     <div className="space-y-5">
       <PageHeader
-        title="Gift Categories"
-        description="Manage and organize your catalog of gift types."
+        title="Business Categories"
+        description="Manage and organize your provider business categories."
         actions={
           <Button onClick={() => setAddCategoryOpen(true)}>
             <Plus className="mr-2 size-3.5" />
@@ -45,7 +55,7 @@ export function GiftCategoriesPage() {
         }
       />
 
-      <AddCategoryDialog
+      <AddBusinessCategoryDialog
         open={addCategoryOpen || !!editCategory}
         onOpenChange={(open) => {
           setAddCategoryOpen(open);
@@ -69,7 +79,7 @@ export function GiftCategoriesPage() {
         loading={isDeleting}
         onConfirm={() => {
           if (!deleteTarget) return;
-          deleteGiftCategory(deleteTarget.id, {
+          deleteBusinessCategory(deleteTarget.id, {
             onSuccess: () => setDeleteTarget(null),
           });
         }}
@@ -83,29 +93,16 @@ export function GiftCategoriesPage() {
           <>
             <TableHead>Category Name</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Total Gifts</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
-        row={(item: GiftCategory) => (
+        row={(item: ProviderBusinessCategory) => (
           <>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span className="flex size-9 items-center justify-center rounded-full">
-                  {item.imageUrl ? (
-                    <MyImage
-                      src={item.imageUrl}
-                      alt={item.name}
-                      width={36}
-                      height={36}
-                      className="size-full rounded-full object-cover"
-                    />
-                  ) : (
-                    <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold uppercase text-primary">
-                      {item.name.charAt(0)}
-                    </span>
-                  )}
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold uppercase text-primary">
+                  {(item.iconKey || item.name).charAt(0)}
                 </span>
 
                 <span className="text-xs font-semibold  capitalize">
@@ -122,15 +119,9 @@ export function GiftCategoriesPage() {
               </p>
             </TableCell>
 
-            <TableCell>
-              <span className="inline-flex items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                {item.totalGifts ?? 0}
-              </span>
-            </TableCell>
-            
             <TableCell>{
               StatusBadge({ status: item.isActive ? "ACTIVE" : "INACTIVE" })
-            }
+              }
             </TableCell>
 
             <TableCell>

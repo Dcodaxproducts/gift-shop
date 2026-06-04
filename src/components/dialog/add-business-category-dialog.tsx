@@ -1,23 +1,26 @@
 "use client";
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import Image from "../common/MyImage";
+import Image from "next/image";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "../ui/textarea";
-import { useCreateGiftCategory, useUpdateGiftCategory } from "@/hooks/useGiftCategories";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  useCreateProviderBusinessCategory,
+  useUpdateProviderBusinessCategory,
+} from "@/hooks/useProviderBusinessCategories";
 import { useStorage } from "@/hooks/useStorage";
-import type { GiftCategory } from "@/types/gift-categories";
+import type { ProviderBusinessCategory } from "@/types/provider-business-categories";
 import { UPLOAD_FOLDERS } from "@/utils/file";
 
-type AddCategoryDialogProps = {
+type AddBusinessCategoryDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  category?: GiftCategory | null;
+  category?: ProviderBusinessCategory | null;
 };
 
 const fileToDataUrl = (file: File): Promise<string> => {
@@ -37,21 +40,21 @@ const fileToDataUrl = (file: File): Promise<string> => {
   });
 };
 
-export function AddCategoryDialog({
+export function AddBusinessCategoryDialog({
   open,
   onOpenChange,
   category,
-}: AddCategoryDialogProps) {
-  const iconInputRef = useRef<HTMLInputElement | null>(null);
+}: AddBusinessCategoryDialogProps) {
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const [visible, setVisible] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [iconPreview, setIconPreview] = useState<string | undefined>();
-  const [iconUrl, setIconUrl] = useState<string | undefined>();
+  const [imagePreview, setImagePreview] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
 
-  const createGiftCategoryMutation = useCreateGiftCategory();
-  const updateGiftCategoryMutation = useUpdateGiftCategory();
+  const createBusinessCategoryMutation = useCreateProviderBusinessCategory();
+  const updateBusinessCategoryMutation = useUpdateProviderBusinessCategory();
   const { upload, isUploading } = useStorage();
   const isEditMode = !!category;
 
@@ -59,11 +62,11 @@ export function AddCategoryDialog({
     setVisible(category?.isActive ?? true);
     setName(category?.name ?? "");
     setDescription(category?.description ?? "");
-    setIconPreview(category?.imageUrl ?? undefined);
-    setIconUrl(category?.imageUrl ?? undefined);
+    setImagePreview(category?.imageUrl ?? undefined);
+    setImageUrl(category?.imageUrl ?? undefined);
 
-    if (iconInputRef.current) {
-      iconInputRef.current.value = "";
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
     }
   };
 
@@ -74,12 +77,12 @@ export function AddCategoryDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, category?.id]);
 
-  const handleIconButtonClick = () => {
+  const handleImageButtonClick = () => {
     if (isUploading) return;
-    iconInputRef.current?.click();
+    imageInputRef.current?.click();
   };
 
-  const handleIconChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -89,19 +92,16 @@ export function AddCategoryDialog({
       return;
     }
 
-    // Show preview instantly
     const dataUrl = await fileToDataUrl(file);
-    setIconPreview(dataUrl);
-    setIconUrl(undefined);
+    setImagePreview(dataUrl);
+    setImageUrl(undefined);
 
-    // Upload to S3 via presigned URL
     const result = await upload(file, UPLOAD_FOLDERS.GIFT_CATEGORY_IMAGES);
 
     if (result) {
-      setIconUrl(result.fileUrl);
+      setImageUrl(result.fileUrl);
     } else {
-      // Upload failed — clear preview
-      setIconPreview(undefined);
+      setImagePreview(undefined);
       event.target.value = "";
     }
   };
@@ -110,23 +110,30 @@ export function AddCategoryDialog({
     const trimmedName = name.trim();
     const trimmedDescription = description.trim();
 
-    if (!trimmedName || createGiftCategoryMutation.isPending || updateGiftCategoryMutation.isPending || isUploading) return;
+    if (
+      !trimmedName ||
+      createBusinessCategoryMutation.isPending ||
+      updateBusinessCategoryMutation.isPending ||
+      isUploading
+    ) {
+      return;
+    }
 
     try {
       const payload = {
         name: trimmedName,
         description: trimmedDescription || undefined,
-        imageUrl: iconUrl,
+        imageUrl,
         isActive: visible,
       };
 
       if (category) {
-        await updateGiftCategoryMutation.mutateAsync({
+        await updateBusinessCategoryMutation.mutateAsync({
           id: category.id,
           payload,
         });
       } else {
-        await createGiftCategoryMutation.mutateAsync(payload);
+        await createBusinessCategoryMutation.mutateAsync(payload);
       }
 
       resetForm();
@@ -142,20 +149,28 @@ export function AddCategoryDialog({
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen && !createGiftCategoryMutation.isPending && !updateGiftCategoryMutation.isPending && !isUploading) {
+    if (
+      !nextOpen &&
+      !createBusinessCategoryMutation.isPending &&
+      !updateBusinessCategoryMutation.isPending &&
+      !isUploading
+    ) {
       resetForm();
     }
     onOpenChange(nextOpen);
   };
 
-  const isBusy = createGiftCategoryMutation.isPending || updateGiftCategoryMutation.isPending || isUploading;
+  const isBusy =
+    createBusinessCategoryMutation.isPending ||
+    updateBusinessCategoryMutation.isPending ||
+    isUploading;
 
   return (
     <Dialog
       open={open}
       onOpenChange={handleOpenChange}
       title={isEditMode ? "Edit Category" : "Add New Category"}
-      className="max-w-95"
+      className="max-w-[380px]"
       contentClassName="px-[22px] pb-0 pt-[21px]"
       footerClassName="justify-center gap-3 border-t border-slate-100 py-4"
       footer={
@@ -164,7 +179,8 @@ export function AddCategoryDialog({
             onClick={handleSaveCategory}
             disabled={!name.trim() || isBusy}
           >
-            {createGiftCategoryMutation.isPending || updateGiftCategoryMutation.isPending
+            {createBusinessCategoryMutation.isPending ||
+            updateBusinessCategoryMutation.isPending
               ? "Saving..."
               : isUploading
               ? "Uploading..."
@@ -184,29 +200,29 @@ export function AddCategoryDialog({
         </>
       }
     >
-      <div className="space-y-4.5">
+      <div className="space-y-[18px]">
         <div className="flex flex-col items-center text-center">
           <input
-            ref={iconInputRef}
+            ref={imageInputRef}
             type="file"
             accept="image/png,image/svg+xml"
             className="hidden"
-            onChange={handleIconChange}
+            onChange={handleImageChange}
           />
 
           <button
             type="button"
-            className="flex size-16.5 cursor-pointer flex-col items-center justify-center rounded-full border border-dashed border-slate-300 bg-white text-slate-400 transition hover:border-primary hover:text-primary overflow-hidden"
-            aria-label="Upload category icon"
-            onClick={handleIconButtonClick}
+            className="flex size-[66px] cursor-pointer flex-col items-center justify-center rounded-full border border-dashed border-slate-300 bg-white text-slate-400 transition hover:border-[#6d28d9] hover:text-[#6d28d9] overflow-hidden"
+            aria-label="Upload category image"
+            onClick={handleImageButtonClick}
             disabled={isUploading}
           >
             {isUploading ? (
-              <Loader2 className="size-4 animate-spin text-primary" />
-            ) : iconPreview ? (
+              <Loader2 className="size-4 animate-spin text-[#6d28d9]" />
+            ) : imagePreview ? (
               <Image
-                src={iconPreview}
-                alt="Category icon"
+                src={imagePreview}
+                alt="Category image"
                 width={66}
                 height={66}
                 className="size-full rounded-full object-cover"
@@ -229,10 +245,10 @@ export function AddCategoryDialog({
         </div>
 
         <div>
-          <Label htmlFor="category-name">Category Name</Label>
+          <Label htmlFor="business-category-name">Category Name</Label>
           <Input
-            id="category-name"
-            placeholder="e.g. Anniversary Gifts"
+            id="business-category-name"
+            placeholder="e.g. Gift Store"
             className="h-9! rounded-md text-xs mt-0.5"
             value={name}
             onChange={(event) => setName(event.target.value)}
@@ -240,10 +256,10 @@ export function AddCategoryDialog({
         </div>
 
         <div>
-          <Label htmlFor="category-description">Description</Label>
+          <Label htmlFor="business-category-description">Description</Label>
           <Textarea
-            id="category-description"
-            placeholder="Briefly describe the contents of this category..."
+            id="business-category-description"
+            placeholder="Briefly describe the providers in this category..."
             className="rounded-md text-xs! mt-0.5"
             value={description}
             onChange={(event) => setDescription(event.target.value)}

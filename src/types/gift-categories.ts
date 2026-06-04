@@ -36,18 +36,6 @@ export type GiftCategory = {
   updatedAt: string;
 };
 
-export type GiftCategoryLookupItem = Pick<GiftCategory, "id" | "name" | "slug" | "imageUrl" | "iconKey">;
-
-
-export type GiftCategoryStats = {
-  totalCategories?: number;
-  activeCategories?: number;
-  inactiveCategories?: number;
-  visibleCategories?: number;
-  hiddenCategories?: number;
-  totalGifts?: number;
-};
-
 export type CreateGiftCategoryPayload = {
   name: string;
   description?: string;

@@ -1,19 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { paymentSplit } from "@/constants/home-dashboard";
 import { cn } from "@/lib/utils";
+import SectionHeader from "../common/section-header";
 
 export function PaymentDistributionChart() {
   return (
-    <Card className="rounded-2xl border border-border bg-white shadow-sm">
-      <CardHeader className="p-5 pb-0">
-        <CardTitle className="text-base font-semibold ">
-          Gift vs Payment
-        </CardTitle>
-        <p className="mt-1 text-xs font-medium text-slate-400">
-          Service utilization distribution
-        </p>
+    <Card>
+      <CardHeader>
+        <SectionHeader
+          title="Gift vs Payment"
+          description="Service utilization distribution"
+        />
       </CardHeader>
-      <CardContent className="p-5">
+      <CardContent>
         <div className="mx-auto mb-7 mt-6 flex size-44 items-center justify-center rounded-full bg-[conic-gradient(var(--primary)_0_65%,#e2e8f0_65%_100%)]">
           <div className="flex size-32 flex-col items-center justify-center rounded-full bg-white text-center">
             <span className="text-3xl font-semibold ">65%</span>

@@ -21,6 +21,7 @@ export type ProviderBusinessCategory = {
   slug: string;
   description: string | null;
   iconKey: string | null;
+  imageUrl: string | null;
   sortOrder: number;
   isActive: boolean;
   createdAt: string;
@@ -30,8 +31,7 @@ export type ProviderBusinessCategory = {
 export type CreateProviderBusinessCategoryPayload = {
   name: string;
   description?: string;
-  iconKey?: string;
-  sortOrder?: number;
+  imageUrl?: string;
   isActive?: boolean;
 };
 

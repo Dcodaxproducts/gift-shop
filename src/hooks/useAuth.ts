@@ -5,13 +5,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors";
 import {
-  changePassword,
   forgotPassword,
   getCurrentUser,
   loginUser,
-  resendAuthCode,
   resetPassword,
-  verifyAuth,
 } from "@/services/auth";
 
 export const useCurrentUser = () => {
@@ -40,24 +37,6 @@ export const useLogin = () => {
   });
 };
 
-export const useVerifyAuth = () => {
-  return useMutation({
-    mutationFn: verifyAuth,
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Verification failed. Please try again."));
-    },
-  });
-};
-
-export const useResendAuthCode = () => {
-  return useMutation({
-    mutationFn: resendAuthCode,
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Unable to resend code. Please try again."));
-    },
-  });
-};
-
 export const useForgotPassword = () => {
   const router = useRouter();
   return useMutation({
@@ -77,15 +56,6 @@ export const useResetPassword = () => {
     mutationFn: resetPassword,
     onError: (error) => {
       toast.error(getErrorMessage(error, "Unable to reset password. Please try again."));
-    },
-  });
-};
-
-export const useChangePassword = () => {
-  return useMutation({
-    mutationFn: changePassword,
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Unable to change password. Please try again."));
     },
   });
 };

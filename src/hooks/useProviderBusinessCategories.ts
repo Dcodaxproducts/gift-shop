@@ -7,7 +7,6 @@ import {
   createProviderBusinessCategory,
   deleteProviderBusinessCategory,
   getProviderBusinessCategories,
-  getProviderBusinessCategory,
   updateProviderBusinessCategory,
 } from "@/services/provider-business-categories";
 import type { GetProviderBusinessCategoriesParams } from "@/types/provider-business-categories";
@@ -20,14 +19,6 @@ export const useProviderBusinessCategories = (
   return useQuery({
     queryKey: [...providerBusinessCategoriesQueryKey, params],
     queryFn: () => getProviderBusinessCategories(params),
-  });
-};
-
-export const useProviderBusinessCategory = (id: string) => {
-  return useQuery({
-    queryKey: [...providerBusinessCategoriesQueryKey, id],
-    queryFn: () => getProviderBusinessCategory(id),
-    enabled: !!id,
   });
 };
 

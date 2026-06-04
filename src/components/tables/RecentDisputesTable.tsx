@@ -14,13 +14,13 @@ export function RecentDisputesTable() {
   const cols = ["ID & User", "Reason", "Status"];
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between p-5 pb-4">
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Recent Disputes</CardTitle>
         <span className="rounded-full bg-red-50 px-2 py-1 text-[10px] font-semibold text-red-500">
           4 Urgent
         </span>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">

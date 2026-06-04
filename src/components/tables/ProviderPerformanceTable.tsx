@@ -15,15 +15,15 @@ export function ProviderPerformanceTable() {
   const cols = ["Provider", "Success Rate", "Total Volume"];
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between p-5 pb-4">
-        <CardTitle className="text-base font-semibold ">
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>
           Provider Performance
         </CardTitle>
         <Button variant="ghost" className="text-primary">
           View All
         </Button>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent>
         <Table>
           <TableHeader>
             <TableRow>

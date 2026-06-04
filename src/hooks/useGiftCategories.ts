@@ -7,9 +7,6 @@ import {
   createGiftCategory,
   deleteGiftCategory,
   getGiftCategories,
-  getGiftCategory,
-  getGiftCategoryLookup,
-  getGiftCategoryStats,
   updateGiftCategory,
 } from "@/services/gift-categories";
 import type { GetGiftCategoriesParams } from "@/types/gift-categories";
@@ -20,28 +17,6 @@ export const useGiftCategories = (params: GetGiftCategoriesParams = {}) => {
   return useQuery({
     queryKey: [...giftCategoriesQueryKey, params],
     queryFn: () => getGiftCategories(params),
-  });
-};
-
-export const useGiftCategory = (id: string) => {
-  return useQuery({
-    queryKey: [...giftCategoriesQueryKey, id],
-    queryFn: () => getGiftCategory(id),
-    enabled: !!id,
-  });
-};
-
-export const useGiftCategoryLookup = () => {
-  return useQuery({
-    queryKey: [...giftCategoriesQueryKey, "lookup"],
-    queryFn: getGiftCategoryLookup,
-  });
-};
-
-export const useGiftCategoryStats = () => {
-  return useQuery({
-    queryKey: [...giftCategoriesQueryKey, "stats"],
-    queryFn: getGiftCategoryStats,
   });
 };
 
