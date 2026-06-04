@@ -223,7 +223,7 @@ export function DisputeDetailsPage() {
       <PageHeader
         title="Transaction Details"
         actions={
-          <Button variant="outline" onClick={() => router.push("/disputes-refund")}>
+          <Button variant="outline" onClick={() => router.back()}>
             <ArrowLeft className="size-3.5" strokeWidth={2.4} />
             Back to List
           </Button>
