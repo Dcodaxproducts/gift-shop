@@ -88,7 +88,7 @@ export function CreateStaffPage() {
       <PageHeader title="Create Staff" />
 
       <Card>
-        <CardContent>
+        <CardContent className="space-y-4">
           <div className="flex items-center gap-2.5">
             <UserRound className="size-4 text-primary" strokeWidth={2.5} />
             <h2 className="text-sm font-semibold ">Staff Information</h2>
@@ -142,7 +142,7 @@ export function CreateStaffPage() {
       </Card>
 
       <Card>
-        <CardContent>
+        <CardContent className="space-y-4">
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="size-4 text-primary" strokeWidth={2.5} />
             <h2 className="text-sm font-semibold ">Role Assignment</h2>
@@ -214,7 +214,7 @@ export function CreateStaffPage() {
       </Card>
 
       <Card>
-        <CardContent>
+        <CardContent className="space-y-4">
           <div className="flex items-center gap-2.5">
             <KeyRound className="size-4 text-primary" strokeWidth={2.5} />
             <h2 className="text-sm font-semibold ">Account Security</h2>

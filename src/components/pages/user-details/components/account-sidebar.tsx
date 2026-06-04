@@ -30,7 +30,7 @@ export function AccountSidebar({
 }: AccountSidebarProps) {
   return (
     <aside className="space-y-5 xl:w-57.5">
-      <Card>
+      <Card className="p-4">
         <CardHeader>
           <CardTitle>Account Actions</CardTitle>
         </CardHeader>
@@ -56,7 +56,7 @@ export function AccountSidebar({
         </CardContent>
       </Card>
 
-      <Card className="border-primary/20 bg-primary/20">
+      <Card className="border-primary/20 bg-primary/20 p-4">
         <CardHeader>
           <CardTitle className="text-primary">Subscription Overview</CardTitle>
         </CardHeader>
@@ -81,7 +81,7 @@ export function AccountSidebar({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="p-4">
         <CardHeader>
           <CardTitle>Quick Stats</CardTitle>
         </CardHeader>
