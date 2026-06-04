@@ -81,8 +81,8 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
 ];
 
 export const dashboardUser = {
-  name: "Alex Rivera",
+  name: "Super Admin",
   role: "Super Admin",
   email: "marcus@gifting.com",
-  avatarInitials: "AR",
+  avatarInitials: "SA",
 };

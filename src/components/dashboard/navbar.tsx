@@ -75,14 +75,14 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
             aria-label="Open profile menu"
             className="hidden items-center gap-3 rounded-2xl px-2 py-1 outline-none transition hover:bg-slate-50 sm:flex"
           >
-            <div className="text-right cursor-pointer">
+            {/* <div className="text-right cursor-pointer">
               <p className="truncate text-xs font-semibold text-text-primary">
                 {dashboardUser.name}
               </p>
               <p className="truncate text-[11px] font-medium text-slate-400">
                 {dashboardUser.role}
               </p>
-            </div>
+            </div> */}
             <div className="flex size-10 items-center justify-center rounded-full bg-[#FFD6B8] cursor-pointer text-xs font-semibold text-[#D47750]">
               {dashboardUser.avatarInitials}
             </div>
