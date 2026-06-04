@@ -46,15 +46,15 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       { title: "Transaction Monitoring", href: "/transactions", icon: "chart-line", permissionKey: "transactions" }, // Added key
       { title: "Provider Payouts", href: "/payouts", icon: "credit-card", permissionKey: "payouts" },
       { title: "Dispute & Refund", href: "/disputes-refund", icon: "chart-line", permissionKey: "disputes" },
-      { title: "Provider Dispute", href: "/provider-dispute", icon: "rotate-ccw", permissionKey: "refunds" },
+      // { title: "Provider Dispute", href: "/provider-dispute", icon: "rotate-ccw", permissionKey: "refunds" },
     ],
   },
-  {
-    title: "Moderation",
-    items: [
-      { title: "Social & Reviews Moderation", href: "/social-reviews-moderation", icon: "rss", permissionKey: "moderation" },
-    ],
-  },
+  // {
+  //   title: "Moderation",
+  //   items: [
+  //     { title: "Social & Reviews Moderation", href: "/social-reviews-moderation", icon: "rss", permissionKey: "moderation" },
+  //   ],
+  // },
   {
     title: "Communications",
     items: [
@@ -67,6 +67,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       { title: "Subscription Plans", href: "/subscriptions", icon: "calendar-days", permissionKey: "settings" },
       // { title: "System Settings", href: "/settings", icon: "settings", permissionKey: "settings" },
       { title: "Platform Analytics", href: "/platform-analytics", icon: "bar-chart-3", permissionKey: "reports" },
+      { title: "Refund Settings", href: "/refund-settings", icon: "bar-chart-3", permissionKey: "reports" },
       { title: "System Logs", href: "/system-logs", icon: "list-todo", permissionKey: "auditLogs" },
     ],
   },

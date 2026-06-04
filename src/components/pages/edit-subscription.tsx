@@ -84,7 +84,7 @@ function GeneralInformationCard() {
           <textarea
             id="plan-description"
             defaultValue={editSubscriptionPlan.description}
-            className="min-h-[88px] w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-700 outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
+            className="min-h-22 w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-700 outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
           />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">

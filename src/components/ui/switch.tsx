@@ -5,9 +5,17 @@ import { cn } from "@/lib/utils";
 
 type SwitchProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   checked?: boolean;
+  thumbClassName?: string;
+  checkedThumbClassName?: string;
 };
 
-export function Switch({ checked = false, className, ...props }: SwitchProps) {
+export function Switch({
+  checked = false,
+  className,
+  thumbClassName,
+  checkedThumbClassName,
+  ...props
+}: SwitchProps) {
   return (
     <button
       type="button"
@@ -24,6 +32,8 @@ export function Switch({ checked = false, className, ...props }: SwitchProps) {
         className={cn(
           "size-4 rounded-full bg-white shadow-sm transition-transform",
           checked && "translate-x-5",
+          thumbClassName,
+          checked && checkedThumbClassName,
         )}
       />
     </button>

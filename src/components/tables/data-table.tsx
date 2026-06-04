@@ -18,6 +18,7 @@ type DataTableProps<T> = {
   getRowClassName?: (row: T, index: number) => string | undefined;
   onRowClick?: (row: T, index: number) => void;
   tableClassName?: string;
+  containerClassName?: string;
   isBorder?: boolean;
   loading?: boolean;
   skeletonRows?: number;
@@ -40,6 +41,7 @@ export function DataTable<T>({
   getRowClassName,
   onRowClick,
   tableClassName,
+  containerClassName,
   isBorder = true,
   loading = false,
   skeletonRows,
@@ -49,9 +51,10 @@ export function DataTable<T>({
   const columnCount = Children.count(headers);
   const rowCount = skeletonRows ?? pagination?.limit ?? 5;
 
-  const containerClassName = cn(
+  const resolvedContainerClassName = cn(
     "flex h-full flex-col justify-between overflow-hidden bg-white shadow-sm",
     isBorder ? "rounded-2xl border border-border" : "border border-border",
+    containerClassName,
   );
 
   if (!loading && data.length === 0) {
@@ -63,7 +66,7 @@ export function DataTable<T>({
   }
 
   return (
-    <div className={containerClassName}>
+    <div className={resolvedContainerClassName}>
       <div className="overflow-x-auto">
         <Table className={cn(tableClassName)}>
           <TableHeader>

@@ -51,7 +51,7 @@ export function FilterSection({
           <div className="grid grid-cols-2 gap-3 sm:flex">
             {filters.map((filter, index) => (
               <Select key={index} value={filter.value} onValueChange={filter.onChange}>
-                <SelectTrigger className={`h-10 w-full rounded-2xl bg-slate-50 text-xs ${filter.width || 'sm:w-[140px]'}`}>
+                <SelectTrigger className={`h-10 w-full rounded-2xl bg-slate-50 text-xs ${filter.width || 'sm:w-35'}`}>
                   <SelectValue placeholder={filter.placeholder} />
                 </SelectTrigger>
                 <SelectContent>
