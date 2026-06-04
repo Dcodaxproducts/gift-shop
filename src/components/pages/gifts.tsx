@@ -147,6 +147,7 @@ export function GiftsPage() {
                 <Button
                   variant="ghost"
                   className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                  onClick={() => router.push(`/gifts/${item.id}`)}
                 >
                   <Edit2 className="size-4" />
                 </Button>
