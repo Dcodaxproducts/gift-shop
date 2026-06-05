@@ -84,5 +84,5 @@ export const dashboardUser = {
   name: "Super Admin",
   role: "Super Admin",
   email: "marcus@gifting.com",
-  avatarInitials: "SA",
+  avatarInitials: "GS",
 };

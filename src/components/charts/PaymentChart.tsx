@@ -1,9 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { paymentSplit } from "@/constants/home-dashboard";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { DashboardGiftVsPayment } from "@/types/dashboard";
 import { cn } from "@/lib/utils";
 import SectionHeader from "../common/section-header";
 
-export function PaymentDistributionChart() {
+type PaymentDistributionChartProps = {
+  data: DashboardGiftVsPayment;
+};
+
+export function PaymentDistributionChart({ data }: PaymentDistributionChartProps) {
+  const paymentSplit = [
+    { label: "Gift Cards", value: data.giftCardsPercent, color: "primary" },
+    { label: "Direct Payments", value: data.directPaymentsPercent, color: "muted" },
+  ];
+
   return (
     <Card>
       <CardHeader>
@@ -13,9 +22,14 @@ export function PaymentDistributionChart() {
         />
       </CardHeader>
       <CardContent>
-        <div className="mx-auto mb-7 mt-6 flex size-44 items-center justify-center rounded-full bg-[conic-gradient(var(--primary)_0_65%,#e2e8f0_65%_100%)]">
+        <div
+          className="mx-auto mb-7 mt-6 flex size-44 items-center justify-center rounded-full"
+          style={{
+            background: `conic-gradient(var(--primary) 0 ${data.giftCardsPercent}%, #e2e8f0 ${data.giftCardsPercent}% 100%)`,
+          }}
+        >
           <div className="flex size-32 flex-col items-center justify-center rounded-full bg-white text-center">
-            <span className="text-3xl font-semibold ">65%</span>
+            <span className="text-3xl font-semibold ">{data.giftCardsPercent}%</span>
             <span className="mt-1 text-[10px] font-semibold uppercase text-slate-400">
               Gift Usage
             </span>

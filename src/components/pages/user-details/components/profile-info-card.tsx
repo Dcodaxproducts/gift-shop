@@ -60,12 +60,6 @@ export function ProfileInfoCard({ user, fullName, avatarUrl, placeholder, subscr
                 {formatRelativeTime(user?.lastLoginAt)}
               </p>
             </div>
-            <div className="min-w-0">
-              <Label>Location</Label>
-              <p className="mt-1 w-full wrap-break-word text-[11px] font-medium leading-4 text-slate-500">
-                {user?.location || placeholder}
-              </p>
-            </div>
           </div>
         </div>
       </div>

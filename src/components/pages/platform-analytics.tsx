@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Card } from "../ui/card";
+import { StatusBadge } from "@/utils/status";
 
 type RevenueTransaction = {
   id: string;
@@ -219,11 +220,7 @@ function AnalyticsTransactionsTable({
               </span>
             </TableCell>
             <TableCell className="font-medium text-slate-500">{item.amount}</TableCell>
-            <TableCell>
-              <span className={item.status === "Completed" ? "text-emerald-500" : "text-orange-500"}>
-                <span className="mr-2 inline-block size-2 rounded-full bg-current" />
-                <span className="text-[11px] font-semibold">{item.status}</span>
-              </span>
+            <TableCell>{StatusBadge({status: item.status})}
             </TableCell>
             <TableCell>
               <div className="flex items-center justify-end">

@@ -26,6 +26,8 @@ const statusToToneMap: Record<string, StatusTone> = {
   OPEN: "primary",
   IN_REVIEW: "info",
   ESCALATED: "danger",
+  HIGH_PRIORITY: "danger",
+  UNDER_REVIEW: "info",
   RESOLVED: "success",
   FAILED: "danger",
   RULING_PENDING: "primary",
