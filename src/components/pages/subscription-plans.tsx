@@ -1,17 +1,19 @@
 "use client";
 
-import { Plus, Settings2, UsersRound } from "lucide-react";
+import { useState } from "react";
+import { Plus, Settings2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/common/page-header";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   planManagementActions,
   subscriptionPlanIcons,
-  subscriptionPlans,
-  type SubscriptionPlan,
 } from "@/constants/subscriptions";
+import { useDeleteSubscriptionPlan, useSubscriptionPlans } from "@/hooks/useSubscriptionPlans";
 import { cn } from "@/lib/utils";
+import type { SubscriptionPlan } from "@/types/subscription-plans";
 import SectionHeader from "../common/section-header";
 
 function PlanFeature({ feature }: { feature: string }) {
@@ -25,8 +27,62 @@ function PlanFeature({ feature }: { feature: string }) {
   );
 }
 
-function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
+function formatLabel(value: string) {
+  return value
+    .replace(/([A-Z])/g, " $1")
+    .replace(/[_-]/g, " ")
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function formatPrice(plan: SubscriptionPlan) {
+  const price = plan.monthlyPrice ?? plan.yearlyPrice ?? 0;
+
+  return new Intl.NumberFormat("en-US", {
+    currency: plan.currency ?? "USD",
+    maximumFractionDigits: 0,
+    style: "currency",
+  }).format(price);
+}
+
+function formatPeriod(plan: SubscriptionPlan) {
+  if (plan.monthlyPrice !== null && plan.monthlyPrice !== undefined) return "/month";
+  if (plan.yearlyPrice !== null && plan.yearlyPrice !== undefined) return "/year";
+  return "";
+}
+
+function getFeatureLabels(plan: SubscriptionPlan) {
+  if (Array.isArray(plan.features)) {
+    return plan.features.map((feature) => (
+      typeof feature === "string" ? formatLabel(feature) : feature.title
+    ));
+  }
+
+  if (plan.features && typeof plan.features === "object") {
+    return Object.entries(plan.features)
+      .filter(([, enabled]) => Boolean(enabled))
+      .map(([feature]) => formatLabel(feature));
+  }
+
+  return [];
+}
+
+function getLimitLabels(plan: SubscriptionPlan) {
+  if (!plan.limits) return [];
+
+  return Object.entries(plan.limits).map(([key, value]) => `${formatLabel(key)}: ${value}`);
+}
+
+function SubscriptionPlanCard({
+  onDelete,
+  plan,
+}: {
+  onDelete: (plan: SubscriptionPlan) => void;
+  plan: SubscriptionPlan;
+}) {
   const router = useRouter();
+  const features = getFeatureLabels(plan);
+  const limits = getLimitLabels(plan);
 
   return (
     <Card
@@ -43,23 +99,22 @@ function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
       <CardContent className="flex min-h-125 flex-col">
         <div className="flex items-center justify-between gap-4">
           <span className="rounded-md bg-[#f8eaff] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
-            {plan.tier}
-          </span>
-          <span className="flex items-center gap-1 text-[10px] font-semibold uppercase text-slate-400">
-            <UsersRound className="size-3.5" />
-            {plan.users}
+            {plan.name}
           </span>
         </div>
 
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight ">{plan.name}</h2>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight first-letter:uppercase">{plan.description}</h2>
         <div className="mt-8 flex items-end gap-1">
-          <p className="text-[40px] font-semibold leading-none tracking-tight ">{plan.price}</p>
-          <span className="pb-1 text-sm font-medium text-slate-400">{plan.period}</span>
+          <p className="text-[40px] font-semibold leading-none tracking-tight ">{formatPrice(plan)}</p>
+          <span className="pb-1 text-sm font-medium text-slate-400">{formatPeriod(plan)}</span>
         </div>
 
         <ul className="mt-8 space-y-4">
-          {plan.features.map((feature) => (
+          {features.map((feature) => (
             <PlanFeature key={feature} feature={feature} />
+          ))}
+          {limits.map((limit) => (
+            <PlanFeature key={limit} feature={limit} />
           ))}
         </ul>
 
@@ -69,10 +124,12 @@ function SubscriptionPlanCard({ plan }: { plan: SubscriptionPlan }) {
           >
             Edit Plan
           </Button>
-          <Button variant="ghost"
+          <Button
+            variant="ghost"
             className="bg-slate-100 text-slate-700 hover:bg-slate-200"
+            onClick={() => onDelete(plan)}
           >
-            Deactivate
+            Delete
           </Button>
         </div>
       </CardContent>
@@ -114,6 +171,10 @@ function PlanManagementPanel() {
 
 export function SubscriptionPlansPage() {
   const router = useRouter();
+  const [deleteTarget, setDeleteTarget] = useState<SubscriptionPlan | null>(null);
+  const { data: plans = [] } = useSubscriptionPlans({ limit: 10 });
+  console.log(plans)
+  const { mutate: deleteSubscriptionPlan, isPending: isDeleting } = useDeleteSubscriptionPlan();
 
   return (
     <div className="space-y-8">
@@ -130,9 +191,29 @@ export function SubscriptionPlansPage() {
         }
       />
 
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+        title="Delete Subscription Plan"
+        description="Are you sure you want to delete this subscription plan? This action cannot be undone."
+        confirmLabel="Delete"
+        loading={isDeleting}
+        onConfirm={() => {
+          if (!deleteTarget) return;
+
+          deleteSubscriptionPlan(deleteTarget.id, {
+            onSuccess: () => setDeleteTarget(null),
+          });
+        }}
+      />
+
       <section className="grid gap-7 xl:grid-cols-3">
-        {subscriptionPlans.map((plan) => (
-          <SubscriptionPlanCard key={plan.id} plan={plan} />
+        {plans.map((plan) => (
+          <SubscriptionPlanCard key={plan.id} plan={plan} onDelete={setDeleteTarget} />
         ))}
       </section>
 
