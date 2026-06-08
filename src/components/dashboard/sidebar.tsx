@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Gift, Search, X } from "lucide-react";
@@ -22,6 +23,7 @@ function isActivePath(pathname: string, href: string) {
 export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();
   const { data } = useCurrentUser();
+  const [search, setSearch] = useState("");
 
   const permissions = data?.admin?.permissions ?? null;
   const hasReadAccess = (permissionKey?: string) => {
@@ -30,10 +32,16 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
     return (permissions as Record<string, string[]>)[permissionKey]?.includes("read") ?? false;
   };
 
+  const searchQuery = search.trim().toLowerCase();
   const filteredGroups = dashboardNavGroups
     .map((group) => ({
       ...group,
-      items: group.items.filter((item) => hasReadAccess(item.permissionKey)),
+      items: group.items.filter((item) => {
+        const canRead = hasReadAccess(item.permissionKey);
+        const matchesSearch = !searchQuery || item.title.toLowerCase().includes(searchQuery);
+
+        return canRead && matchesSearch;
+      }),
     }))
     .filter((group) => group.items.length > 0);
 
@@ -51,11 +59,11 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-[238px] flex-col border-r border-border bg-white transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-59.5 flex-col border-r border-border bg-white transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex h-[73px] items-center justify-between px-5">
+        <div className="flex h-18.25 items-center justify-between px-5">
           <Link href="/" className="flex items-center gap-3">
             <span className="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/25">
               <Gift className="size-5" />
@@ -80,6 +88,8 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
             placeholder="Quick find..."
             leftIcon={<Search className="size-3.5" />}
             className="h-9! rounded-2xl bg-white pl-9 text-xs"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
 
