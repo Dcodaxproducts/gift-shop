@@ -23,10 +23,22 @@ export type GetProvidersParams = {
 export type Provider = {
   id: string;
   providerCode: string;
+  name?: string;
   businessName: string;
   email: string;
+  contact?: string;
   phone?: string;
   avatarUrl?: string | null;
+  businessCategoryId?: string | null;
+  taxId?: string | null;
+  businessAddress?: string | null;
+  businessBio?: string | null;
+  companyLogoUrl?: string | null;
+  coverImageUrl?: string | null;
+  location?: {
+    lat?: number | null;
+    lng?: number | null;
+  } | null;
   status: Exclude<ProviderStatus, "ALL">;
   isActive: boolean;
   approvalStatus: Exclude<ProviderApproval, "ALL">;
@@ -76,10 +88,24 @@ export type ProviderStats = {
   inactiveRateChangePercent: number;
 };
 
+export type ProviderLocationPayload = {
+  lat?: number;
+  lng?: number;
+};
+
 export type CreateProviderPayload = {
-  businessName: string;
+  name: string;
   email: string;
-  phone?: string;
+  contact: string;
+  password: string;
+  businessName: string;
+  businessCategoryId: string;
+  taxId?: string;
+  businessAddress: string;
+  businessBio?: string;
+  companyLogoUrl?: string;
+  coverImageUrl?: string;
+  location?: ProviderLocationPayload;
 };
 
 export type ProviderMessagePayload = Record<string, unknown>;

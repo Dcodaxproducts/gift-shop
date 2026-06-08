@@ -40,6 +40,11 @@ export const updateProvider = async ({ id, payload }: { id: string; payload: Par
   return data.data as Provider;
 };
 
+export const deleteProvider = async (id: string) => {
+  const { data } = await api.delete(`/providers/${id}`);
+  return data.data as Provider;
+};
+
 export const updateProviderStatus = async ({ id, action, reason }: { id: string; action: string; reason?: string }) => {
   const { data } = await api.patch(`/providers/${id}/status`, { action, reason });
   return data.data as Provider;

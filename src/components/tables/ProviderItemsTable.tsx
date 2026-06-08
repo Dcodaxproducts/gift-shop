@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ShieldCheck } from "lucide-react";
 import { DataTable } from "@/components/tables/data-table";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import type { ProviderItem } from "@/types/providers";
 
 function ProviderItemsTable({ providerId }: { providerId: string }) {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 400);
@@ -60,6 +62,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
           onPageChange: setPage,
         }}
         isBorder={false}
+        onRowClick={(item: ProviderItem) => router.push(`/product/${item.id}/details`)}
         headers={
           <>
             <TableHead>Product Name</TableHead>

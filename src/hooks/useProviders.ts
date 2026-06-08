@@ -10,6 +10,7 @@ import {
   exportProviders,
   getProvider,
   updateProvider,
+  deleteProvider,
   updateProviderStatus,
   sendProviderMessage,
   getProviderItems,
@@ -30,6 +31,7 @@ export const useProvider = (id: string) => {
   return useQuery({
     queryKey: ["providers", id],
     queryFn: () => getProvider(id),
+    enabled: !!id,
   });
 };
 
@@ -89,6 +91,21 @@ export const useUpdateProvider = () => {
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Failed to update provider. Please try again."));
+    },
+  });
+};
+
+export const useDeleteProvider = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteProvider,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["providers"] });
+      toast.success("Provider deleted successfully");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Failed to delete provider. Please try again."));
     },
   });
 };
