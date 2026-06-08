@@ -44,7 +44,7 @@ type SuspendDialogProps = {
   type?: "user" | "provider";
   title?: string;
   summaryDetails?: { label: string; value: string }[];
-  onConfirm: (data: { reason: string; comments?: string }) => void;
+  onConfirm: (data: { reason: string; comment?: string }) => void;
 };
 
 export function SuspendUserDialog({
@@ -68,7 +68,7 @@ export function SuspendUserDialog({
     resolver: zodResolver(suspensionFormSchema),
     defaultValues: {
       reason: "",
-      comments: "",
+      comment: "",
     },
   });
 
@@ -84,13 +84,13 @@ export function SuspendUserDialog({
   const onSubmit = (data: SuspensionFormData) => {
     onConfirm({
       reason: data.reason,
-      comments: data.comments?.trim() || undefined,
+      comment: data.comment?.trim() || undefined,
     });
   };
 
   const handleConfirmClick = () => {
     if (isSuspended) {
-      onConfirm({ reason: "", comments: undefined });
+      onConfirm({ reason: "", comment: undefined });
     } else {
       handleSubmit(onSubmit)();
     }
@@ -176,12 +176,12 @@ export function SuspendUserDialog({
               <Label htmlFor="suspension-comments">Additional Comments (Optional)</Label>
               <Textarea
                 id="suspension-comments"
-                {...register("comments")}
+                {...register("comment")}
                 placeholder="Provide more context..."
-                className={cn("text-xs! min-h-[80px]", errors.comments && "border-red-500")}
+                className={cn("text-xs! min-h-[80px]", errors.comment && "border-red-500")}
               />
-              {errors.comments && (
-                <p className="text-[10px] text-red-500 mt-1">{errors.comments.message}</p>
+              {errors.comment && (
+                <p className="text-[10px] text-red-500 mt-1">{errors.comment.message}</p>
               )}
             </div>
             )

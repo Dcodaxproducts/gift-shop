@@ -60,6 +60,7 @@ export type Gift = {
   provider?: GiftProviderSummary | null;
   price?: number | string;
   rating?: number | string;
+  imageUrls?: string[];
   imagesUrl?: string | null;
   images?: string[];
   status: GiftStatus;

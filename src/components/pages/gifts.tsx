@@ -10,12 +10,13 @@ import {
 import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import MyImage from "@/components/common/MyImage";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useGifts } from "@/hooks/useGift";
+import { useDeleteGift, useGifts } from "@/hooks/useGift";
 import type { Gift as GiftItem } from "@/types/gifts";
 import { StatusBadge } from "@/utils/status";
 
@@ -38,9 +39,11 @@ export function GiftsPage() {
   const [category, setCategory] = useState("all");
   const [provider, setProvider] = useState("all");
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<GiftItem | null>(null);
   const limit = 10;
   const router = useRouter();
   const debouncedSearch = useDebounce(search, 400);
+  const { mutate: deleteGift, isPending: isDeleting } = useDeleteGift();
 
   const { data: gifts = [], isLoading } = useGifts({
     page,
@@ -74,6 +77,26 @@ export function GiftsPage() {
       />
 
       <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+        title="Delete Gift"
+        description="Are you sure you want to delete this gift? This action cannot be undone."
+        confirmLabel="Delete"
+        loading={isDeleting}
+        onConfirm={() => {
+          if (!deleteTarget) return;
+
+          deleteGift(deleteTarget.id, {
+            onSuccess: () => setDeleteTarget(null),
+          });
+        }}
+      />
 
       <FilterSection
         searchPlaceholder="Search gifts by name, ID, or provider..."
@@ -118,7 +141,7 @@ export function GiftsPage() {
               <div className="flex items-center gap-3">
                 <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
                   <MyImage
-                    src={item.imagesUrl?.[0]}
+                    src={item.imageUrls?.[0]}
                     alt={item.name}
                     fill
                     sizes="44px"
@@ -154,6 +177,7 @@ export function GiftsPage() {
                 <Button
                   variant="ghost"
                   className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                  onClick={() => setDeleteTarget(item)}
                 >
                   <X className="size-4" />
                 </Button>

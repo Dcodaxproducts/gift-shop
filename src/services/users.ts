@@ -3,7 +3,6 @@ import type {
   GetUserActivityParams,
   GetUsersParams,
   ResetUserPasswordPayload,
-  SuspendUserPayload,
   UpdateUserPayload,
   UpdateUserStatusPayload,
   User,
@@ -32,16 +31,6 @@ export const deleteUser = async (id: string) => {
 
 export const updateUserStatus = async ({ id, payload }: { id: string; payload: UpdateUserStatusPayload }) => {
   const { data } = await api.patch(`/users/${id}/status`, payload);
-  return data.data as UserDetail;
-};
-
-export const suspendUser = async ({ id, payload }: { id: string; payload?: SuspendUserPayload }) => {
-  const { data } = await api.post(`/users/${id}/suspend`, payload ?? {});
-  return data.data as UserDetail;
-};
-
-export const unsuspendUser = async (id: string) => {
-  const { data } = await api.post(`/users/${id}/unsuspend`, {});
   return data.data as UserDetail;
 };
 

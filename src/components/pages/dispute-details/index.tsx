@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -12,10 +11,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import {
-  getDisputeRefundDetail,
-  type DisputeRefundDetail,
-} from "@/constants/disputes-refund";
+import { ErrorMessage } from "@/components/common/error-message";
+import type { DisputeRefundDetail } from "@/constants/disputes-refund";
+import { useDispute } from "@/hooks/useDisputes";
+import type { Dispute } from "@/types/disputes";
 import { cn } from "@/lib/utils";
 import PageHeader from "@/components/common/page-header";
 
@@ -49,8 +48,38 @@ const timelineItems = [
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "PKR",
   }).format(value);
+}
+
+function mapDisputeToDetail(dispute: Dispute): DisputeRefundDetail {
+  return {
+    id: dispute.caseId,
+    customerName: dispute.customer.name,
+    customerEmail: dispute.customer.email,
+    transactionId: dispute.transaction.transactionId,
+    amount: dispute.amount,
+    category: dispute.reason,
+    priority: dispute.priority as DisputeRefundDetail["priority"],
+    status: dispute.status as DisputeRefundDetail["status"],
+    daysOpen: 0,
+    disputeTitle: "Dispute Details & Evidence Review",
+    disputeReason: dispute.reason.replace(/_/g, " ").toLowerCase(),
+    resolutionDeadline: dispute.sla?.remainingText ?? "No SLA deadline",
+    paymentStatus: dispute.transaction.paymentStatus,
+    refundEligible: dispute.refund?.eligible ? "Yes" : "No",
+    processorAuthCode: dispute.transaction.processorAuthCode,
+    evidence: dispute.claimDetails ? [{ name: "Customer claim", type: "text" }] : [],
+    timeline: [
+      { label: "Dispute created", date: new Date(dispute.createdAt).toLocaleString(), state: "complete" },
+      {
+        label: dispute.status.replace(/_/g, " ").toLowerCase(),
+        date: dispute.lastUpdatedAt ? new Date(dispute.lastUpdatedAt).toLocaleString() : "Current",
+        state: "current",
+      },
+      { label: "Resolution deadline", date: dispute.sla?.remainingText ?? "Pending", state: "pending" },
+    ],
+  };
 }
 
 function BreakdownRow({
@@ -75,8 +104,8 @@ function BreakdownRow({
 }
 
 function PaymentBreakdownCard({ dispute }: { dispute: DisputeRefundDetail }) {
-  const initialCharge = 1250;
-  const deduction = 150.75;
+  const initialCharge = dispute.amount;
+  const deduction = 0;
   const totalAmount = initialCharge - deduction;
 
   return (
@@ -216,7 +245,19 @@ function CustomerInfoCard({ dispute }: { dispute: DisputeRefundDetail }) {
 export function DisputeDetailsPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const dispute = useMemo(() => getDisputeRefundDetail(params?.id ?? ""), [params?.id]);
+  const disputeId = params?.id ?? "";
+  const { data, isError, refetch } = useDispute(disputeId);
+
+  if (isError) {
+    return (
+      <ErrorMessage
+        message="Dispute not found."
+        onRetry={() => refetch()}
+      />
+    );
+  }
+
+  const dispute = data ? mapDisputeToDetail(data) : null;
 
   return (
     <div className="space-y-5">
@@ -230,13 +271,17 @@ export function DisputeDetailsPage() {
         }
       />
 
-      <PaymentBreakdownCard dispute={dispute} />
-      <TransactionTimelineCard />
+      {dispute ? (
+        <>
+          <PaymentBreakdownCard dispute={dispute} />
+          <TransactionTimelineCard />
 
-      <section className="grid gap-5 xl:grid-cols-2">
-        <QuickActionsCard />
-        <CustomerInfoCard dispute={dispute} />
-      </section>
+          <section className="grid gap-5 xl:grid-cols-2">
+            <QuickActionsCard />
+            <CustomerInfoCard dispute={dispute} />
+          </section>
+        </>
+      ) : null}
     </div>
   );
 }

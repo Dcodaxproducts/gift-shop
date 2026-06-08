@@ -12,7 +12,9 @@ export const getProviderBusinessCategories = async (
   params: GetProviderBusinessCategoriesParams = {},
 ) => {
   const { data } = await api.get(PROVIDER_BUSINESS_CATEGORIES_ENDPOINT, { params });
-  return (data.data ?? []) as ProviderBusinessCategory[];
+  const categories = data.data?.items ?? data.data?.data ?? data.data?.results ?? data.data ?? [];
+
+  return categories as ProviderBusinessCategory[];
 };
 
 export const createProviderBusinessCategory = async (

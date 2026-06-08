@@ -1,7 +1,7 @@
 import { ArrowLeftRight, BadgeDollarSign, Store, UsersRound } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { disputeRefundStats } from "@/constants/disputes-refund";
 import { cn } from "@/lib/utils";
+import type { DisputeStats } from "@/types/disputes";
 
 const statIcons = {
   users: UsersRound,
@@ -21,10 +21,49 @@ const statToneClasses = {
   },
 };
 
-export function DisputeRefundStatsCard() {
+function formatDelta(value: number) {
+  return `${value > 0 ? "+" : ""}${value}%`;
+}
+
+function buildDisputeRefundStats(data?: DisputeStats) {
+  return [
+    {
+      label: "Open Cases",
+      value: String(data?.openCases ?? 0),
+      change: formatDelta(data?.openCasesDelta ?? 0),
+      tone: "primary",
+      icon: "users",
+    },
+    {
+      label: "Awaiting Action",
+      value: String(data?.awaitingAction ?? 0),
+      change: "Alert",
+      tone: "primary",
+      icon: "store",
+    },
+    {
+      label: "Escalated",
+      value: String(data?.escalated ?? 0),
+      change: "Alert",
+      tone: "danger",
+      icon: "shuffle",
+    },
+    {
+      label: "Resolved This Week",
+      value: String(data?.resolvedThisWeek ?? 0),
+      change: formatDelta(data?.resolvedDeltaPercent ?? 0),
+      tone: "primary",
+      icon: "refund",
+    },
+  ] as const;
+}
+
+export function DisputeRefundStatsCard({ data }: { data?: DisputeStats }) {
+  const stats = buildDisputeRefundStats(data);
+
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {disputeRefundStats.map((stat) => {
+      {stats.map((stat) => {
         const Icon = statIcons[stat.icon];
         const tone = statToneClasses[stat.tone];
 

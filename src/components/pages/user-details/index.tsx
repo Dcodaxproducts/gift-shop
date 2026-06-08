@@ -1,4 +1,3 @@
-// src/components/pages/user-details/index.tsx
 "use client";
 
 import { useState } from "react";
@@ -7,7 +6,7 @@ import { Pencil } from "lucide-react";
 
 import { EditUserDialog, ResetPasswordDialog, SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
 import { Button } from "@/components/ui/button";
-import { useSuspendUser, useUnsuspendUser, useUser, useUserActivity } from "@/hooks/useUsers";
+import { useUpdateUserStatus, useUser, useUserActivity } from "@/hooks/useUsers";
 import { formatDate } from "@/utils/formatDate";
 import type { SuspendUserPayload } from "@/types/users";
 import PageHeader from "@/components/common/page-header";
@@ -24,8 +23,7 @@ export function UserDetailsPage() {
     const userId = params?.id ?? "";
     const { data: user, isLoading, isError, refetch } = useUser(userId);
     const { data: activities } = useUserActivity(userId);
-    const suspendMutation = useSuspendUser();
-    const unsuspendMutation = useUnsuspendUser();
+    const updateStatusMutation = useUpdateUserStatus();
 
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
@@ -63,18 +61,15 @@ export function UserDetailsPage() {
     const handleSuspensionConfirm = (data: SuspendUserPayload) => {
         if (!user?.id) return;
 
-        if (isSuspended) {
-            unsuspendMutation.mutate(user.id, {
+        updateStatusMutation.mutate(
+            {
+                id: user.id,
+                payload: isSuspended ? { action: "UNSUSPEND" } : { action: "SUSPEND", ...data },
+            },
+            {
                 onSuccess: () => setIsSuspendDialogOpen(false),
-            });
-        } else {
-            suspendMutation.mutate(
-                { id: user.id, payload: data },
-                {
-                    onSuccess: () => setIsSuspendDialogOpen(false),
-                }
-            );
-        }
+            }
+        );
     };
 
     return (
@@ -134,7 +129,7 @@ export function UserDetailsPage() {
                 open={isSuspendDialogOpen}
                 onOpenChange={setIsSuspendDialogOpen}
                 isSuspended={isSuspended}
-                isLoading={suspendMutation.isPending || unsuspendMutation.isPending}
+                isLoading={updateStatusMutation.isPending}
                 title={isSuspended ? "Unsuspend User Account" : "Suspend User Account"}
                 summaryDetails={userSummary}
                 onConfirm={handleSuspensionConfirm}

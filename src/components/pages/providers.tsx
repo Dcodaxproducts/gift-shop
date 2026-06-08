@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { ProviderStatsCard } from "@/components/cards/ProviderStatsCard";
 import { StatusBadge } from "@/utils/status";
-import { useProviders, useProviderStats, useExportProviders } from "@/hooks/useProviders";
+import { useDeleteProvider, useProviders, useProviderStats, useExportProviders } from "@/hooks/useProviders";
 import { useDebounce } from "@/hooks/useDebounce";
 import { providerStatusOptions, providerApprovalOptions } from "@/constants/filter-options";
 import type {
@@ -32,6 +33,7 @@ export function ProvidersPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<ProviderStatus | "all">("all");
   const [approval, setApproval] = useState<ProviderApproval | "all">("all");
+  const [deleteTarget, setDeleteTarget] = useState<Provider | null>(null);
   
   const limit = 10;
   const debouncedSearch = useDebounce(search, 400);
@@ -47,6 +49,7 @@ export function ProvidersPage() {
 
   const { data: statsData } = useProviderStats();
   const exportProviders = useExportProviders();
+  const { mutate: deleteProvider, isPending: isDeleting } = useDeleteProvider();
 
   const hasNextPage = providers.length === limit;
   const pagination = {
@@ -78,6 +81,26 @@ export function ProvidersPage() {
       />
 
       <ProviderStatsCard data={statsData} />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+        title="Delete Provider"
+        description="Are you sure you want to delete this provider? This action cannot be undone."
+        confirmLabel="Delete"
+        loading={isDeleting}
+        onConfirm={() => {
+          if (!deleteTarget) return;
+
+          deleteProvider(deleteTarget.id, {
+            onSuccess: () => setDeleteTarget(null),
+          });
+        }}
+      />
 
       <FilterSection
         searchPlaceholder="Search providers by name, email, or status..."
@@ -159,6 +182,7 @@ export function ProvidersPage() {
                   <Button
                     variant="ghost"
                     className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                    onClick={() => setDeleteTarget(item)}
                   >
                     <X className="size-4" />
                   </Button>

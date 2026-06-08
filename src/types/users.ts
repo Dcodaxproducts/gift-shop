@@ -76,13 +76,20 @@ export type UpdateUserPayload = Partial<{
   phone: string;
 }>;
 
-export type UpdateUserStatusPayload = {
-  status: Exclude<UserStatus, "ALL">;
-};
+export type UpdateUserStatusPayload =
+  | {
+      status: Exclude<UserStatus, "ALL">;
+    }
+  | ({
+      action: "SUSPEND";
+    } & SuspendUserPayload)
+  | {
+      action: "UNSUSPEND";
+    };
 
 export type SuspendUserPayload = {
   reason : string;
-  comments?: string;
+  comment?: string;
 };
 
 export type ResetUserPasswordPayload = {

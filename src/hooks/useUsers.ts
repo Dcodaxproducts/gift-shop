@@ -9,8 +9,6 @@ import {
   updateUser,
   deleteUser,
   updateUserStatus,
-  suspendUser,
-  unsuspendUser,
   resetUserPassword,
   exportUsers,
   getUserActivity,
@@ -76,44 +74,14 @@ export const useUpdateUserStatus = () => {
 
   return useMutation({
     mutationFn: updateUserStatus,
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
+      queryClient.setQueryData(["user", variables.id], data);
       toast.success("User status updated successfully");
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Failed to update user status. Please try again."));
-    },
-  });
-};
-
-export const useSuspendUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: suspendUser,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["user", data.id] });
-      toast.success("User suspended successfully");
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Failed to suspend user. Please try again."));
-    },
-  });
-};
-
-export const useUnsuspendUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: unsuspendUser,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["user", data.id] });
-      toast.success("User unsuspended successfully");
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Failed to unsuspend user. Please try again."));
     },
   });
 };
