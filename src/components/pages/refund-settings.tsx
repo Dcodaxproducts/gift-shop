@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Banknote, CalendarDays, Save, Zap } from "lucide-react";
+import { Banknote, CalendarDays, Save } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 
 const refundInputClassName =
   "h-13! border-0 bg-primary/10 text-sm font-semibold text-slate-800 focus:bg-primary/10 focus:ring-primary/10";
@@ -35,40 +33,12 @@ function PolicyField({
 }
 
 export function RefundSettingsPage() {
-  const [allowRefund, setAllowRefund] = useState(true);
-
   return (
     <div className="space-y-7">
       <PageHeader
         title="Refund Settings"
         description="Manage global return windows, automation thresholds, and auto-approval criteria for all marketplace transactions."
       />
-
-      <Card>
-        <CardContent>
-          <div className="flex items-center justify-between gap-5">
-            <div className="flex items-center gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Zap className="size-5" fill="currentColor" strokeWidth={2.2} />
-              </span>
-              <div>
-                <h2 className="text-sm font-semibold text-slate-800">Allow Refund</h2>
-                <p className="mt-1 text-xs font-medium leading-5 text-slate-500">
-                  Allow the system to automatically approve low-value refund requests based on your refund policy.
-                </p>
-              </div>
-            </div>
-
-            <Switch
-              checked={allowRefund}
-              onClick={() => setAllowRefund((current) => !current)}
-              className="h-7 w-14 p-1"
-              thumbClassName="size-5"
-              checkedThumbClassName="translate-x-7"
-            />
-          </div>
-        </CardContent>
-      </Card>
 
       <section className="grid gap-7 md:grid-cols-2">
         <PolicyField icon={CalendarDays} label="Days Before Delivery">
