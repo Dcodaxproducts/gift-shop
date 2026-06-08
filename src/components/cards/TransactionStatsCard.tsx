@@ -1,32 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-const transactionStats = [
-  {
-    title: "Total Volume",
-    value: "$124,500.00",
-    change: "^12%",
-    tone: "emerald",
-  },
-  {
-    title: "Success Rate",
-    value: "98.2%",
-    change: "^2.1%",
-    tone: "emerald",
-  },
-  {
-    title: "Pending Review",
-    value: "14",
-    change: "Alert",
-    tone: "amber",
-  },
-  {
-    title: "Failed Today",
-    value: "3",
-    change: "-5%",
-    tone: "rose",
-  },
-];
+import type { TransactionStats } from "@/types/transactions";
 
 const toneClasses = {
   emerald: "text-emerald-600",
@@ -43,12 +17,57 @@ type TransactionStat = {
   tone: TransactionStatTone;
 };
 
-const typedTransactionStats = transactionStats as TransactionStat[];
+const numberFormatter = new Intl.NumberFormat("en-US");
 
-export function TransactionStatsCard() {
+function formatCurrency(value: number, currency: string) {
+  return new Intl.NumberFormat("en-US", {
+    currency,
+    maximumFractionDigits: 2,
+    style: "currency",
+  }).format(value);
+}
+
+function formatDelta(value: number) {
+  return `${value > 0 ? "+" : ""}${value}%`;
+}
+
+function buildTransactionStats(data?: TransactionStats): TransactionStat[] {
+  const currency = data?.currency ?? "PKR";
+
+  return [
+    {
+      title: "Total Volume",
+      value: formatCurrency(data?.totalVolume ?? 0, currency),
+      change: formatDelta(data?.totalVolumeDeltaPercent ?? 0),
+      tone: "emerald",
+    },
+    {
+      title: "Success Rate",
+      value: `${data?.successRate ?? 0}%`,
+      change: formatDelta(data?.successRateDeltaPercent ?? 0),
+      tone: "emerald",
+    },
+    {
+      title: "Pending Review",
+      value: numberFormatter.format(data?.pendingReview ?? 0),
+      change: "Alert",
+      tone: "amber",
+    },
+    {
+      title: "Failed Today",
+      value: numberFormatter.format(data?.failedToday ?? 0),
+      change: formatDelta(data?.failedTodayDeltaPercent ?? 0),
+      tone: "rose",
+    },
+  ];
+}
+
+export function TransactionStatsCard({ data }: { data?: TransactionStats }) {
+  const stats = buildTransactionStats(data);
+
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {typedTransactionStats.map((stat) => (
+      {stats.map((stat) => (
         <Card key={stat.title}>
           <CardContent>
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
