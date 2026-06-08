@@ -22,6 +22,7 @@ export const UPLOAD_FOLDERS = {
   GIFT_CATEGORY_IMAGES: "gift-category-images",
   GIFT_IMAGES: "gift-images",
   PROVIDER_LOGOS: "provider-logos",
+  PROVIDER_COVERS: "provider-covers",
   PROVIDER_AVATARS: "provider-avatars",
   PROVIDER_ITEM_IMAGES: "provider-item-images",
   USER_AVATARS: "user-avatars",
