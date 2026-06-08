@@ -29,7 +29,7 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-[73px] items-center gap-4 border-b border-border bg-white px-4 sm:px-6">
+    <header className="sticky top-0 z-30 flex h-18.25 items-center justify-between gap-4 border-b border-border bg-white px-4 sm:px-6">
       <Button
         variant="ghost"
         aria-label="Toggle sidebar"
@@ -43,14 +43,6 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
         Analytics Dashboard
       </h1>
 
-      <div className="ml-auto hidden w-full max-w-[365px] lg:block">
-        <Input
-          type="search"
-          placeholder="Search analytics, users, or providers..."
-          leftIcon={<Search className="size-4" />}
-          className="h-10! text-xs"
-        />
-      </div>
 
       <div className="ml-auto flex items-center gap-3 lg:ml-0">
         <Button
@@ -75,14 +67,6 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
             aria-label="Open profile menu"
             className="hidden items-center gap-3 rounded-2xl px-2 py-1 outline-none transition hover:bg-slate-50 sm:flex"
           >
-            {/* <div className="text-right cursor-pointer">
-              <p className="truncate text-xs font-semibold text-text-primary">
-                {dashboardUser.name}
-              </p>
-              <p className="truncate text-[11px] font-medium text-slate-400">
-                {dashboardUser.role}
-              </p>
-            </div> */}
             <div className="flex size-10 items-center justify-center rounded-full bg-[#FFD6B8] cursor-pointer text-xs font-semibold text-[#D47750]">
               {dashboardUser.avatarInitials}
             </div>
