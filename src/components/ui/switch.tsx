@@ -22,7 +22,7 @@ export function Switch({
       role="switch"
       aria-checked={checked}
       className={cn(
-        "inline-flex h-5 w-10 items-center rounded-full p-0.5 transition",
+        "inline-flex h-5 w-10 items-center rounded-full p-0.5 transition cursor-pointer",
         checked ? "bg-primary" : "bg-slate-200",
         className,
       )}
