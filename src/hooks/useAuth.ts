@@ -9,6 +9,7 @@ import {
   getCurrentUser,
   loginUser,
   resetPassword,
+  verifyResetOtp,
 } from "@/services/auth";
 
 export const useCurrentUser = () => {
@@ -41,12 +42,31 @@ export const useForgotPassword = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: forgotPassword,
-    onSuccess: () => {
-      toast.success("Password reset instructions sent. Please check your email.");
-      router.push("/auth/reset-password");
+    onSuccess: (_, variables) => {
+      sessionStorage.setItem("resetEmail", variables.email);
+      sessionStorage.removeItem("resetOtp");
+      toast.success("Password reset OTP sent. Please check your email.");
+      router.push("/auth/verify-reset-otp");
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Unable to send reset instructions. Please try again."));
+    },
+  });
+};
+
+export const useVerifyResetOtp = () => {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: verifyResetOtp,
+    onSuccess: (_, variables) => {
+      sessionStorage.setItem("resetEmail", variables.email);
+      sessionStorage.setItem("resetOtp", variables.otp);
+      toast.success("OTP verified successfully");
+      router.push("/auth/reset-password");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Invalid OTP. Please try again."));
     },
   });
 };

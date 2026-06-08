@@ -13,6 +13,17 @@ export const forgotPasswordSchema = z.object({
 
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
+export const verifyResetOtpSchema = z.object({
+  email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
+  otp: z
+    .string()
+    .trim()
+    .min(1, "OTP is required")
+    .regex(/^\d{6}$/, "OTP must be a 6 digit code"),
+});
+
+export type VerifyResetOtpFormValues = z.infer<typeof verifyResetOtpSchema>;
+
 export const resetPasswordSchema = z
   .object({
     newPassword: z

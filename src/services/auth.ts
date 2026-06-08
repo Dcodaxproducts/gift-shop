@@ -10,8 +10,13 @@ export const forgotPassword = async (payload: ForgotPasswordPayload) => {
   return data.data ?? {};
 };
 
+export const verifyResetOtp = async (payload: VerifyResetOtpPayload) => {
+  const { data } = await api.post("/auth/verify-reset-otp", payload);
+  return data.data ?? {};
+};
+
 export const resetPassword = async (payload: ResetPasswordPayload) => {
-  const { data } = await api.post("/auth/reset", payload);
+  const { data } = await api.post("/auth/reset-password", payload);
   return data.data ?? {};
 };
 

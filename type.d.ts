@@ -18,11 +18,14 @@ declare global {
   };
 
   type ResetPasswordPayload = {
-    email?: string;
-    code?: string;
-    token?: string;
-    password: string;
-    confirmPassword?: string;
+    email: string;
+    otp: string;
+    newPassword: string;
+  };
+
+  type VerifyResetOtpPayload = {
+    email: string;
+    otp: string;
   };
 
   type ChangePasswordPayload = {

@@ -1,5 +1,12 @@
+"use client";
+
 import Link from "next/link";
-import { CheckCircle2, Circle, Eye, Lock } from "lucide-react";
+import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle2, Circle, Eye, EyeOff, Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useForm, useWatch } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +17,72 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-const passwordRules = [
-  { label: "Minimum 8 characters", complete: true },
-  { label: "One number", complete: true },
-  { label: "One special character", complete: false },
-];
+import { useResetPassword } from "@/hooks/useAuth";
+import { resetPasswordSchema, type ResetPasswordFormValues } from "@/validations/auth";
 
 export function ResetPasswordForm() {
+  const router = useRouter();
+  const resetPassword = useResetPassword();
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resetContext, setResetContext] = useState<{ email: string; otp: string } | null>(null);
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+
+  const newPassword = useWatch({ control, name: "newPassword" }) ?? "";
+  const passwordRules = [
+    { label: "Minimum 8 characters", complete: newPassword.length >= 8 },
+    { label: "One number", complete: /[0-9]/.test(newPassword) },
+    { label: "One special character", complete: /[^A-Za-z0-9]/.test(newPassword) },
+  ];
+
+  useEffect(() => {
+    const email = sessionStorage.getItem("resetEmail");
+    const otp = sessionStorage.getItem("resetOtp");
+
+    if (!email || !otp) {
+      router.replace("/auth/forgot-password");
+      return;
+    }
+
+    setResetContext({ email, otp });
+  }, [router]);
+
+  const onSubmit = (values: ResetPasswordFormValues) => {
+    if (!resetContext) {
+      toast.error("Please verify your OTP before resetting password.");
+      router.push("/auth/forgot-password");
+      return;
+    }
+
+    resetPassword.mutate(
+      {
+        email: resetContext.email,
+        otp: resetContext.otp,
+        newPassword: values.newPassword,
+      },
+      {
+        onSuccess: () => {
+          sessionStorage.removeItem("resetEmail");
+          sessionStorage.removeItem("resetOtp");
+          toast.success("Password reset successfully");
+          router.push("/auth/login");
+        },
+      },
+    );
+  };
+
   return (
     <Card className="w-full max-w-[400px] border border-border bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
       <CardHeader className="mb-7">
@@ -30,44 +95,52 @@ export function ResetPasswordForm() {
       </CardHeader>
 
       <CardContent>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="space-y-2.5">
             <Label htmlFor="new-password">New Password</Label>
             <Input
               id="new-password"
-              name="newPassword"
-              type="password"
+              type={showNewPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="new-password"
               leftIcon={<Lock className="size-4" />}
-              rightIcon={<Eye className="size-4" />}
+              rightIcon={
+                <button
+                  type="button"
+                  aria-label={showNewPassword ? "Hide new password" : "Show new password"}
+                  className="text-slate-400 transition hover:text-slate-700"
+                  onClick={() => setShowNewPassword((value) => !value)}
+                >
+                  {showNewPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              }
               className="h-11 rounded-xl bg-white"
-              required
+              errorMessage={errors.newPassword?.message}
+              {...register("newPassword")}
             />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-[11px] font-semibold">
-              <span className="text-slate-500">Password Strength</span>
-              <span className="text-primary">Strong (85%)</span>
-            </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full w-[85%] rounded-full bg-primary" />
-            </div>
           </div>
 
           <div className="space-y-2.5">
             <Label htmlFor="confirm-password">Confirm Password</Label>
             <Input
               id="confirm-password"
-              name="confirmPassword"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="new-password"
               leftIcon={<Lock className="size-4" />}
-              rightIcon={<Eye className="size-4" />}
+              rightIcon={
+                <button
+                  type="button"
+                  aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                  className="text-slate-400 transition hover:text-slate-700"
+                  onClick={() => setShowConfirmPassword((value) => !value)}
+                >
+                  {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              }
               className="h-11 rounded-xl bg-white"
-              required
+              errorMessage={errors.confirmPassword?.message}
+              {...register("confirmPassword")}
             />
           </div>
 
@@ -86,8 +159,8 @@ export function ResetPasswordForm() {
             </ul>
           </div>
 
-          <Button type="submit" className="h-12 w-full rounded-xl text-[13px]">
-            Reset Password
+          <Button type="submit" className="h-12 w-full rounded-xl text-[13px]" disabled={resetPassword.isPending}>
+            {resetPassword.isPending ? "Resetting..." : "Reset Password"}
           </Button>
         </form>
 
