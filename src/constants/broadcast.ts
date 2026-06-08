@@ -1,4 +1,4 @@
-import { AtSign, CalendarDays, CheckCircle2, Clock3, ImageIcon, Link2, Megaphone, Monitor, Radio, Repeat2, Send, SlidersHorizontal, Smartphone, Sparkles, UsersRound, Zap } from "lucide-react";
+import { AtSign, CalendarDays, CheckCircle2, Clock3, ImageIcon, Link2, Megaphone, Monitor, Radio, Repeat2, Send, Smartphone, Sparkles, User, UsersRound, Zap } from "lucide-react";
 import type { ElementType } from "react";
 
 export type BroadcastStepId = 1 | 2 | 3 | 4;
@@ -38,14 +38,14 @@ export const audienceOptions: AudienceOption[] = [
     description: "Broadcast to everyone",
   },
   {
-    icon: SlidersHorizontal,
-    title: "Specific Roles",
-    description: "Filter by account type",
+    icon: User,
+    title: "Provider",
+    description: "Broadcast to providers",
   },
   {
-    icon: SlidersHorizontal,
-    title: "Custom Segment",
-    description: "Advanced logic filters",
+    icon: User,
+    title: "User",
+    description: "Broadcast to users",
   },
 ];
 

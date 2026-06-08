@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import {
   audienceOptions,
-  audienceRoles,
   broadcastSteps,
   campaignSummary,
   channelMetrics,
@@ -17,7 +16,7 @@ import {
   finalPreviewDetails,
   notificationIcons,
   type BroadcastStepId,
-} from "@/constants/notifications";
+} from "@/constants/broadcast";
 import { cn } from "@/lib/utils";
 import PageHeader from "../common/page-header";
 
@@ -76,7 +75,7 @@ function Stepper({ activeStep, completed = false }: { activeStep: FlowStep; comp
 
 function FormCard({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Card className={cn("rounded-2xl border border-slate-200 bg-white shadow-sm", className)}>
+    <Card className={cn("", className)}>
       <CardContent>{children}</CardContent>
     </Card>
   );
@@ -253,16 +252,6 @@ function TargetingStep({ onBack, onNext }: { onBack: () => void; onNext: () => v
             <SelectableCard key={option.title} active={index === 0} {...option} />
           ))}
         </div>
-        <div className="mt-6 flex flex-wrap gap-5">
-          {audienceRoles.map((role, index) => (
-            <label key={role} className="flex items-center gap-2 text-xs font-medium text-slate-700">
-              <span className={cn("flex size-4 items-center justify-center rounded border", index < 2 ? "border-primary bg-primary" : "border-slate-300 bg-white")}>
-                {index < 2 ? <Check className="size-3 text-white" strokeWidth={3} /> : null}
-              </span>
-              {role}
-            </label>
-          ))}
-        </div>
         <div className="mt-8 rounded-2xl bg-primary/5 p-6">
           <h3 className="text-base font-semibold text-primary">Targeting Filters</h3>
           <div className="mt-6 max-w-70 space-y-2">
@@ -418,7 +407,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
     <BroadcastShell>
       <Stepper activeStep={3} completed />
       <div className="grid gap-7 xl:grid-cols-[minmax(0,1fr)_445px]">
-        <FormCard className="text-center">
+        <FormCard className="text-center pt-12">
           <div className="mx-auto flex size-24 rotate-12 items-center justify-center rounded-3xl bg-primary text-white shadow-xl shadow-primary/25">
             <SuccessIcon className="size-12 -rotate-12" strokeWidth={2.8} />
           </div>
@@ -467,7 +456,7 @@ function ConfirmationPage({ onBack }: { onBack: () => void }) {
   );
 }
 
-export default function NotificationsPage() {
+export default function Broadcast() {
   const [step, setStep] = useState<FlowStep | 4>(1);
   const activeStep = useMemo<FlowStep>(() => (step === 4 ? 3 : step), [step]);
 
