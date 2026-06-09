@@ -29,7 +29,7 @@ export default function LoginPage() {
           <BrandMark />
 
           <div className="flex flex-1 flex-col items-center justify-center pb-10">
-            <div className="relative flex size-[420px] items-center justify-center rounded-full bg-primary/10">
+            <div className="relative flex `size-105 items-center justify-center rounded-full bg-primary/10">
               <Image
                 src="/dashboard-illustration.png"
                 alt="Dashboard analytics illustration"
@@ -62,14 +62,8 @@ export default function LoginPage() {
         </aside>
 
         <section className="flex min-h-screen flex-col px-6 py-8 sm:px-10 lg:px-20">
-          <div className="flex items-center justify-between lg:hidden">
+          <div className="flex items-center justify-between">
             <BrandMark />
-            <Link
-              href="/"
-              className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
-            >
-              Back home
-            </Link>
           </div>
 
           <div className="flex flex-1 items-center justify-center">
