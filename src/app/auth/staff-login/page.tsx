@@ -64,12 +64,6 @@ export default function LoginPage() {
         <section className="flex min-h-screen flex-col px-6 py-8 sm:px-10 lg:px-20">
           <div className="flex items-center justify-between lg:hidden">
             <BrandMark />
-            <Link
-              href="/"
-              className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
-            >
-              Back home
-            </Link>
           </div>
 
           <div className="flex flex-1 items-center justify-center">
