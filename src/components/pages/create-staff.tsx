@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CircleCheck, Eye, Info, KeyRound, ShieldCheck, UserRound } from "lucide-react";
+import { CircleCheck, Eye, EyeOff, Info, KeyRound, Lock, ShieldCheck, UserRound } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,6 +37,7 @@ function splitFullName(fullName: string) {
 export function CreateStaffPage() {
   const router = useRouter();
   const [requirePasswordChange, setRequirePasswordChange] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -221,15 +222,30 @@ export function CreateStaffPage() {
           </div>
 
           <div className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="temp-password">Temporary Password</Label>
+            <div className="space-y-2.5">
+              <Label htmlFor="password">Password</Label>
               <Input
-                id="temp-password"
-                type="password"
-                placeholder="Leave empty to auto-generate"
-                value={temporaryPassword}
-                onChange={(event) => setTemporaryPassword(event.target.value)}
-                rightIcon={<Eye className="size-4" />}
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                autoComplete="current-password"
+                leftIcon={<Lock className="size-4" />}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation(); // Event bubbling ko input box par focus hone se rokega
+                      setShowPassword((prev) => !prev);
+                    }}
+                    tabIndex={-1}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    // pointer-events-auto aur z-20 click event ko transparent overlay padding par block nahi hone dega
+                    className="pointer-events-auto relative cursor-pointer z-20 -m-2 flex size-8 items-center justify-center text-slate-400 hover:text-slate-600 focus:outline-none transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                }
               />
             </div>
 
