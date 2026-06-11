@@ -31,7 +31,6 @@ function getDaysOpen(createdAt: string) {
 }
 
 export function DisputesRefundPage() {
-  const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -48,8 +47,156 @@ export function DisputesRefundPage() {
     status: status === "all" ? undefined : status,
   });
 
-  const disputes = disputesResponse?.data ?? [];
-  const meta = disputesResponse?.meta ?? {
+  const mockDisputesResponse: any = {
+    data: [
+      {
+        id: "disp-101",
+        caseId: "DIS-2026-9942",
+        status: "OPEN",
+        priority: "HIGH",
+        reason: "Product not received after 14 days of estimated delivery.",
+        amount: 250.00,
+        currency: "USD",
+        createdAt: "2026-06-08T10:00:00Z",
+        lastUpdatedAt: "2026-06-10T15:30:00Z",
+        claimDetails: "Customer claims the package was marked delivered but never arrived at the doorstep.",
+        customer: {
+          id: "cust-501",
+          name: "Zeeshan Khan",
+          email: "zeeshan@example.com",
+        },
+        transaction: {
+          id: "tx-701",
+          transactionId: "TXN-77319-ORD",
+          paymentStatus: "SUCCESS",
+          processorAuthCode: "AUTH-99812",
+          amount: 250.00,
+          currency: "USD",
+        },
+        sla: {
+          deadlineAt: "2026-06-15T10:00:00Z",
+          remainingText: "4 days left",
+          isApproachingDeadline: true,
+        },
+        refund: {
+          eligible: true,
+          eligibleReason: "Standard delivery time protection limit breached.",
+          maxRefundAmount: 250.00,
+        },
+      },
+      {
+        id: "disp-102",
+        caseId: "DIS-2026-4102",
+        status: "IN_REVIEW",
+        priority: "MEDIUM",
+        reason: "Fraudulent transaction reported by cardholder.",
+        amount: 1250.50,
+        currency: "USD",
+        createdAt: "2026-06-01T14:30:00Z",
+        lastUpdatedAt: "2026-06-11T09:00:00Z",
+        claimDetails: "Unauthorized charge alert raised by issuer bank fraud detection engine.",
+        customer: {
+          id: "cust-502",
+          name: "Mariam Malik",
+          email: "mariam.m@example.com",
+        },
+        transaction: {
+          id: "tx-702",
+          transactionId: "TXN-11042-ORD",
+          paymentStatus: "SUCCESS",
+          processorAuthCode: "AUTH-44120",
+          amount: 1250.50,
+          currency: "USD",
+        },
+        sla: {
+          deadlineAt: "2026-06-22T14:30:00Z",
+          remainingText: "11 days left",
+          isApproachingDeadline: false,
+        },
+        refund: {
+          eligible: true,
+          eligibleReason: "Merchant collateral buffer allows partial or full settlement.",
+          maxRefundAmount: 1250.50,
+        },
+      },
+      {
+        id: "disp-103",
+        caseId: "DIS-2026-0851",
+        status: "RESOLVED",
+        priority: "LOW",
+        reason: "Duplicate charge for subscription cycle.",
+        amount: 45.00,
+        currency: "USD",
+        createdAt: "2026-05-25T09:15:00Z",
+        lastUpdatedAt: "2026-05-26T11:20:00Z",
+        claimDetails: "System glitch charged the customer twice within 2 seconds for June cycle.",
+        customer: {
+          id: "cust-503",
+          name: "Bilal Ahmed",
+          email: "bilal99@example.com",
+        },
+        transaction: {
+          id: "tx-703",
+          transactionId: "TXN-90822-ORD",
+          paymentStatus: "SUCCESS",
+          processorAuthCode: "AUTH-00128",
+          amount: 45.00,
+          currency: "USD",
+        },
+        sla: null, // Case resolved, no active SLA needed
+        refund: {
+          eligible: false,
+          eligibleReason: "Full refund already processed manually via gateway provider panel.",
+          maxRefundAmount: 0.00,
+        },
+      },
+      {
+        id: "disp-104",
+        caseId: "DIS-2026-3319",
+        status: "ESCALATED",
+        priority: "HIGH",
+        reason: "Item significantly not as described.",
+        amount: 890.00,
+        currency: "USD",
+        createdAt: "2026-06-10T16:00:00Z",
+        lastUpdatedAt: "2026-06-11T17:10:00Z",
+        claimDetails: "Customer received counterfeit or damaged components instead of a brand new setup.",
+        customer: {
+          id: "cust-504",
+          name: "Sana Raza",
+          email: "sana.raza@example.com",
+        },
+        transaction: {
+          id: "tx-704",
+          transactionId: "TXN-55410-ORD",
+          paymentStatus: "SUCCESS",
+          processorAuthCode: "AUTH-88712",
+          amount: 890.00,
+          currency: "USD",
+        },
+        sla: {
+          deadlineAt: "2026-06-12T16:00:00Z",
+          remainingText: "23 hours left",
+          isApproachingDeadline: true,
+        },
+        refund: {
+          eligible: true,
+          eligibleReason: "Escalation review parameters auto-approved for full reimbursement.",
+          maxRefundAmount: 890.00,
+        },
+      }
+    ],
+    meta: {
+      page: 1,
+      limit: 10,
+      total: 4,
+      totalPages: 1,
+    },
+  };
+
+  const disputes = mockDisputesResponse?.data ?? [];
+  // const disputes = disputesResponse?.data ?? [];
+  const meta = mockDisputesResponse?.meta ?? {
     page,
     limit,
     total: 0,
@@ -148,7 +295,7 @@ export function DisputesRefundPage() {
               <Button
                 variant="ghost"
                 className="text-primary"
-                onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id)}`)}
+              // onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id)}`)}
               >
                 {item.status === "RESOLVED" ? "History" : "Review"}
               </Button>

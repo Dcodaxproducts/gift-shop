@@ -20,6 +20,70 @@ import { getInitials } from "@/utils/getInitials";
 import PageHeader from "../common/page-header";
 import { StatusBadge } from "@/utils/status";
 
+export const mockTransactions: any = [
+  {
+    transactionId: "TXN-2026-8812",
+    user: {
+      name: "Zainab Malik",
+    },
+    gatewayProvider: "Stripe",
+    type: "PAYMENT",
+    amount: 1250.00,
+    currency: "USD",
+    status: "SUCCESS",
+    createdAt: "2026-06-11T10:30:00Z",
+  },
+  {
+    transactionId: "TXN-2026-4401",
+    user: {
+      name: "Ali Raza",
+    },
+    gatewayProvider: "PayPal",
+    type: "WITHDRAWAL",
+    amount: 450.50,
+    currency: "USD",
+    status: "PENDING",
+    createdAt: "2026-06-11T14:15:00Z",
+  },
+  {
+    transactionId: "TXN-2026-1193",
+    user: {
+      name: "Hamza Ahmed",
+    },
+    gatewayProvider: "Adyen",
+    type: "GIFT",
+    amount: 75.00,
+    currency: "USD",
+    status: "SUCCESS",
+    createdAt: "2026-06-10T18:45:00Z",
+  },
+  {
+    transactionId: "TXN-2026-9052",
+    user: {
+      id : "s",
+      name: "Ayesha Khan",
+    },
+    gatewayProvider: "Razorpay",
+    type: "PAYMENT",
+    amount: 3200.00,
+    currency: "USD",
+    status: "FAILED",
+    createdAt: "2026-06-09T08:20:00Z",
+  },
+  {
+    transactionId: "TXN-2026-3310",
+    user: {
+      name: "Zainab Malik",
+    },
+    gatewayProvider: "Braintree",
+    type: "PAYMENT",
+    amount: 15.99,
+    currency: "USD",
+    status: "SUCCESS",
+    createdAt: "2026-06-08T11:05:00Z",
+  }
+];
+
 const transactionTypeOptions = [
   { value: "all", label: "Transaction Type" },
   { value: "PAYMENT", label: "Payment" },
@@ -116,7 +180,7 @@ function TransactionsTable({
                 <Button
                   variant="ghost"
                   className="size-9 rounded-full text-primary hover:bg-primary/10"
-                  onClick={() => router.push("/disputes-refund/DIS-9842")}
+                  // onClick={() => router.push("/disputes-refund/DIS-9842")}
                 >
                   <Eye className="size-4" />
                 </Button>
@@ -147,13 +211,22 @@ export function TransactionsPage() {
     status: status === "all" ? undefined : status,
   });
 
-  const transactions = transactionsResponse?.data ?? [];
-  const meta = transactionsResponse?.meta ?? {
-    page,
-    limit,
-    total: 0,
+  const transactions = mockTransactions;
+
+  const meta = {
+    page: 1,
+    limit: 10,
+    total: mockTransactions.length,
     totalPages: 1,
   };
+
+  // const transactions = transactionsResponse?.data ?? [];
+  // const meta = transactionsResponse?.meta ?? {
+  //   page,
+  //   limit,
+  //   total: 0,
+  //   totalPages: 1,
+  // };
 
   return (
     <div className="space-y-5">

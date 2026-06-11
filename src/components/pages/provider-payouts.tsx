@@ -63,28 +63,32 @@ const buildPayoutMetrics = (stats?: ProviderPayoutStats): PayoutMetric[] => {
     {
       icon: CalendarDays,
       label: "Total payouts this month",
-      value: stats ? formatMoney(stats.totalPayoutsThisMonth, stats.currency) : emptyValue,
+      value: stats ? formatMoney(200) : emptyValue,
+      // value: stats ? formatMoney(stats.totalPayoutsThisMonth, stats.currency) : emptyValue,
       change: stats ? formatDelta(stats.totalPayoutsDeltaPercent, "last month") : emptyValue,
       tone: "purple",
     },
     {
       icon: Hourglass,
       label: "Pending payouts",
-      value: stats ? formatMoney(stats.pendingPayouts, stats.currency) : emptyValue,
+      value: stats ? formatMoney(50) : emptyValue,
+      // value: stats ? formatMoney(stats.pendingPayouts, stats.currency) : emptyValue,
       change: stats ? formatDelta(stats.pendingPayoutsDeltaPercent, "last week") : emptyValue,
       tone: "amber",
     },
     {
       icon: CheckCircle2,
       label: "Completed payouts",
-      value: stats ? formatMoney(stats.completedPayouts, stats.currency) : emptyValue,
+      value: stats ? formatMoney(150) : emptyValue,
+      // value: stats ? formatMoney(stats.completedPayouts, stats.currency) : emptyValue,
       change: stats ? formatDelta(stats.completedPayoutsDeltaPercent, "last month") : emptyValue,
       tone: "green",
     },
     {
       icon: Hexagon,
       label: "Platform revenue",
-      value: stats ? formatMoney(stats.platformRevenue, stats.currency) : emptyValue,
+      value: stats ? formatMoney(200) : emptyValue,
+      // value: stats ? formatMoney(stats.platformRevenue, stats.currency) : emptyValue,
       change: stats ? formatDelta(stats.platformRevenueDeltaPercent, "last month") : emptyValue,
       tone: "violet",
     },
@@ -104,6 +108,64 @@ function RecentPayoutActivities() {
   });
 
   const hasNextPage = payouts.length === limit;
+
+  const mockPayoutActivities: ProviderPayoutListItem[] = [
+    {
+      id: "payout-1",
+      pendingAmount: 24500.00,
+      currency: "USD",
+      lastPayoutDate: "2026-06-01T00:00:00Z",
+      nextPayoutDate: "2026-06-15T00:00:00Z",
+      status: "pending", // StatusBadge ke mutabiq lowercase/uppercase handle karein
+      provider: {
+        id: "prov-idx-1",
+        businessName: "Stripe Enterprise",
+        providerCode: "STR-091",
+      }
+    },
+    {
+      id: "payout-2",
+      pendingAmount: 12800.50,
+      currency: "USD",
+      lastPayoutDate: "2026-05-28T00:00:00Z",
+      nextPayoutDate: "2026-06-12T00:00:00Z",
+      status: "success",
+      provider: {
+        id: "prov-idx-2",
+        businessName: "PayPal Merchant",
+        providerCode: "PYPL-442",
+      }
+    },
+    {
+      id: "payout-3",
+      pendingAmount: 0.00,
+      currency: "USD",
+      lastPayoutDate: "2026-06-05T00:00:00Z",
+      nextPayoutDate: "2026-06-20T00:00:00Z",
+      status: "success",
+      provider: {
+        id: "prov-idx-3",
+        businessName: "Adyen Global",
+        providerCode: null, // Fallback check karega -> activity.provider.id standard fallback hai
+      }
+    },
+    {
+      id: "payout-4",
+      pendingAmount: 8900.00,
+      currency: "USD",
+      lastPayoutDate: "2026-05-15T00:00:00Z",
+      nextPayoutDate: "2026-06-10T00:00:00Z",
+      status: "failed",
+      provider: {
+        id: "prov-idx-4",
+        businessName: "Razorpay Prime",
+        providerCode: "RZP-112",
+      }
+    }
+  ];
+
+  const payoutss = mockPayoutActivities;
+
   const pagination = {
     total: (page - 1) * limit + payouts.length + (hasNextPage ? 1 : 0),
     page,
@@ -122,7 +184,7 @@ function RecentPayoutActivities() {
       </div>
 
       <DataTable
-        data={payouts}
+        data={payoutss}
         pagination={{ ...pagination, onPageChange: setPage }}
         isBorder={false}
         loading={isPayoutsLoading}
@@ -185,14 +247,45 @@ export function ProviderPayoutsPage() {
   const { mutate: exportPayouts, isPending: isExportPending } = useExportProviderPayouts();
 
   const metrics = buildPayoutMetrics(stats);
-  const trendData = trends?.labels.map((label, index) => ({
-    month: label,
-    amount: trends.values[index] ?? 0,
-  }));
-  const distributionData = earningDistribution?.map((item) => ({
-    tier: item.tierName,
-    amount: item.totalEarnings,
-  }));
+
+
+
+  // Isko aap 'trends' state ya hook response ke tor par override kar sakte hain
+  const mockTrendData = [
+    { month: "Jan", amount: 45000 },
+    { month: "Feb", amount: 52000 },
+    { month: "Mar", amount: 49000 },
+    { month: "Apr", amount: 63000 },
+    { month: "May", amount: 58000 },
+    { month: "Jun", amount: 71000 },
+    { month: "Jul", amount: 85000 },
+    { month: "Aug", amount: 79000 },
+    { month: "Sep", amount: 92000 },
+    { month: "Oct", amount: 105000 },
+    { month: "Nov", amount: 98000 },
+    { month: "Dec", amount: 120000 },
+  ];
+
+  // Isko aap 'earningDistribution' ki jagah inject kar sakte hain
+  const mockDistributionData = [
+    { tier: "Tier 1 (Starter)", amount: 15000 },
+    { tier: "Tier 2 (Growth)", amount: 38000 },
+    { tier: "Tier 3 (Scale)", amount: 84000 },
+    { tier: "Tier 4 (Enterprise)", amount: 165000 },
+  ];
+
+  const distributionData = mockDistributionData;
+
+  const trendData = trendRange === "LAST_3_MONTHS" ? mockTrendData.slice(-3) : trendRange === "LAST_6_MONTHS" ? mockTrendData.slice(-6) : mockTrendData;
+
+  // const trendData = trends?.labels.map((label, index) => ({
+  //   month: label,
+  //   amount: trends.values[index] ?? 0,
+  // }));
+  // const distributionData = earningDistribution?.map((item) => ({
+  //   tier: item.tierName,
+  //   amount: item.totalEarnings,
+  // }));
 
   return (
     <div className="space-y-5">
@@ -218,6 +311,8 @@ export function ProviderPayoutsPage() {
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
         <MonthlyPayoutChart data={trendData ?? []} range={trendRange} onRangeChange={setTrendRange} />
         <EarningsDistributionChart data={distributionData ?? []} />
+        {/* <MonthlyPayoutChart data={trendData ?? []} range={trendRange} onRangeChange={setTrendRange} />
+        <EarningsDistributionChart data={distributionData ?? []} /> */}
       </section>
 
       <RecentPayoutActivities />

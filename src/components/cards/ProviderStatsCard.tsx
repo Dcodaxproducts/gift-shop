@@ -29,13 +29,15 @@ function buildProviderStatCards(data?: ProviderStatsData) {
     },
     {
       title: "Active Revenue",
-      value: `$${stats.activeRevenue}`,
+      value: `$${200}`,
+      // value: `$${stats.activeRevenue}`,
       change: stats.activeRevenueChangePercent,
       tone: "emerald" as StatTone,
     },
     {
       title: "Inactive Rate",
-      value: `${stats.inactiveRate}%`,
+      value: `${10}%`,
+      // value: `${stats.inactiveRate}%`,
       change: stats.inactiveRateChangePercent,
       tone: "rose" as StatTone,
     },

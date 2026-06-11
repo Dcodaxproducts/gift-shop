@@ -37,13 +37,15 @@ function buildHomeStatCards(data: DashboardOverview): HomeStatCard[] {
     },
     {
       title: "Transactions",
-      value: numberFormatter.format(data.transactions),
+      value: compactCurrencyFormatter.format(200),
+      // value: numberFormatter.format(data.transactions),
       change: data.transactionsDeltaPercent,
       icon: ArrowLeftRight,
     },
     {
       title: "Total Revenue",
-      value: compactCurrencyFormatter.format(data.totalRevenue),
+      value: compactCurrencyFormatter.format(200),
+      // value: compactCurrencyFormatter.format(data.totalRevenue),
       change: data.totalRevenueDeltaPercent,
       icon: CreditCard,
     },

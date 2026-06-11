@@ -37,25 +37,29 @@ function buildTransactionStats(data?: TransactionStats): TransactionStat[] {
   return [
     {
       title: "Total Volume",
-      value: formatCurrency(data?.totalVolume ?? 0, currency),
+      value: formatCurrency(200, currency),
+      // value: formatCurrency(data?.totalVolume ?? 0, currency),
       change: formatDelta(data?.totalVolumeDeltaPercent ?? 0),
       tone: "emerald",
     },
     {
       title: "Success Rate",
-      value: `${data?.successRate ?? 0}%`,
+      value: `${100}%`,
+      // value: `${data?.successRate ?? 0}%`,
       change: formatDelta(data?.successRateDeltaPercent ?? 0),
       tone: "emerald",
     },
     {
       title: "Pending Review",
-      value: numberFormatter.format(data?.pendingReview ?? 0),
+      value: numberFormatter.format(5),
+      // value: numberFormatter.format(data?.pendingReview ?? 0),
       change: "Alert",
       tone: "amber",
     },
     {
       title: "Failed Today",
-      value: numberFormatter.format(data?.failedToday ?? 0),
+      value: numberFormatter.format(1),
+      // value: numberFormatter.format(data?.failedToday ?? 0),
       change: formatDelta(data?.failedTodayDeltaPercent ?? 0),
       tone: "rose",
     },
