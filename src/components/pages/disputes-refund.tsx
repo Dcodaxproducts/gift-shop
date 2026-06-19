@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Download } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
@@ -195,6 +194,7 @@ export function DisputesRefundPage() {
   };
 
   const disputes = mockDisputesResponse?.data ?? [];
+
   // const disputes = disputesResponse?.data ?? [];
   const meta = mockDisputesResponse?.meta ?? {
     page,
@@ -224,7 +224,7 @@ export function DisputesRefundPage() {
         title="Dispute & Refund Cases"
         description="Manage, review, and resolve customer disputes within allowed limits."
         actions={
-          <Button onClick={() => exportDisputes.mutate()} disabled={exportDisputes.isPending}>
+          <Button onClick={() => exportDisputes.mutate()} disabled={disputesResponse?.data?.length === 0 || exportDisputes.isPending}>
             <Download className="mr-2 size-3.5" />
             {exportDisputes.isPending ? "Exporting..." : "Export"}
           </Button>

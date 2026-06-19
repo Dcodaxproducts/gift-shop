@@ -36,10 +36,12 @@ export function UsersPage() {
     status: status === "all" ? undefined : status,
     sortBy
   });
+  console.log(users)
   const exportUsers = useExportUsers();
   const { mutate, isPending } = useDeleteUser();
 
   const hasNextPage = users.length === limit;
+
   const pagination = {
     total: (page - 1) * limit + users.length + (hasNextPage ? 1 : 0),
     page,
@@ -68,7 +70,7 @@ export function UsersPage() {
         description="Search, review, and manage customer accounts across the platform."
         actions={
           <>
-            <Button variant="outline" onClick={handleExport} disabled={exportUsers.isPending}>
+            <Button variant="outline" onClick={handleExport} disabled={users?.length === 0 || exportUsers.isPending}>
               <Download className="mr-2 size-3.5" />
               {exportUsers.isPending ? "Exporting..." : "Export"}
             </Button>

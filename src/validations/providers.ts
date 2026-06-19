@@ -9,17 +9,18 @@ const optionalUrl = z
 
 const optionalNumber = z.number().optional();
 
-export const providerSchema = z.object({
+const passwordSchema = z
+  .string()
+  .min(8, "Password must be at least 8 characters long")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+  .regex(/[0-9]/, "Password must contain at least one number")
+  .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character");
+
+const providerBaseSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
   email: z.string().trim().min(1, "Email is required").email("Email is invalid"),
   contact: z.string().trim().min(1, "Contact is required"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
   businessName: z.string().trim().min(1, "Business name is required"),
   businessCategoryId: z.string().trim().min(1, "Business category is required"),
   taxId: z.string().trim().optional(),
@@ -35,4 +36,12 @@ export const providerSchema = z.object({
     .optional(),
 });
 
-export type ProviderFormValues = z.infer<typeof providerSchema>;
+export const providerSchema = providerBaseSchema.extend({
+  password: passwordSchema,
+});
+
+export const updateProviderSchema = providerBaseSchema.extend({
+  password: z.string().optional(),
+});
+
+export type ProviderFormValues = z.infer<typeof updateProviderSchema>;

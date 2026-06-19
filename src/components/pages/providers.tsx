@@ -68,7 +68,7 @@ export function ProvidersPage() {
         description="Manage fintech service providers and their performance metrics."
         actions={
           <>
-            <Button variant="outline" onClick={() => exportProviders.mutate()} disabled={exportProviders.isPending}>
+            <Button variant="outline" onClick={() => exportProviders.mutate()} disabled={providers?.length === 0 ||exportProviders.isPending}>
               <Download className="mr-2 size-3.5" />
               {exportProviders.isPending ? "Exporting..." : "Export"}
             </Button>

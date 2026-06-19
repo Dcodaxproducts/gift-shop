@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors";
 import {
@@ -80,14 +81,18 @@ export const useExportProviders = () => {
 
 
 export const useUpdateProvider = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: updateProvider,
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ["providers"] });
-      queryClient.invalidateQueries({ queryKey: ["providers", id] });
+    onSuccess: async (_, { id }) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["providers"] }),
+        queryClient.invalidateQueries({ queryKey: ["providers", id] }),
+      ]);
       toast.success("Provider updated successfully");
+      router.push("/providers");
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Failed to update provider. Please try again."));

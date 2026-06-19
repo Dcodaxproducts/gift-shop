@@ -24,7 +24,7 @@ import { useCreateProvider, useProvider, useUpdateProvider } from "@/hooks/usePr
 import { useStorage } from "@/hooks/useStorage";
 import { cn } from "@/lib/utils";
 import { UPLOAD_FOLDERS } from "@/utils/file";
-import { providerSchema, type ProviderFormValues } from "@/validations/providers";
+import { providerSchema, updateProviderSchema, type ProviderFormValues } from "@/validations/providers";
 import SectionHeader from "../common/section-header";
 import MyImage from "../common/MyImage";
 
@@ -76,7 +76,7 @@ export function ProviderFormPage({
     limit: 100,
     isActive: true,
   });
-  
+
   const {
     formState: { errors },
     handleSubmit,
@@ -85,7 +85,7 @@ export function ProviderFormPage({
     setValue,
     control,
   } = useForm<ProviderFormValues>({
-    resolver: zodResolver(providerSchema),
+    resolver: zodResolver(mode === "create" ? providerSchema : updateProviderSchema),
     defaultValues: emptyValues,
   });
 
@@ -98,7 +98,7 @@ export function ProviderFormPage({
       contact: provider.contact ?? provider.phone ?? "",
       password: "",
       businessName: provider.businessName ?? "",
-      businessCategoryId: provider.businessCategoryId ?? "",
+      businessCategoryId: provider.businessCategoryId ?? provider.businessCategory?.id ?? "",
       taxId: provider.taxId ?? "",
       businessAddress: provider.businessAddress ?? "",
       businessBio: provider.businessBio ?? "",
@@ -183,16 +183,20 @@ export function ProviderFormPage({
     };
 
     if (mode === "edit") {
+      const { password, ...updatePayload } = payload;
+
       updateProviderMutation.mutate(
-        { id: providerId, payload },
-        { onSuccess: () => router.push(`/providers/${providerId}`) },
+        { id: providerId, payload: updatePayload },
       );
       return;
     }
 
-    createProviderMutation.mutate(payload, {
-      onSuccess: () => router.push("/providers"),
-    });
+    createProviderMutation.mutate(
+      { ...payload, password: values.password ?? "" },
+      {
+        onSuccess: () => router.push("/providers"),
+      },
+    );
   };
 
   return (
@@ -282,27 +286,29 @@ export function ProviderFormPage({
                   {...register("contact")}
                 />
               </div>
-              <div>
-                <Input
-                  id="password"
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter Password"
-                  required
-                  errorMessage={errors.password?.message}
-                  rightIcon={
-                    <button
-                      type="button"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="text-slate-400 transition hover:text-slate-700"
-                      onClick={() => setShowPassword((value) => !value)}
-                    >
-                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                    </button>
-                  }
-                  {...register("password")}
-                />
-              </div>
+              {mode === "create" && (
+                <div>
+                  <Input
+                    id="password"
+                    label="Password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter Password"
+                    required
+                    errorMessage={errors.password?.message}
+                    rightIcon={
+                      <button
+                        type="button"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        className="text-slate-400 transition hover:text-slate-700"
+                        onClick={() => setShowPassword((value) => !value)}
+                      >
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      </button>
+                    }
+                    {...register("password")}
+                  />
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

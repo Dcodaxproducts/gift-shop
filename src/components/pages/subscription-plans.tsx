@@ -35,8 +35,20 @@ function formatLabel(value: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function getBillingPrice(plan: SubscriptionPlan) {
+  if (plan.yearlyPrice !== null && plan.yearlyPrice !== undefined) {
+    return { period: "/year", price: plan.yearlyPrice };
+  }
+
+  if (plan.monthlyPrice !== null && plan.monthlyPrice !== undefined) {
+    return { period: "/month", price: plan.monthlyPrice };
+  }
+
+  return { period: "", price: 0 };
+}
+
 function formatPrice(plan: SubscriptionPlan) {
-  const price = plan.monthlyPrice ?? plan.yearlyPrice ?? 0;
+  const { price } = getBillingPrice(plan);
 
   return new Intl.NumberFormat("en-US", {
     currency: plan.currency ?? "USD",
@@ -46,9 +58,7 @@ function formatPrice(plan: SubscriptionPlan) {
 }
 
 function formatPeriod(plan: SubscriptionPlan) {
-  if (plan.monthlyPrice !== null && plan.monthlyPrice !== undefined) return "/month";
-  if (plan.yearlyPrice !== null && plan.yearlyPrice !== undefined) return "/year";
-  return "";
+  return getBillingPrice(plan).period;
 }
 
 function getFeatureLabels(plan: SubscriptionPlan) {

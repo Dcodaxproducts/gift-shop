@@ -30,6 +30,10 @@ export type Provider = {
   phone?: string;
   avatarUrl?: string | null;
   businessCategoryId?: string | null;
+  businessCategory?: {
+    id?: string | null;
+    name?: string | null;
+  } | null;
   taxId?: string | null;
   businessAddress?: string | null;
   businessBio?: string | null;
