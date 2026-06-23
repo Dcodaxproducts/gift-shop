@@ -18,18 +18,10 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSystemLatencyGraph } from "@/hooks/useSystemLogs";
+import type { SystemHealthRange } from "@/types/system-logs";
 
 type LatencyPeriod = "Daily" | "Weekly" | "Monthly";
-
-const latencyData = [
-  { day: "Tue", latency: 0.02 },
-  { day: "Wed", latency: 0.02 },
-  { day: "Thu", latency: 0.02 },
-  { day: "Fri", latency: 0.02 },
-  { day: "Sat", latency: 0.02 },
-  { day: "Sun", latency: 0.05 },
-  { day: "Mon", latency: 0.66 },
-];
 
 const latencyChartConfig = {
   latency: {
@@ -39,9 +31,23 @@ const latencyChartConfig = {
 } satisfies ChartConfig;
 
 const periods: LatencyPeriod[] = ["Daily", "Weekly", "Monthly"];
+const rangeByPeriod: Record<LatencyPeriod, SystemHealthRange> = {
+  Daily: "DAILY",
+  Weekly: "WEEKLY",
+  Monthly: "MONTHLY",
+};
+
+const numberFormatter = new Intl.NumberFormat("en-US");
 
 function ApiLatencyChart() {
   const [period, setPeriod] = useState<LatencyPeriod>("Daily");
+  const { data, refetch, isFetching } = useSystemLatencyGraph(rangeByPeriod[period]);
+  const points = data?.points ?? [];
+  const totalRequests = points.reduce((total, point) => total + point.totalRequests, 0);
+  const latencyData = points.map((point) => ({
+    day: point.label,
+    latency: Number((point.averageLatencyMs / 1000).toFixed(2)),
+  }));
 
   return (
     <Card>
@@ -51,7 +57,7 @@ function ApiLatencyChart() {
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold">API Latency Over Time</h2>
               <span className="rounded bg-fuchsia-50 px-1.5 py-0.5 text-[8px] font-bold uppercase text-fuchsia-600">
-                2 Orders
+                {numberFormatter.format(totalRequests)} Requests
               </span>
             </div>
             <p className="mt-1 text-[10px] font-medium text-slate-400">
@@ -77,8 +83,10 @@ function ApiLatencyChart() {
               type="button"
               className="ml-1 flex size-7 items-center justify-center rounded-lg border-l border-slate-100 text-slate-400"
               aria-label="Refresh latency chart"
+              onClick={() => refetch()}
+              disabled={isFetching}
             >
-              <RefreshCw className="size-3.5" />
+              <RefreshCw className={cn("size-3.5", isFetching && "animate-spin")} />
             </button>
           </div>
         </div>

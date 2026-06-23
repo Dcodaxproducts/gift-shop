@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import type { SystemHealthStats, SystemHealthStatus } from "@/types/system-logs";
 
 type SystemHealthCardProps = {
   label: string;
@@ -8,9 +9,103 @@ type SystemHealthCardProps = {
   progress?: number;
   status?: "Healthy" | "Warning";
   helper?: string;
+  p95Label?: string;
   tone?: "green" | "red";
   variant?: "server" | "api";
 };
+
+export type HealthMetric = {
+  label: string;
+  value: string;
+  maxLabel?: string;
+  progress?: number;
+  status?: "Healthy" | "Warning";
+  helper?: string;
+  p95Label?: string;
+  tone?: "green" | "red";
+};
+
+const numberFormatter = new Intl.NumberFormat("en-US");
+
+const formatPercent = (value: number) => `${Number(value.toFixed(1))}%`;
+const formatGb = (value: number) => `${Number(value.toFixed(1))} GB`;
+const formatLatency = (value: number) => `${Number(value.toFixed(2))} ms`;
+const formatStatus = (status: SystemHealthStatus): "Healthy" | "Warning" => {
+  return status === "WARNING" || status === "CRITICAL" ? "Warning" : "Healthy";
+};
+const getTone = (status: SystemHealthStatus): "green" | "red" => {
+  return formatStatus(status) === "Warning" ? "red" : "green";
+};
+
+export function buildServerHealthMetrics(data: SystemHealthStats): HealthMetric[] {
+  const { serverHealth } = data;
+
+  return [
+    {
+      label: "CPU Usage",
+      value: formatPercent(serverHealth.cpuUsagePercent),
+      maxLabel: "100%",
+      progress: serverHealth.cpuUsagePercent,
+      status: formatStatus(serverHealth.cpuStatus),
+      tone: getTone(serverHealth.cpuStatus),
+    },
+    {
+      label: "Memory Usage",
+      value: formatGb(serverHealth.memory.usedGb),
+      maxLabel: formatGb(serverHealth.memory.totalGb),
+      progress: serverHealth.memory.usagePercent,
+      status: formatStatus(serverHealth.memory.status),
+      tone: getTone(serverHealth.memory.status),
+    },
+    {
+      label: "Disk Usage",
+      value: formatGb(serverHealth.disk.usedGb),
+      maxLabel: formatGb(serverHealth.disk.totalGb),
+      progress: serverHealth.disk.usagePercent,
+      status: formatStatus(serverHealth.disk.status),
+      tone: getTone(serverHealth.disk.status),
+    },
+    {
+      label: "Uptime",
+      value: `${numberFormatter.format(serverHealth.uptimeHours)}h`,
+      progress: 100,
+      status: formatStatus(serverHealth.uptimeStatus),
+      tone: getTone(serverHealth.uptimeStatus),
+    },
+  ];
+}
+
+export function buildApiHealthMetrics(data: SystemHealthStats): HealthMetric[] {
+  const { apiHealth } = data;
+
+  return [
+    {
+      label: "Success Rate",
+      value: formatPercent(apiHealth.successRatePercent),
+      progress: apiHealth.successRatePercent,
+      status: "Healthy",
+    },
+    {
+      label: "Failure Rate",
+      value: formatPercent(apiHealth.failureRatePercent),
+      progress: apiHealth.failureRatePercent,
+      status: formatStatus(apiHealth.latencyStatus),
+      tone: apiHealth.failureRatePercent > 0 ? "red" : "green",
+    },
+    {
+      label: "Total Requests",
+      value: numberFormatter.format(apiHealth.totalRequests),
+      progress: Math.min(apiHealth.totalRequests, 100),
+      status: formatStatus(apiHealth.latencyStatus),
+    },
+    {
+      label: "Average Latency",
+      value: formatLatency(apiHealth.averageLatencyMs),
+      helper: `${numberFormatter.format(apiHealth.totalRequests)} total requests`,
+      p95Label: `P95: ${formatLatency(apiHealth.p95LatencyMs)}`,
+    },
+  ];
+}
 
 function SystemHealthCard({
   label,
@@ -19,6 +114,7 @@ function SystemHealthCard({
   progress,
   status = "Healthy",
   helper,
+  p95Label,
   tone = "green",
   variant = "server",
 }: SystemHealthCardProps) {
@@ -59,7 +155,7 @@ function SystemHealthCard({
               {helper}
             </p>
             <p className="text-[10px] font-semibold leading-4 text-slate-300">
-              P95: 505 ms
+              {p95Label ?? "P95: 505 ms"}
             </p>
           </div>
         ) : (

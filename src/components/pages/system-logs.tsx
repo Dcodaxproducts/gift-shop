@@ -1,65 +1,18 @@
-import SystemHealthCard from "@/components/cards/SystemHealthCard";
+"use client";
+
+import SystemHealthCard, {
+  buildApiHealthMetrics,
+  buildServerHealthMetrics,
+} from "@/components/cards/SystemHealthCard";
 import ApiLatencyChart from "@/components/charts/ApiLatencyChart";
 import PageHeader from "@/components/common/page-header";
-
-const serverHealthMetrics = [
-  {
-    label: "CPU Usage",
-    value: "6.5%",
-    maxLabel: "100%",
-    progress: 6.5,
-    status: "Healthy" as const,
-  },
-  {
-    label: "Memory Usage",
-    value: "2.6 GB",
-    maxLabel: "3.8 GB",
-    progress: 68,
-    status: "Healthy" as const,
-  },
-  {
-    label: "Disk Usage",
-    value: "28.3 GB",
-    maxLabel: "33.7 GB",
-    progress: 84,
-    status: "Warning" as const,
-    tone: "red" as const,
-  },
-  {
-    label: "Uptime",
-    value: "3500h",
-    progress: 100,
-    status: "Healthy" as const,
-  },
-];
-
-const apiHealthMetrics = [
-  {
-    label: "Success Rate",
-    value: "100%",
-    progress: 100,
-    status: "Healthy" as const,
-  },
-  {
-    label: "Failure Rate",
-    value: "0%",
-    progress: 0,
-    status: "Healthy" as const,
-  },
-  {
-    label: "Total Requests",
-    value: "177",
-    progress: 58,
-    status: "Healthy" as const,
-  },
-  {
-    label: "Average Latency",
-    value: "245.59 ms",
-    helper: "177 total requests",
-  },
-];
+import { useSystemLogs } from "@/hooks/useSystemLogs";
 
 export function SystemLogsPage() {
+  const { data } = useSystemLogs();
+  const serverHealthMetrics = data ? buildServerHealthMetrics(data) : [];
+  const apiHealthMetrics = data ? buildApiHealthMetrics(data) : [];
+  
   return (
     <div className="space-y-5">
       <PageHeader
