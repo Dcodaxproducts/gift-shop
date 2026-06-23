@@ -18,24 +18,28 @@ type RevenueTransaction = {
   userEmail: string;
   plan: "Pro" | "Enterprise" | "Basic";
   amount: string;
-  status: "Completed" | "Pending";
-  category: string;
-  provider: string;
+  status: "COMPLETED" | "PENDING" | "FAILED" | "REFUNDED";
 };
 
-const categoryOptions = [
-  { value: "all", label: "All Categories" },
-  { value: "subscriptions", label: "Subscriptions" },
-  { value: "providers", label: "Providers" },
-  { value: "gifts", label: "Gifts" },
+const planOptions = [
+  { value: "ALL", label: "All Plans" },
+  { value: "Pro", label: "Pro" },
+  { value: "Enterprise", label: "Enterprise" },
+  { value: "Basic", label: "Basic" },
 ] as const;
 
-const providerOptions = [
-  { value: "all", label: "All Providers" },
-  { value: "stripe", label: "Stripe" },
-  { value: "paypal", label: "PayPal" },
-  { value: "manual", label: "Manual" },
+const revenueTransactionStatuses = [
+  "ALL",
+  "COMPLETED",
+  "PENDING",
+  "FAILED",
+  "REFUNDED",
 ] as const;
+
+const statusOptions = revenueTransactionStatuses.map((status) => ({
+  value: status,
+  label: status === "ALL" ? "All Statuses" : status.replace(/_/g, " "),
+}));
 
 const revenueTransactions: RevenueTransaction[] = [
   {
@@ -44,9 +48,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "alex.rivera@gmail.com",
     plan: "Pro",
     amount: "$150.00",
-    status: "Completed",
-    category: "subscriptions",
-    provider: "stripe",
+    status: "COMPLETED",
   },
   {
     id: "txn-002",
@@ -54,9 +56,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "sarah.j@enterprise.co",
     plan: "Enterprise",
     amount: "$2,400.00",
-    status: "Completed",
-    category: "providers",
-    provider: "paypal",
+    status: "COMPLETED",
   },
   {
     id: "txn-003",
@@ -64,9 +64,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "mike.ross@pearson.com",
     plan: "Pro",
     amount: "$150.00",
-    status: "Pending",
-    category: "subscriptions",
-    provider: "manual",
+    status: "PENDING",
   },
   {
     id: "txn-004",
@@ -74,9 +72,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "joshua_dev@freelance.io",
     plan: "Basic",
     amount: "$49.00",
-    status: "Completed",
-    category: "gifts",
-    provider: "stripe",
+    status: "FAILED",
   },
   {
     id: "txn-005",
@@ -84,9 +80,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "nina.ops@company.com",
     plan: "Enterprise",
     amount: "$2,400.00",
-    status: "Completed",
-    category: "providers",
-    provider: "stripe",
+    status: "COMPLETED",
   },
   {
     id: "txn-006",
@@ -94,9 +88,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "david.khan@mail.com",
     plan: "Basic",
     amount: "$49.00",
-    status: "Pending",
-    category: "gifts",
-    provider: "paypal",
+    status: "PENDING",
   },
   {
     id: "txn-007",
@@ -104,9 +96,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "emma.wilson@studio.io",
     plan: "Pro",
     amount: "$150.00",
-    status: "Completed",
-    category: "subscriptions",
-    provider: "manual",
+    status: "COMPLETED",
   },
   {
     id: "txn-008",
@@ -114,9 +104,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "omar.finance@enterprise.co",
     plan: "Enterprise",
     amount: "$2,400.00",
-    status: "Completed",
-    category: "providers",
-    provider: "paypal",
+    status: "REFUNDED",
   },
   {
     id: "txn-009",
@@ -124,9 +112,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "lena.market@gmail.com",
     plan: "Pro",
     amount: "$150.00",
-    status: "Completed",
-    category: "subscriptions",
-    provider: "stripe",
+    status: "COMPLETED",
   },
   {
     id: "txn-010",
@@ -134,9 +120,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "ryan.basic@mail.com",
     plan: "Basic",
     amount: "$49.00",
-    status: "Pending",
-    category: "gifts",
-    provider: "manual",
+    status: "PENDING",
   },
   {
     id: "txn-011",
@@ -144,9 +128,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "aisha.ops@brand.co",
     plan: "Enterprise",
     amount: "$2,400.00",
-    status: "Completed",
-    category: "providers",
-    provider: "stripe",
+    status: "COMPLETED",
   },
   {
     id: "txn-012",
@@ -154,9 +136,7 @@ const revenueTransactions: RevenueTransaction[] = [
     userEmail: "tom.harris@gmail.com",
     plan: "Pro",
     amount: "$150.00",
-    status: "Completed",
-    category: "subscriptions",
-    provider: "paypal",
+    status: "COMPLETED",
   },
 ];
 
@@ -242,8 +222,8 @@ function AnalyticsTransactionsTable({
 export function PlatformAnalyticsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const [provider, setProvider] = useState("all");
+  const [plan, setPlan] = useState("ALL");
+  const [status, setStatus] = useState("ALL");
   const limit = 10;
   const debouncedSearch = useDebounce(search, 400);
 
@@ -255,13 +235,15 @@ export function PlatformAnalyticsPage() {
         !normalizedSearch ||
         transaction.userEmail.toLowerCase().includes(normalizedSearch) ||
         transaction.id.toLowerCase().includes(normalizedSearch) ||
-        transaction.provider.toLowerCase().includes(normalizedSearch);
-      const matchesCategory = category === "all" || transaction.category === category;
-      const matchesProvider = provider === "all" || transaction.provider === provider;
+        transaction.plan.toLowerCase().includes(normalizedSearch) ||
+        transaction.amount.toLowerCase().includes(normalizedSearch) ||
+        transaction.status.toLowerCase().includes(normalizedSearch);
+      const matchesPlan = plan === "ALL" || transaction.plan === plan;
+      const matchesStatus = status === "ALL" || transaction.status === status;
 
-      return matchesSearch && matchesCategory && matchesProvider;
+      return matchesSearch && matchesPlan && matchesStatus;
     });
-  }, [category, debouncedSearch, provider]);
+  }, [debouncedSearch, plan, status]);
 
   const paginatedTransactions = filteredTransactions.slice(
     (page - 1) * limit,
@@ -275,7 +257,7 @@ export function PlatformAnalyticsPage() {
         actions={
           <Button>
             <Download className="mr-2 size-3.5" />
-            Generate Report
+            Export
           </Button>
         }
       />
@@ -283,7 +265,7 @@ export function PlatformAnalyticsPage() {
       <PlatformAnalyticsStatsCard />
 
       <FilterSection
-        searchPlaceholder="Search gifts by name, ID, or provider..."
+        searchPlaceholder="Search transactions by ID, email, plan, or status..."
         searchValue={search}
         onSearchChange={(value) => {
           setSearch(value);
@@ -291,24 +273,24 @@ export function PlatformAnalyticsPage() {
         }}
         filters={[
           {
-            value: category,
+            value: plan,
             onChange: (value) => {
-              setCategory(value);
+              setPlan(value);
               setPage(1);
             },
-            placeholder: "All Categories",
+            placeholder: "All Plans",
             width: "sm:w-[160px]",
-            options: categoryOptions,
+            options: planOptions,
           },
           {
-            value: provider,
+            value: status,
             onChange: (value) => {
-              setProvider(value);
+              setStatus(value);
               setPage(1);
             },
-            placeholder: "All Providers",
+            placeholder: "All Statuses",
             width: "sm:w-[150px]",
-            options: providerOptions,
+            options: statusOptions,
           },
         ]}
       />

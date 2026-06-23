@@ -41,6 +41,7 @@ export function ResetPasswordForm() {
   });
 
   const newPassword = useWatch({ control, name: "newPassword" }) ?? "";
+  
   const passwordRules = [
     { label: "Minimum 8 characters", complete: newPassword.length >= 8 },
     { label: "One number", complete: /[0-9]/.test(newPassword) },
@@ -62,7 +63,7 @@ export function ResetPasswordForm() {
   const onSubmit = (values: ResetPasswordFormValues) => {
     if (!resetContext) {
       toast.error("Please verify your OTP before resetting password.");
-      router.push("/auth/forgot-password");
+      router.replace("/auth/forgot-password");
       return;
     }
 
@@ -77,14 +78,14 @@ export function ResetPasswordForm() {
           sessionStorage.removeItem("resetEmail");
           sessionStorage.removeItem("resetOtp");
           toast.success("Password reset successfully");
-          router.push("/auth/login");
+          router.replace("/auth/login");
         },
       },
     );
   };
 
   return (
-    <Card className="w-full max-w-[400px] border border-border bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
+    <Card className="w-full max-w-100">
       <CardHeader className="mb-7">
         <CardTitle className="text-[26px] leading-tight ">
           Reset Password
@@ -144,7 +145,7 @@ export function ResetPasswordForm() {
             />
           </div>
 
-          <div className="rounded-xl bg-slate-50 px-4 py-4">
+          <div className="rounded-xl bg-slate-50 py-4">
             <ul className="space-y-3 text-xs text-slate-500">
               {passwordRules.map((rule) => (
                 <li key={rule.label} className="flex items-center gap-2">

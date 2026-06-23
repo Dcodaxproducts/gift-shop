@@ -23,6 +23,7 @@ const statusToToneMap: Record<string, StatusTone> = {
   APPROVED: "success",
   SUCCESS: "success",
   COMPLETED: "success",
+  REFUNDED: "info",
   OPEN: "primary",
   IN_REVIEW: "info",
   ESCALATED: "danger",

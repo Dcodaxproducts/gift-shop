@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, KeyRound } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useVerifyResetOtp } from "@/hooks/useAuth";
+import {
+  RESET_OTP_RESEND_AVAILABLE_AT_KEY,
+  useResendVerificationEmail,
+  useVerifyResetOtp,
+} from "@/hooks/useAuth";
 import {
   verifyResetOtpSchema,
   type VerifyResetOtpFormValues,
@@ -25,6 +29,16 @@ import {
 export function VerifyResetOtpForm() {
   const router = useRouter();
   const verifyResetOtp = useVerifyResetOtp();
+  const resendVerificationEmail = useResendVerificationEmail();
+  const [email, setEmail] = useState("");
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
+
+  const updateRemainingSeconds = useCallback(() => {
+    const availableAt = Number(sessionStorage.getItem(RESET_OTP_RESEND_AVAILABLE_AT_KEY) ?? 0);
+    const remaining = Math.max(0, Math.ceil((availableAt - Date.now()) / 1000));
+    setRemainingSeconds(remaining);
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -47,14 +61,36 @@ export function VerifyResetOtpForm() {
     }
 
     setValue("email", email, { shouldValidate: true });
-  }, [router, setValue]);
+    setEmail(email);
+    updateRemainingSeconds();
+  }, [router, setValue, updateRemainingSeconds]);
+
+  useEffect(() => {
+    updateRemainingSeconds();
+
+    const timer = window.setInterval(updateRemainingSeconds, 1000);
+    return () => window.clearInterval(timer);
+  }, [updateRemainingSeconds]);
 
   const onSubmit = (values: VerifyResetOtpFormValues) => {
     verifyResetOtp.mutate(values);
   };
 
+  const onResend = () => {
+    if (!email || remainingSeconds > 0) {
+      return;
+    }
+
+    resendVerificationEmail.mutate(
+      { email },
+      {
+        onSuccess: updateRemainingSeconds,
+      },
+    );
+  };
+
   return (
-    <Card className="w-full max-w-98.75 rounded-3xl bg-white px-8 py-9 shadow-2xl shadow-slate-200/80">
+    <Card className="w-full max-w-98.75">
       <CardHeader className="mb-8 text-center">
         <CardTitle className="text-[25px] leading-tight ">
           Verify OTP
@@ -97,6 +133,22 @@ export function VerifyResetOtpForm() {
         </form>
 
         <div className="mt-7 text-center">
+          <Button
+            type="button"
+            variant="ghost"
+            className="mb-4 h-auto p-0 text-xs font-semibold text-primary hover:text-primary/80"
+            disabled={remainingSeconds > 0 || resendVerificationEmail.isPending}
+            onClick={onResend}
+          >
+            {resendVerificationEmail.isPending
+              ? "Sending..."
+              : remainingSeconds > 0
+                ? `Resend OTP in ${remainingSeconds}s`
+                : "Resend OTP"}
+          </Button>
+
+          <br />
+
           <Link
             href="/auth/forgot-password"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition hover:text-primary/80"

@@ -8,9 +8,20 @@ import {
   forgotPassword,
   getCurrentUser,
   loginUser,
+  resendVerificationEmail,
   resetPassword,
   verifyResetOtp,
 } from "@/services/auth";
+
+export const RESET_OTP_RESEND_COOLDOWN_SECONDS = 60;
+export const RESET_OTP_RESEND_AVAILABLE_AT_KEY = "resetOtpResendAvailableAt";
+
+const setResetOtpResendCooldown = () => {
+  sessionStorage.setItem(
+    RESET_OTP_RESEND_AVAILABLE_AT_KEY,
+    String(Date.now() + RESET_OTP_RESEND_COOLDOWN_SECONDS * 1000),
+  );
+};
 
 export const useCurrentUser = () => {
   return useQuery({
@@ -45,11 +56,25 @@ export const useForgotPassword = () => {
     onSuccess: (_, variables) => {
       sessionStorage.setItem("resetEmail", variables.email);
       sessionStorage.removeItem("resetOtp");
+      setResetOtpResendCooldown();
       toast.success("Password reset OTP sent. Please check your email.");
       router.push("/auth/verify-reset-otp");
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Unable to send reset instructions. Please try again."));
+    },
+  });
+};
+
+export const useResendVerificationEmail = () => {
+  return useMutation({
+    mutationFn: resendVerificationEmail,
+    onSuccess: () => {
+      setResetOtpResendCooldown();
+      toast.success("Verification email sent. Please check your email.");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Unable to resend verification email. Please try again."));
     },
   });
 };
@@ -63,7 +88,7 @@ export const useVerifyResetOtp = () => {
       sessionStorage.setItem("resetEmail", variables.email);
       sessionStorage.setItem("resetOtp", variables.otp);
       toast.success("OTP verified successfully");
-      router.push("/auth/reset-password");
+      router.replace("/auth/reset-password");
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Invalid OTP. Please try again."));
