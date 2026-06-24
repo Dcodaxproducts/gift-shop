@@ -9,7 +9,6 @@ import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Card } from "../ui/card";
 import { StatusBadge } from "@/utils/status";
 
 type RevenueTransaction = {

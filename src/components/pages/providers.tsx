@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  Download, 
-  Edit2, 
+import {
+  Download,
+  Edit2,
   Eye,
-  Plus, 
-  X 
+  Plus,
+  X
 } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
@@ -25,7 +25,7 @@ import type {
   ProviderApproval,
   ProviderStatus,
 } from "@/types/providers";
-import { getInitials } from "@/utils/getInitials";
+import MyImage from "../common/MyImage";
 
 export function ProvidersPage() {
   const router = useRouter();
@@ -34,7 +34,7 @@ export function ProvidersPage() {
   const [status, setStatus] = useState<ProviderStatus | "all">("all");
   const [approval, setApproval] = useState<ProviderApproval | "all">("all");
   const [deleteTarget, setDeleteTarget] = useState<Provider | null>(null);
-  
+
   const limit = 10;
   const debouncedSearch = useDebounce(search, 400);
 
@@ -68,7 +68,7 @@ export function ProvidersPage() {
         description="Manage fintech service providers and their performance metrics."
         actions={
           <>
-            <Button variant="outline" onClick={() => exportProviders.mutate()} disabled={providers?.length === 0 ||exportProviders.isPending}>
+            <Button variant="outline" onClick={() => exportProviders.mutate()} disabled={providers?.length === 0 || exportProviders.isPending}>
               <Download className="mr-2 size-3.5" />
               {exportProviders.isPending ? "Exporting..." : "Export"}
             </Button>
@@ -142,27 +142,33 @@ export function ProvidersPage() {
             <>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-2xl text-xs font-semibold shadow-sm bg-primary/10 text-primary">
-                    {getInitials(item.businessName)}
+                  <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
+                    <MyImage
+                      src={item.companyLogoUrl}
+                      alt="provider-logo"
+                      fill
+                      sizes="44px"
+                    />
                   </span>
-                  <span className="font-semibold ">
-                    {item.businessName}
+
+                  <span className="max-w-32.5 text-xs font-semibold leading-4 ">
+                    {item.name}
                   </span>
                 </div>
               </TableCell>
-              
+
               <TableCell className="text-slate-500">
                 {item.email}
               </TableCell>
-              
+
               <TableCell>
                 <StatusBadge status={item.status} />
               </TableCell>
-              
+
               <TableCell className="font-semibold">
                 ${item.revenue}
               </TableCell>
-              
+
               <TableCell>
                 <div className="flex items-center justify-end gap-1">
                   <Button

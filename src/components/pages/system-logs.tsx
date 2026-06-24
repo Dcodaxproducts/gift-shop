@@ -6,12 +6,17 @@ import SystemHealthCard, {
 } from "@/components/cards/SystemHealthCard";
 import ApiLatencyChart from "@/components/charts/ApiLatencyChart";
 import PageHeader from "@/components/common/page-header";
+import { SystemLogsSkeleton } from "@/components/skeletons";
 import { useSystemLogs } from "@/hooks/useSystemLogs";
 
 export function SystemLogsPage() {
-  const { data } = useSystemLogs();
+  const { data, isLoading } = useSystemLogs();
   const serverHealthMetrics = data ? buildServerHealthMetrics(data) : [];
   const apiHealthMetrics = data ? buildApiHealthMetrics(data) : [];
+
+  if (isLoading) {
+    return <SystemLogsSkeleton />;
+  }
   
   return (
     <div className="space-y-5">

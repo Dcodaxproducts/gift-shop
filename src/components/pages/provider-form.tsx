@@ -2,7 +2,7 @@
 
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, Eye, EyeOff, FileText, IdCard, Loader2, Mail, UserCircle2 } from "lucide-react";
+import { Camera, Eye, EyeOff, FileText, IdCard, Loader2, Mail, Trash2, UserCircle2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
@@ -50,6 +50,7 @@ const emptyValues: ProviderFormValues = {
 
 const BIO_MAX_LENGTH = 500;
 const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp"];
+type ProviderImageField = "companyLogoUrl" | "coverImageUrl";
 
 type ProviderFormPageProps = {
   mode: ProviderFormMode;
@@ -66,11 +67,13 @@ export function ProviderFormPage({
   const logoInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [uploadIds, setUploadIds] = useState<Partial<Record<ProviderImageField, string>>>({});
+  const [uploadingField, setUploadingField] = useState<ProviderImageField | null>(null);
 
   const createProviderMutation = useCreateProvider();
   const updateProviderMutation = useUpdateProvider();
 
-  const { upload, isUploading } = useStorage();
+  const { upload, remove: deleteUpload } = useStorage();
   const { data: provider, isLoading: isProviderLoading } = useProvider(mode === "edit" ? providerId : "");
   const { data: categories = [], isLoading: categoriesLoading } = useProviderBusinessCategories({
     limit: 100,
@@ -98,7 +101,7 @@ export function ProviderFormPage({
       contact: provider.contact ?? provider.phone ?? "",
       password: "",
       businessName: provider.businessName ?? "",
-      businessCategoryId: provider.businessCategoryId ?? provider.businessCategory?.id ?? "",
+      businessCategoryId: provider.businessCategoryId ?? "",
       taxId: provider.taxId ?? "",
       businessAddress: provider.businessAddress ?? "",
       businessBio: provider.businessBio ?? "",
@@ -119,11 +122,11 @@ export function ProviderFormPage({
   const submitLabel = mode === "create" ? "Add New Provider" : "Save Changes";
   const pageTitle = mode === "create" ? "Add New Provider" : "Edit Provider";
   const isSaving = createProviderMutation.isPending || updateProviderMutation.isPending;
-  const isBusy = isSaving || isUploading || isProviderLoading;
+  const isBusy = isSaving || uploadingField !== null || isProviderLoading;
 
   const handleImageUpload = async (
     event: ChangeEvent<HTMLInputElement>,
-    field: "companyLogoUrl" | "coverImageUrl",
+    field: ProviderImageField,
     folder: string,
   ) => {
     const file = event.target.files?.[0];
@@ -131,16 +134,43 @@ export function ProviderFormPage({
 
     if (!file) return;
 
+    if (field === "companyLogoUrl" ? companyLogoUrl : coverImageUrl) {
+      toast.error("Remove the current image before uploading a new one.");
+      return;
+    }
+
     if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
       toast.error("Please upload PNG, JPG, or WebP images only.");
       return;
     }
 
-    const result = await upload(file, folder);
+    setUploadingField(field);
+    try {
+      const result = await upload(file, folder);
 
-    if (result?.fileUrl) {
-      setValue(field, result.fileUrl, { shouldDirty: true, shouldValidate: true });
+      if (result?.fileUrl) {
+        setUploadIds((prev) => ({ ...prev, [field]: result.uploadId }));
+        setValue(field, result.fileUrl, { shouldDirty: true, shouldValidate: true });
+      }
+    } finally {
+      setUploadingField(null);
     }
+  };
+
+  const handleImageRemove = async (field: ProviderImageField) => {
+    const uploadId = uploadIds[field];
+
+    if (uploadId) {
+      const deleted = await deleteUpload(uploadId);
+      if (!deleted) return;
+    }
+
+    setUploadIds((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+    setValue(field, "", { shouldDirty: true, shouldValidate: true });
   };
 
   const handleCancel = () => {
@@ -170,12 +200,15 @@ export function ProviderFormPage({
   };
 
   const onSubmit = (values: ProviderFormValues) => {
+    const getImageValue = (value?: string) => (
+      mode === "edit" ? value ?? "" : value || undefined
+    );
     const payload = {
       ...values,
       taxId: values.taxId || undefined,
       businessBio: values.businessBio || undefined,
-      companyLogoUrl: values.companyLogoUrl || undefined,
-      coverImageUrl: values.coverImageUrl || undefined,
+      companyLogoUrl: getImageValue(values.companyLogoUrl),
+      coverImageUrl: getImageValue(values.coverImageUrl),
       location:
         values.location?.lat === undefined && values.location?.lng === undefined
           ? undefined
@@ -221,8 +254,10 @@ export function ProviderFormPage({
               />
               <CoverUpload
                 imageUrl={coverImageUrl}
-                isUploading={isUploading}
+                isUploading={uploadingField === "coverImageUrl"}
+                isUploadDisabled={isBusy}
                 onClick={() => coverInputRef.current?.click()}
+                onRemove={() => handleImageRemove("coverImageUrl")}
               />
             </div>
             <div>
@@ -236,8 +271,10 @@ export function ProviderFormPage({
               />
               <LogoUpload
                 imageUrl={companyLogoUrl}
-                isUploading={isUploading}
+                isUploading={uploadingField === "companyLogoUrl"}
+                isUploadDisabled={isBusy}
                 onClick={() => logoInputRef.current?.click()}
+                onRemove={() => handleImageRemove("companyLogoUrl")}
               />
             </div>
           </div>
@@ -249,8 +286,8 @@ export function ProviderFormPage({
           <CardContent className="space-y-5 p-0">
             <SectionHeader
               icon={UserCircle2}
-              title="Business Identity"
-              description="Core registration details."
+              title="Contact Information"
+              description="Public communication channels."
             />
 
             <div className="space-y-4">
@@ -317,8 +354,8 @@ export function ProviderFormPage({
           <CardContent className="space-y-5 p-0">
             <SectionHeader
               icon={IdCard}
-              title="Contact Information"
-              description="Public communication channels."
+              title="Business Identity"
+              description="Core registration details."
             />
 
             <div className="space-y-4">
@@ -429,61 +466,109 @@ export function ProviderFormPage({
 function CoverUpload({
   imageUrl,
   isUploading,
+  isUploadDisabled,
   onClick,
+  onRemove,
 }: {
   imageUrl?: string;
   isUploading?: boolean;
+  isUploadDisabled?: boolean;
   onClick: () => void;
+  onRemove: () => void;
 }) {
   return (
-    <button
-      type="button"
-      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
-      onClick={onClick}
-      disabled={isUploading}
-    >
-      {imageUrl ? (
-        <MyImage src={imageUrl} alt="Provider cover" width={1200} height={480} className="h-full w-full object-cover" />
-      ) : (
-        <>
-          <UploadIcon isUploading={isUploading} rounded="rounded-xl" />
-          <p className="text-xs font-medium text-slate-700">
-            Click to upload or drag cover photo
-          </p>
-          <p className="text-[10px] text-slate-400">
-            Recommended size: 1200x480px
-          </p>
-        </>
+    <div className="relative">
+      <button
+        type="button"
+        className="flex h-37.5 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+        onClick={onClick}
+        disabled={isUploadDisabled || Boolean(imageUrl)}
+      >
+        {imageUrl ? (
+          <MyImage src={imageUrl} alt="Provider cover" width={1200} height={480} className="h-full w-full object-cover" />
+        ) : (
+          <>
+            <UploadIcon isUploading={isUploading} rounded="rounded-xl" />
+            <p className="text-xs font-medium text-slate-700">
+              Click to upload or drag cover photo
+            </p>
+            <p className="text-[10px] text-slate-400">
+              Recommended size: 1200x480px
+            </p>
+          </>
+        )}
+      </button>
+      {imageUrl && (
+        <RemoveImageButton
+          disabled={isUploadDisabled}
+          label="Remove cover image"
+          onClick={onRemove}
+        />
       )}
-    </button>
+    </div>
   );
 }
 
 function LogoUpload({
   imageUrl,
   isUploading,
+  isUploadDisabled,
   onClick,
+  onRemove,
 }: {
   imageUrl?: string;
   isUploading?: boolean;
+  isUploadDisabled?: boolean;
+  onClick: () => void;
+  onRemove: () => void;
+}) {
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        className="flex h-37.5 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+        onClick={onClick}
+        disabled={isUploadDisabled || Boolean(imageUrl)}
+      >
+        {imageUrl ? (
+          <MyImage src={imageUrl} alt="Provider logo" width={96} height={96} className="size-24 rounded-full object-cover" />
+        ) : (
+          <>
+            <UploadIcon isUploading={isUploading} rounded="rounded-full" large />
+            <p className="text-xs font-medium text-slate-700">Upload Logo</p>
+            <p className="text-[10px] text-slate-400">PNG, JPG up to 5MB</p>
+          </>
+        )}
+      </button>
+      {imageUrl && (
+        <RemoveImageButton
+          disabled={isUploadDisabled}
+          label="Remove company logo"
+          onClick={onRemove}
+        />
+      )}
+    </div>
+  );
+}
+
+function RemoveImageButton({
+  disabled,
+  label,
+  onClick,
+}: {
+  disabled?: boolean;
+  label: string;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
-      className="flex h-37.5 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 transition hover:border-primary/60"
+      aria-label={label}
+      className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/95 text-rose-500 shadow-sm transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"
+      disabled={disabled}
       onClick={onClick}
-      disabled={isUploading}
     >
-      {imageUrl ? (
-        <MyImage src={imageUrl} alt="Provider logo" width={96} height={96} className="size-24 rounded-full object-cover" />
-      ) : (
-        <>
-          <UploadIcon isUploading={isUploading} rounded="rounded-full" large />
-          <p className="text-xs font-medium text-slate-700">Upload Logo</p>
-          <p className="text-[10px] text-slate-400">PNG, JPG up to 5MB</p>
-        </>
-      )}
+      <Trash2 className="size-4" strokeWidth={2.25} />
     </button>
   );
 }

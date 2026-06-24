@@ -78,26 +78,6 @@ export function GiftsPage() {
 
       <AddCategoryDialog open={addCategoryOpen} onOpenChange={setAddCategoryOpen} />
 
-      <ConfirmDialog
-        open={!!deleteTarget}
-        onOpenChange={(open) => {
-          if (!open) {
-            setDeleteTarget(null);
-          }
-        }}
-        title="Delete Gift"
-        description="Are you sure you want to delete this gift? This action cannot be undone."
-        confirmLabel="Delete"
-        loading={isDeleting}
-        onConfirm={() => {
-          if (!deleteTarget) return;
-
-          deleteGift(deleteTarget.id, {
-            onSuccess: () => setDeleteTarget(null),
-          });
-        }}
-      />
-
       <FilterSection
         searchPlaceholder="Search gifts by name, ID, or provider..."
         searchValue={search}
@@ -185,6 +165,26 @@ export function GiftsPage() {
             </TableCell>
           </>
         )}
+      />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+        title="Delete Gift"
+        description="Are you sure you want to delete this gift? This action cannot be undone."
+        confirmLabel="Delete"
+        loading={isDeleting}
+        onConfirm={() => {
+          if (!deleteTarget) return;
+
+          deleteGift(deleteTarget.id, {
+            onSuccess: () => setDeleteTarget(null),
+          });
+        }}
       />
     </div>
   );

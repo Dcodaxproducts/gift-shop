@@ -23,7 +23,7 @@ function PayoutMetricCard({ icon: Icon, label, value, change, tone, loading = fa
         </div>
         {loading ? (
           <>
-            <div className="mt-3 h-[22px] w-32 animate-pulse rounded-full bg-slate-100" />
+            <div className="mt-3 h-5.5 w-32 animate-pulse rounded-full bg-slate-100" />
             <div className="mt-3 h-2.5 w-24 animate-pulse rounded-full bg-slate-100" />
           </>
         ) : (

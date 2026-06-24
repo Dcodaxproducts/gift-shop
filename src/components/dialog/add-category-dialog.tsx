@@ -1,8 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import Image from "../common/MyImage";
-import { ImageIcon, Loader2 } from "lucide-react";
+import { ImageIcon, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -49,10 +48,11 @@ export function AddCategoryDialog({
   const [description, setDescription] = useState("");
   const [iconPreview, setIconPreview] = useState<string | undefined>();
   const [iconUrl, setIconUrl] = useState<string | undefined>();
+  const [iconUploadId, setIconUploadId] = useState<string | undefined>();
 
   const createGiftCategoryMutation = useCreateGiftCategory();
   const updateGiftCategoryMutation = useUpdateGiftCategory();
-  const { upload, isUploading } = useStorage();
+  const { upload, remove: deleteUpload, isUploading } = useStorage();
   const isEditMode = !!category;
 
   const resetForm = () => {
@@ -61,6 +61,7 @@ export function AddCategoryDialog({
     setDescription(category?.description ?? "");
     setIconPreview(category?.imageUrl ?? undefined);
     setIconUrl(category?.imageUrl ?? undefined);
+    setIconUploadId(undefined);
 
     if (iconInputRef.current) {
       iconInputRef.current.value = "";
@@ -71,21 +72,23 @@ export function AddCategoryDialog({
     if (open) {
       resetForm();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, category?.id]);
 
   const handleIconButtonClick = () => {
-    if (isUploading) return;
+    if (isUploading || iconPreview) return;
     iconInputRef.current?.click();
   };
 
   const handleIconChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    event.target.value = "";
+
     if (!file) return;
+
+    if (iconPreview) return;
 
     const allowedTypes = ["image/png", "image/svg+xml"];
     if (!allowedTypes.includes(file.type)) {
-      event.target.value = "";
       return;
     }
 
@@ -99,10 +102,28 @@ export function AddCategoryDialog({
 
     if (result) {
       setIconUrl(result.fileUrl);
+      setIconPreview(result.fileUrl);
+      setIconUploadId(result.uploadId);
     } else {
       // Upload failed — clear preview
       setIconPreview(undefined);
-      event.target.value = "";
+    }
+  };
+
+  const handleRemoveIcon = async () => {
+    if (isUploading) return;
+
+    if (iconUploadId) {
+      const deleted = await deleteUpload(iconUploadId);
+      if (!deleted) return;
+    }
+
+    setIconPreview(undefined);
+    setIconUrl(undefined);
+    setIconUploadId(undefined);
+
+    if (iconInputRef.current) {
+      iconInputRef.current.value = "";
     }
   };
 
@@ -116,7 +137,7 @@ export function AddCategoryDialog({
       const payload = {
         name: trimmedName,
         description: trimmedDescription || undefined,
-        imageUrl: iconUrl,
+        imageUrl: category ? iconUrl ?? "" : iconUrl,
         isActive: visible,
       };
 
@@ -194,32 +215,44 @@ export function AddCategoryDialog({
             onChange={handleIconChange}
           />
 
-          <button
-            type="button"
-            className="flex size-16.5 cursor-pointer flex-col items-center justify-center rounded-full border border-dashed border-slate-300 bg-white text-slate-400 transition hover:border-primary hover:text-primary overflow-hidden"
-            aria-label="Upload category icon"
-            onClick={handleIconButtonClick}
-            disabled={isUploading}
-          >
-            {isUploading ? (
-              <Loader2 className="size-4 animate-spin text-primary" />
-            ) : iconPreview ? (
-              <Image
-                src={iconPreview}
-                alt="Category icon"
-                width={66}
-                height={66}
-                className="size-full rounded-full object-cover"
-              />
-            ) : (
-              <>
-                <ImageIcon className="size-3.5" strokeWidth={2.2} />
-                <span className="mt-1 text-[7px] font-bold tracking-[0.08em]">
-                  UPLOAD ICON
-                </span>
-              </>
+          <div className="relative">
+            <button
+              type="button"
+              className="flex size-16.5 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border border-dashed border-slate-300 bg-white text-slate-400 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-70"
+              aria-label="Upload category icon"
+              onClick={handleIconButtonClick}
+              disabled={isUploading || Boolean(iconPreview)}
+            >
+              {isUploading ? (
+                <Loader2 className="size-4 animate-spin text-primary" />
+              ) : iconPreview ? (
+                <img
+                  src={iconPreview}
+                  alt="Category icon"
+                  className="size-full rounded-full object-cover"
+                />
+              ) : (
+                <>
+                  <ImageIcon className="size-3.5" strokeWidth={2.2} />
+                  <span className="mt-1 text-[7px] font-bold tracking-[0.08em]">
+                    UPLOAD ICON
+                  </span>
+                </>
+              )}
+            </button>
+
+            {iconPreview && !isUploading && (
+              <button
+                type="button"
+                aria-label="Remove category icon"
+                className="absolute -right-1 -top-1 flex size-6 items-center justify-center rounded-full bg-white text-rose-500 shadow-sm transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isBusy}
+                onClick={handleRemoveIcon}
+              >
+                <Trash2 className="size-3.5" strokeWidth={2.25} />
+              </button>
             )}
-          </button>
+          </div>
 
           <p className="mt-3 text-[9px] leading-3 text-slate-400">
             Suggested size: 512x512px.
