@@ -68,7 +68,8 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       // { title: "System Settings", href: "/settings", icon: "settings", permissionKey: "settings" },
       { title: "Platform Analytics", href: "/platform-analytics", icon: "bar-chart-3", permissionKey: "reports" },
       { title: "Refund Settings", href: "/refund-settings", icon: "bar-chart-3", permissionKey: "reports" },
-      { title: "System Logs", href: "/system-logs", icon: "list-todo", permissionKey: "auditLogs" },
+      { title: "Audit Logs", href: "/audit-logs", icon: "list-todo", permissionKey: "auditLogs" },
+      { title: "System Health", href: "/system-health", icon: "list-todo", permissionKey: "auditLogs" },
     ],
   },
   {
