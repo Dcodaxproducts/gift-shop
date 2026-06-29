@@ -26,18 +26,19 @@ function formatLabel(value: string | null | undefined) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function SeverityBadge({ severity }: { severity: string }) {
+function SeverityBadge({ severity }: { severity?: string | null }) {
+  const value = severity ?? "LOW";
   const toneClass =
     {
       LOW: "bg-slate-100 text-slate-500",
       MEDIUM: "bg-blue-50 text-blue-600",
       HIGH: "bg-amber-50 text-amber-600",
       CRITICAL: "bg-red-50 text-red-500",
-    }[severity.toUpperCase()] ?? "bg-slate-100 text-slate-500";
+    }[value.toUpperCase()] ?? "bg-slate-100 text-slate-500";
 
   return (
     <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", toneClass)}>
-      {formatLabel(severity)}
+      {formatLabel(value)}
     </span>
   );
 }
@@ -159,20 +160,24 @@ export function AuditLogsPage() {
             <TableHead className="text-right">Actions</TableHead>
           </>
         }
-        row={(item: AuditLog) => (
+        row={(item: AuditLog) => {
+          const actorName = item.actorSnapshot?.name ?? formatLabel(item.actorType);
+          const actorEmail = item.actorSnapshot?.email ?? formatLabel(item.actorType);
+
+          return (
           <>
-            <TableCell className="font-medium text-slate-700">{item.logReference}</TableCell>
+            <TableCell className="font-medium text-slate-700">{item.logReference ?? "-"}</TableCell>
             <TableCell>
               <div className="flex items-center gap-3">
                 <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
-                  {getInitials(item.actorSnapshot?.name ?? item.actorType)}
+                  {getInitials(actorName)}
                 </span>
                 <span>
                   <span className="block max-w-36 truncate font-semibold text-slate-900">
-                    {item.actorSnapshot?.name ?? formatLabel(item.actorType)}
+                    {actorName}
                   </span>
                   <span className="block max-w-36 truncate text-xs text-slate-500">
-                    {item.actorSnapshot?.email ?? formatLabel(item.actorType)}
+                    {actorEmail}
                   </span>
                 </span>
               </div>
@@ -182,9 +187,9 @@ export function AuditLogsPage() {
                 {item.actionLabel || formatLabel(item.action)}
               </span>
             </TableCell>
-            <TableCell className="text-slate-600">{item.module}</TableCell>
+            <TableCell className="text-slate-600">{item.module ?? "-"}</TableCell>
             <TableCell>
-              <StatusBadge status={item.status} />
+              {item.status ? <StatusBadge status={item.status} /> : "-"}
             </TableCell>
             <TableCell>
               <SeverityBadge severity={item.severity} />
@@ -202,7 +207,8 @@ export function AuditLogsPage() {
               </div>
             </TableCell>
           </>
-        )}
+          );
+        }}
       />
     </div>
   );

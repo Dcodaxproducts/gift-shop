@@ -88,7 +88,6 @@ export function AuditLogDetailsPage() {
                 <DetailRow label="Module" value={data?.module ?? "-"} />
                 <DetailRow label="Status" value={data?.status ? <StatusBadge status={data.status} /> : "-"} />
                 <DetailRow label="Severity" value={<SeverityBadge severity={data?.severity} />} />
-                <DetailRow label="IP Address" value={data?.ipAddress ?? "-"} />
                 <DetailRow label="Created At" value={formatDate(data?.createdAt)} />
               </dl>
             </CardContent>
