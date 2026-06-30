@@ -40,7 +40,7 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
       </Button>
 
       <h1 className="min-w-fit text-xl font-semibold tracking-tight text-text-primary">
-        Analytics Dashboard
+        Dashboard
       </h1>
 
 

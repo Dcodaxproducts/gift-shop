@@ -40,6 +40,8 @@ export type GiftVariant = {
 export type GiftCategorySummary = {
   id?: string;
   name?: string;
+  isActive?: boolean;
+  deletedAt?: string | null;
 };
 
 export type GiftProviderSummary = {
@@ -51,6 +53,7 @@ export type GiftProviderSummary = {
 export type Gift = {
   id: string;
   name: string;
+  shortDescription?: string | null;
   description?: string | null;
   categoryId?: string | null;
   categoryName?: string | null;
@@ -59,12 +62,19 @@ export type Gift = {
   providerName?: string | null;
   provider?: GiftProviderSummary | null;
   price?: number | string;
+  currency?: string;
   rating?: number | string;
+  reviewCount?: number;
+  moderationStatus?: string;
+  isPublished?: boolean;
+  imageUrl?: string | null;
   imageUrls?: string[];
   imagesUrl?: string | null;
   images?: string[];
   status: GiftStatus;
   isActive?: boolean;
+  isFeatured?: boolean;
+  tags?: string[];
   variants?: GiftVariant[];
   createdAt?: string;
   updatedAt?: string;
