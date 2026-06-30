@@ -27,6 +27,7 @@ export const UPLOAD_FOLDERS = {
   PROVIDER_ITEM_IMAGES: "provider-item-images",
   USER_AVATARS: "user-avatars",
   ADMIN_AVATARS: "admin-avatars",
+  PLATFORM_LOGOS: "platform-logos",
   BROADCAST_IMAGES: "broadcast-images",
   SEASONAL_THEME_IMAGES: "seasonal-theme-assets",
   CHAT_ATTACHMENTS: "chat-attachments",

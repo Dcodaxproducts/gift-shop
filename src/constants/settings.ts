@@ -15,24 +15,31 @@ export const securitySettings = {
 };
 
 export const paymentSettings = {
-  defaultCurrency: "usd",
-  currencyOptions: [
-    { value: "usd", label: "USD - United States Dollar" },
-    { value: "eur", label: "EUR - Euro" },
-    { value: "gbp", label: "GBP - British Pound" },
+  fields: [
+    { id: "stripePublishableKey", label: "Stripe Publishable Key", type: "text" },
+    { id: "stripeSecretKey", label: "Stripe Secret Key", type: "password" },
+    { id: "stripeWebhookSecret", label: "Stripe Webhook Secret", type: "password" },
   ],
-  transactionFee: "2.50",
 };
 
-export const notificationSettings = [
-  {
-    title: "Push Notifications",
-    description: "Alerts via browser and mobile",
-    enabled: true,
-  },
-  {
-    title: "Email Notifications",
-    description: "Daily summaries and security alerts",
-    enabled: true,
-  },
+export const firebaseServiceAccountSetting = {
+  id: "firebase-service-account",
+  label: "FIREBASE_SERVICE_ACCOUNT",
+  placeholder: "{ \"type\": \"service_account\", \"project_id\": \"...\" }",
+};
+
+export const storageSettings = [
+  { id: "awsS3BucketName", label: "AWS S3 Bucket Name", type: "text" },
+  { id: "awsRegion", label: "AWS Region", type: "text" },
+  { id: "awsAccessKey", label: "Access Key", type: "password" },
+  { id: "awsSecretKey", label: "Secret Key", type: "password" },
+];
+
+export const emailSettings = [
+  { id: "smtpHost", label: "SMTP Host", type: "text" },
+  { id: "smtpPort", label: "SMTP Port", type: "text" },
+  { id: "smtpUsername", label: "SMTP Username", type: "text" },
+  { id: "smtpPassword", label: "SMTP Password", type: "password" },
+  { id: "senderEmail", label: "Sender Email", type: "email" },
+  { id: "senderName", label: "Sender Name", type: "text" },
 ];
