@@ -246,7 +246,7 @@ export function SeasonalThemesPage() {
             />
           ))
         ) : (
-          <div className="xl:col-span-2 rounded-2xl border border-border bg-white py-20 text-center shadow-sm">
+          <div className="sm:col-span-2 xl:col-span-3 rounded-2xl border border-border bg-white py-20 text-center shadow-sm">
             <p className="text-sm font-semibold text-slate-700">No seasonal themes found.</p>
             <p className="mt-1 text-xs text-slate-400">Create one to start scheduling mobile artwork.</p>
           </div>
