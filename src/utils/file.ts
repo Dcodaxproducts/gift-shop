@@ -28,6 +28,7 @@ export const UPLOAD_FOLDERS = {
   USER_AVATARS: "user-avatars",
   ADMIN_AVATARS: "admin-avatars",
   BROADCAST_IMAGES: "broadcast-images",
+  SEASONAL_THEME_IMAGES: "seasonal-theme-assets",
   CHAT_ATTACHMENTS: "chat-attachments",
   GIFT_MESSAGE_MEDIA: "gift-message-media",
   CUSTOMER_CONTACT_AVATARS: "customer-contact-avatars",

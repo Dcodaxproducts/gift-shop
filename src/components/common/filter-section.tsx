@@ -63,16 +63,6 @@ export function FilterSection({
                 </SelectContent>
               </Select>
             ))}
-            
-            {/* {showFiltersButton && (
-              <button
-                type="button"
-                className="col-span-2 flex h-10 items-center justify-center gap-2 rounded-2xl bg-slate-50 px-4 text-xs font-semibold text-slate-500 transition hover:bg-primary/10 hover:text-primary sm:col-span-1 sm:size-10 sm:px-0"
-              >
-                <ListFilter className="size-4" strokeWidth={3} />
-                <span className="sm:hidden">Filters</span>
-              </button>
-            )} */}
           </div>
         )}
       </div>

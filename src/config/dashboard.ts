@@ -38,6 +38,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       { title: "Gift Listings", href: "/gifts", icon: "gift", permissionKey: "giftListings" }, // Added key
       { title: "Gift Categories", href: "/gift-categories", icon: "giftCategories", permissionKey: "giftCategories" }, // Added key
       { title: "Business Categories", href: "/business-categories", icon: "giftCategories", permissionKey: "giftCategories" }, // Added key
+      { title: "Seasonal Themes", href: "/seasonal-themes", icon: "palette", permissionKey: "settings" },
     ],
   },
   {
