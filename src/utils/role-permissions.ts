@@ -3,7 +3,7 @@ import {
   PERMISSION_ACTIONS,
   type PermissionAction,
   type RolePermissions,
-} from "@/types/admin-roles";
+} from "@/types/staff-roles";
 
 function humanizeModuleKey(key: string) {
   return key

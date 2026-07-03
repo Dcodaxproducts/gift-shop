@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useAdminRole, useAdminRoles } from "@/hooks/usePermissions";
+import { useStaffRole, useStaffRoles } from "@/hooks/usePermissions";
 import { useStaffMember, useUpdateStaff } from "@/hooks/useStaff";
 import { formatDate } from "@/utils/formatDate";
 import { buildRolePermissionSummary } from "@/utils/role-permissions";
@@ -51,7 +51,7 @@ export function EditStaffPage() {
   });
 
   const { data: staff, isLoading } = useStaffMember(staffId);
-  const { data: roles = [] } = useAdminRoles();
+  const { data: roles = [] } = useStaffRoles();
   const initialDraft = useMemo(
     () => ({
       staffId: staff?.id ?? "",
@@ -66,7 +66,7 @@ export function EditStaffPage() {
   const currentDraft = draft.staffId === staff?.id ? draft : initialDraft;
   const staffRoleId = staff?.role.id;
   const { fullName, email, phone, roleId, isActive } = currentDraft;
-  const { data: selectedRoleDetails, isLoading: roleDetailsLoading } = useAdminRole(roleId || undefined);
+  const { data: selectedRoleDetails, isLoading: roleDetailsLoading } = useStaffRole(roleId || undefined);
   const { mutate: updateStaffMember, isPending: isUpdating } = useUpdateStaff();
 
   const activeRoles = useMemo(

@@ -2,10 +2,10 @@
 
 import { ShieldCheck, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { AdminRole } from "@/types/admin-roles";
+import type { StaffRole } from "@/types/staff-roles";
 
 type RoleCardProps = {
-  role: AdminRole;
+  role: StaffRole;
   isSelected: boolean;
   onSelect: () => void;
   onDelete: () => void;
@@ -54,12 +54,8 @@ export function RoleCard({
         </button>
       </div>
 
-      <p className="mt-3 text-[11px] leading-4 text-slate-500">
+      <p className="mt-3 text-[11px] leading-4 text-slate-500 first-letter:uppercase">
         {role.description ?? "No description"}
-      </p>
-
-      <p className="mt-3 text-[11px] font-medium text-primary underline underline-offset-2">
-        view All {role.name}s
       </p>
     </div>
   );

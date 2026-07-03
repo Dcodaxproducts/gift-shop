@@ -4,47 +4,38 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors";
 import {
-  createAdminRole,
-  deleteAdminRole,
-  getAdminRole,
-  getAdminRoles,
-  getPermissionsCatalog,
-  updateAdminRole,
-  updateAdminRolePermissions,
-} from "@/services/admin-roles";
+  createStaffRole,
+  deleteStaffRole,
+  getStaffRole,
+  getStaffRoles,
+  updateStaffRole,
+  updateStaffRolePermissions,
+} from "@/services/staff-roles";
 
-const adminRolesQueryKey = ["admin-roles"] as const;
-const permissionsCatalogQueryKey = ["permissions-catalog"] as const;
+const StaffRolesQueryKey = ["Staff-roles"] as const;
 
-export const useAdminRoles = () => {
+export const useStaffRoles = () => {
   return useQuery({
-    queryKey: adminRolesQueryKey,
-    queryFn: getAdminRoles,
+    queryKey: StaffRolesQueryKey,
+    queryFn: getStaffRoles,
   });
 };
 
-export const useAdminRole = (id: string | undefined) => {
+export const useStaffRole = (id: string | undefined) => {
   return useQuery({
-    queryKey: [...adminRolesQueryKey, id],
-    queryFn: () => getAdminRole(id as string),
+    queryKey: [...StaffRolesQueryKey, id],
+    queryFn: () => getStaffRole(id as string),
     enabled: !!id,
   });
 };
 
-export const usePermissionsCatalog = () => {
-  return useQuery({
-    queryKey: permissionsCatalogQueryKey,
-    queryFn: getPermissionsCatalog,
-  });
-};
-
-export const useCreateAdminRole = () => {
+export const useCreateStaffRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createAdminRole,
+    mutationFn: createStaffRole,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
+      queryClient.invalidateQueries({ queryKey: StaffRolesQueryKey });
       toast.success("Role created successfully");
     },
     onError: (error) => {
@@ -53,15 +44,15 @@ export const useCreateAdminRole = () => {
   });
 };
 
-export const useUpdateAdminRole = () => {
+export const useUpdateStaffRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateAdminRole,
+    mutationFn: updateStaffRole,
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
+      queryClient.invalidateQueries({ queryKey: StaffRolesQueryKey });
       queryClient.invalidateQueries({
-        queryKey: [...adminRolesQueryKey, variables.id],
+        queryKey: [...StaffRolesQueryKey, variables.id],
       });
       toast.success("Role updated successfully");
     },
@@ -71,14 +62,14 @@ export const useUpdateAdminRole = () => {
   });
 };
 
-export const useUpdateAdminRolePermissions = () => {
+export const useUpdateStaffRolePermissions = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateAdminRolePermissions,
+    mutationFn: updateStaffRolePermissions,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
-      queryClient.setQueryData([...adminRolesQueryKey, variables.id], data);
+      queryClient.invalidateQueries({ queryKey: StaffRolesQueryKey });
+      queryClient.setQueryData([...StaffRolesQueryKey, variables.id], data);
       toast.success("Permissions updated successfully");
     },
     onError: (error) => {
@@ -89,13 +80,13 @@ export const useUpdateAdminRolePermissions = () => {
   });
 };
 
-export const useDeleteAdminRole = () => {
+export const useDeleteStaffRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteAdminRole,
+    mutationFn: deleteStaffRole,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: adminRolesQueryKey });
+      queryClient.invalidateQueries({ queryKey: StaffRolesQueryKey });
       toast.success("Role deleted successfully");
     },
     onError: (error) => {

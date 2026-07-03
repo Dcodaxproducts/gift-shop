@@ -9,10 +9,10 @@ import { PermissionsPanel } from "@/components/roles-permissions/permissions-pan
 import { RoleList } from "@/components/roles-permissions/role-list";
 import { Button } from "@/components/ui/button";
 import {
-  useAdminRole,
-  useAdminRoles,
-  useDeleteAdminRole,
-  useUpdateAdminRolePermissions,
+  useStaffRole,
+  useStaffRoles,
+  useDeleteStaffRole,
+  useUpdateStaffRolePermissions,
 } from "@/hooks/usePermissions";
 import {
   arePermissionsEqual,
@@ -21,7 +21,7 @@ import {
   sanitizePermissionsPayload,
   togglePermissionAction,
 } from "@/utils/role-permissions";
-import type { AdminRole, PermissionAction, RolePermissions } from "@/types/admin-roles";
+import type { StaffRole, PermissionAction, RolePermissions } from "@/types/staff-roles";
 
 export function RolesPermissionsPage() {
   const [createRoleOpen, setCreateRoleOpen] = useState(false);
@@ -31,15 +31,15 @@ export function RolesPermissionsPage() {
     permissions: RolePermissions;
     originalPermissions: RolePermissions;
   }>({ permissions: {}, originalPermissions: {} });
-  const [deleteTarget, setDeleteTarget] = useState<AdminRole | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<StaffRole | null>(null);
 
-  const { data: roles = [], isLoading: rolesLoading } = useAdminRoles();
+  const { data: roles = [], isLoading: rolesLoading } = useStaffRoles();
   const selectedRoleId = selectedRoleIdState ?? roles[0]?.id;
-  const { data: roleDetails, isLoading: roleDetailsLoading } = useAdminRole(
+  const { data: roleDetails, isLoading: roleDetailsLoading } = useStaffRole(
     selectedRoleId,
   );
-  const updatePermissionsMutation = useUpdateAdminRolePermissions();
-  const { mutate: deleteRole, isPending: isDeleting } = useDeleteAdminRole();
+  const updatePermissionsMutation = useUpdateStaffRolePermissions();
+  const { mutate: deleteRole, isPending: isDeleting } = useDeleteStaffRole();
 
   const normalizedRolePermissions = useMemo(
     () => normalizeRolePermissions(roleDetails?.permissions),

@@ -1,14 +1,14 @@
 "use client";
 
-import { RoleCard } from "@/components/roles-permissions/role-card";
-import type { AdminRole } from "@/types/admin-roles";
+import { RoleCard } from "@/components/cards/RolesCard";
+import type { StaffRole } from "@/types/staff-roles";
 
 type RoleListProps = {
-  roles: AdminRole[];
+  roles: StaffRole[];
   loading: boolean;
   selectedRoleId?: string;
   onSelect: (roleId: string) => void;
-  onDelete: (role: AdminRole) => void;
+  onDelete: (role: StaffRole) => void;
 };
 
 function RoleListSkeleton() {

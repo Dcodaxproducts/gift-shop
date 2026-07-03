@@ -9,33 +9,33 @@ export const PERMISSION_ACTIONS: PermissionAction[] = [
 
 export type RolePermissions = Record<string, PermissionAction[]>;
 
-export type AdminRole = {
+export type StaffRole = {
   id: string;
   name: string;
   slug: string;
   description: string | null;
   isSystem: boolean;
   isActive: boolean;
-  adminCount?: number;
+  StaffCount?: number;
   createdAt: string;
 };
 
-export type AdminRoleDetails = AdminRole & {
+export type StaffRoleDetails = StaffRole & {
   permissions: RolePermissions;
 };
 
-export type CreateAdminRolePayload = {
+export type CreateStaffRolePayload = {
   name: string;
   description: string;
   permissions: RolePermissions;
 };
 
-export type UpdateAdminRolePayload = Partial<{
+export type UpdateStaffRolePayload = Partial<{
   name: string;
   description: string;
   isActive: boolean;
 }>;
 
-export type UpdateAdminRolePermissionsPayload = {
+export type UpdateStaffRolePermissionsPayload = {
   permissions: RolePermissions;
 };

@@ -11,7 +11,7 @@ import { TableCell, TableHead } from "@/components/ui/table";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { StatusBadge } from "@/utils/status";
 import { staffStatusOptions } from "@/constants/filter-options";
-import { useAdminRoles } from "@/hooks/usePermissions";
+import { useStaffRoles } from "@/hooks/usePermissions";
 import { useDeleteStaff, useStaffList } from "@/hooks/useStaff";
 import { useDebounce } from "@/hooks/useDebounce";
 import { formatDate } from "@/utils/formatDate";
@@ -27,7 +27,7 @@ export function StaffUsersPage() {
   const limit = 10;
   const debouncedSearch = useDebounce(search, 400);
 
-  const { data: roles = [] } = useAdminRoles();
+  const { data: roles = [] } = useStaffRoles();
   const { data: staff = [], isLoading } = useStaffList({
     page,
     limit,

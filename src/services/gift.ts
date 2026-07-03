@@ -20,7 +20,7 @@ export const getGift = async (id: string) => {
 };
 
 export const createGift = async (payload: CreateGiftPayload) => {
-  const { data } = await api.post(GIFTS_ENDPOINT, payload);
+  const { data } = await api.post(GIFTS_ENDPOINT, {...payload,isPublished : undefined});
   return data.data as Gift;
 };
 

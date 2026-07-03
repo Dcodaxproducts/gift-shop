@@ -9,7 +9,7 @@ import {
   PERMISSION_ACTIONS,
   type PermissionAction,
   type RolePermissions,
-} from "@/types/admin-roles";
+} from "@/types/staff-roles";
 
 type PermissionsPanelProps = {
   roleName?: string;

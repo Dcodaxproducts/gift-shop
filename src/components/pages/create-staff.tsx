@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useAdminRole, useAdminRoles } from "@/hooks/usePermissions";
+import { useStaffRole, useStaffRoles } from "@/hooks/usePermissions";
 import { useCreateStaff } from "@/hooks/useStaff";
 import { buildRolePermissionSummary } from "@/utils/role-permissions";
 
@@ -44,16 +44,12 @@ export function CreateStaffPage() {
   const [temporaryPassword, setTemporaryPassword] = useState("");
   const [roleId, setRoleId] = useState("");
 
-  const { data: roles = [], isLoading: rolesLoading } = useAdminRoles();
-  const { data: selectedRoleDetails, isLoading: roleDetailsLoading } = useAdminRole(roleId || undefined);
+  const { data: roles = [], isLoading: rolesLoading } = useStaffRoles();
+  console.log(roles)
+  const { data: selectedRoleDetails, isLoading: roleDetailsLoading } = useStaffRole(roleId || undefined);
   const { mutate: createStaffMember, isPending } = useCreateStaff();
 
-  const activeRoles = useMemo(
-    () => roles.filter((role) => role.isActive),
-    [roles],
-  );
-
-  const selectedRole = activeRoles.find((role) => role.id === roleId);
+  const selectedRole = roles.find((role) => role.id === roleId);
   const permissions = useMemo(
     () => buildRolePermissionSummary(selectedRoleDetails?.permissions),
     [selectedRoleDetails],
@@ -155,13 +151,13 @@ export function CreateStaffPage() {
               <Select
                 value={roleId || undefined}
                 onValueChange={setRoleId}
-                disabled={rolesLoading || activeRoles.length === 0}
+                disabled={rolesLoading || roles.length === 0}
               >
                 <SelectTrigger className="h-12 w-full px-4">
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  {activeRoles.map((role) => (
+                  {roles.map((role) => (
                     <SelectItem key={role.id} value={role.id}>
                       {role.name}
                     </SelectItem>

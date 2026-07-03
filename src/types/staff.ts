@@ -52,10 +52,6 @@ export type UpdateStaffPayload = Partial<{
   isActive : boolean
 }>;
 
-export type UpdateStaffActiveStatusPayload = {
-  isActive: boolean;
-};
-
 export type UpdateStaffPasswordPayload = {
   temporaryPassword?: string;
   generateTemporaryPassword?: boolean;

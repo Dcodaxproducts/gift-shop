@@ -7,14 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { permissionModules } from "@/config/permission-modules";
-import { useCreateAdminRole } from "@/hooks/usePermissions";
+import { useCreateStaffRole } from "@/hooks/usePermissions";
 import { getDashboardIcon } from "@/lib/dashboard-icons";
 import { cn } from "@/lib/utils";
 import {
   PERMISSION_ACTIONS,
   type PermissionAction,
   type RolePermissions,
-} from "@/types/admin-roles";
+} from "@/types/staff-roles";
 
 type CreateRoleDialogProps = {
   open: boolean;
@@ -88,7 +88,7 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
   >(buildDefaultPermissions);
   const [showNameError, setShowNameError] = useState(false);
 
-  const createRoleMutation = useCreateAdminRole();
+  const createRoleMutation = useCreateStaffRole();
 
   const isBusy = createRoleMutation.isPending;
 

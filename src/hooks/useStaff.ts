@@ -9,7 +9,6 @@ import {
   getStaff,
   getStaffMember,
   updateStaff,
-  updateStaffActiveStatus,
   updateStaffPassword,
 } from "@/services/staff";
 import type { GetStaffParams } from "@/types/staff";
@@ -58,22 +57,6 @@ export const useUpdateStaff = () => {
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, "Failed to update staff member. Please try again."));
-    },
-  });
-};
-
-export const useUpdateStaffActiveStatus = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: updateStaffActiveStatus,
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: staffQueryKey });
-      queryClient.setQueryData([...staffQueryKey, variables.id], data);
-      toast.success("Staff status updated successfully");
-    },
-    onError: (error) => {
-      toast.error(getErrorMessage(error, "Failed to update staff status. Please try again."));
     },
   });
 };
