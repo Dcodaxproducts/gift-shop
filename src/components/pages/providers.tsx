@@ -22,7 +22,6 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { providerStatusOptions, providerApprovalOptions } from "@/constants/filter-options";
 import type {
   Provider,
-  ProviderApproval,
   ProviderStatus,
 } from "@/types/providers";
 import MyImage from "../common/MyImage";
@@ -32,7 +31,6 @@ export function ProvidersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<ProviderStatus | "all">("all");
-  const [approval, setApproval] = useState<ProviderApproval | "all">("all");
   const [deleteTarget, setDeleteTarget] = useState<Provider | null>(null);
 
   const limit = 10;
@@ -44,7 +42,6 @@ export function ProvidersPage() {
     limit,
     search: debouncedSearch || undefined,
     status: status === "all" ? undefined : status,
-    approvalStatus: approval === "all" ? undefined : approval,
   });
 
   const { data: statsData } = useProviderStats();
@@ -114,13 +111,13 @@ export function ProvidersPage() {
             width: "sm:w-[140px]",
             options: providerStatusOptions,
           },
-          {
-            value: approval,
-            onChange: (value) => { setApproval(value as ProviderApproval | "all"); setPage(1); },
-            placeholder: "Approval",
-            width: "sm:w-[150px]",
-            options: providerApprovalOptions,
-          },
+          // {
+          //   value: approval,
+          //   onChange: (value) => { setApproval(value as ProviderApproval | "all"); setPage(1); },
+          //   placeholder: "Approval",
+          //   width: "sm:w-[150px]",
+          //   options: providerApprovalOptions,
+          // },
         ]}
       />
 

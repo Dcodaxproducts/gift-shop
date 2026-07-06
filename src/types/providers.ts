@@ -1,6 +1,4 @@
-export type ProviderStatus = "ALL" | "ACTIVE" | "PENDING" | "INACTIVE" | "SUSPENDED";
-
-export type ProviderApproval = "ALL" | "APPROVED" | "PENDING" | "REJECTED";
+export type ProviderStatus = "ALL"  | "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED" | 'BLOCKED';
 
 export type ProviderSortBy =
   | "createdAt"
@@ -15,7 +13,6 @@ export type GetProvidersParams = {
   limit?: number;
   search?: string;
   status?: ProviderStatus;
-  approvalStatus?: ProviderApproval;
   sortBy?: ProviderSortBy;
   sortOrder?: SortOrder;
 };
@@ -45,7 +42,6 @@ export type Provider = {
   } | null;
   status: Exclude<ProviderStatus, "ALL">;
   isActive: boolean;
-  approvalStatus: Exclude<ProviderApproval, "ALL">;
   revenue: number;
   registeredSince: string;
   createdAt: string;

@@ -71,8 +71,7 @@ export function GiftFormPage({
 
   const { data: providers = [], isLoading: providersLoading } = useProviders({
     limit: 100,
-    status: "ACTIVE",
-    approvalStatus: "APPROVED",
+    status: "APPROVED",
     sortBy: "businessName",
     sortOrder: "ASC",
   });
