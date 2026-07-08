@@ -35,6 +35,8 @@ const statusToToneMap: Record<string, StatusTone> = {
   AWAITING_INFO: "info",
   VERIFIED: "success",
   PENDING_SYNC: "inactive",
+  YES: "success",
+  NO: "inactive",
 };
 
 interface StatusBadgeProps {

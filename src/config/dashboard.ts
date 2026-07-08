@@ -30,6 +30,7 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
     items: [
       { title: "Users List", href: "/users", icon: "users", permissionKey: "users" },
       { title: "Provider List", href: "/providers", icon: "id-card", permissionKey: "providers" },
+      { title: "Document Management", href: "/documents", icon: "file-text", permissionKey: "providers" },
     ],
   },
   {
