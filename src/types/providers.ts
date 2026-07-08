@@ -34,6 +34,7 @@ export type Provider = {
   taxId?: string | null;
   businessAddress?: string | null;
   businessBio?: string | null;
+  businessPhone?: string | null;
   companyLogoUrl?: string | null;
   coverImageUrl?: string | null;
   location?: {
@@ -50,10 +51,6 @@ export type Provider = {
 
 export type ProviderDetails = Omit<Provider, "status"> & {
   status: string;
-  serviceArea?: string | null;
-  verification?: {
-    label?: string;
-  };
   stats?: {
     performanceStats?: number;
     performanceChangePercent?: number;
@@ -114,4 +111,27 @@ export type ProviderItemsParams = {
   page?: number;
   limit?: number;
   search?: string;
+};
+
+export type ProviderDocumentStatus = "PENDING" | "APPROVED" | "REJECTED";
+
+export type ProviderDocumentSubmission = {
+  id: string;
+  fileUrl: string;
+  status: ProviderDocumentStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ProviderDocument = {
+  id: string;
+  name: string;
+  isRequired: boolean;
+  isSubmitted: boolean;
+  submission: ProviderDocumentSubmission | null;
+};
+
+export type SubmitProviderDocumentPayload = {
+  documentId: string;
+  fileUrl: string;
 };

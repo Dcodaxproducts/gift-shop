@@ -1,6 +1,6 @@
 "use client";
 
-import type { ElementType } from "react";
+import { useState, type ElementType } from "react";
 import {
   ShieldCheck,
 } from "lucide-react";
@@ -9,11 +9,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import QuickActionsCard from "../cards/QuickActionsCard";
 import { useProvider } from "@/hooks/useProviders";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import ProviderItemsTable from "../tables/ProviderItemsTable";
+import ProviderDocumentsTab from "../tables/ProviderDocumentsTab";
 import BusinessDetailsCard from "../cards/BusinessDetailsCard";
 import { statBadgeTone } from "@/constants/custom";
 import type { ProviderDetails } from "@/types/providers";
+
+const TABS = [
+  { key: "overview", label: "Overview" },
+  { key: "documents", label: "Documents" },
+] as const;
+
+type TabKey = (typeof TABS)[number]["key"];
 
 function buildProviderDetailStats(data?: ProviderDetails) {
   return [
@@ -87,9 +95,14 @@ function ProviderStatCard({
 
 export function ProviderDetailsPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const { data } = useProvider(params.id as string);
 
+  const initialTab = (searchParams.get("tab") as TabKey) || "overview";
+  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
+
   const providerStats = buildProviderDetailStats(data);
+  const providerId = params.id as string;
 
   return (
     <div className="space-y-5">
@@ -97,21 +110,47 @@ export function ProviderDetailsPage() {
         title={data?.businessName || "Provider Profile"}
       />
 
-      <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {providerStats.map((stat) => (
-          <ProviderStatCard key={stat.label} {...stat} />
+      <div className="flex gap-1 border-b border-slate-200">
+        {TABS.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setActiveTab(tab.key)}
+            className={cn(
+              "px-4 py-2.5 text-sm font-semibold transition-colors",
+              activeTab === tab.key
+                ? "border-b-2 border-primary text-primary"
+                : "text-slate-400 hover:text-slate-600",
+            )}
+          >
+            {tab.label}
+          </button>
         ))}
-      </section>
+      </div>
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_330px]">
-        <div className="self-start">
-          <ProviderItemsTable providerId={params.id as string} />
-        </div>
-        <aside className="space-y-5">
-          <BusinessDetailsCard data={data} />
-          <QuickActionsCard provider={data} />
-        </aside>
-      </section>
+      {activeTab === "overview" && (
+        <>
+          <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {providerStats.map((stat) => (
+              <ProviderStatCard key={stat.label} {...stat} />
+            ))}
+          </section>
+
+          <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_330px]">
+            <div className="self-start">
+              <ProviderItemsTable providerId={providerId} />
+            </div>
+            <aside className="space-y-5">
+              <BusinessDetailsCard data={data} />
+              <QuickActionsCard provider={data} />
+            </aside>
+          </section>
+        </>
+      )}
+
+      {activeTab === "documents" && (
+        <ProviderDocumentsTab providerId={providerId} />
+      )}
     </div>
   );
 }

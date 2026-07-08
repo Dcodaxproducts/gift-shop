@@ -25,6 +25,7 @@ export type UpdateDocumentPayload = {
 export type GetDocumentsParams = {
   page?: number;
   limit?: number;
+  isActive?: boolean;
 };
 
 type DocumentsResponse = {

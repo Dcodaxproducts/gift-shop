@@ -6,6 +6,7 @@ import {
   Download,
   Edit2,
   Eye,
+  FileText,
   Plus,
   X
 } from "lucide-react";
@@ -174,6 +175,13 @@ export function ProvidersPage() {
                     onClick={() => router.push(`/providers/${item.id}`)}
                   >
                     <Eye className="size-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-amber-500 hover:bg-amber-50"
+                    onClick={() => router.push(`/providers/${item.id}?tab=documents`)}
+                  >
+                    <FileText className="size-4" />
                   </Button>
                   <Button
                     variant="ghost"

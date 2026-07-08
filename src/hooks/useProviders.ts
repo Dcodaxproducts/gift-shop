@@ -15,6 +15,9 @@ import {
   updateProviderStatus,
   sendProviderMessage,
   getProviderItems,
+  getProviderDocuments,
+  submitProviderDocument,
+  reviewProviderDocument,
 } from "@/services/providers";
 import type {
   GetProvidersParams,
@@ -152,5 +155,43 @@ export const useProviderItems = (
     queryKey: ["providers", id, "items", params],
     queryFn: () => getProviderItems(id, params),
     enabled: !!id,
+  });
+};
+
+export const useProviderDocuments = (id: string) => {
+  return useQuery({
+    queryKey: ["providers", id, "documents"],
+    queryFn: () => getProviderDocuments(id),
+    enabled: !!id,
+  });
+};
+
+export const useSubmitProviderDocument = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: submitProviderDocument,
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["providers", id, "documents"] });
+      toast.success("Document submitted successfully");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Failed to submit document. Please try again."));
+    },
+  });
+};
+
+export const useReviewProviderDocument = (providerId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: reviewProviderDocument,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["providers", providerId, "documents"] });
+      toast.success("Document review updated successfully");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, "Failed to update document review."));
+    },
   });
 };

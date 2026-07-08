@@ -4,10 +4,12 @@ import type {
   GetProvidersParams,
   Provider,
   ProviderDetails,
+  ProviderDocument,
   ProviderItem,
   ProviderItemsParams,
   ProviderMessagePayload,
   ProviderStats,
+  SubmitProviderDocumentPayload,
 } from "@/types/providers";
 
 export const getProviders = async (params: GetProvidersParams = {}) => {
@@ -61,4 +63,31 @@ export const getProviderItems = async (
  ) => {
   const { data } = await api.get(`/providers/${id}/items`, { params });
   return (data.data ?? []) as ProviderItem[];
+};
+
+export const getProviderDocuments = async (id: string) => {
+  const { data } = await api.get(`/admin/providers/${id}/documents`);
+  return (data.data ?? []) as ProviderDocument[];
+};
+
+export const submitProviderDocument = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: SubmitProviderDocumentPayload;
+}) => {
+  const { data } = await api.post(`/admin/providers/${id}/documents`, payload);
+  return data.data as ProviderDocument;
+};
+
+export const reviewProviderDocument = async ({
+  submissionId,
+  status,
+}: {
+  submissionId: string;
+  status: "APPROVED" | "REJECTED";
+}) => {
+  const { data } = await api.patch(`/admin/providers/documents/${submissionId}/review`, { status });
+  return data.data;
 };
