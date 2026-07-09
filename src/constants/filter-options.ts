@@ -16,10 +16,11 @@ export const staffStatusOptions = [
 // User status options
 export const userStatusOptions = [
   { value: "all", label: "All Status" },
-  { value: "ACTIVE", label: "Active" },
   { value: "PENDING", label: "Pending" },
+  { value: "APPROVED", label: "Approved" },
+  { value: "REJECTED", label: "Rejected" },
   { value: "SUSPENDED", label: "Suspended" },
-  { value: "DISABLED", label: "Disabled" },
+  { value: "BLOCKED", label: "Blocked" },
 ] as const;
 
 // User sort options
