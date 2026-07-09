@@ -253,6 +253,9 @@ export function ProviderFormPage({
                 onClick={() => coverInputRef.current?.click()}
                 onRemove={() => handleImageRemove("coverImageUrl")}
               />
+              {errors.coverImageUrl?.message && (
+                <p className="mt-1 px-1 text-xs font-medium leading-5 text-destructive">{errors.coverImageUrl.message}</p>
+              )}
             </div>
             <div>
               <Label>Company Logo</Label>
@@ -270,6 +273,9 @@ export function ProviderFormPage({
                 onClick={() => logoInputRef.current?.click()}
                 onRemove={() => handleImageRemove("companyLogoUrl")}
               />
+              {errors.companyLogoUrl?.message && (
+                <p className="mt-1 px-1 text-xs font-medium leading-5 text-destructive">{errors.companyLogoUrl.message}</p>
+              )}
             </div>
           </div>
         </CardContent>

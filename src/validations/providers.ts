@@ -26,8 +26,8 @@ const providerBaseSchema = z.object({
   taxId: z.string().trim().optional(),
   businessAddress: z.string().trim().min(1, "Business address is required"),
   businessBio: z.string().trim().optional(),
-  companyLogoUrl: optionalUrl,
-  coverImageUrl: optionalUrl,
+  companyLogoUrl: z.string().trim().min(1, "Company logo is required").url("Image URL is invalid"),
+  coverImageUrl: z.string().trim().min(1, "Cover image is required").url("Image URL is invalid"),
   lat: optionalNumber,
   lng: optionalNumber,
 });
