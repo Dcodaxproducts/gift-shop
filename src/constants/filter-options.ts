@@ -23,15 +23,6 @@ export const userStatusOptions = [
   { value: "BLOCKED", label: "Blocked" },
 ] as const;
 
-// User sort options
-export const userSortOptions = [
-  { value: "createdAt", label: "Newest First" },
-  { value: "firstName", label: "Name (A-Z)" },
-  { value: "email", label: "Email (A-Z)" },
-  { value: "totalSpent", label: "High Value" },
-  { value: "ordersCount", label: "Most Orders" },
-] as const;
-
 // Provider status options
 export const providerStatusOptions = [
   { value: "all", label: "All Status" },

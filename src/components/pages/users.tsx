@@ -16,7 +16,7 @@ import { StatusBadge } from "@/utils/status";
 import { getInitials } from "@/utils/getInitials";
 import { formatDate } from "@/utils/formatDate";
 import { useDebounce } from "@/hooks/useDebounce";
-import { userSortOptions, userStatusOptions } from "@/constants/filter-options";
+import { userStatusOptions } from "@/constants/filter-options";
 
 export function UsersPage() {
   const [page, setPage] = useState(1);
@@ -36,7 +36,7 @@ export function UsersPage() {
     status: status === "all" ? undefined : status,
     sortBy
   });
-  console.log(users)
+  
   const exportUsers = useExportUsers();
   const { mutate, isPending } = useDeleteUser();
 
@@ -89,14 +89,7 @@ export function UsersPage() {
             placeholder: "Status",
             width: "sm:w-[135px]",
             options: userStatusOptions,
-          },
-          {
-            value: sortBy,
-            onChange: handleSortByChange,
-            placeholder: "Sort By",
-            width: "sm:w-[140px]",
-            options: userSortOptions,
-          },
+          }
         ]}
       />
 
