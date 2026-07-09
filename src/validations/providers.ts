@@ -28,12 +28,8 @@ const providerBaseSchema = z.object({
   businessBio: z.string().trim().optional(),
   companyLogoUrl: optionalUrl,
   coverImageUrl: optionalUrl,
-  location: z
-    .object({
-      lat: optionalNumber,
-      lng: optionalNumber,
-    })
-    .optional(),
+  lat: optionalNumber,
+  lng: optionalNumber,
 });
 
 export const providerSchema = providerBaseSchema.extend({

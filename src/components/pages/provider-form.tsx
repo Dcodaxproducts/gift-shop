@@ -42,10 +42,8 @@ const emptyValues: ProviderFormValues = {
   businessBio: "",
   companyLogoUrl: "",
   coverImageUrl: "",
-  location: {
-    lat: undefined,
-    lng: undefined,
-  },
+  lat: undefined,
+  lng: undefined,
 };
 
 const BIO_MAX_LENGTH = 500;
@@ -98,7 +96,7 @@ export function ProviderFormPage({
     reset({
       name: provider.name ?? provider.businessName ?? "",
       email: provider.email ?? "",
-      contact: provider.contact ?? provider.phone ?? "",
+      contact: provider.businessPhone ?? "",
       password: "",
       businessName: provider.businessName ?? "",
       businessCategoryId: provider.businessCategoryId ?? "",
@@ -107,10 +105,8 @@ export function ProviderFormPage({
       businessBio: provider.businessBio ?? "",
       companyLogoUrl: provider.companyLogoUrl ?? provider.avatarUrl ?? "",
       coverImageUrl: provider.coverImageUrl ?? "",
-      location: {
-        lat: provider.location?.lat ?? undefined,
-        lng: provider.location?.lng ?? undefined,
-      },
+      lat: provider.lat ?? undefined,
+      lng: provider.lng ?? undefined,
     });
   }, [mode, provider, reset]);
 
@@ -185,8 +181,8 @@ export function ProviderFormPage({
   const handleBusinessLocationSelect = ({ lat, lng }: { lat: number; lng: number }) => {
     const locationText = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
 
-    setValue("location.lat", lat, { shouldDirty: true, shouldValidate: true });
-    setValue("location.lng", lng, { shouldDirty: true, shouldValidate: true });
+    setValue("lat", lat, { shouldDirty: true, shouldValidate: true });
+    setValue("lng", lng, { shouldDirty: true, shouldValidate: true });
     setValue("businessAddress", locationText, { shouldDirty: true, shouldValidate: true });
   };
 
@@ -195,8 +191,8 @@ export function ProviderFormPage({
 
     if (!match) return;
 
-    setValue("location.lat", Number(match[1]), { shouldDirty: true, shouldValidate: true });
-    setValue("location.lng", Number(match[2]), { shouldDirty: true, shouldValidate: true });
+    setValue("lat", Number(match[1]), { shouldDirty: true, shouldValidate: true });
+    setValue("lng", Number(match[2]), { shouldDirty: true, shouldValidate: true });
   };
 
   const onSubmit = (values: ProviderFormValues) => {
@@ -209,10 +205,8 @@ export function ProviderFormPage({
       businessBio: values.businessBio || undefined,
       companyLogoUrl: getImageValue(values.companyLogoUrl),
       coverImageUrl: getImageValue(values.coverImageUrl),
-      location:
-        values.location?.lat === undefined && values.location?.lng === undefined
-          ? undefined
-          : values.location,
+      lat: values.lat ?? undefined,
+      lng: values.lng ?? undefined,
     };
 
     if (mode === "edit") {

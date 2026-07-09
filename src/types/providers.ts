@@ -37,10 +37,8 @@ export type Provider = {
   businessPhone?: string | null;
   companyLogoUrl?: string | null;
   coverImageUrl?: string | null;
-  location?: {
-    lat?: number | null;
-    lng?: number | null;
-  } | null;
+  lat?: number | null;
+  lng?: number | null;
   status: Exclude<ProviderStatus, "ALL">;
   isActive: boolean;
   revenue: number;
@@ -102,7 +100,8 @@ export type CreateProviderPayload = {
   businessBio?: string;
   companyLogoUrl?: string;
   coverImageUrl?: string;
-  location?: ProviderLocationPayload;
+  lat?: number;
+  lng?: number;
 };
 
 export type ProviderMessagePayload = Record<string, unknown>;
