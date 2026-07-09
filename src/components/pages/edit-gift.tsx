@@ -38,7 +38,7 @@ const mapGiftToFormValues = (gift: Gift): CreateGiftFormValues => ({
   price: toNumber(gift.price, 1),
   providerId: gift.providerId ?? gift.provider?.id ?? "",
   imageUrls: getGiftImages(gift),
-  isPublished: gift.isActive ?? gift.status === "ACTIVE",
+  status: gift.status === "ACTIVE" ? "ACTIVE" : "INACTIVE",
   variants: gift.variants?.map(mapVariant) ?? [],
 });
 

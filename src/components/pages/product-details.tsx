@@ -160,7 +160,7 @@ export function ProductDetailsPage() {
   const categoryName = gift?.categoryName ?? gift?.category?.name ?? "-";
   const providerName =
     gift?.providerName ?? gift?.provider?.businessName ?? gift?.provider?.name ?? "-";
-  const isStoreVisible = gift?.isPublished ?? gift?.status === "ACTIVE";
+  const isStoreVisible = gift?.status === "ACTIVE";
   const hasMultipleImages = images.length > 1;
   const visibleThumbnails =
     images.length > MAX_VISIBLE_THUMBNAILS

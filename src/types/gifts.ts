@@ -66,7 +66,7 @@ export type Gift = {
   rating?: number | string;
   reviewCount?: number;
   moderationStatus?: string;
-  isPublished?: boolean;
+
   imageUrl?: string | null;
   imageUrls?: string[];
   imagesUrl?: string | null;
@@ -88,7 +88,7 @@ export type CreateGiftPayload = {
   price: number;
   providerId: string;
   imageUrls: string[];
-  isPublished: boolean;
+  status?: "ACTIVE" | "INACTIVE";
   variants?: {
     name: string;
     price: number;

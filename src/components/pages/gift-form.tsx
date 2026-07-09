@@ -36,7 +36,7 @@ const emptyGiftValues: CreateGiftFormValues = {
   price: 1,
   providerId: "",
   imageUrls: [],
-  isPublished: false,
+  status: undefined,
   variants: [],
 };
 
@@ -97,7 +97,7 @@ export function GiftFormPage({
   const categoryId = useWatch({ control, name: "categoryId" });
   const providerId = useWatch({ control, name: "providerId" });
   const imageUrls = useWatch({ control, name: "imageUrls" }) ?? [];
-  const isPublished = useWatch({ control, name: "isPublished" });
+  const status = useWatch({ control, name: "status" });
 
   const pageTitle = mode === "create" ? "Create New Gift" : "Edit Gift";
   const submitLabel = mode === "create" ? "Save Gift" : "Update Gift";
@@ -220,29 +220,31 @@ export function GiftFormPage({
         </div>
 
         <div className="space-y-6">
-          <Card>
-            <CardContent>
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Eye className="size-4" strokeWidth={2.25} />
-                </span>
-                <h2 className="text-sm font-semibold">Visibility</h2>
-              </div>
-              <div className="mt-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-slate-500">
-                    This gift will be live on the storefront immediately after saving.
-                  </p>
-                  <Switch
-                    checked={isPublished}
-                    onClick={() => setValue("isPublished", !isPublished, { shouldDirty: true })}
-                    className="h-6 w-11 shrink-0"
-                    disabled={isBusy}
-                  />
+          {mode === "edit" && (
+            <Card>
+              <CardContent>
+                <div className="flex items-center gap-2.5">
+                  <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Eye className="size-4" strokeWidth={2.25} />
+                  </span>
+                  <h2 className="text-sm font-semibold">Visibility</h2>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="mt-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-slate-500">
+                      This gift will be live on the storefront immediately after saving.
+                    </p>
+                    <Switch
+                      checked={status === "ACTIVE"}
+                      onClick={() => setValue("status", status === "ACTIVE" ? "INACTIVE" : "ACTIVE", { shouldDirty: true })}
+                      className="h-6 w-11 shrink-0"
+                      disabled={isBusy}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardContent>

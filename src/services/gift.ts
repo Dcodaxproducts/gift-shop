@@ -20,7 +20,7 @@ export const getGift = async (id: string) => {
 };
 
 export const createGift = async (payload: CreateGiftPayload) => {
-  const { data } = await api.post(GIFTS_ENDPOINT, {...payload,isPublished : undefined});
+  const { data } = await api.post(GIFTS_ENDPOINT, payload);
   return data.data as Gift;
 };
 
@@ -31,7 +31,7 @@ export const updateGift = async ({
   id: string;
   payload: UpdateGiftPayload;
 }) => {
-  const { data } = await api.patch(`${GIFTS_ENDPOINT}/${id}`, {...payload,isPublished : undefined});
+  const { data } = await api.patch(`${GIFTS_ENDPOINT}/${id}`, payload);
   return data.data as Gift;
 };
 
