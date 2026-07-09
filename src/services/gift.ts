@@ -31,7 +31,7 @@ export const updateGift = async ({
   id: string;
   payload: UpdateGiftPayload;
 }) => {
-  const { data } = await api.patch(`${GIFTS_ENDPOINT}/${id}`, payload);
+  const { data } = await api.patch(`${GIFTS_ENDPOINT}/${id}`, {...payload,isPublished : undefined});
   return data.data as Gift;
 };
 

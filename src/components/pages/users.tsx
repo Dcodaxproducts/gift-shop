@@ -55,10 +55,6 @@ export function UsersPage() {
     setStatus(value as UserStatus | "all");
   };
 
-  const handleSortByChange = (value: string) => {
-    setSortBy(value as UserSortBy);
-  };
-
   const handleExport = () => {
     exportUsers.mutate();
   };

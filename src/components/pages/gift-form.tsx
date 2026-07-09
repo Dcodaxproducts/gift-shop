@@ -265,7 +265,7 @@ export function GiftFormPage({
                   <SelectContent>
                     {providers.map((provider) => (
                       <SelectItem key={provider.id} value={provider.id}>
-                        {provider.businessName}
+                        {provider.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
