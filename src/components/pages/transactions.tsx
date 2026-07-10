@@ -80,8 +80,8 @@ function TransactionsTable({
         }}
         headers={
           <>
-            <TableHead>Transaction Id</TableHead>
             <TableHead>User</TableHead>
+            <TableHead>Transaction Id</TableHead>
             <TableHead>Provider</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Amount</TableHead>
@@ -91,8 +91,7 @@ function TransactionsTable({
         }
         row={(item: Transaction) => (
           <>
-          <TableCell className="font-medium text-slate-700">{item.transactionId}</TableCell>
-            <TableCell>
+           <TableCell>
               <div className="flex items-center gap-3">
                 <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
                   <MyImage
@@ -108,6 +107,7 @@ function TransactionsTable({
                 </span>
               </div>
             </TableCell>
+          <TableCell className="font-medium text-slate-700">{item.transactionId}</TableCell>
             <TableCell className="text-slate-600">{item.gatewayProvider}</TableCell>
             <TableCell>
               <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-medium text-slate-600">
