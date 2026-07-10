@@ -32,7 +32,7 @@ function formatDelta(value: number) {
 }
 
 function buildTransactionStats(data?: TransactionStats): TransactionStat[] {
-  const currency = data?.currency ?? "PKR";
+  const currency = data?.currency ?? "USD";
 
   return [
     {
