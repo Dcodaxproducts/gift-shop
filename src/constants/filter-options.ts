@@ -32,14 +32,6 @@ export const providerStatusOptions = [
   { value: "SUSPENDED", label: "Suspended" },
 ] as const;
 
-// Provider approval options
-export const providerApprovalOptions = [
-  { value: "all", label: "All Approvals" },
-  { value: "APPROVED", label: "Approved" },
-  { value: "PENDING", label: "Pending" },
-  { value: "REJECTED", label: "Rejected" },
-] as const;
-
 // Dispute refund filter options
 export const disputeRefundCategoryOptions = [
   { value: "all", label: "All Categories" },

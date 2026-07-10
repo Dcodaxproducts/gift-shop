@@ -20,7 +20,7 @@ import { ProviderStatsCard } from "@/components/cards/ProviderStatsCard";
 import { StatusBadge } from "@/utils/status";
 import { useDeleteProvider, useProviders, useProviderStats, useExportProviders } from "@/hooks/useProviders";
 import { useDebounce } from "@/hooks/useDebounce";
-import { providerStatusOptions, providerApprovalOptions } from "@/constants/filter-options";
+import { providerStatusOptions } from "@/constants/filter-options";
 import type {
   Provider,
   ProviderStatus,
@@ -111,14 +111,7 @@ export function ProvidersPage() {
             placeholder: "Status",
             width: "sm:w-[140px]",
             options: providerStatusOptions,
-          },
-          // {
-          //   value: approval,
-          //   onChange: (value) => { setApproval(value as ProviderApproval | "all"); setPage(1); },
-          //   placeholder: "Approval",
-          //   width: "sm:w-[150px]",
-          //   options: providerApprovalOptions,
-          // },
+          }
         ]}
       />
 
