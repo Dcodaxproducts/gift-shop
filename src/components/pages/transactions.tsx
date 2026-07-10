@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Eye } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Download } from "lucide-react";
 import { TransactionStatsCard } from "@/components/cards/TransactionStatsCard";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
@@ -16,79 +15,18 @@ import {
 } from "@/hooks/useTransactions";
 import type { Transaction } from "@/types/transactions";
 import { formatDate } from "@/utils/formatDate";
-import { getInitials } from "@/utils/getInitials";
 import PageHeader from "../common/page-header";
 import { StatusBadge } from "@/utils/status";
-
-export const mockTransactions: any = [
-  {
-    transactionId: "TXN-2026-8812",
-    user: {
-      name: "Zainab Malik",
-    },
-    gatewayProvider: "Stripe",
-    type: "PAYMENT",
-    amount: 1250.00,
-    currency: "USD",
-    status: "SUCCESS",
-    createdAt: "2026-06-11T10:30:00Z",
-  },
-  {
-    transactionId: "TXN-2026-4401",
-    user: {
-      name: "Ali Raza",
-    },
-    gatewayProvider: "PayPal",
-    type: "WITHDRAWAL",
-    amount: 450.50,
-    currency: "USD",
-    status: "PENDING",
-    createdAt: "2026-06-11T14:15:00Z",
-  },
-  {
-    transactionId: "TXN-2026-1193",
-    user: {
-      name: "Hamza Ahmed",
-    },
-    gatewayProvider: "Adyen",
-    type: "GIFT",
-    amount: 75.00,
-    currency: "USD",
-    status: "SUCCESS",
-    createdAt: "2026-06-10T18:45:00Z",
-  },
-  {
-    transactionId: "TXN-2026-9052",
-    user: {
-      id : "s",
-      name: "Ayesha Khan",
-    },
-    gatewayProvider: "Razorpay",
-    type: "PAYMENT",
-    amount: 3200.00,
-    currency: "USD",
-    status: "FAILED",
-    createdAt: "2026-06-09T08:20:00Z",
-  },
-  {
-    transactionId: "TXN-2026-3310",
-    user: {
-      name: "Zainab Malik",
-    },
-    gatewayProvider: "Braintree",
-    type: "PAYMENT",
-    amount: 15.99,
-    currency: "USD",
-    status: "SUCCESS",
-    createdAt: "2026-06-08T11:05:00Z",
-  }
-];
+import MyImage from "../common/MyImage";
 
 const transactionTypeOptions = [
-  { value: "all", label: "Transaction Type" },
+  { value: "all", label: "All" },
   { value: "PAYMENT", label: "Payment" },
   { value: "GIFT", label: "Gift" },
   { value: "WITHDRAWAL", label: "Withdrawal" },
+  { value: "SUBSCRIPTION_PAYMENT", label: "Subscription Payment" },
+  { value: "RECURRING_PAYMENT", label: "Recurring Payment" },
+  { value: "WALLET_TOP_UP", label: "Wallet Top-up" },
 ] as const;
 
 const transactionStatusOptions = [
@@ -123,7 +61,6 @@ function TransactionsTable({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) {
-  const router = useRouter();
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
@@ -143,25 +80,32 @@ function TransactionsTable({
         }}
         headers={
           <>
-            <TableHead>Transaction ID</TableHead>
+            <TableHead>Transaction Id</TableHead>
             <TableHead>User</TableHead>
             <TableHead>Provider</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
           </>
         }
         row={(item: Transaction) => (
           <>
-            <TableCell className="font-medium text-slate-700">{item.transactionId}</TableCell>
+          <TableCell className="font-medium text-slate-700">{item.transactionId}</TableCell>
             <TableCell>
               <div className="flex items-center gap-3">
-                <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
-                  {getInitials(item.user?.name ?? "")}
+                <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
+                  <MyImage
+                    src={item?.user?.avatarUrl}
+                    alt="provider-logo"
+                    fill
+                    sizes="44px"
+                  />
                 </span>
-                <span className="font-semibold text-slate-900">{item.user?.name ?? "-"}</span>
+
+                <span className="max-w-32.5 text-xs font-semibold leading-4 ">
+                  {item.user?.name ?? "-"}
+                </span>
               </div>
             </TableCell>
             <TableCell className="text-slate-600">{item.gatewayProvider}</TableCell>
@@ -175,17 +119,6 @@ function TransactionsTable({
               <StatusBadge status={item.status} />
             </TableCell>
             <TableCell className="max-w-24 text-slate-500">{formatDate(item.createdAt)}</TableCell>
-            <TableCell>
-              <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-primary hover:bg-primary/10"
-                  // onClick={() => router.push("/disputes-refund/DIS-9842")}
-                >
-                  <Eye className="size-4" />
-                </Button>
-              </div>
-            </TableCell>
           </>
         )}
       />
@@ -207,26 +140,17 @@ export function TransactionsPage() {
     page,
     limit,
     search: debouncedSearch || undefined,
-    type: transactionType === "all" ? undefined : transactionType,
+    transactionType: transactionType === "all" ? undefined : transactionType,
     status: status === "all" ? undefined : status,
   });
 
-  const transactions = mockTransactions;
-
-  const meta = {
-    page: 1,
-    limit: 10,
-    total: mockTransactions.length,
+  const transactions = transactionsResponse?.data ?? [];
+  const meta = transactionsResponse?.meta ?? {
+    page,
+    limit,
+    total: 0,
     totalPages: 1,
   };
-
-  // const transactions = transactionsResponse?.data ?? [];
-  // const meta = transactionsResponse?.meta ?? {
-  //   page,
-  //   limit,
-  //   total: 0,
-  //   totalPages: 1,
-  // };
 
   return (
     <div className="space-y-5">
@@ -243,7 +167,7 @@ export function TransactionsPage() {
       <TransactionStatsCard data={stats} />
 
       <FilterSection
-        searchPlaceholder="Search transactions by ID, user, or provider..."
+        searchPlaceholder="Search by customer name or email..."
         searchValue={search}
         onSearchChange={(value) => {
           setSearch(value);

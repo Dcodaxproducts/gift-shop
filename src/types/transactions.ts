@@ -35,7 +35,7 @@ export type GetTransactionsParams = {
   page?: number;
   limit?: number;
   search?: string;
-  type?: TransactionType | string;
+  transactionType?: TransactionType | string;
   status?: TransactionStatus | string;
 };
 
