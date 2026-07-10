@@ -6,6 +6,7 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import { AuthGuard } from "@/components/auth/auth-guard";
 import { Toaster } from "sonner";
 import TopLoader from "@/components/ui/top-loader";
+import { ServerHealthCheck } from "@/components/server-health-check";
 
 export const metadata: Metadata = {
   title: SITE_NAME,
@@ -25,7 +26,9 @@ export default function RootLayout({
     >
       <body className={`min-h-full ${poppins.className}`}>
         <QueryProvider>
-          <AuthGuard>{children}</AuthGuard>
+          <ServerHealthCheck>
+            <AuthGuard>{children}</AuthGuard>
+          </ServerHealthCheck>
         </QueryProvider>
         <Toaster richColors position="top-right" />
         <TopLoader />
