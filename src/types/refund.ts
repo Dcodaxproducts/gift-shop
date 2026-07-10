@@ -1,13 +1,6 @@
-export type CancellationTier = {
-  id?: string;
-  daysBeforeDelivery: number;
-  deductionPercent: number;
-  label: string;
-};
-
 export type RefundPolicySettings = {
-  allowRefund: boolean;
-  cancellationTiers: CancellationTier[];
+  allowCancellation?: boolean;
+  cancellationDeductionPercent?: number;
   lastUpdatedAt?: string | null;
   lastUpdatedBy?: {
     id: string;
@@ -16,6 +9,6 @@ export type RefundPolicySettings = {
 };
 
 export type UpdateRefundPolicySettingsPayload = {
-  allowRefund: boolean;
-  cancellationTiers: Array<Omit<CancellationTier, "id">>;
+  allowCancellation?: boolean;
+  cancellationDeductionPercent?: number;
 };
