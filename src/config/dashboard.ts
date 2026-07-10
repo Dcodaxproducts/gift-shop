@@ -74,13 +74,13 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       { title: "System Health", href: "/system-health", icon: "list-todo", permissionKey: "auditLogs" },
     ],
   },
-  {
-    title: "Support Chat",
-    items: [
-      { title: "Provider Chat", href: "/provider-chat", icon: "message-circle", permissionKey: "chat" },
-      { title: "User Chat", href: "/user-chat", icon: "message-circle", permissionKey: "chat" },
-    ],
-  },
+  // {
+  //   title: "Support Chat",
+  //   items: [
+  //     { title: "Provider Chat", href: "/provider-chat", icon: "message-circle", permissionKey: "chat" },
+  //     { title: "User Chat", href: "/user-chat", icon: "message-circle", permissionKey: "chat" },
+  //   ],
+  // },
 ];
 
 export const dashboardUser = {
