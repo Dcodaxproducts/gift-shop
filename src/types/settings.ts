@@ -26,6 +26,10 @@ export type SystemSettings = {
     senderEmail?: string | null;
     senderName?: string | null;
   };
+  financial: {
+    platformRatePercent?: number | null;
+    minimumPayoutThreshold?: number | null;
+  };
 };
 
 export type UpdateSystemSettingsPayload = {
@@ -34,4 +38,5 @@ export type UpdateSystemSettingsPayload = {
   firebase?: Partial<SystemSettings["firebase"]>;
   storage?: Partial<SystemSettings["storage"]>;
   email?: Partial<SystemSettings["email"]>;
+  financial?: Partial<SystemSettings["financial"]>;
 };

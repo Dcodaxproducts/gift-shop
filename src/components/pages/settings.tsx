@@ -1,10 +1,11 @@
 "use client";
 
 import { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from "react";
-import { Camera, Cloud, CreditCard, Database, Loader2, Mail, Shield, Trash2 } from "lucide-react";
+import { Camera, Cloud, CreditCard, Database, Loader2, Mail, Percent, Shield, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   emailSettings,
+  financialSettings,
   firebaseServiceAccountSetting,
   paymentSettings,
   platformSettings,
@@ -41,6 +42,7 @@ type SettingsFormState = {
   firebaseServiceAccountJson: string;
   storage: Record<string, string>;
   email: Record<string, string>;
+  financial: Record<string, string>;
 };
 
 const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
@@ -70,6 +72,10 @@ const emptyForm: SettingsFormState = {
     smtpPassword: "",
     senderEmail: "",
     senderName: "",
+  },
+  financial: {
+    platformRatePercent: "",
+    minimumPayoutThreshold: "",
   },
 };
 
@@ -217,11 +223,15 @@ export function SettingsPage() {
         senderEmail: settings.email.senderEmail ?? "",
         senderName: settings.email.senderName ?? "",
       },
+      financial: {
+        platformRatePercent: settings.financial?.platformRatePercent?.toString() ?? "",
+        minimumPayoutThreshold: settings.financial?.minimumPayoutThreshold?.toString() ?? "",
+      },
     });
   }, [settings]);
 
   const updateFormSection = (
-    section: "payments" | "storage" | "email",
+    section: "payments" | "storage" | "email" | "financial",
     id: string,
     value: string,
   ) => {
@@ -316,6 +326,14 @@ export function SettingsPage() {
         smtpPassword: normalizeOptionalValue(form.email.smtpPassword),
         senderEmail: normalizeOptionalValue(form.email.senderEmail),
         senderName: normalizeOptionalValue(form.email.senderName),
+      },
+      financial: {
+        platformRatePercent: form.financial.platformRatePercent.trim()
+          ? Number(form.financial.platformRatePercent)
+          : null,
+        minimumPayoutThreshold: form.financial.minimumPayoutThreshold.trim()
+          ? Number(form.financial.minimumPayoutThreshold)
+          : null,
       },
     };
   };
@@ -466,6 +484,14 @@ export function SettingsPage() {
           fields={emailSettings}
           values={form.email}
           onChange={(id, value) => updateFormSection("email", id, value)}
+        />
+
+        <SettingsFieldsCard
+          icon={Percent}
+          title="Financial"
+          fields={financialSettings}
+          values={form.financial}
+          onChange={(id, value) => updateFormSection("financial", id, value)}
         />
       </section>
 

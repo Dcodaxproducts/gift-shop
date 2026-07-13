@@ -35,6 +35,11 @@ export const storageSettings = [
   { id: "awsSecretKey", label: "Secret Key", type: "password" },
 ];
 
+export const financialSettings = [
+  { id: "platformRatePercent", label: "Platform Rate (%)", type: "number" },
+  { id: "minimumPayoutThreshold", label: "Minimum Payout Threshold", type: "number" },
+];
+
 export const emailSettings = [
   { id: "smtpHost", label: "SMTP Host", type: "text" },
   { id: "smtpPort", label: "SMTP Port", type: "text" },
