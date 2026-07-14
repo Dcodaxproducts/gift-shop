@@ -37,6 +37,10 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
+      if(data.user.role !== "SUPER_ADMIN") {
+        toast.error("Login failed. Please try again.");
+        return;
+      }
       localStorage.setItem("token", data.accessToken);
       queryClient.setQueryData(["currentUser"], data.user);
       toast.success("Login successful");
