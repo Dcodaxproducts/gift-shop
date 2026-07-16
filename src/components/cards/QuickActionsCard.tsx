@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useUpdateProviderStatus } from "@/hooks/useProviders";
 import { SuspendUserDialog } from "@/components/dialog/user-action-dialogs";
+import { useCan } from "@/hooks/useCan";
 import type { ProviderDetails } from "@/types/providers";
 
 const actionIcon = {
@@ -20,7 +21,8 @@ const actionIcon = {
 function QuickActionsCard({ provider }: { provider?: ProviderDetails }) {
   const params = useParams();
   const providerId = params.id as string;
-  
+  const { can } = useCan();
+
   const [isSuspendOpen, setIsSuspendOpen] = useState(false);
   const { mutate: updateStatus, isPending } = useUpdateProviderStatus();
 
@@ -62,6 +64,9 @@ function QuickActionsCard({ provider }: { provider?: ProviderDetails }) {
       updateStatus({ id: providerId, action: status });
     }
   };
+
+  // Quick actions all mutate the provider — hide the whole card without edit rights.
+  if (!can("providers", "update")) return null;
 
   return (
     <>

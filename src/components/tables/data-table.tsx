@@ -53,7 +53,7 @@ export function DataTable<T>({
 
   const resolvedContainerClassName = cn(
     "flex h-full flex-col justify-between overflow-hidden bg-white shadow-sm",
-    isBorder ? "rounded-2xl border border-border" : "border border-border",
+    isBorder ? "rounded-2xl border border-border" : "",
     containerClassName,
   );
 

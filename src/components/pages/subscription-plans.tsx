@@ -9,6 +9,7 @@ import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { SubscriptionPlanCardSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Can } from "@/components/auth/can";
 import {
   planManagementActions,
 } from "@/constants/subscriptions";
@@ -61,14 +62,28 @@ export function SubscriptionPlansPage() {
         title="Subscription Plans"
         description="Configure global pricing tiers and feature entitlements for your SaaS."
         actions={
-          <Button
-            onClick={() => router.push("/subscriptions/create")}
-          >
-            <Plus className="mr-2 size-3.5" />
-            Create New Plan
-          </Button>
+          <Can module="subscriptionPlans" action="create">
+            <Button
+              onClick={() => router.push("/subscriptions/create")}
+            >
+              <Plus className="mr-2 size-3.5" />
+              Create New Plan
+            </Button>
+          </Can>
         }
       />
+
+      <section className="grid gap-7 xl:grid-cols-3">
+        {isLoading
+          ? [...Array(3)].map((_, index) => (
+            <SubscriptionPlanCardSkeleton key={`subscription-plan-card-skeleton-${index}`} />
+          ))
+          : plans.map((plan) => (
+            <SubscriptionPlanCard key={plan.id} plan={plan} onDelete={setDeleteTarget} />
+          ))}
+      </section>
+
+      <PlanManagementPanel />
 
       <ConfirmDialog
         open={!!deleteTarget}
@@ -89,18 +104,6 @@ export function SubscriptionPlansPage() {
           });
         }}
       />
-
-      <section className="grid gap-7 xl:grid-cols-3">
-        {isLoading
-          ? [...Array(3)].map((_, index) => (
-            <SubscriptionPlanCardSkeleton key={`subscription-plan-card-skeleton-${index}`} />
-          ))
-          : plans.map((plan) => (
-            <SubscriptionPlanCard key={plan.id} plan={plan} onDelete={setDeleteTarget} />
-          ))}
-      </section>
-
-      <PlanManagementPanel />
     </div>
   );
 }

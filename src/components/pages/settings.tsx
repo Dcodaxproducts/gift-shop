@@ -14,6 +14,7 @@ import {
 import MyImage from "@/components/common/MyImage";
 import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
+import { Can } from "@/components/auth/can";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -495,14 +496,16 @@ export function SettingsPage() {
         />
       </section>
 
-      <div className="flex justify-end gap-3">
-        <Button variant="outline" className="" disabled={isSaving}>
-          Cancel Changes
-        </Button>
-        <Button type="submit" disabled={isSaving}>
-          {isSaving ? "Saving..." : "Save System Settings"}
-        </Button>
-      </div>
+      <Can module="systemSettings" action="update">
+        <div className="flex justify-end gap-3">
+          <Button variant="outline" className="" disabled={isSaving}>
+            Cancel Changes
+          </Button>
+          <Button type="submit" disabled={isSaving}>
+            {isSaving ? "Saving..." : "Save System Settings"}
+          </Button>
+        </div>
+      </Can>
     </form>
   );
 }

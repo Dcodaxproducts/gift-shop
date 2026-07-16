@@ -9,6 +9,7 @@ import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Can } from "@/components/auth/can";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteSeasonalTheme, useSeasonalThemes } from "@/hooks/useThemes";
 import { cn } from "@/lib/utils";
@@ -67,22 +68,26 @@ function ThemeCard({
             </div>
 
             <div className="flex shrink-0 items-center gap-1">
-              <Button
-                variant="ghost"
-                aria-label={`Edit ${theme.name}`}
-                className="size-8 rounded-full p-0 text-slate-400 hover:bg-primary/10 hover:text-primary"
-                onClick={() => onEdit(theme)}
-              >
-                <Edit2 className="size-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                aria-label={`Delete ${theme.name}`}
-                className="size-8 rounded-full p-0 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
-                onClick={() => onDelete(theme)}
-              >
-                <Trash2 className="size-4" />
-              </Button>
+              <Can module="seasonalThemes" action="update">
+                <Button
+                  variant="ghost"
+                  aria-label={`Edit ${theme.name}`}
+                  className="size-8 rounded-full p-0 text-slate-400 hover:bg-primary/10 hover:text-primary"
+                  onClick={() => onEdit(theme)}
+                >
+                  <Edit2 className="size-4" />
+                </Button>
+              </Can>
+              <Can module="seasonalThemes" action="delete">
+                <Button
+                  variant="ghost"
+                  aria-label={`Delete ${theme.name}`}
+                  className="size-8 rounded-full p-0 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
+                  onClick={() => onDelete(theme)}
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </Can>
             </div>
           </div>
 
@@ -155,10 +160,12 @@ export function SeasonalThemesPage() {
         title="Seasonal Themes"
         description="Manage mobile seasonal artwork for gifting campaigns."
         actions={
-          <Button onClick={() => router.push("/seasonal-themes/create")}>
-            <Plus className="size-3.5" />
-            Add Theme
-          </Button>
+          <Can module="seasonalThemes" action="create">
+            <Button onClick={() => router.push("/seasonal-themes/create")}>
+              <Plus className="size-3.5" />
+              Add Theme
+            </Button>
+          </Can>
         }
       />
 

@@ -26,7 +26,7 @@ export type GetStaffParams = {
   limit?: number;
   search?: string;
   roleId?: string;
-  isActive?: boolean;
+  status?: string;
 };
 
 

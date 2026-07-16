@@ -8,6 +8,7 @@ import { DisputeRefundStatsCard } from "@/components/cards/DisputeRefundStatsCar
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import { disputeRefundCategoryOptions, disputeRefundStatusOptions } from "@/constants/filter-options";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useDisputeStats, useDisputes, useExportDisputes } from "@/hooks/useDisputes";
@@ -224,10 +225,12 @@ export function DisputesRefundPage() {
         title="Dispute & Refund Cases"
         description="Manage, review, and resolve customer disputes within allowed limits."
         actions={
-          <Button onClick={() => exportDisputes.mutate()} disabled={disputesResponse?.data?.length === 0 || exportDisputes.isPending}>
-            <Download className="mr-2 size-3.5" />
-            {exportDisputes.isPending ? "Exporting..." : "Export"}
-          </Button>
+          <Can module="disputes" action="read">
+            <Button onClick={() => exportDisputes.mutate()} disabled={disputesResponse?.data?.length === 0 || exportDisputes.isPending}>
+              <Download className="mr-2 size-3.5" />
+              {exportDisputes.isPending ? "Exporting..." : "Export"}
+            </Button>
+          </Can>
         }
       />
 
@@ -292,13 +295,18 @@ export function DisputesRefundPage() {
             <TableCell>{StatusBadge({ status: item.status })}</TableCell>
             <TableCell className="font-medium">{getDaysOpen(item.createdAt)} days</TableCell>
             <TableCell className="text-right">
-              <Button
-                variant="ghost"
-                className="text-primary"
-              // onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id)}`)}
+              <Can
+                module="disputes"
+                action={item.status === "RESOLVED" ? "read" : "update"}
               >
-                {item.status === "RESOLVED" ? "History" : "Review"}
-              </Button>
+                <Button
+                  variant="ghost"
+                  className="text-primary"
+                // onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id)}`)}
+                >
+                  {item.status === "RESOLVED" ? "History" : "Review"}
+                </Button>
+              </Can>
             </TableCell>
           </>
         )}

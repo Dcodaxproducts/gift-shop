@@ -165,9 +165,10 @@ export function SubscriptionPlanFormPage({
         maxTeamMembers: defaultValues?.limits?.maxTeamMembers ?? 0,
         storageGb: defaultValues?.limits?.storageGb ?? 0,
       },
+      // Only one billing cycle applies — zero out the other so it isn't kept from a previous value.
       ...(billingCycle === "monthly"
-        ? { monthlyPrice: numericPrice }
-        : { yearlyPrice: numericPrice }),
+        ? { monthlyPrice: numericPrice, yearlyPrice: 0 }
+        : { yearlyPrice: numericPrice, monthlyPrice: 0 }),
     });
   };
 

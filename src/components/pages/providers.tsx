@@ -17,6 +17,7 @@ import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { ProviderStatsCard } from "@/components/cards/ProviderStatsCard";
+import { Can } from "@/components/auth/can";
 import { StatusBadge } from "@/utils/status";
 import { useDeleteProvider, useProviders, useProviderStats, useExportProviders } from "@/hooks/useProviders";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -66,14 +67,18 @@ export function ProvidersPage() {
         description="Manage fintech service providers and their performance metrics."
         actions={
           <>
-            <Button variant="outline" onClick={() => exportProviders.mutate()} disabled={providers?.length === 0 || exportProviders.isPending}>
-              <Download className="mr-2 size-3.5" />
-              {exportProviders.isPending ? "Exporting..." : "Export"}
-            </Button>
-            <Button onClick={() => router.push("/providers/create")}>
-              <Plus className="mr-2 size-3.5" />
-              Add Provider
-            </Button>
+            <Can module="providers" action="read">
+              <Button variant="outline" onClick={() => exportProviders.mutate()} disabled={providers?.length === 0 || exportProviders.isPending}>
+                <Download className="mr-2 size-3.5" />
+                {exportProviders.isPending ? "Exporting..." : "Export"}
+              </Button>
+            </Can>
+            <Can module="providers" action="create">
+              <Button onClick={() => router.push("/providers/create")}>
+                <Plus className="mr-2 size-3.5" />
+                Add Provider
+              </Button>
+            </Can>
           </>
         }
       />
@@ -162,34 +167,42 @@ export function ProvidersPage() {
 
               <TableCell>
                 <div className="flex items-center justify-end gap-1">
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-primary hover:bg-primary/10"
-                    onClick={() => router.push(`/providers/${item.id}`)}
-                  >
-                    <Eye className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-amber-500 hover:bg-amber-50"
-                    onClick={() => router.push(`/providers/${item.id}?tab=documents`)}
-                  >
-                    <FileText className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => router.push(`/providers/${item.id}/edit`)}
-                    className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                  >
-                    <Edit2 className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                    onClick={() => setDeleteTarget(item)}
-                  >
-                    <X className="size-4" />
-                  </Button>
+                  <Can module="providers" action="read">
+                    <Button
+                      variant="ghost"
+                      className="size-9 rounded-full text-primary hover:bg-primary/10"
+                      onClick={() => router.push(`/providers/${item.id}`)}
+                    >
+                      <Eye className="size-4" />
+                    </Button>
+                  </Can>
+                  <Can module="providers" action="read">
+                    <Button
+                      variant="ghost"
+                      className="size-9 rounded-full text-amber-500 hover:bg-amber-50"
+                      onClick={() => router.push(`/providers/${item.id}?tab=documents`)}
+                    >
+                      <FileText className="size-4" />
+                    </Button>
+                  </Can>
+                  <Can module="providers" action="update">
+                    <Button
+                      variant="ghost"
+                      onClick={() => router.push(`/providers/${item.id}/edit`)}
+                      className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                    >
+                      <Edit2 className="size-4" />
+                    </Button>
+                  </Can>
+                  <Can module="providers" action="delete">
+                    <Button
+                      variant="ghost"
+                      className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                      onClick={() => setDeleteTarget(item)}
+                    >
+                      <X className="size-4" />
+                    </Button>
+                  </Can>
                 </div>
               </TableCell>
             </>

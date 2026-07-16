@@ -24,7 +24,7 @@ type CreateRoleDialogProps = {
 const buildDefaultPermissions = (): Record<string, PermissionAction[]> => {
   const state: Record<string, PermissionAction[]> = {};
   permissionModules.forEach((module) => {
-    state[module.key] = ["read", "create", "update"];
+    state[module.key] = [...module.actions];
   });
   return state;
 };
@@ -258,7 +258,7 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
                         </span>
                       </div>
                       <div className="space-y-2">
-                        {PERMISSION_ACTIONS.map((action) => (
+                        {module.actions.map((action) => (
                           <PermissionCheckbox
                             key={action}
                             id={`create-role-${module.key}-${action}`}

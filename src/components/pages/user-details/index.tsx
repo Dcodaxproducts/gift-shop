@@ -10,6 +10,7 @@ import { useUpdateUserStatus, useUser, useUserActivity } from "@/hooks/useUsers"
 import { formatDate } from "@/utils/formatDate";
 import type { SuspendUserPayload } from "@/types/users";
 import PageHeader from "@/components/common/page-header";
+import { Can } from "@/components/auth/can";
 import { ProfileInfoCard } from "./components/profile-info-card";
 import { RecentActivity } from "./components/recent-activity";
 import { AccountSidebar } from "./components/account-sidebar";
@@ -76,15 +77,17 @@ export function UserDetailsPage() {
         <div className="space-y-5">
             <div className="flex items-start justify-between gap-4">
                 <PageHeader title="User Details" />
-                <Button
-                    variant="outline"
-                    className="h-9 px-4 text-[11px]"
-                    onClick={() => setIsEditDialogOpen(true)}
-                    disabled={!user}
-                >
-                    <Pencil className="size-3.5" />
-                    Edit User
-                </Button>
+                <Can module="users" action="update">
+                    <Button
+                        variant="outline"
+                        className="h-9 px-4 text-[11px]"
+                        onClick={() => setIsEditDialogOpen(true)}
+                        disabled={!user}
+                    >
+                        <Pencil className="size-3.5" />
+                        Edit User
+                    </Button>
+                </Can>
             </div>
 
             <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_230px]">

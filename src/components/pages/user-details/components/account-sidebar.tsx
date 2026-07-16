@@ -3,6 +3,7 @@ import { KeyRound, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Can } from "@/components/auth/can";
 import type { UserDetail } from "@/types/users";
 
 interface AccountSidebarProps {
@@ -30,31 +31,33 @@ export function AccountSidebar({
 }: AccountSidebarProps) {
   return (
     <aside className="space-y-5 xl:w-57.5">
-      <Card className="p-4">
-        <CardHeader>
-          <CardTitle>Account Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={onResetPassword}
-            disabled={!user}
-          >
-            <KeyRound className="size-3 shrink-0" />
-            <span>Reset Password</span>
-          </Button>
-          <Button
-            variant="danger"
-            className="w-full"
-            onClick={onToggleSuspend}
-            disabled={!user}
-          >
-            <ShieldAlert className="size-3 shrink-0" />
-            <span>{isSuspended ? "Unsuspend User" : "Suspend User"}</span>
-          </Button>
-        </CardContent>
-      </Card>
+      <Can module="users" action="update">
+        <Card className="p-4">
+          <CardHeader>
+            <CardTitle>Account Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={onResetPassword}
+              disabled={!user}
+            >
+              <KeyRound className="size-3 shrink-0" />
+              <span>Reset Password</span>
+            </Button>
+            <Button
+              variant="danger"
+              className="w-full"
+              onClick={onToggleSuspend}
+              disabled={!user}
+            >
+              <ShieldAlert className="size-3 shrink-0" />
+              <span>{isSuspended ? "Unsuspend User" : "Suspend User"}</span>
+            </Button>
+          </CardContent>
+        </Card>
+      </Can>
 
       <Card className="border-primary/20 bg-primary/20 p-4">
         <CardHeader>

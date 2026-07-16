@@ -1,9 +1,11 @@
 import { dashboardNavGroups } from "@/config/dashboard";
+import { PERMISSION_ACTIONS, type PermissionAction } from "@/types/staff-roles";
 
 export type PermissionModule = {
   key: string;
   title: string;
   icon: string;
+  actions: PermissionAction[];
 };
 
 const toCamelCaseKey = (href: string): string => {
@@ -19,13 +21,24 @@ const toCamelCaseKey = (href: string): string => {
     .join("");
 };
 
+// Modules that only expose a subset of the standard actions.
+const RESTRICTED_ACTIONS: Record<string, PermissionAction[]> = {
+  dashboard: ["read"],
+};
+
 export const permissionModules: PermissionModule[] = dashboardNavGroups.flatMap(
   (group) =>
     group.items
-      .filter((item) => item.href !== "/")
-      .map((item) => ({
-        key: toCamelCaseKey(item.href),
-        title: item.title,
-        icon: item.icon,
-      })),
+      // Super-admin-only pages aren't assignable to staff, so skip them here.
+      .filter((item) => !item.superAdminOnly)
+      .map((item) => {
+        // permissionKey is the backend-facing key; href is only a fallback.
+        const key = item.permissionKey ?? toCamelCaseKey(item.href);
+        return {
+          key,
+          title: item.title,
+          icon: item.icon,
+          actions: RESTRICTED_ACTIONS[key] ?? PERMISSION_ACTIONS,
+        };
+      }),
 );

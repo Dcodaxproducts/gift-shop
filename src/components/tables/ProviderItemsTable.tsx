@@ -22,7 +22,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
     limit,
     ...(debouncedSearch ? { search: debouncedSearch } : {}),
   });
-
+  
   const hasNextPage = items.length === limit;
   const pagination = {
     total: (page - 1) * limit + items.length + (hasNextPage ? 1 : 0),
@@ -34,7 +34,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
   };
 
   return (
-    <div className="border border-b-0 border-slate-200 rounded-2xl">
+    <div className="overflow-hidden border border-slate-200 rounded-2xl">
       <div className="flex flex-col gap-3 rounded-t-2xl bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-sm font-semibold ">Listed Items</h2>
         <div className="flex items-center gap-2">
@@ -62,6 +62,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
           onPageChange: setPage,
         }}
         isBorder={false}
+        showPagination={page > 1 || hasNextPage}
         onRowClick={(item: ProviderItem) => router.push(`/product/${item.id}/details`)}
         headers={
           <>

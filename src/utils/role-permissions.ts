@@ -62,7 +62,7 @@ export function arePermissionsEqual(
 export function buildDefaultPermissions(): RolePermissions {
   const state: RolePermissions = {};
   permissionModules.forEach((permissionModule) => {
-    state[permissionModule.key] = ["read", "create", "update"];
+    state[permissionModule.key] = [...permissionModule.actions];
   });
   return state;
 }

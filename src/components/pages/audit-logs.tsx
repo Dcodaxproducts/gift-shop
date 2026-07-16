@@ -9,6 +9,7 @@ import { AuditStatsCard } from "@/components/cards/AuditStatsCard";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useAuditLogStats, useAuditLogs, useExportAuditLogs } from "@/hooks/useAuditLogs";
 import type { AuditLog, AuditLogSeverity, AuditLogStatus } from "@/services/audit-logs";
@@ -92,14 +93,16 @@ export function AuditLogsPage() {
         title="Audit Logs"
         description="Review admin activity, security events, and system audit history."
         actions={
-          <Button
-            variant="outline"
-            onClick={() => exportAuditLogs.mutate()}
-            disabled={auditLogs.length === 0 || exportAuditLogs.isPending}
-          >
-            <Download className="mr-2 size-3.5" />
-            {exportAuditLogs.isPending ? "Exporting..." : "Export"}
-          </Button>
+          <Can module="auditLogs" action="read">
+            <Button
+              variant="outline"
+              onClick={() => exportAuditLogs.mutate()}
+              disabled={auditLogs.length === 0 || exportAuditLogs.isPending}
+            >
+              <Download className="mr-2 size-3.5" />
+              {exportAuditLogs.isPending ? "Exporting..." : "Export"}
+            </Button>
+          </Can>
         }
       />
 
@@ -197,13 +200,15 @@ export function AuditLogsPage() {
             <TableCell className="max-w-24 text-slate-500">{formatDate(item.createdAt)}</TableCell>
             <TableCell>
               <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-primary hover:bg-primary/10"
-                  onClick={() => router.push(`/audit-logs/${item.id}`)}
-                >
-                  <Eye className="size-4" />
-                </Button>
+                <Can module="auditLogs" action="read">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-primary hover:bg-primary/10"
+                    onClick={() => router.push(`/audit-logs/${item.id}`)}
+                  >
+                    <Eye className="size-4" />
+                  </Button>
+                </Can>
               </div>
             </TableCell>
           </>

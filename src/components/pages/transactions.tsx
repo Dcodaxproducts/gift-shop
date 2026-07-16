@@ -7,6 +7,7 @@ import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import { useDebounce } from "@/hooks/useDebounce";
 import {
   useExportTransactions,
@@ -157,10 +158,12 @@ export function TransactionsPage() {
       <PageHeader
         title="Transaction Monitoring"
         actions={
-          <Button onClick={() => exportTransactions.mutate()} disabled={exportTransactions.isPending}>
-            <Download className="mr-2 size-3.5" />
-            {exportTransactions.isPending ? "Exporting..." : "Export Report"}
-          </Button>
+          <Can module="transactions" action="read">
+            <Button onClick={() => exportTransactions.mutate()} disabled={exportTransactions.isPending}>
+              <Download className="mr-2 size-3.5" />
+              {exportTransactions.isPending ? "Exporting..." : "Export Report"}
+            </Button>
+          </Can>
         }
       />
 

@@ -8,6 +8,7 @@ import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import {
   useDeleteDocument,
   useDocuments,
@@ -43,10 +44,12 @@ export function DocumentsPage() {
         title="Document Management"
         description="Manage required document definitions for providers."
         actions={
-          <Button onClick={() => setAddOpen(true)}>
-            <Plus className="mr-2 size-3.5" />
-            Add Document
-          </Button>
+          <Can module="documents" action="update">
+            <Button onClick={() => setAddOpen(true)}>
+              <Plus className="mr-2 size-3.5" />
+              Add Document
+            </Button>
+          </Can>
         }
       />
 
@@ -111,20 +114,24 @@ export function DocumentsPage() {
 
             <TableCell>
               <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                  onClick={() => setEditTarget(item)}
-                >
-                  <Edit2 className="size-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                  onClick={() => setDeleteTarget(item)}
-                >
-                  <X className="size-4" />
-                </Button>
+                <Can module="documents" action="update">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                    onClick={() => setEditTarget(item)}
+                  >
+                    <Edit2 className="size-4" />
+                  </Button>
+                </Can>
+                <Can module="documents" action="delete">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                    onClick={() => setDeleteTarget(item)}
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </Can>
               </div>
             </TableCell>
           </>

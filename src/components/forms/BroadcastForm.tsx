@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Can } from "@/components/auth/can";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -120,9 +121,11 @@ export function BroadcastForm({ onSent }: BroadcastFormProps) {
           </div>
 
           <div className="mt-9 flex items-center justify-end">
-            <Button type="submit" disabled={broadcast.isPending}>
-              {broadcast.isPending ? "Sending..." : "Send Broadcast"}
-            </Button>
+            <Can module="broadcasts" action="create">
+              <Button type="submit" disabled={broadcast.isPending}>
+                {broadcast.isPending ? "Sending..." : "Send Broadcast"}
+              </Button>
+            </Can>
           </div>
         </CardContent>
       </Card>

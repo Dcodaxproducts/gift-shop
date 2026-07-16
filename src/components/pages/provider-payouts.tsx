@@ -16,6 +16,7 @@ import PageHeader from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import MonthlyPayoutChart from "../charts/MonthlyPayoutChart";
 import EarningsDistributionChart from "../charts/EarningsDistributionChart";
 import { StatusBadge } from "@/utils/status";
@@ -218,15 +219,17 @@ function RecentPayoutActivities() {
             <TableCell>{formatDate(activity.nextPayoutDate)}</TableCell>
             <TableCell>{StatusBadge({ status: activity.status })}</TableCell>
             <TableCell>
-              <Button
-                variant="soft"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setSelectedActivity(activity);
-                }}
-              >
-                Initiate
-              </Button>
+              <Can module="providerPayouts" action="update">
+                <Button
+                  variant="soft"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedActivity(activity);
+                  }}
+                >
+                  Initiate
+                </Button>
+              </Can>
             </TableCell>
           </>
         )}

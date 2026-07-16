@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Can } from "@/components/auth/can";
 import { Card, CardContent } from "@/components/ui/card";
 import { subscriptionPlanIcons } from "@/constants/subscriptions";
 import { cn } from "@/lib/utils";
@@ -27,11 +28,11 @@ function formatLabel(value: string) {
 }
 
 function getBillingPrice(plan: SubscriptionPlan) {
-  if (plan.yearlyPrice !== null && plan.yearlyPrice !== undefined) {
+  if (plan.yearlyPrice != null && plan.yearlyPrice > 0) {
     return { period: "/year", price: plan.yearlyPrice };
   }
 
-  if (plan.monthlyPrice !== null && plan.monthlyPrice !== undefined) {
+  if (plan.monthlyPrice != null && plan.monthlyPrice > 0) {
     return { period: "/month", price: plan.monthlyPrice };
   }
 
@@ -120,18 +121,22 @@ export function SubscriptionPlanCard({
         </ul>
 
         <div className="mt-auto grid grid-cols-2 gap-3 pt-8">
-          <Button
-            onClick={() => router.push(`/subscriptions/${plan.id}`)}
-          >
-            Edit Plan
-          </Button>
-          <Button
-            variant="ghost"
-            className="bg-slate-100 text-slate-700 hover:bg-slate-200"
-            onClick={() => onDelete(plan)}
-          >
-            Delete
-          </Button>
+          <Can module="subscriptionPlans" action="update">
+            <Button
+              onClick={() => router.push(`/subscriptions/${plan.id}`)}
+            >
+              Edit Plan
+            </Button>
+          </Can>
+          <Can module="subscriptionPlans" action="delete">
+            <Button
+              variant="ghost"
+              className="bg-slate-100 text-slate-700 hover:bg-slate-200"
+              onClick={() => onDelete(plan)}
+            >
+              Delete
+            </Button>
+          </Can>
         </div>
       </CardContent>
     </Card>

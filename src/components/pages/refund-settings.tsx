@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Banknote, Save } from "lucide-react";
 import PageHeader from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
+import { Can } from "@/components/auth/can";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -97,20 +98,22 @@ export function RefundSettingsPage() {
               </p>
             </div>
 
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                className="h-11 px-5 text-sm text-slate-600 bg-gray-100"
-                disabled={isUpdating}
-                onClick={resetForm}
-              >
-                Discard
-              </Button>
-              <Button type="submit" disabled={isUpdating}>
-                <Save className="size-3.5" />
-                Update Policy
-              </Button>
-            </div>
+            <Can module="refundPolicies" action="update">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  className="h-11 px-5 text-sm text-slate-600 bg-gray-100"
+                  disabled={isUpdating}
+                  onClick={resetForm}
+                >
+                  Discard
+                </Button>
+                <Button type="submit" disabled={isUpdating}>
+                  <Save className="size-3.5" />
+                  Update Policy
+                </Button>
+              </div>
+            </Can>
           </div>
         </CardContent>
       </Card>

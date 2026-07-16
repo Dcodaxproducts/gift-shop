@@ -8,6 +8,7 @@ import { PlatformAnalyticsStatsCard } from "@/components/cards/PlatformAnalytics
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import { useDebounce } from "@/hooks/useDebounce";
 import { StatusBadge } from "@/utils/status";
 
@@ -254,10 +255,12 @@ export function PlatformAnalyticsPage() {
       <PageHeader
         title="Platform Analytics"
         actions={
-          <Button>
-            <Download className="mr-2 size-3.5" />
-            Export
-          </Button>
+          <Can module="analytics" action="read">
+            <Button>
+              <Download className="mr-2 size-3.5" />
+              Export
+            </Button>
+          </Can>
         }
       />
 

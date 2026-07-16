@@ -14,6 +14,7 @@ import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import MyImage from "@/components/common/MyImage";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteGift, useGifts } from "@/hooks/useGift";
@@ -69,10 +70,12 @@ export function GiftsPage() {
         title="Gift Inventory"
         description="Manage and monitor all gift listings across the platform."
         actions={
-          <Button onClick={() => router.push("/gifts/create")}>
-            <Plus className="mr-2 size-3.5" />
-            Add New Gift
-          </Button>
+          <Can module="gifts" action="create">
+            <Button onClick={() => router.push("/gifts/create")}>
+              <Plus className="mr-2 size-3.5" />
+              Add New Gift
+            </Button>
+          </Can>
         }
       />
 
@@ -147,20 +150,24 @@ export function GiftsPage() {
             </TableCell>
             <TableCell>
               <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                  onClick={() => router.push(`/gifts/${item.id}`)}
-                >
-                  <Edit2 className="size-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                  onClick={() => setDeleteTarget(item)}
-                >
-                  <X className="size-4" />
-                </Button>
+                <Can module="gifts" action="update">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                    onClick={() => router.push(`/gifts/${item.id}`)}
+                  >
+                    <Edit2 className="size-4" />
+                  </Button>
+                </Can>
+                <Can module="gifts" action="delete">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                    onClick={() => setDeleteTarget(item)}
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </Can>
               </div>
             </TableCell>
           </>

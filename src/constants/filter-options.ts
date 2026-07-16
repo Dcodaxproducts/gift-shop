@@ -8,9 +8,9 @@ export const staffRoleOptions = [
 ] as const;
 
 export const staffStatusOptions = [
-  { value: "all", label: "All Status" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
+  { value: "ALL", label: "All Status" },
+  { value: "ACTIVE", label: "Active" },
+  { value: "DISABLED", label: "Inactive" },
 ] as const;
 
 // User status options

@@ -14,6 +14,8 @@ import { TableCell, TableHead } from "@/components/ui/table";
 import { StatusBadge } from "@/utils/status";
 import { useProviderDocuments, useReviewProviderDocument } from "@/hooks/useProviders";
 import { UploadProviderDocumentDialog } from "@/components/dialog/upload-provider-document-dialog";
+import { Can } from "@/components/auth/can";
+import { useCan } from "@/hooks/useCan";
 import type { ProviderDocument, ProviderDocumentStatus } from "@/types/providers";
 
 const REVIEW_OPTIONS: { label: string; value: Exclude<ProviderDocumentStatus, "PENDING">; icon: typeof Check }[] = [
@@ -23,6 +25,8 @@ const REVIEW_OPTIONS: { label: string; value: Exclude<ProviderDocumentStatus, "P
 
 function ProviderDocumentsTab({ providerId }: { providerId: string }) {
   const [uploadOpen, setUploadOpen] = useState(false);
+  const { can } = useCan();
+  const canEdit = can("providers", "update");
   const { data: documents = [], isLoading } = useProviderDocuments(providerId);
   const { mutate: reviewDocument, isPending: isReviewing } = useReviewProviderDocument(providerId);
 
@@ -35,10 +39,12 @@ function ProviderDocumentsTab({ providerId }: { providerId: string }) {
             Upload and manage required documents for this provider.
           </p>
         </div>
-        <Button onClick={() => setUploadOpen(true)}>
-          <Upload className="mr-2 size-3.5" />
-          Upload Document
-        </Button>
+        <Can module="providers" action="update">
+          <Button onClick={() => setUploadOpen(true)}>
+            <Upload className="mr-2 size-3.5" />
+            Upload Document
+          </Button>
+        </Can>
       </div>
 
       <UploadProviderDocumentDialog
@@ -72,7 +78,7 @@ function ProviderDocumentsTab({ providerId }: { providerId: string }) {
 
             <TableCell>
               {item.submission ? (
-                item.submission.status === "PENDING" ? (
+                item.submission.status === "PENDING" && canEdit ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button

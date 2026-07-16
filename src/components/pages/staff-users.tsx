@@ -22,18 +22,18 @@ export function StaffUsersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
-  const [status, setStatus] = useState("all");
+  const [status, setStatus] = useState("ALL");
   const [deleteTarget, setDeleteTarget] = useState<StaffMember | null>(null);
   const limit = 10;
   const debouncedSearch = useDebounce(search, 400);
-
+  
   const { data: roles = [] } = useStaffRoles();
   const { data: staff = [], isLoading } = useStaffList({
     page,
     limit,
     search: debouncedSearch || undefined,
     roleId: role === "all" ? undefined : role,
-    isActive: status === "all" ? undefined : status === "active",
+    status: status,
   });
   const { mutate: deleteStaff, isPending } = useDeleteStaff();
 

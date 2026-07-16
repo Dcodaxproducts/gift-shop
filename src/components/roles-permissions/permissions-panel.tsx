@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import { permissionModules } from "@/config/permission-modules";
 import { getDashboardIcon } from "@/lib/dashboard-icons";
 import {
-  PERMISSION_ACTIONS,
   type PermissionAction,
   type RolePermissions,
 } from "@/types/staff-roles";
@@ -107,7 +106,7 @@ export function PermissionsPanel({
                     </span>
                   </div>
                   <div className="grid grid-cols-4 gap-4">
-                    {PERMISSION_ACTIONS.map((action) => (
+                    {module.actions.map((action) => (
                       <PermissionCheckbox
                         key={action}
                         id={`perm-${module.key}-${action}`}

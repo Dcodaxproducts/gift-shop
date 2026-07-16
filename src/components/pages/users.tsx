@@ -12,6 +12,7 @@ import { useDeleteUser, useExportUsers, useUsers } from "@/hooks/useUsers";
 import type { User, UserStatus, UserSortBy } from "@/types/users";
 import { EditUserDialog } from "@/components/dialog/edit-user-dialog";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
+import { Can } from "@/components/auth/can";
 import { StatusBadge } from "@/utils/status";
 import { getInitials } from "@/utils/getInitials";
 import { formatDate } from "@/utils/formatDate";
@@ -65,12 +66,12 @@ export function UsersPage() {
         title="Registered Users"
         description="Search, review, and manage customer accounts across the platform."
         actions={
-          <>
+          <Can module="users" action="read">
             <Button variant="outline" onClick={handleExport} disabled={users?.length === 0 || exportUsers.isPending}>
               <Download className="mr-2 size-3.5" />
               {exportUsers.isPending ? "Exporting..." : "Export"}
             </Button>
-          </>
+          </Can>
         }
       />
 
@@ -128,27 +129,33 @@ export function UsersPage() {
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end">
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-primary hover:bg-primary/10"
-                    onClick={() => router.push(`/users/${item.id}`)}
-                  >
-                    <Eye className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                    onClick={() => setEditUser(item)}
-                  >
-                    <Edit2 className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                    onClick={() => setDeleteTarget(item)}
-                  >
-                    <X className="size-4" />
-                  </Button>
+                  <Can module="users" action="read">
+                    <Button
+                      variant="ghost"
+                      className="size-9 rounded-full text-primary hover:bg-primary/10"
+                      onClick={() => router.push(`/users/${item.id}`)}
+                    >
+                      <Eye className="size-4" />
+                    </Button>
+                  </Can>
+                  <Can module="users" action="update">
+                    <Button
+                      variant="ghost"
+                      className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                      onClick={() => setEditUser(item)}
+                    >
+                      <Edit2 className="size-4" />
+                    </Button>
+                  </Can>
+                  <Can module="users" action="delete">
+                    <Button
+                      variant="ghost"
+                      className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                      onClick={() => setDeleteTarget(item)}
+                    >
+                      <X className="size-4" />
+                    </Button>
+                  </Can>
                 </div>
               </TableCell>
             </>

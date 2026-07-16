@@ -8,6 +8,7 @@ import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableHead } from "@/components/ui/table";
+import { Can } from "@/components/auth/can";
 import { useDeleteGiftCategory, useGiftCategories } from "@/hooks/useGiftCategories";
 import type { GiftCategory } from "@/types/gift-categories";
 import MyImage from "../common/MyImage";
@@ -38,10 +39,12 @@ export function GiftCategoriesPage() {
         title="Gift Categories"
         description="Manage and organize your catalog of gift types."
         actions={
-          <Button onClick={() => setAddCategoryOpen(true)}>
-            <Plus className="mr-2 size-3.5" />
-            Add Category
-          </Button>
+          <Can module="giftCategories" action="create">
+            <Button onClick={() => setAddCategoryOpen(true)}>
+              <Plus className="mr-2 size-3.5" />
+              Add Category
+            </Button>
+          </Can>
         }
       />
 
@@ -135,20 +138,24 @@ export function GiftCategoriesPage() {
 
             <TableCell>
               <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                  onClick={() => setEditCategory(item)}
-                >
-                  <Edit2 className="size-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                  onClick={() => setDeleteTarget(item)}
-                >
-                  <X className="size-4" />
-                </Button>
+                <Can module="giftCategories" action="update">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                    onClick={() => setEditCategory(item)}
+                  >
+                    <Edit2 className="size-4" />
+                  </Button>
+                </Can>
+                <Can module="giftCategories" action="delete">
+                  <Button
+                    variant="ghost"
+                    className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                    onClick={() => setDeleteTarget(item)}
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </Can>
               </div>
             </TableCell>
           </>

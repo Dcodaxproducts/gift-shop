@@ -26,6 +26,8 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
   const [search, setSearch] = useState("");
 
   const permissions = data?.admin?.permissions ?? null;
+  // Super admins have no permissions map (they see everything); staff carry one.
+  const isSuperAdmin = !permissions;
   const hasReadAccess = (permissionKey?: string) => {
     if (!permissionKey) return true;
     if (!permissions) return true;
@@ -37,6 +39,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
     .map((group) => ({
       ...group,
       items: group.items.filter((item) => {
+        if (item.superAdminOnly && !isSuperAdmin) return false;
         const canRead = hasReadAccess(item.permissionKey);
         const matchesSearch = !searchQuery || item.title.toLowerCase().includes(searchQuery);
 
