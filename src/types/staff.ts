@@ -2,6 +2,7 @@ export type StaffRole = {
   id: string;
   name: string;
   slug: string;
+  description?: string;
 };
 
 export type StaffMember = {
@@ -11,12 +12,13 @@ export type StaffMember = {
   fullName: string;
   email: string;
   phone: string | null;
-  title?: string | null;
+  avatarUrl: string | null;
   role: StaffRole;
-  isActive: boolean;
-  isVerified: boolean;
+  status: string;
   createdAt: string;
   lastLoginAt: string | null;
+  mustChangePassword?: boolean;
+  permissions?: Record<string, string[]>;
 };
 
 export type GetStaffParams = {
@@ -30,26 +32,24 @@ export type GetStaffParams = {
 
 export type CreateStaffPayload = {
   email: string;
-  temporaryPassword?: string;
-  generateTemporaryPassword?: boolean;
-  mustChangePassword?: boolean;
+  password: string;
   firstName: string;
   lastName: string;
   phone?: string;
-  title?: string;
   roleId: string;
   isActive?: boolean;
-  sendInviteEmail?: boolean;
 };
 
 export type UpdateStaffPayload = Partial<{
+  email: string;
+  password: string;
   firstName: string;
   lastName: string;
-  email: string;
   phone: string;
-  title: string;
   roleId: string;
-  isActive : boolean
+  avatarUrl: string;
+  isActive: boolean;
+  reason: string;
 }>;
 
 export type UpdateStaffPasswordPayload = {

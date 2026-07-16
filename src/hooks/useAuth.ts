@@ -30,14 +30,14 @@ export const useCurrentUser = () => {
   });
 };
 
-export const useLogin = () => {
+export const useLogin = (expectedRole: string) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      if(data.user.role !== "SUPER_ADMIN") {
+      if(data.user.role !== expectedRole) {
         toast.error("Login failed. Please try again.");
         return;
       }

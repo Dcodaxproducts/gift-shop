@@ -115,7 +115,7 @@ export function StaffUsersPage() {
             <TableCell className="text-slate-500">{item.email}</TableCell>
             <TableCell className="text-slate-700">{item.role.name}</TableCell>
             <TableCell>
-              <StatusBadge status={item.isActive ? "Active" : "Inactive"} />
+              <StatusBadge status={item.status} />
             </TableCell>
             <TableCell className="text-slate-500">{formatDate(item.createdAt)}</TableCell>
             <TableCell>

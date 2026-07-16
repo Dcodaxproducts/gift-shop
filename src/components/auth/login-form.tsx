@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Globe, Headphones, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Globe, Headphones, Lock, Mail, Users } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,8 @@ import { loginSchema, type LoginFormValues } from "@/validations/auth";
 import { useState } from "react";
 
 export function LoginForm({ variant }: { variant: 'staff' | 'admin' }) {
-  const login = useLogin();
+  const isAdmin = variant !== 'staff';
+  const login = useLogin(isAdmin ? "SUPER_ADMIN" : "STAFF");
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -37,8 +38,6 @@ export function LoginForm({ variant }: { variant: 'staff' | 'admin' }) {
   const onSubmit = (values: LoginFormValues) => {
     login.mutate(values);
   };
-
-  const isAdmin = variant !== 'staff';
 
   return (
     <Card className="w-full max-w-md border-0 shadow-none">
@@ -129,6 +128,14 @@ export function LoginForm({ variant }: { variant: 'staff' | 'admin' }) {
               <Globe className="size-4" />
               English (US)
             </button>
+            <span className="text-slate-300">•</span>
+            <Link
+              href={isAdmin ? "/auth/staff-login" : "/auth/login"}
+              className="inline-flex items-center gap-2 transition hover:text-primary"
+            >
+              <Users className="size-4" />
+              {isAdmin ? "Login as Staff" : "Login as Admin"}
+            </Link>
           </footer>
         </div>
       </CardContent>

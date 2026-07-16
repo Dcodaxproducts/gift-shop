@@ -31,7 +31,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     const interceptorId = api.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error?.response?.status === 401) {
+        if (error?.response?.status === 401 && !isAuthRoute) {
           logout();
         }
         return Promise.reject(error);
@@ -41,7 +41,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     return () => {
       api.interceptors.response.eject(interceptorId);
     };
-  }, [canRender, queryClient, router]);
+  }, [canRender, isAuthRoute, queryClient, router]);
 
   if (!canRender) return null;
 
