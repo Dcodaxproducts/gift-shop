@@ -49,15 +49,8 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       { title: "Transaction Monitoring", href: "/transactions", icon: "chart-line", permissionKey: "transactions" },
       { title: "Provider Payouts", href: "/payouts", icon: "credit-card", permissionKey: "providerPayouts" },
       { title: "Dispute & Refund", href: "/disputes-refund", icon: "chart-line", permissionKey: "disputes" },
-      // { title: "Provider Dispute", href: "/provider-dispute", icon: "rotate-ccw", permissionKey: "providerDispute" },
     ],
   },
-  // {
-  //   title: "Moderation",
-  //   items: [
-  //     { title: "Social & Reviews Moderation", href: "/social-reviews-moderation", icon: "rss", permissionKey: "socialReviewsModeration" },
-  //   ],
-  // },
   {
     title: "Communications",
     items: [
@@ -75,13 +68,6 @@ export const dashboardNavGroups: DashboardNavGroup[] = [
       { title: "System Health", href: "/system-health", icon: "list-todo", permissionKey: "systemHealth" },
     ],
   },
-  // {
-  //   title: "Support Chat",
-  //   items: [
-  //     { title: "Provider Chat", href: "/provider-chat", icon: "message-circle", permissionKey: "chat" },
-  //     { title: "User Chat", href: "/user-chat", icon: "message-circle", permissionKey: "chat" },
-  //   ],
-  // },
 ];
 
 export const dashboardUser = {

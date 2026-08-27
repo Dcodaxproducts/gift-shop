@@ -49,21 +49,6 @@ export const disputeRefundStatusOptions = [
   { value: "RESOLVED", label: "Resolved" },
 ] as const;
 
-// Provider dispute filter options
-export const providerDisputeCategoryOptions = [
-  { value: "all", label: "All Categories" },
-  { value: "non-delivery", label: "Non-Delivery" },
-  { value: "quality-issue", label: "Quality Issue" },
-  { value: "refund-conflict", label: "Refund Conflict" },
-] as const;
-
-export const providerDisputeStatusOptions = [
-  { value: "all", label: "All Status" },
-  { value: "RULING_PENDING", label: "Ruling Pending" },
-  { value: "AWAITING_INFO", label: "Awaiting Info" },
-  { value: "ESCALATED", label: "Escalated" },
-] as const;
-
 export const transactionTypeOptions = [
   { value: "all", label: "All" },
   { value: "PAYMENT", label: "Payment" },
