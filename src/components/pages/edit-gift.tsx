@@ -2,7 +2,7 @@
 import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ErrorMessage } from "@/components/common/error-message";
-import { GiftFormPage } from "@/components/pages/gift-form";
+import { GiftFormPage } from "@/components/forms/gift-form";
 import { useGift, useUpdateGift } from "@/hooks/useGift";
 import type { Gift, GiftVariant } from "@/types/gifts";
 import type { CreateGiftFormValues } from "@/validations/gifts";

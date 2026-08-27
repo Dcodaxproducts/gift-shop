@@ -17,40 +17,8 @@ import { formatDate } from "@/utils/formatDate";
 import { formatLabel } from "@/utils/formatLabel";
 import { getInitials } from "@/utils/getInitials";
 import { StatusBadge } from "@/utils/status";
-import { cn } from "@/lib/utils";
+import { auditLogSeverityOptions, auditLogStatusOptions } from "@/constants/filter-options";
 
-function SeverityBadge({ severity }: { severity?: string | null }) {
-  const value = severity ?? "LOW";
-  const toneClass =
-    {
-      LOW: "bg-slate-100 text-slate-500",
-      MEDIUM: "bg-blue-50 text-blue-600",
-      HIGH: "bg-amber-50 text-amber-600",
-      CRITICAL: "bg-red-50 text-red-500",
-    }[value.toUpperCase()] ?? "bg-slate-100 text-slate-500";
-
-  return (
-    <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", toneClass)}>
-      {formatLabel(value)}
-    </span>
-  );
-}
-
-const auditLogStatusOptions = [
-  { value: "all", label: "Status" },
-  { value: "SUCCESS", label: "Success" },
-  { value: "FAILED", label: "Failed" },
-  { value: "PENDING", label: "Pending" },
-  { value: "WARNING", label: "Warning" },
-] as const;
-
-const auditLogSeverityOptions = [
-  { value: "all", label: "Severity" },
-  { value: "LOW", label: "Low" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "HIGH", label: "High" },
-  { value: "CRITICAL", label: "Critical" },
-] as const;
 
 export function AuditLogsPage() {
   const router = useRouter();
@@ -187,7 +155,7 @@ export function AuditLogsPage() {
               {item.status ? <StatusBadge status={item.status} /> : "-"}
             </TableCell>
             <TableCell>
-              <SeverityBadge severity={item.severity} />
+              <StatusBadge status={item.severity ?? "LOW"} />
             </TableCell>
             <TableCell className="max-w-24 text-slate-500">{formatDate(item.createdAt)}</TableCell>
             <TableCell>

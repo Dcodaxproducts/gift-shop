@@ -173,7 +173,7 @@ export function SubscriptionPlanFormPage({
   };
 
   return (
-    <div className="mx-auto max-w-[920px] space-y-5">
+    <div className="mx-auto max-w-230 space-y-5">
       <PageHeader
         title={mode === "create" ? "Create Subscription Plan" : "Edit Subscription Plan"}
         description="Configure a new subscription tier for your global customer base."
@@ -190,7 +190,7 @@ export function SubscriptionPlanFormPage({
             <textarea
               id="description"
               placeholder="Describe what this plan is best for..."
-              className="min-h-[92px] w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:border-primary"
+              className="min-h-23 w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:border-primary"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />

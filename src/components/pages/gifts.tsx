@@ -3,10 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Edit2, Plus, Star, X } from "lucide-react";
-import {
-  giftCategoryOptions,
-  giftProviderOptions,
-} from "@/constants/gifts";
+import { giftStatusOptions } from "@/constants/filter-options";
 import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { AddCategoryDialog } from "@/components/dialog/add-category-dialog";
@@ -17,28 +14,30 @@ import { TableCell, TableHead } from "@/components/ui/table";
 import { Can } from "@/components/auth/can";
 import MyImage from "@/components/common/MyImage";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useGiftCategories } from "@/hooks/useGiftCategories";
 import { useDeleteGift, useGifts } from "@/hooks/useGift";
-import type { Gift as GiftItem } from "@/types/gifts";
+import type { Gift as GiftItem, GiftStatus } from "@/types/gifts";
 import { StatusBadge } from "@/utils/status";
 
 export function GiftsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const [provider, setProvider] = useState("all");
+  const [status, setStatus] = useState("all");
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<GiftItem | null>(null);
   const limit = 10;
   const router = useRouter();
   const debouncedSearch = useDebounce(search, 400);
   const { mutate: deleteGift, isPending: isDeleting } = useDeleteGift();
+  const { data: giftCategories = [] } = useGiftCategories({ lookup: true });
 
   const { data: gifts = [], isLoading } = useGifts({
     page,
     limit,
     search: debouncedSearch || undefined,
     categoryId: category === "all" ? undefined : category,
-    providerId: provider === "all" ? undefined : provider,
+    status: status === "all" ? undefined : (status as GiftStatus),
   });
 
   const hasNextPage = gifts.length === limit;
@@ -78,14 +77,17 @@ export function GiftsPage() {
             onChange: setCategory,
             placeholder: "Category",
             width: "sm:w-[135px]",
-            options: giftCategoryOptions.map((option) => ({ value: option.value, label: option.label })),
+            options: [
+              { value: "all", label: "All Categories" },
+              ...giftCategories.map((giftCategory) => ({ value: giftCategory.id, label: giftCategory.name })),
+            ],
           },
           {
-            value: provider,
-            onChange: setProvider,
-            placeholder: "Provider",
+            value: status,
+            onChange: setStatus,
+            placeholder: "Status",
             width: "sm:w-[130px]",
-            options: giftProviderOptions.map((option) => ({ value: option.value, label: option.label })),
+            options: giftStatusOptions,
           },
         ]}
       />
@@ -118,13 +120,13 @@ export function GiftsPage() {
                   />
                 </span>
 
-                <span className="max-w-32.5 text-xs font-semibold leading-4 ">
+                <span className="max-w-32.5 text-xs font-semibold leading-4 capitalize">
                   {item.name}
                 </span>
               </div>
             </TableCell>
-            <TableCell>{item.categoryName ?? item.category?.name ?? item.categoryId ?? "-"}</TableCell>
-            <TableCell>{item.providerName ?? item.provider?.businessName ?? item.provider?.name ?? item.providerId ?? "-"}</TableCell>
+            <TableCell className="capitalize">{item.category?.name ?? "-"}</TableCell>
+            <TableCell className="capitalize">{item.provider?.businessName ?? "-"}</TableCell>
             <TableCell className="font-semibold">${item.price?.toFixed(2)}</TableCell>
             <TableCell>
               <span className="inline-flex items-center gap-1 text-xs text-slate-600">

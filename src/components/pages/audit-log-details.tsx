@@ -10,24 +10,6 @@ import type { AuditLogJsonValue } from "@/services/audit-logs";
 import { formatDate } from "@/utils/formatDate";
 import { formatLabel } from "@/utils/formatLabel";
 import { StatusBadge } from "@/utils/status";
-import { cn } from "@/lib/utils";
-
-function SeverityBadge({ severity }: { severity?: string }) {
-  const value = severity ?? "LOW";
-  const toneClass =
-    {
-      LOW: "bg-slate-100 text-slate-500",
-      MEDIUM: "bg-blue-50 text-blue-600",
-      HIGH: "bg-amber-50 text-amber-600",
-      CRITICAL: "bg-red-50 text-red-500",
-    }[value.toUpperCase()] ?? "bg-slate-100 text-slate-500";
-
-  return (
-    <span className={cn("inline-flex rounded-full px-3 py-1.5 text-[10px] font-semibold", toneClass)}>
-      {formatLabel(value)}
-    </span>
-  );
-}
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -79,7 +61,7 @@ export function AuditLogDetailsPage() {
                 <DetailRow label="Action" value={data?.actionLabel ?? formatLabel(data?.action)} />
                 <DetailRow label="Module" value={data?.module ?? "-"} />
                 <DetailRow label="Status" value={data?.status ? <StatusBadge status={data.status} /> : "-"} />
-                <DetailRow label="Severity" value={<SeverityBadge severity={data?.severity} />} />
+                <DetailRow label="Severity" value={<StatusBadge status={data?.severity ?? "LOW"} />} />
                 <DetailRow label="Created At" value={formatDate(data?.createdAt)} />
               </dl>
             </CardContent>
