@@ -51,6 +51,7 @@ export function ProvidersPage() {
   const { mutate: deleteProvider, isPending: isDeleting } = useDeleteProvider();
 
   const hasNextPage = providers.length === limit;
+  
   const pagination = {
     total: (page - 1) * limit + providers.length + (hasNextPage ? 1 : 0),
     page,
