@@ -14,18 +14,10 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useAuditLogStats, useAuditLogs, useExportAuditLogs } from "@/hooks/useAuditLogs";
 import type { AuditLog, AuditLogSeverity, AuditLogStatus } from "@/services/audit-logs";
 import { formatDate } from "@/utils/formatDate";
+import { formatLabel } from "@/utils/formatLabel";
 import { getInitials } from "@/utils/getInitials";
 import { StatusBadge } from "@/utils/status";
 import { cn } from "@/lib/utils";
-
-function formatLabel(value: string | null | undefined) {
-  if (!value) return "-";
-
-  return value
-    .replace(/[_-]/g, " ")
-    .toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
 
 function SeverityBadge({ severity }: { severity?: string | null }) {
   const value = severity ?? "LOW";
