@@ -92,8 +92,8 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
                 <span className="text-xs font-semibold ">{item.name}</span>
               </div>
             </TableCell>
-            <TableCell className="text-xs font-semibold text-primary">
-              {item.currency} {item.price}
+            <TableCell className="text-xs font-semibold">
+              ${item.price.toFixed(2)}
             </TableCell>
             <TableCell>
               <div className="flex items-center gap-2 text-[10px] font-semibold ">

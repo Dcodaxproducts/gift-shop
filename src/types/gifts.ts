@@ -61,7 +61,7 @@ export type Gift = {
   providerId?: string | null;
   providerName?: string | null;
   provider?: GiftProviderSummary | null;
-  price?: number | string;
+  price?: number;
   currency?: string;
   rating?: number | string;
   reviewCount?: number;
