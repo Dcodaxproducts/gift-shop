@@ -293,14 +293,6 @@ export function ProviderPayoutsPage() {
       <PageHeader
         title="Provider Payouts"
         description="Manage and monitor provider earnings and distributions"
-        // actions={
-        //   <>
-        //     <Button variant="outline" disabled={isExportPending} onClick={() => exportPayouts()}>
-        //       <Download className="size-3.5" />
-        //       Export
-        //     </Button>
-        //   </>
-        // }
       />
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
