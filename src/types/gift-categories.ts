@@ -18,6 +18,7 @@ export type GetGiftCategoriesParams = {
   isVisible?: boolean;
   sortBy?: GiftCategorySortBy;
   sortOrder?: SortOrder;
+  lookup?: boolean;
 };
 
 export type GiftCategory = {

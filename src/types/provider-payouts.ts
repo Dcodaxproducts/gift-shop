@@ -1,3 +1,13 @@
+import type { ElementType } from "react";
+
+export type PayoutMetric = {
+  icon: ElementType;
+  label: string;
+  value: string;
+  change: string;
+  tone: "purple" | "amber" | "green" | "violet";
+};
+
 export type ProviderPayoutStats = {
   totalPayoutsThisMonth: number;
   totalPayoutsDeltaPercent: number;
