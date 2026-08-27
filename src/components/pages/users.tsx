@@ -123,7 +123,7 @@ export function UsersPage() {
                 </div>
               </TableCell>
               <TableCell className="text-xs text-slate-500">{formatDate(item.createdAt)}</TableCell>
-              <TableCell className="text-xs font-semibold ">${item.totalSpent}</TableCell>
+              <TableCell className="text-xs font-semibold ">${item.totalSpent?.toFixed(2)}</TableCell>
               <TableCell>
                 <StatusBadge status={item.status} />
               </TableCell>
