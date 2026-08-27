@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { statToneClasses, type StatTone } from "@/constants/custom";
+import type { PlatformAnalyticsStats } from "@/types/platform-analytics";
 
 type PlatformAnalyticsStat = {
   title: string;
@@ -9,37 +10,55 @@ type PlatformAnalyticsStat = {
   tone: StatTone;
 };
 
-const platformAnalyticsStats: PlatformAnalyticsStat[] = [
-  {
-    title: "Total Revenue",
-    value: "$154,320",
-    change: "+8.1%",
-    tone: "emerald",
-  },
-  {
-    title: "New Subscriptions",
-    value: "215",
-    change: "+5.3%",
-    tone: "emerald",
-  },
-  {
-    title: "Churn Rate",
-    value: "2.9%",
-    change: "0.1%",
-    tone: "blue",
-  },
-  {
-    title: "Active Users",
-    value: "5,120",
-    change: "-2.1%",
-    tone: "rose",
-  },
-];
+const numberFormatter = new Intl.NumberFormat("en-US");
 
-export function PlatformAnalyticsStatsCard() {
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    currency: "USD",
+    maximumFractionDigits: 2,
+    style: "currency",
+  }).format(value);
+}
+
+function formatDelta(value: number) {
+  return `${value > 0 ? "+" : ""}${value}%`;
+}
+
+function buildPlatformAnalyticsStats(data?: PlatformAnalyticsStats): PlatformAnalyticsStat[] {
+  return [
+    {
+      title: "Total Revenue",
+      value: formatCurrency(data?.totalRevenue.value ?? 0),
+      change: formatDelta(data?.totalRevenue.changePercent ?? 0),
+      tone: "emerald",
+    },
+    {
+      title: "New Subscriptions",
+      value: numberFormatter.format(data?.newSubscriptions.value ?? 0),
+      change: formatDelta(data?.newSubscriptions.changePercent ?? 0),
+      tone: "emerald",
+    },
+    {
+      title: "Churn Rate",
+      value: `${data?.churnRate.value ?? 0}%`,
+      change: formatDelta(data?.churnRate.changePercent ?? 0),
+      tone: "blue",
+    },
+    {
+      title: "Active Users",
+      value: numberFormatter.format(data?.activeUsers.value ?? 0),
+      change: formatDelta(data?.activeUsers.changePercent ?? 0),
+      tone: "rose",
+    },
+  ];
+}
+
+export function PlatformAnalyticsStatsCard({ data }: { data?: PlatformAnalyticsStats }) {
+  const stats = buildPlatformAnalyticsStats(data);
+
   return (
     <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {platformAnalyticsStats.map((stat) => (
+      {stats.map((stat) => (
         <Card key={stat.title}>
           <CardContent>
             <div>
