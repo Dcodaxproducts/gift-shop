@@ -162,7 +162,7 @@ export function ProvidersPage() {
               </TableCell>
 
               <TableCell className="font-semibold">
-                ${item.revenue}
+                ${item.revenue.toFixed(2)}
               </TableCell>
 
               <TableCell>
