@@ -8,17 +8,9 @@ import { Button } from "@/components/ui/button";
 import { useAuditLog } from "@/hooks/useAuditLogs";
 import type { AuditLogJsonValue } from "@/services/audit-logs";
 import { formatDate } from "@/utils/formatDate";
+import { formatLabel } from "@/utils/formatLabel";
 import { StatusBadge } from "@/utils/status";
 import { cn } from "@/lib/utils";
-
-function formatLabel(value: string | null | undefined) {
-  if (!value) return "-";
-
-  return value
-    .replace(/[_-]/g, " ")
-    .toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
 
 function SeverityBadge({ severity }: { severity?: string }) {
   const value = severity ?? "LOW";
