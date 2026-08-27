@@ -59,7 +59,7 @@ export function DataTable<T>({
 
   if (!loading && data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white py-20 shadow-sm">
+      <div className={cn(resolvedContainerClassName, "items-center justify-center py-20")}>
         <p className="text-sm font-medium text-slate-400">No data found.</p>
       </div>
     );
