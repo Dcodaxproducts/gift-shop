@@ -63,3 +63,20 @@ export const providerDisputeStatusOptions = [
   { value: "AWAITING_INFO", label: "Awaiting Info" },
   { value: "ESCALATED", label: "Escalated" },
 ] as const;
+
+export const transactionTypeOptions = [
+  { value: "all", label: "All" },
+  { value: "PAYMENT", label: "Payment" },
+  { value: "GIFT", label: "Gift" },
+  { value: "WITHDRAWAL", label: "Withdrawal" },
+  { value: "SUBSCRIPTION_PAYMENT", label: "Subscription Payment" },
+  { value: "RECURRING_PAYMENT", label: "Recurring Payment" },
+  { value: "WALLET_TOP_UP", label: "Wallet Top-up" },
+] as const;
+
+export const transactionStatusOptions = [
+  { value: "all", label: "Status" },
+  { value: "SUCCESS", label: "Success" },
+  { value: "PENDING", label: "Pending" },
+  { value: "FAILED", label: "Failed" },
+] as const;
