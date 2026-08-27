@@ -65,3 +65,25 @@ export const transactionStatusOptions = [
   { value: "PENDING", label: "Pending" },
   { value: "FAILED", label: "Failed" },
 ] as const;
+
+export const auditLogStatusOptions = [
+  { value: "all", label: "Status" },
+  { value: "SUCCESS", label: "Success" },
+  { value: "FAILED", label: "Failed" },
+  { value: "PENDING", label: "Pending" },
+  { value: "WARNING", label: "Warning" },
+] as const;
+
+export const auditLogSeverityOptions = [
+  { value: "all", label: "Severity" },
+  { value: "LOW", label: "Low" },
+  { value: "MEDIUM", label: "Medium" },
+  { value: "HIGH", label: "High" },
+  { value: "CRITICAL", label: "Critical" },
+] as const;
+
+export const giftStatusOptions = [
+  { value: "all", label: "All Status" },
+  { value: "ACTIVE", label: "Active" },
+  { value: "INACTIVE", label: "Inactive" },
+] as const;
