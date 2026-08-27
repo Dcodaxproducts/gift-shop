@@ -19,23 +19,7 @@ import { formatDate } from "@/utils/formatDate";
 import PageHeader from "../common/page-header";
 import { StatusBadge } from "@/utils/status";
 import MyImage from "../common/MyImage";
-
-const transactionTypeOptions = [
-  { value: "all", label: "All" },
-  { value: "PAYMENT", label: "Payment" },
-  { value: "GIFT", label: "Gift" },
-  { value: "WITHDRAWAL", label: "Withdrawal" },
-  { value: "SUBSCRIPTION_PAYMENT", label: "Subscription Payment" },
-  { value: "RECURRING_PAYMENT", label: "Recurring Payment" },
-  { value: "WALLET_TOP_UP", label: "Wallet Top-up" },
-] as const;
-
-const transactionStatusOptions = [
-  { value: "all", label: "Status" },
-  { value: "SUCCESS", label: "Success" },
-  { value: "PENDING", label: "Pending" },
-  { value: "FAILED", label: "Failed" },
-] as const;
+import { transactionStatusOptions, transactionTypeOptions } from "@/constants/filter-options";
 
 const formatAmount = (amount: number, currency: string) => {
   return new Intl.NumberFormat("en-US", {
