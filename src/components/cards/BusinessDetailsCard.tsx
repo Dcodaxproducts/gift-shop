@@ -26,7 +26,7 @@ function BusinessDetailsCard({ data }: { data?: ProviderDetails }) {
             <Label>
               Revenue
             </Label>
-            <p className="mt-1 text-xs font-semibold text-slate-400 leading-4 ">${data?.revenue}</p>
+            <p className="mt-1 text-xs font-semibold text-slate-400 leading-4 ">${data?.revenue.toFixed(2)}</p>
           </div>
           <div className="py-3">
             <Label>
