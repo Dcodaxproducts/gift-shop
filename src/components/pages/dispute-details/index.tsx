@@ -12,9 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { ErrorMessage } from "@/components/common/error-message";
-import type { DisputeRefundDetail } from "@/constants/disputes-refund";
 import { useDispute } from "@/hooks/useDisputes";
-import type { Dispute } from "@/types/disputes";
+import type { Dispute, DisputeRefundDetail } from "@/types/disputes";
 import { cn } from "@/lib/utils";
 import PageHeader from "@/components/common/page-header";
 

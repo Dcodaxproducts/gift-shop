@@ -15,7 +15,6 @@ export const getGiftCategories = async (
   return (data.data ?? []) as GiftCategory[];
 };
 
-
 export const createGiftCategory = async (payload: CreateGiftCategoryPayload) => {
   const { data } = await api.post(GIFT_CATEGORIES_ENDPOINT, payload);
   return data.data as GiftCategory;

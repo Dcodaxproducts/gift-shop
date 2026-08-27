@@ -1,7 +1,7 @@
 import { UserRound } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import type { DisputeRefundDetail } from "@/constants/disputes-refund";
+import type { DisputeRefundDetail } from "@/types/disputes";
 import { cn } from "@/lib/utils";
 
 const detailLabelClassName = "text-[9px] font-medium uppercase tracking-wide text-slate-500";
