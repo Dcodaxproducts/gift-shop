@@ -6,6 +6,7 @@ import { Can } from "@/components/auth/can";
 import { Card, CardContent } from "@/components/ui/card";
 import { subscriptionPlanIcons } from "@/constants/subscriptions";
 import { cn } from "@/lib/utils";
+import { getBilling, getFeatureLabels, getLimitLabels } from "@/utils/subscription-plan";
 import type { SubscriptionPlan } from "@/types/subscription-plans";
 
 function PlanFeature({ feature }: { feature: string }) {
@@ -19,62 +20,6 @@ function PlanFeature({ feature }: { feature: string }) {
   );
 }
 
-function formatLabel(value: string) {
-  return value
-    .replace(/([A-Z])/g, " $1")
-    .replace(/[_-]/g, " ")
-    .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
-function getBillingPrice(plan: SubscriptionPlan) {
-  if (plan.yearlyPrice != null && plan.yearlyPrice > 0) {
-    return { period: "/year", price: plan.yearlyPrice };
-  }
-
-  if (plan.monthlyPrice != null && plan.monthlyPrice > 0) {
-    return { period: "/month", price: plan.monthlyPrice };
-  }
-
-  return { period: "", price: 0 };
-}
-
-function formatPrice(plan: SubscriptionPlan) {
-  const { price } = getBillingPrice(plan);
-
-  return new Intl.NumberFormat("en-US", {
-    currency: plan.currency ?? "USD",
-    maximumFractionDigits: 0,
-    style: "currency",
-  }).format(price);
-}
-
-function formatPeriod(plan: SubscriptionPlan) {
-  return getBillingPrice(plan).period;
-}
-
-function getFeatureLabels(plan: SubscriptionPlan) {
-  if (Array.isArray(plan.features)) {
-    return plan.features.map((feature) => (
-      typeof feature === "string" ? formatLabel(feature) : feature.title
-    ));
-  }
-
-  if (plan.features && typeof plan.features === "object") {
-    return Object.entries(plan.features)
-      .filter(([, enabled]) => Boolean(enabled))
-      .map(([feature]) => formatLabel(feature));
-  }
-
-  return [];
-}
-
-function getLimitLabels(plan: SubscriptionPlan) {
-  if (!plan.limits) return [];
-
-  return Object.entries(plan.limits).map(([key, value]) => `${formatLabel(key)}: ${value}`);
-}
-
 export function SubscriptionPlanCard({
   onDelete,
   plan,
@@ -83,8 +28,8 @@ export function SubscriptionPlanCard({
   plan: SubscriptionPlan;
 }) {
   const router = useRouter();
-  const features = getFeatureLabels(plan);
-  const limits = getLimitLabels(plan);
+  const { price, period } = getBilling(plan);
+  const features = [...getFeatureLabels(plan), ...getLimitLabels(plan)];
 
   return (
     <Card
@@ -107,16 +52,13 @@ export function SubscriptionPlanCard({
 
         <h2 className="mt-3 text-2xl font-semibold tracking-tight first-letter:uppercase">{plan.description}</h2>
         <div className="mt-8 flex items-end gap-1">
-          <p className="text-[40px] font-semibold leading-none tracking-tight ">{formatPrice(plan)}</p>
-          <span className="pb-1 text-sm font-medium text-slate-400">{formatPeriod(plan)}</span>
+          <p className="text-[40px] font-semibold leading-none tracking-tight ">{price}</p>
+          <span className="pb-1 text-sm font-medium text-slate-400">{period}</span>
         </div>
 
         <ul className="mt-8 space-y-4">
           {features.map((feature) => (
             <PlanFeature key={feature} feature={feature} />
-          ))}
-          {limits.map((limit) => (
-            <PlanFeature key={limit} feature={limit} />
           ))}
         </ul>
 
