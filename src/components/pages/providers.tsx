@@ -147,7 +147,7 @@ export function ProvidersPage() {
                     />
                   </span>
 
-                  <span className="max-w-32.5 text-xs font-semibold leading-4 ">
+                  <span className="max-w-32.5 text-xs font-semibold leading-4 capitalize">
                     {item.name}
                   </span>
                 </div>

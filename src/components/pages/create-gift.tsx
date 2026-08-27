@@ -1,6 +1,6 @@
 "use client";
 
-import { GiftFormPage } from "@/components/pages/gift-form";
+import { GiftFormPage } from "@/components/forms/gift-form";
 import { useCreateGift } from "@/hooks/useGift";
 import type { CreateGiftFormValues } from "@/validations/gifts";
 

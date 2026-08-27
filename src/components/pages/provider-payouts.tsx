@@ -9,9 +9,6 @@ import {
   Hourglass,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import {
-  type PayoutMetric,
-} from "@/constants/payouts";
 import PageHeader from "@/components/common/page-header";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
@@ -30,6 +27,7 @@ import {
   useProviderPayoutTrends,
 } from "@/hooks/useProviderPayouts";
 import type {
+  PayoutMetric,
   ProviderPayoutListItem,
   ProviderPayoutStats,
   ProviderPayoutTrendRange,
