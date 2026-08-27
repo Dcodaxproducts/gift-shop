@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type StatusTone = "active" | "pending" | "inactive" | "danger" | "success" | "suspended" | "primary" | "info";
+export type StatusTone = "active" | "pending" | "inactive" | "danger" | "success" | "suspended" | "primary" | "info" | "medium";
 
 const statusToneClass: Record<StatusTone, string> = {
   active: "bg-emerald-50 text-emerald-600",
@@ -11,6 +11,7 @@ const statusToneClass: Record<StatusTone, string> = {
   suspended: "bg-rose-50 text-rose-600",
   primary: "bg-primary/10 text-primary",
   info: "bg-blue-50 text-slate-500",
+  medium: "bg-blue-50 text-blue-600",
 };
 
 // Map your database/API status to the visual Tone
@@ -37,6 +38,10 @@ const statusToToneMap: Record<string, StatusTone> = {
   PENDING_SYNC: "inactive",
   YES: "success",
   NO: "inactive",
+  LOW: "inactive",
+  MEDIUM: "medium",
+  HIGH: "pending",
+  CRITICAL: "danger",
 };
 
 interface StatusBadgeProps {
