@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  type PayoutMetric,
-} from "@/constants/payouts";
+import type { PayoutMetric } from "@/types/provider-payouts";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 

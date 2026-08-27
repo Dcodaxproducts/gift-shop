@@ -1,7 +1,7 @@
 import { FileImage, FileText, FolderOpen, SquareLibrary } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { DisputeEvidenceFile } from "@/constants/disputes-refund";
+import type { DisputeEvidenceFile } from "@/types/disputes";
 import { cn } from "@/lib/utils";
 
 const evidenceIcon = {

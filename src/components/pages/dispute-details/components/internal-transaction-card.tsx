@@ -1,7 +1,7 @@
 import { CheckCircle2, CircleDollarSign, PackageCheck, Truck } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import type { DisputeRefundDetail, TransactionTimelineItem } from "@/constants/disputes-refund";
+import type { DisputeRefundDetail, TransactionTimelineItem } from "@/types/disputes";
 import { cn } from "@/lib/utils";
 
 const labelClassName = "text-[9px] font-medium uppercase tracking-wide text-slate-500";
