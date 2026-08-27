@@ -21,19 +21,6 @@ import { useDeleteGift, useGifts } from "@/hooks/useGift";
 import type { Gift as GiftItem } from "@/types/gifts";
 import { StatusBadge } from "@/utils/status";
 
-const formatPrice = (price?: number | string) => {
-  const numericPrice = typeof price === "string" ? Number(price) : price;
-
-  if (typeof numericPrice !== "number" || Number.isNaN(numericPrice)) {
-    return "$0";
-  }
-
-  return numericPrice.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-};
-
 export function GiftsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -138,7 +125,7 @@ export function GiftsPage() {
             </TableCell>
             <TableCell>{item.categoryName ?? item.category?.name ?? item.categoryId ?? "-"}</TableCell>
             <TableCell>{item.providerName ?? item.provider?.businessName ?? item.provider?.name ?? item.providerId ?? "-"}</TableCell>
-            <TableCell className="font-semibold">{formatPrice(item.price)}</TableCell>
+            <TableCell className="font-semibold">${item.price?.toFixed(2)}</TableCell>
             <TableCell>
               <span className="inline-flex items-center gap-1 text-xs text-slate-600">
                 <Star className="size-3.5 fill-amber-400 text-amber-400" />
