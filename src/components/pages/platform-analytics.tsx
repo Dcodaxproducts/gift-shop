@@ -109,6 +109,7 @@ export function PlatformAnalyticsPage() {
     <div className="space-y-5">
       <PageHeader
         title="Platform Analytics"
+        description="Monitor platform-wide performance metrics and revenue trends."
         actions={
           <Can module="analytics" action="read">
             <Button onClick={() => exportReport.mutate({})} disabled={exportReport.isPending}>

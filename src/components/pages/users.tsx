@@ -6,10 +6,10 @@ import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableHead } from "@/components/ui/table";
+import { TableCell } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
 import { useDeleteUser, useExportUsers, useUsers } from "@/hooks/useUsers";
-import type { User, UserStatus, UserSortBy } from "@/types/users";
+import type { User, UserStatus } from "@/types/users";
 import { EditUserDialog } from "@/components/dialog/edit-user-dialog";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { Can } from "@/components/auth/can";
@@ -19,11 +19,12 @@ import { formatDate } from "@/utils/formatDate";
 import { useDebounce } from "@/hooks/useDebounce";
 import { userStatusOptions } from "@/constants/filter-options";
 
+const userColumns = ["User", "Contact", "Registered", "Transactions", "Status", "Actions"];
+
 export function UsersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<UserStatus | "all">("all");
-  const [sortBy, setSortBy] = useState<UserSortBy>("createdAt");
   const [editUser, setEditUser] = useState<User | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
   const limit = 10;
@@ -35,7 +36,6 @@ export function UsersPage() {
     limit,
     search: debouncedSearch || undefined,
     status: status === "all" ? undefined : status,
-    sortBy
   });
   
   const exportUsers = useExportUsers();
@@ -58,6 +58,64 @@ export function UsersPage() {
 
   const handleExport = () => {
     exportUsers.mutate();
+  };
+
+  const renderUserRow = (item: User) => {
+    const fullName = `${item.firstName ?? ""} ${item.lastName ?? ""}`.trim();
+    return (
+      <>
+        <TableCell>
+          <div className="flex items-center gap-3">
+            <span className="flex bg-primary/10 text-primary size-10 items-center justify-center rounded-2xl text-xs font-semibold">
+              {getInitials(fullName)}
+            </span>
+            <span className="text-xs font-semibold  capitalize">{fullName}</span>
+          </div>
+        </TableCell>
+        <TableCell>
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-slate-600">{item.email}</p>
+            <p className="text-[10px] text-slate-400">{item.phone}</p>
+          </div>
+        </TableCell>
+        <TableCell className="text-xs text-slate-500">{formatDate(item.createdAt)}</TableCell>
+        <TableCell className="text-xs font-semibold ">${item.totalSpent?.toFixed(2)}</TableCell>
+        <TableCell>
+          <StatusBadge status={item.status} />
+        </TableCell>
+        <TableCell>
+          <div className="flex items-center justify-end">
+            <Can module="users" action="read">
+              <Button
+                variant="ghost"
+                className="size-9 rounded-full text-primary hover:bg-primary/10"
+                onClick={() => router.push(`/users/${item.id}`)}
+              >
+                <Eye className="size-4" />
+              </Button>
+            </Can>
+            <Can module="users" action="update">
+              <Button
+                variant="ghost"
+                className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+                onClick={() => setEditUser(item)}
+              >
+                <Edit2 className="size-4" />
+              </Button>
+            </Can>
+            <Can module="users" action="delete">
+              <Button
+                variant="ghost"
+                className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+                onClick={() => setDeleteTarget(item)}
+              >
+                <X className="size-4" />
+              </Button>
+            </Can>
+          </div>
+        </TableCell>
+      </>
+    );
   };
 
   return (
@@ -94,74 +152,10 @@ export function UsersPage() {
         data={users}
         loading={isLoading}
         pagination={{ ...pagination, page, onPageChange: setPage }}
-        headers={
-          <>
-            <TableHead>User</TableHead>
-            <TableHead>Contact</TableHead>
-            <TableHead>Registered</TableHead>
-            <TableHead>Transactions</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </>
-        }
-        row={(item: User) => {
-          const fullName = `${item.firstName ?? ""} ${item.lastName ?? ""}`.trim();
-          return (
-            <>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <span className="flex bg-primary/10 text-primary size-10 items-center justify-center rounded-2xl text-xs font-semibold">
-                    {getInitials(fullName)}
-                  </span>
-                  <span className="text-xs font-semibold  capitalize">{fullName}</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="space-y-1">
-                  <p className="text-xs font-medium text-slate-600">{item.email}</p>
-                  <p className="text-[10px] text-slate-400">{item.phone}</p>
-                </div>
-              </TableCell>
-              <TableCell className="text-xs text-slate-500">{formatDate(item.createdAt)}</TableCell>
-              <TableCell className="text-xs font-semibold ">${item.totalSpent?.toFixed(2)}</TableCell>
-              <TableCell>
-                <StatusBadge status={item.status} />
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center justify-end">
-                  <Can module="users" action="read">
-                    <Button
-                      variant="ghost"
-                      className="size-9 rounded-full text-primary hover:bg-primary/10"
-                      onClick={() => router.push(`/users/${item.id}`)}
-                    >
-                      <Eye className="size-4" />
-                    </Button>
-                  </Can>
-                  <Can module="users" action="update">
-                    <Button
-                      variant="ghost"
-                      className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                      onClick={() => setEditUser(item)}
-                    >
-                      <Edit2 className="size-4" />
-                    </Button>
-                  </Can>
-                  <Can module="users" action="delete">
-                    <Button
-                      variant="ghost"
-                      className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                      onClick={() => setDeleteTarget(item)}
-                    >
-                      <X className="size-4" />
-                    </Button>
-                  </Can>
-                </div>
-              </TableCell>
-            </>
-          );
-        }}
+        headers={userColumns}
+        row={renderUserRow}
       />
+
       <EditUserDialog
         open={!!editUser}
         onOpenChange={(open) => {

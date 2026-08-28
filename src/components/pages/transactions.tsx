@@ -6,7 +6,7 @@ import { TransactionStatsCard } from "@/components/cards/TransactionStatsCard";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableHead } from "@/components/ui/table";
+import { TableCell } from "@/components/ui/table";
 import { Can } from "@/components/auth/can";
 import { useDebounce } from "@/hooks/useDebounce";
 import {
@@ -21,95 +21,40 @@ import { StatusBadge } from "@/utils/status";
 import MyImage from "../common/MyImage";
 import { transactionStatusOptions, transactionTypeOptions } from "@/constants/filter-options";
 
-const formatAmount = (amount: number, currency: string) => {
-  return new Intl.NumberFormat("en-US", {
-    currency,
-    maximumFractionDigits: 2,
-    style: "currency",
-  }).format(amount);
-};
+const transactionColumns = ["User", "Transaction Id", "Provider", "Type", "Amount", "Status", "Date"];
 
-function TransactionsTable({
-  data,
-  loading,
-  page,
-  limit,
-  total,
-  totalPages,
-  onPageChange,
-}: {
-  data: Transaction[];
-  loading: boolean;
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}) {
+const renderTransactionRow = (item: Transaction) => (
+  <>
+    <TableCell>
+      <div className="flex items-center gap-3">
+        <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
+          <MyImage
+            src={item?.user?.avatarUrl}
+            alt="provider-logo"
+            fill
+            sizes="44px"
+          />
+        </span>
 
-  return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-      <DataTable
-        data={data}
-        loading={loading}
-        isBorder={false}
-        containerClassName="rounded-none border-0 shadow-none"
-        pagination={{
-          total,
-          page,
-          limit,
-          totalPages,
-          hasNext: page < totalPages,
-          hasPrevious: page > 1,
-          onPageChange,
-        }}
-        headers={
-          <>
-            <TableHead>User</TableHead>
-            <TableHead>Transaction Id</TableHead>
-            <TableHead>Provider</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Date</TableHead>
-          </>
-        }
-        row={(item: Transaction) => (
-          <>
-           <TableCell>
-              <div className="flex items-center gap-3">
-                <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
-                  <MyImage
-                    src={item?.user?.avatarUrl}
-                    alt="provider-logo"
-                    fill
-                    sizes="44px"
-                  />
-                </span>
-
-                <span className="max-w-32.5 text-xs font-semibold leading-4 ">
-                  {item.user?.name ?? "-"}
-                </span>
-              </div>
-            </TableCell>
-          <TableCell className="font-medium text-slate-700">{item.transactionId}</TableCell>
-            <TableCell className="text-slate-600">{item.gatewayProvider}</TableCell>
-            <TableCell>
-              <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-medium text-slate-600">
-                {item.type}
-              </span>
-            </TableCell>
-            <TableCell className="font-bold text-primary">{formatAmount(item.amount, item.currency)}</TableCell>
-            <TableCell>
-              <StatusBadge status={item.status} />
-            </TableCell>
-            <TableCell className="max-w-24 text-slate-500">{formatDate(item.createdAt)}</TableCell>
-          </>
-        )}
-      />
-    </div>
-  );
-}
+        <span className="max-w-32.5 text-xs font-semibold leading-4 ">
+          {item.user?.name ?? "-"}
+        </span>
+      </div>
+    </TableCell>
+    <TableCell className="font-medium text-slate-700">{item.transactionId}</TableCell>
+    <TableCell className="text-slate-600">{item.gatewayProvider}</TableCell>
+    <TableCell>
+      <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-medium text-slate-600">
+        {item.type}
+      </span>
+    </TableCell>
+    <TableCell className="font-bold text-primary">${item.amount.toFixed(2)}</TableCell>
+    <TableCell>
+      <StatusBadge status={item.status} />
+    </TableCell>
+    <TableCell className="max-w-24 text-slate-500">{formatDate(item.createdAt)}</TableCell>
+  </>
+);
 
 export function TransactionsPage() {
   const [page, setPage] = useState(1);
@@ -141,6 +86,7 @@ export function TransactionsPage() {
     <div className="space-y-5">
       <PageHeader
         title="Transaction Monitoring"
+        description="Track and monitor all platform transactions in real time."
         actions={
           <Can module="transactions" action="read">
             <Button onClick={() => exportTransactions.mutate()} disabled={exportTransactions.isPending}>
@@ -184,14 +130,20 @@ export function TransactionsPage() {
         ]}
       />
 
-      <TransactionsTable
+      <DataTable
         data={transactions}
         loading={isLoading}
-        page={meta.page}
-        limit={meta.limit}
-        total={meta.total}
-        totalPages={meta.totalPages}
-        onPageChange={setPage}
+        pagination={{
+          total: meta.total,
+          page: meta.page,
+          limit: meta.limit,
+          totalPages: meta.totalPages,
+          hasNext: meta.page < meta.totalPages,
+          hasPrevious: meta.page > 1,
+          onPageChange: setPage,
+        }}
+        headers={transactionColumns}
+        row={renderTransactionRow}
       />
     </div>
   );
