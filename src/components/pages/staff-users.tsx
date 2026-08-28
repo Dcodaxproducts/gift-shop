@@ -7,7 +7,7 @@ import PageHeader from "@/components/common/page-header";
 import { FilterSection } from "@/components/common/filter-section";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableHead } from "@/components/ui/table";
+import { TableCell } from "@/components/ui/table";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { StatusBadge } from "@/utils/status";
 import { staffStatusOptions } from "@/constants/filter-options";
@@ -16,6 +16,8 @@ import { useDeleteStaff, useStaffList } from "@/hooks/useStaff";
 import { useDebounce } from "@/hooks/useDebounce";
 import { formatDate } from "@/utils/formatDate";
 import type { StaffMember } from "@/types/staff";
+
+const staffColumns = ["Staff", "Email", "Role", "Status", "Created Date", "Actions"];
 
 export function StaffUsersPage() {
   const router = useRouter();
@@ -54,6 +56,38 @@ export function StaffUsersPage() {
     hasNext: hasNextPage,
     hasPrevious: page > 1,
   };
+
+  const renderStaffRow = (item: StaffMember) => (
+    <>
+      <TableCell className="font-semibold ">
+        {item.fullName || `${item.firstName} ${item.lastName}`}
+      </TableCell>
+      <TableCell className="text-slate-500">{item.email}</TableCell>
+      <TableCell className="text-slate-700">{item.role.name}</TableCell>
+      <TableCell>
+        <StatusBadge status={item.status} />
+      </TableCell>
+      <TableCell className="text-slate-500">{formatDate(item.createdAt)}</TableCell>
+      <TableCell>
+        <div className="flex items-center justify-end">
+          <Button
+            variant="ghost"
+            className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+            onClick={() => router.push(`/staff-users/${item.id}`)}
+          >
+            <Edit2 className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+            onClick={() => setDeleteTarget(item)}
+          >
+            <X className="size-4" />
+          </Button>
+        </div>
+      </TableCell>
+    </>
+  );
 
   return (
     <div className="space-y-5">
@@ -97,47 +131,8 @@ export function StaffUsersPage() {
         data={staff}
         loading={isLoading}
         pagination={{ ...pagination, page, onPageChange: setPage }}
-        headers={
-          <>
-            <TableHead>Staff</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Created Date</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </>
-        }
-        row={(item: StaffMember) => (
-          <>
-            <TableCell className="font-semibold ">
-              {item.fullName || `${item.firstName} ${item.lastName}`}
-            </TableCell>
-            <TableCell className="text-slate-500">{item.email}</TableCell>
-            <TableCell className="text-slate-700">{item.role.name}</TableCell>
-            <TableCell>
-              <StatusBadge status={item.status} />
-            </TableCell>
-            <TableCell className="text-slate-500">{formatDate(item.createdAt)}</TableCell>
-            <TableCell>
-              <div className="flex items-center justify-end">
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                  onClick={() => router.push(`/staff-users/${item.id}`)}
-                >
-                  <Edit2 className="size-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                  onClick={() => setDeleteTarget(item)}
-                >
-                  <X className="size-4" />
-                </Button>
-              </div>
-            </TableCell>
-          </>
-        )}
+        headers={staffColumns}
+        row={renderStaffRow}
       />
 
       <ConfirmDialog
