@@ -19,7 +19,6 @@ import { getInitials } from "@/utils/getInitials";
 import { StatusBadge } from "@/utils/status";
 import { auditLogSeverityOptions, auditLogStatusOptions } from "@/constants/filter-options";
 
-
 export function AuditLogsPage() {
   const router = useRouter();
   const [page, setPage] = useState(1);

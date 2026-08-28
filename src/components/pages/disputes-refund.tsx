@@ -7,20 +7,16 @@ import { FilterSection } from "@/components/common/filter-section";
 import { DisputeRefundStatsCard } from "@/components/cards/DisputeRefundStatsCard";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableHead } from "@/components/ui/table";
+import { TableCell } from "@/components/ui/table";
 import { Can } from "@/components/auth/can";
 import { disputeRefundCategoryOptions, disputeRefundStatusOptions } from "@/constants/filter-options";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useDisputeStats, useDisputes, useExportDisputes } from "@/hooks/useDisputes";
 import type { Dispute, DisputeStatus } from "@/types/disputes";
 import { StatusBadge } from "@/utils/status";
+import { useRouter } from "next/navigation";
 
-function formatCurrency(value: number, currency: string) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-  }).format(value);
-}
+const disputeColumns = ["Case ID", "Customer", "Order ID", "Amount", "Status", "Days Open", "Action"];
 
 function getDaysOpen(createdAt: string) {
   const createdDate = new Date(createdAt);
@@ -31,6 +27,7 @@ function getDaysOpen(createdAt: string) {
 }
 
 export function DisputesRefundPage() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -219,6 +216,38 @@ export function DisputesRefundPage() {
     setPage(1);
   };
 
+  const renderDisputeRow = (item: Dispute) => (
+    <>
+      <TableCell className="font-semibold text-primary">{item.caseId}</TableCell>
+      <TableCell>
+        <div className="space-y-1">
+          <p className="font-semibold">{item.customer.name}</p>
+          <p className="text-xs text-slate-400">{item.customer.email}</p>
+        </div>
+      </TableCell>
+      <TableCell className="text-slate-500">{item.transaction.transactionId}</TableCell>
+      <TableCell className="font-semibold">${item.amount.toFixed(2)}</TableCell>
+      <TableCell>
+        <StatusBadge status={item.status} />
+      </TableCell>
+      <TableCell className="font-medium">{getDaysOpen(item.createdAt)} days</TableCell>
+      <TableCell className="text-right">
+        <Can
+          module="disputes"
+          action={item.status === "RESOLVED" ? "read" : "update"}
+        >
+          <Button
+            variant="ghost"
+            className="text-primary"
+            onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id)}`)}
+          >
+            {item.status === "RESOLVED" ? "History" : "Review"}
+          </Button>
+        </Can>
+      </TableCell>
+    </>
+  );
+
   return (
     <div className="space-y-5">
       <PageHeader
@@ -270,46 +299,8 @@ export function DisputesRefundPage() {
           hasPrevious: meta.page > 1,
           onPageChange: setPage,
         }}
-        headers={
-          <>
-            <TableHead>Case ID</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Order ID</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Days Open</TableHead>
-            <TableHead className="text-right">Action</TableHead>
-          </>
-        }
-        row={(item: Dispute) => (
-          <>
-            <TableCell className="font-semibold text-primary">{item.caseId}</TableCell>
-            <TableCell>
-              <div className="space-y-1">
-                <p className="font-semibold">{item.customer.name}</p>
-                <p className="text-xs text-slate-400">{item.customer.email}</p>
-              </div>
-            </TableCell>
-            <TableCell className="text-slate-500">{item.transaction.transactionId}</TableCell>
-            <TableCell className="font-semibold">{formatCurrency(item.amount, item.currency)}</TableCell>
-            <TableCell>{StatusBadge({ status: item.status })}</TableCell>
-            <TableCell className="font-medium">{getDaysOpen(item.createdAt)} days</TableCell>
-            <TableCell className="text-right">
-              <Can
-                module="disputes"
-                action={item.status === "RESOLVED" ? "read" : "update"}
-              >
-                <Button
-                  variant="ghost"
-                  className="text-primary"
-                // onClick={() => router.push(`/disputes-refund/${encodeURIComponent(item.id)}`)}
-                >
-                  {item.status === "RESOLVED" ? "History" : "Review"}
-                </Button>
-              </Can>
-            </TableCell>
-          </>
-        )}
+        headers={disputeColumns}
+        row={renderDisputeRow}
       />
     </div>
   );
