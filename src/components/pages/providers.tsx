@@ -15,7 +15,7 @@ import { FilterSection } from "@/components/common/filter-section";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
 import { DataTable } from "@/components/tables/data-table";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableHead } from "@/components/ui/table";
+import { TableCell } from "@/components/ui/table";
 import { ProviderStatsCard } from "@/components/cards/ProviderStatsCard";
 import { Can } from "@/components/auth/can";
 import { StatusBadge } from "@/utils/status";
@@ -27,6 +27,8 @@ import type {
   ProviderStatus,
 } from "@/types/providers";
 import MyImage from "../common/MyImage";
+
+const providerColumns = ["Provider", "Email", "Status", "Revenue", "Actions"];
 
 export function ProvidersPage() {
   const router = useRouter();
@@ -61,6 +63,80 @@ export function ProvidersPage() {
     hasPrevious: page > 1,
   };
 
+  const renderProviderRow = (item: Provider) => (
+    <>
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
+            <MyImage
+              src={item.companyLogoUrl}
+              alt="provider-logo"
+              fill
+              sizes="44px"
+            />
+          </span>
+
+          <span className="max-w-32.5 text-xs font-semibold leading-4 capitalize">
+            {item.name}
+          </span>
+        </div>
+      </TableCell>
+
+      <TableCell className="text-slate-500">
+        {item.email}
+      </TableCell>
+
+      <TableCell>
+        <StatusBadge status={item.status} />
+      </TableCell>
+
+      <TableCell className="font-semibold">
+        ${item.revenue.toFixed(2)}
+      </TableCell>
+
+      <TableCell>
+        <div className="flex items-center justify-end gap-1">
+          <Can module="providers" action="read">
+            <Button
+              variant="ghost"
+              className="size-9 rounded-full text-primary hover:bg-primary/10"
+              onClick={() => router.push(`/providers/${item.id}`)}
+            >
+              <Eye className="size-4" />
+            </Button>
+          </Can>
+          <Can module="providers" action="read">
+            <Button
+              variant="ghost"
+              className="size-9 rounded-full text-amber-500 hover:bg-amber-50"
+              onClick={() => router.push(`/providers/${item.id}?tab=documents`)}
+            >
+              <FileText className="size-4" />
+            </Button>
+          </Can>
+          <Can module="providers" action="update">
+            <Button
+              variant="ghost"
+              onClick={() => router.push(`/providers/${item.id}/edit`)}
+              className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
+            >
+              <Edit2 className="size-4" />
+            </Button>
+          </Can>
+          <Can module="providers" action="delete">
+            <Button
+              variant="ghost"
+              className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
+              onClick={() => setDeleteTarget(item)}
+            >
+              <X className="size-4" />
+            </Button>
+          </Can>
+        </div>
+      </TableCell>
+    </>
+  );
+
   return (
     <div className="space-y-5">
       <PageHeader
@@ -86,26 +162,6 @@ export function ProvidersPage() {
 
       <ProviderStatsCard data={statsData} />
 
-      <ConfirmDialog
-        open={!!deleteTarget}
-        onOpenChange={(open) => {
-          if (!open) {
-            setDeleteTarget(null);
-          }
-        }}
-        title="Delete Provider"
-        description="Are you sure you want to delete this provider? This action cannot be undone."
-        confirmLabel="Delete"
-        loading={isDeleting}
-        onConfirm={() => {
-          if (!deleteTarget) return;
-
-          deleteProvider(deleteTarget.id, {
-            onSuccess: () => setDeleteTarget(null),
-          });
-        }}
-      />
-
       <FilterSection
         searchPlaceholder="Search providers by name, email, or status..."
         searchValue={search}
@@ -125,89 +181,27 @@ export function ProvidersPage() {
         data={providers}
         loading={isLoading}
         pagination={{ ...pagination, page, onPageChange: setPage }}
-        headers={
-          <>
-            <TableHead>Provider</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Revenue</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </>
-        }
-        row={(item: Provider) => {
-          return (
-            <>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <span className="relative block size-11 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
-                    <MyImage
-                      src={item.companyLogoUrl}
-                      alt="provider-logo"
-                      fill
-                      sizes="44px"
-                    />
-                  </span>
+        headers={providerColumns}
+        row={renderProviderRow}
+      />
 
-                  <span className="max-w-32.5 text-xs font-semibold leading-4 capitalize">
-                    {item.name}
-                  </span>
-                </div>
-              </TableCell>
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+        title="Delete Provider"
+        description="Are you sure you want to delete this provider? This action cannot be undone."
+        confirmLabel="Delete"
+        loading={isDeleting}
+        onConfirm={() => {
+          if (!deleteTarget) return;
 
-              <TableCell className="text-slate-500">
-                {item.email}
-              </TableCell>
-
-              <TableCell>
-                <StatusBadge status={item.status} />
-              </TableCell>
-
-              <TableCell className="font-semibold">
-                ${item.revenue.toFixed(2)}
-              </TableCell>
-
-              <TableCell>
-                <div className="flex items-center justify-end gap-1">
-                  <Can module="providers" action="read">
-                    <Button
-                      variant="ghost"
-                      className="size-9 rounded-full text-primary hover:bg-primary/10"
-                      onClick={() => router.push(`/providers/${item.id}`)}
-                    >
-                      <Eye className="size-4" />
-                    </Button>
-                  </Can>
-                  <Can module="providers" action="read">
-                    <Button
-                      variant="ghost"
-                      className="size-9 rounded-full text-amber-500 hover:bg-amber-50"
-                      onClick={() => router.push(`/providers/${item.id}?tab=documents`)}
-                    >
-                      <FileText className="size-4" />
-                    </Button>
-                  </Can>
-                  <Can module="providers" action="update">
-                    <Button
-                      variant="ghost"
-                      onClick={() => router.push(`/providers/${item.id}/edit`)}
-                      className="size-9 rounded-full text-emerald-500 hover:bg-emerald-50"
-                    >
-                      <Edit2 className="size-4" />
-                    </Button>
-                  </Can>
-                  <Can module="providers" action="delete">
-                    <Button
-                      variant="ghost"
-                      className="size-9 rounded-full text-rose-500 hover:bg-rose-50"
-                      onClick={() => setDeleteTarget(item)}
-                    >
-                      <X className="size-4" />
-                    </Button>
-                  </Can>
-                </div>
-              </TableCell>
-            </>
-          );
+          deleteProvider(deleteTarget.id, {
+            onSuccess: () => setDeleteTarget(null),
+          });
         }}
       />
     </div>
