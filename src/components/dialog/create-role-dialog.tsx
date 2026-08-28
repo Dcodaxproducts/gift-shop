@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -9,7 +11,9 @@ import { Switch } from "@/components/ui/switch";
 import { permissionModules } from "@/config/permission-modules";
 import { useCreateStaffRole } from "@/hooks/usePermissions";
 import { getDashboardIcon } from "@/lib/dashboard-icons";
-import { cn } from "@/lib/utils";
+import { PermissionCheckbox } from "@/components/pages/roles-permissions/components/permission-checkbox";
+import { buildDefaultPermissions } from "@/utils/role-permissions";
+import { createRoleFormSchema, type CreateRoleFormData } from "@/validations/roles";
 import {
   PERMISSION_ACTIONS,
   type PermissionAction,
@@ -21,88 +25,35 @@ type CreateRoleDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-const buildDefaultPermissions = (): Record<string, PermissionAction[]> => {
-  const state: Record<string, PermissionAction[]> = {};
-  permissionModules.forEach((module) => {
-    state[module.key] = [...module.actions];
-  });
-  return state;
-};
-
-function PermissionCheckbox({
-  id,
-  label,
-  checked,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  return (
-    <label
-      htmlFor={id}
-      className="flex cursor-pointer items-center gap-2 text-xs text-slate-700 select-none"
-    >
-      <input
-        id={id}
-        type="checkbox"
-        checked={checked}
-        onChange={(event) => onChange(event.target.checked)}
-        className="sr-only"
-      />
-      <span
-        className={cn(
-          "flex size-4 items-center justify-center rounded border transition",
-          checked
-            ? "border-primary bg-primary text-white"
-            : "border-slate-300 bg-white",
-        )}
-      >
-        {checked ? (
-          <svg
-            viewBox="0 0 12 12"
-            className="size-2.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="2 6 5 9 10 3" />
-          </svg>
-        ) : null}
-      </span>
-      <span className="capitalize">{label}</span>
-    </label>
-  );
-}
-
 export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
   const [status, setStatus] = useState(true);
-  const [permissions, setPermissions] = useState<
-    Record<string, PermissionAction[]>
-  >(buildDefaultPermissions);
-  const [showNameError, setShowNameError] = useState(false);
+  const [permissions, setPermissions] = useState<RolePermissions>(buildDefaultPermissions);
 
-  const createRoleMutation = useCreateStaffRole();
+  const { mutate: createRole, isPending: isBusy } = useCreateStaffRole();
 
-  const isBusy = createRoleMutation.isPending;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CreateRoleFormData>({
+    resolver: zodResolver(createRoleFormSchema),
+    defaultValues: { name: "", description: "" },
+  });
 
-  const resetForm = () => {
-    setName("");
-    setDescription("");
-    setStatus(true);
-    setPermissions(buildDefaultPermissions());
-    setShowNameError(false);
-  };
+  useEffect(() => {
+    if (open) {
+      reset();
+      setStatus(true);
+      setPermissions(buildDefaultPermissions());
+    }
+  }, [open, reset]);
 
   const handleReset = () => {
     if (isBusy) return;
-    resetForm();
+    reset();
+    setStatus(true);
+    setPermissions(buildDefaultPermissions());
   };
 
   const toggleAction = (moduleKey: string, action: PermissionAction) => {
@@ -127,32 +78,26 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
     return payload;
   };
 
-  const handleCreate = async () => {
-    const trimmedName = name.trim();
-    if (!trimmedName) {
-      setShowNameError(true);
-      return;
-    }
-    if (isBusy) return;
-
-    try {
-      await createRoleMutation.mutateAsync({
-        name: trimmedName,
-        description: description.trim(),
+  const onSubmit = (data: CreateRoleFormData) => {
+    createRole(
+      {
+        name: data.name,
+        description: data.description ?? "",
         permissions: buildPayloadPermissions(),
-      });
-      resetForm();
-      onOpenChange(false);
-    } catch {
-      // toast handled in hook
-    }
+      },
+      {
+        onSuccess: () => {
+          reset();
+          setStatus(true);
+          setPermissions(buildDefaultPermissions());
+          onOpenChange(false);
+        },
+      },
+    );
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) {
-      if (isBusy) return;
-      resetForm();
-    }
+    if (!nextOpen && isBusy) return;
     onOpenChange(nextOpen);
   };
 
@@ -186,7 +131,7 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
           >
             Reset
           </Button>
-          <Button className="h-11 px-8" onClick={handleCreate} disabled={isBusy}>
+          <Button className="h-11 px-8" onClick={handleSubmit(onSubmit)} disabled={isBusy}>
             {isBusy ? "Creating..." : "Create"}
           </Button>
         </>
@@ -201,12 +146,8 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
             id="role-name"
             placeholder="eg. Food Kart"
             className="h-11 rounded-xl"
-            value={name}
-            onChange={(event) => {
-              setName(event.target.value);
-              if (showNameError) setShowNameError(false);
-            }}
-            errorMessage={showNameError ? "Role name is required" : undefined}
+            errorMessage={errors.name?.message}
+            {...register("name")}
           />
         </div>
 
@@ -218,8 +159,8 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
             id="role-description"
             placeholder="eg. jhon doe"
             className="h-11 rounded-xl"
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            errorMessage={errors.description?.message}
+            {...register("description")}
           />
         </div>
 
@@ -239,7 +180,7 @@ export function CreateRoleDialog({ open, onOpenChange }: CreateRoleDialogProps) 
             </p>
           </div>
 
-          <div className="max-h-[280px] overflow-y-auto pr-1 space-y-5">
+          <div className="max-h-70 overflow-y-auto pr-1 space-y-5">
             {modulePairs.map(([left, right], pairIndex) => (
               <div key={pairIndex} className="grid grid-cols-2 gap-x-6">
                 {[left, right].filter(Boolean).map((module) => {
