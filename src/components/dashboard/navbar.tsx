@@ -3,7 +3,6 @@
 import { Bell, LogOut, Menu, Search, Settings } from "lucide-react";
 import { dashboardUser } from "@/config/dashboard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNotificationSummary } from "@/hooks/useNotifications";
 
 type DashboardNavbarProps = {
   onToggleSidebar: () => void;
@@ -20,6 +20,8 @@ type DashboardNavbarProps = {
 export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { data: notificationSummary } = useNotificationSummary();
+  const unreadCount = notificationSummary?.unread ?? 0;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -48,10 +50,15 @@ export function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
         <Button
           variant="ghost"
           aria-label="Notifications"
-          className="size-10 rounded-2xl bg-slate-50 text-secondary hover:bg-primary/10 hover:text-primary"
+          className="relative size-10 rounded-2xl bg-slate-50 text-secondary hover:bg-primary/10 hover:text-primary"
           onClick={() => router.push("/notifications")}
         >
           <Bell className="size-5" strokeWidth={2.25} />
+          {unreadCount > 0 ? (
+            <span className="absolute right-1.5 top-1.5 flex min-w-4 items-center justify-center rounded-full bg-primary px-1 py-0.5 text-[9px] font-semibold leading-none text-white">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          ) : null}
         </Button>
         <Button
           variant="ghost"
