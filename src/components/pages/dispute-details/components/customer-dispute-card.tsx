@@ -1,18 +1,12 @@
 import { UserRound } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import type { DisputeRefundDetail } from "@/types/disputes";
+import { Label } from "@/components/ui/label";
+import type { Dispute } from "@/types/disputes";
 import { cn } from "@/lib/utils";
+import { StatusBadge } from "@/utils/status";
 
-const detailLabelClassName = "text-[9px] font-medium uppercase tracking-wide text-slate-500";
 const detailValueClassName = "mt-1 text-xs font-medium text-slate-900";
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(value);
-}
 
 function DetailItem({
   label,
@@ -25,26 +19,15 @@ function DetailItem({
 }) {
   return (
     <div className="min-w-0">
-      <p className={detailLabelClassName}>{label}</p>
+      <Label>{label}</Label>
       <p className={cn(detailValueClassName, className)}>{value}</p>
     </div>
   );
 }
 
-function DetailBadge({ children, tone }: { children: string; tone: "danger" | "info" }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex h-6 items-center rounded-full px-3 text-[9px] font-bold uppercase",
-        tone === "danger" ? "bg-red-100 text-red-600" : "bg-blue-100 text-slate-500",
-      )}
-    >
-      {children}
-    </span>
-  );
-}
+export function CustomerDisputeCard({ dispute }: { dispute: Dispute }) {
+  const { customer, transaction, priority, status, reason, amount } = dispute;
 
-export function CustomerDisputeCard({ dispute }: { dispute: DisputeRefundDetail }) {
   return (
     <Card className="p-5">
       <div className="grid gap-4 md:grid-cols-[44px_minmax(0,1fr)_auto]">
@@ -53,20 +36,20 @@ export function CustomerDisputeCard({ dispute }: { dispute: DisputeRefundDetail 
         </div>
 
         <div className="min-w-0">
-          <h2 className="truncate text-lg font-semibold">{dispute.customerName}</h2>
-          <p className="mt-0.5 truncate text-xs text-slate-500">{dispute.customerEmail}</p>
+          <h2 className="truncate text-lg font-semibold">{customer.name}</h2>
+          <p className="mt-0.5 truncate text-xs text-slate-500">{customer.email}</p>
         </div>
 
         <div className="flex items-start gap-2">
-          <DetailBadge tone="danger">{dispute.priority}</DetailBadge>
-          <DetailBadge tone="info">{dispute.status.replace("_", " ")}</DetailBadge>
+          <StatusBadge status={priority} />
+          <StatusBadge status={status} />
         </div>
       </div>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-3">
-        <DetailItem label="Transaction ID" value={dispute.transactionId} />
-        <DetailItem label="Amount" value={formatCurrency(dispute.amount)} className="text-base font-bold text-primary" />
-        <DetailItem label="Dispute Reason" value={dispute.disputeReason} />
+        <DetailItem label="Transaction ID" value={transaction.transactionId} />
+        <DetailItem label="Amount" value={`$${amount.toFixed(2)}`} className="text-base font-bold text-primary" />
+        <DetailItem label="Dispute Reason" value={reason.replace(/_/g, " ").toLowerCase()} />
       </div>
     </Card>
   );
