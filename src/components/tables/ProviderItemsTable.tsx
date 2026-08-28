@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ShieldCheck } from "lucide-react";
@@ -6,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { TableCell, TableHead } from "@/components/ui/table";
 import { StatusBadge } from "@/utils/status";
 import { useProviderItems } from "@/hooks/useProviders";
-import MyImage from "../common/MyImage";
+import MyImage from "@/components/common/MyImage";
 import { useDebounce } from "@/hooks/useDebounce";
 import type { ProviderItem } from "@/types/providers";
 
@@ -22,7 +24,7 @@ function ProviderItemsTable({ providerId }: { providerId: string }) {
     limit,
     ...(debouncedSearch ? { search: debouncedSearch } : {}),
   });
-  
+
   const hasNextPage = items.length === limit;
   const pagination = {
     total: (page - 1) * limit + items.length + (hasNextPage ? 1 : 0),
