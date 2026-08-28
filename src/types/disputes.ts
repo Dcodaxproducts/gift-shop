@@ -74,35 +74,3 @@ export type DisputesResponse = {
   data: Dispute[];
   meta: DisputesMeta;
 };
-
-export type DisputeEvidenceFile = {
-  name: string;
-  type: "pdf" | "image" | "text";
-};
-
-export type TransactionTimelineItem = {
-  label: string;
-  date: string;
-  status?: string;
-  state: "complete" | "current" | "pending";
-};
-
-export type DisputeRefundDetail = {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  transactionId: string;
-  amount: number;
-  category: string;
-  priority: DisputePriority;
-  status: DisputeStatus;
-  daysOpen: number;
-  disputeTitle: string;
-  disputeReason: string;
-  resolutionDeadline: string;
-  paymentStatus: string;
-  refundEligible: string;
-  processorAuthCode: string;
-  evidence: DisputeEvidenceFile[];
-  timeline: TransactionTimelineItem[];
-};
