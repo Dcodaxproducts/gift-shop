@@ -5,6 +5,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -13,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 type DataTableProps<T> = {
   data: T[];
-  headers: React.ReactNode;
+  headers: React.ReactNode | string[];
   row: (row: T, index: number) => React.ReactNode;
   getRowClassName?: (row: T, index: number) => string | undefined;
   onRowClick?: (row: T, index: number) => void;
@@ -48,8 +49,17 @@ export function DataTable<T>({
   pagination,
   showPagination = true,
 }: DataTableProps<T>) {
-  const columnCount = Children.count(headers);
+  const isColumnLabels = Array.isArray(headers);
+  const columnCount = isColumnLabels ? headers.length : Children.count(headers);
   const rowCount = skeletonRows ?? pagination?.limit ?? 5;
+
+  const renderedHeaders = isColumnLabels
+    ? headers.map((label, index) => (
+        <TableHead key={label} className={index === headers.length - 1 ? "text-right" : undefined}>
+          {label}
+        </TableHead>
+      ))
+    : headers;
 
   const resolvedContainerClassName = cn(
     "flex h-full flex-col justify-between overflow-hidden bg-white shadow-sm",
@@ -70,7 +80,7 @@ export function DataTable<T>({
       <div className="overflow-x-auto">
         <Table className={cn(tableClassName)}>
           <TableHeader>
-            <TableRow className="hover:bg-transparent">{headers}</TableRow>
+            <TableRow className="hover:bg-transparent">{renderedHeaders}</TableRow>
           </TableHeader>
           <TableBody>
             {loading
