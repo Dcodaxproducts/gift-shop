@@ -1,14 +1,51 @@
 "use client";
 
-import type { PayoutMetric } from "@/types/provider-payouts";
+import { CalendarDays, CheckCircle2, Hexagon, Hourglass } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import type { PayoutMetric, ProviderPayoutStats } from "@/types/provider-payouts";
 
-type PayoutMetricCardProps = PayoutMetric & {
-  loading?: boolean;
+const emptyValue = "--";
+
+const formatDelta = (value: number, period: string) => {
+  const prefix = value > 0 ? "+" : "";
+  return `${prefix}${value}% vs ${period}`;
 };
 
-function PayoutMetricCard({ icon: Icon, label, value, change, tone, loading = false }: PayoutMetricCardProps) {
+function buildPayoutMetrics(stats?: ProviderPayoutStats): PayoutMetric[] {
+  return [
+    {
+      icon: CalendarDays,
+      label: "Total payouts this month",
+      value: stats ? `$${stats.totalPayoutsThisMonth.toFixed(2)}` : emptyValue,
+      change: stats ? formatDelta(stats.totalPayoutsDeltaPercent, "last month") : emptyValue,
+      tone: "purple",
+    },
+    {
+      icon: Hourglass,
+      label: "Pending payouts",
+      value: stats ? `$${stats.pendingPayouts.toFixed(2)}` : emptyValue,
+      change: stats ? formatDelta(stats.pendingPayoutsDeltaPercent, "last week") : emptyValue,
+      tone: "amber",
+    },
+    {
+      icon: CheckCircle2,
+      label: "Completed payouts",
+      value: stats ? `$${stats.completedPayouts.toFixed(2)}` : emptyValue,
+      change: stats ? formatDelta(stats.completedPayoutsDeltaPercent, "last month") : emptyValue,
+      tone: "green",
+    },
+    {
+      icon: Hexagon,
+      label: "Platform revenue",
+      value: stats ? `$${stats.platformRevenue.toFixed(2)}` : emptyValue,
+      change: stats ? formatDelta(stats.platformRevenueDeltaPercent, "last month") : emptyValue,
+      tone: "violet",
+    },
+  ];
+}
+
+function PayoutMetricCard({ icon: Icon, label, value, change, tone, loading = false }: PayoutMetric & { loading?: boolean }) {
   return (
     <Card>
       <CardContent>
@@ -39,4 +76,14 @@ function PayoutMetricCard({ icon: Icon, label, value, change, tone, loading = fa
   );
 }
 
-export default PayoutMetricCard;
+export function PayoutMetricsSection({ stats, loading = false }: { stats?: ProviderPayoutStats; loading?: boolean }) {
+  const metrics = buildPayoutMetrics(stats);
+
+  return (
+    <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      {metrics.map((metric) => (
+        <PayoutMetricCard key={metric.label} {...metric} loading={loading} />
+      ))}
+    </section>
+  );
+}
